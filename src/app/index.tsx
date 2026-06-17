@@ -21,6 +21,8 @@ import { MaxContentWidth, Radii, Spacing } from '@/constants/theme';
 import { loadContainers, loadPlants } from '@/data';
 import { type Repos, useDbState } from '@/db/provider';
 import type { Build } from '@/db/schema';
+import { shareBuildPdf, shareBuildTxt } from '@/lib/export';
+import { resolveBuildSummary } from '@/logic/export-txt';
 import { scoreBuild, type ScoredBuild } from '@/logic/score-build';
 import { useTokens } from '@/hooks/use-tokens';
 
@@ -98,8 +100,12 @@ function Dashboard({ repos }: { repos: Repos }) {
   }
 
   function onExport(row: Row) {
-    // Per-build TXT/PDF export is the chat-2 export step; the menu shape is final.
-    Alert.alert('Export', `Export for “${row.build.name}” arrives with the export step.`);
+    const data = resolveBuildSummary(row.build, plants, containers);
+    Alert.alert('Export', `Choose a format for “${row.build.name}”.`, [
+      { text: 'Text (.txt)', onPress: () => shareBuildTxt(data).catch(reportExportError) },
+      { text: 'PDF', onPress: () => shareBuildPdf(data).catch(reportExportError) },
+      { text: 'Cancel', style: 'cancel' },
+    ]);
   }
 
   function startDelete(row: Row) {
@@ -133,10 +139,11 @@ function Dashboard({ repos }: { repos: Repos }) {
           <GlanceHeader
             title="Terrariums"
             subtitle={rows.length === 0 ? undefined : `${rows.length} ${rows.length === 1 ? 'build' : 'builds'}`}
+            trailing={<NewButton onPress={() => router.push('/planner' as Href)} />}
           />
 
           {rows.length === 0 ? (
-            <EmptyState />
+            <EmptyState onCreate={() => router.push('/planner' as Href)} />
           ) : (
             <View style={[styles.grid, { columnGap: GRID_GAP, rowGap: GRID_GAP }]}>
               {rows.map((row) => (
@@ -181,9 +188,29 @@ function Dashboard({ repos }: { repos: Repos }) {
   );
 }
 
+function reportExportError(err: unknown) {
+  Alert.alert('Export failed', err instanceof Error ? err.message : String(err));
+}
+
 // --- Pieces -----------------------------------------------------------------
 
-function EmptyState() {
+function NewButton({ onPress }: { onPress: () => void }) {
+  const { c } = useTokens();
+  return (
+    <Pressable
+      onPress={onPress}
+      accessibilityRole="button"
+      hitSlop={8}
+      style={[styles.newBtn, { backgroundColor: c.primary }]}>
+      <Text variant="caption" style={{ color: c.onPrimary, fontWeight: '600' }}>
+        + New
+      </Text>
+    </Pressable>
+  );
+}
+
+function EmptyState({ onCreate }: { onCreate: () => void }) {
+  const { c } = useTokens();
   return (
     <Card style={styles.empty}>
       <Text variant="subhead">No terrariums yet</Text>
@@ -191,6 +218,14 @@ function EmptyState() {
         Build your first terrarium in the planner — pick a container, add plants, and watch the
         Eco-balance settle.
       </Text>
+      <Pressable
+        onPress={onCreate}
+        accessibilityRole="button"
+        style={[styles.emptyCta, { backgroundColor: c.primary }]}>
+        <Text variant="body" style={{ color: c.onPrimary, fontWeight: '600' }}>
+          New terrarium
+        </Text>
+      </Pressable>
     </Card>
   );
 }
@@ -257,6 +292,8 @@ const styles = StyleSheet.create({
   grid: { flexDirection: 'row', flexWrap: 'wrap' },
   empty: { padding: Spacing.lg, gap: Spacing.sm },
   emptyBody: { lineHeight: 22 },
+  emptyCta: { alignSelf: 'flex-start', marginTop: Spacing.xs, paddingHorizontal: Spacing.lg, paddingVertical: Spacing.sm, borderRadius: Radii.md },
+  newBtn: { paddingHorizontal: Spacing.md, paddingVertical: Spacing.xs + 2, borderRadius: Radii.pill },
   skeleton: { height: 240, borderRadius: Radii.lg, opacity: 0.6 },
   snackWrap: { position: 'absolute', left: Spacing.md, right: Spacing.md, bottom: Spacing.lg },
   snack: {

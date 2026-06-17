@@ -29,7 +29,7 @@ do NOT read all four docs every time.**
 | 2 | Port the pure engine, test-first (+ primary/secondary) | 1 | ✅ **done** |
 | 3 | Ship the data (versioned JSON, images, presets) | 1 | ✅ **done** |
 | 4 | Local store (Drizzle/expo-sqlite) + repositories | 1 | ✅ **done** |
-| 5 | Core screens + component library + export/backup | 2 | 🔄 **in progress** — **chat 1 DONE** (component library + dashboard + build-detail + Browse/plant); chat 2 = export/backup + planner shell |
+| 5 | Core screens + component library + export/backup | 2 | ✅ **done** — chat 1 (component library + 4 read-mostly screens) + chat 2 (TXT/PDF export + JSON backup/restore + planner shell) |
 | 6 | Planner: 5-step flow + 2-D drag + 2-D preview | 2 | ⬜ |
 | 7 | Care reminders + photo timeline | 1 | ⬜ |
 | 8 | Substrate mixer (parallel to 7) | 1 | ⬜ |
@@ -50,7 +50,7 @@ cross-cutting design (the scoring rule, the DB schema) in the orchestrating chat
 
 ---
 
-## ▶ NEXT — Phase 5 distilled brief: core screens + component library + export/backup
+## Phase 5 distilled brief (DONE — kept for history): core screens + component library + export/backup
 
 **Goal.** The first **read-mostly UI**, built on the proven engine (Phase 2) + store (Phase 4). **Lock
 the component library *first*,** then the dashboard, build-detail, and Browse/plant screens; then
@@ -454,9 +454,155 @@ harness in v2.0 — note what was checked manually vs. in CI).
   build-detail / plant-view / browse / `browse-filter` / `labels`. The whole Phase-5 chat-1 slice is on
   disk, **not** in git history. Recommend committing it as a checkpoint before chat 2 (no tag yet).
 
+### Phase 5 — chat 2, COMPLETE (export/backup + planner shell) — **tagged `v2-phase-5-complete`**
+- **Scope this session:** the write/IO + scaffold slice that finishes Phase 5 on top of chat-1's four
+  read-mostly screens — per-build **TXT + PDF export**, **whole-app JSON backup/restore**, and the
+  **planner shell**. With this, the **full Phase-5 DoD passes** → tagged.
+- **Result:** **205 Vitest tests green** (was 190 + **15 net-new** pure-logic: 8 TXT + 7 backup) ·
+  `tsc --noEmit` clean · new files lint-clean (`eslint`) · **`expo export -p ios` bundles clean**
+  (the new `expo-file-system`/`expo-print`/`expo-sharing`/`expo-document-picker` imports + the
+  `planner` route all resolve through Metro). Phase 2–4 + chat-1 suites untouched; `src/logic` still
+  imports nothing from `src/db`/`src/data` (the new `export-txt.ts` imports only `./containers`,
+  `./score-build`, and `../types`).
+- **1 · Per-build TXT (pure, CI-tested).** `src/logic/export-txt.ts` — a **pure string function**
+  (`generateTextSummary`) byte-faithful to v1 `engine/export.py::generate_text_summary` (header rule,
+  label/value block, plant list, footer), plus `formatExportDate` (UTC, so an exported date is
+  machine-timezone-independent — v1 printed the `Z` date un-shifted) and `resolveBuildSummary` (shapes
+  a saved build via the same dependency-inverted `scoreBuild` / `resolveBuildContainer` the screens
+  use — a scoring failure exports honestly as `N/A`, never a fabricated number). **8 tests.**
+- **2 · Per-build PDF + the share IO (device-only).** `src/lib/export.ts` — `shareBuildTxt` writes the
+  pure string to a cache file via the new `expo-file-system` `File`/`Paths` API + `expo-sharing`;
+  `shareBuildPdf` renders an **`expo-print` HTML→PDF** (the `reportlab` replacement — there is no
+  reportlab in RN) from a styled template mirroring the v1 layout, then shares it. Not unit-tested
+  (device-only IO); the *content* is the pure formatter, which is.
+- **3 · Whole-app JSON backup/restore (decisions 7 / 17).** `src/db/backup.ts` — the **pure**
+  pipeline (CI-tested, **7 tests**): `exportBackup(db)` reads `builds` (+ their `placements`) and
+  `care_marks` into the **`BackupEnvelope`** (`{ schemaVersion, appVersion, exportedAt, data }`);
+  `restoreBackup(db, envelope)` runs **recognize-envelope → `migratePayload()` (the Phase-4 ladder, NOT
+  re-implemented) → zod-validate the migrated payload → replace (wipe user tables, then insert).**
+  Validation completes **before the first write**, so a corrupt row or a **newer-than-current** file
+  rejects the **whole file with no half-import** (the node `sqlite-proxy` has no interactive
+  `transaction()`, so atomicity is anchored at the validate-before-mutate boundary). **Photos are
+  excluded** — restore wipes photo rows too, so a restored build's `primaryPhotoId` dangles and
+  `getPrimary` degrades to the placeholder hero (tested, no crash). Care-marks stay bound across the
+  round-trip via the UUID PKs (tested). The device IO (`src/lib/backup-io.ts`: `expo-document-picker`
+  pick → `File.text()` → `restoreBackup`) is surfaced in **Settings** ("Back up to file" / "Restore
+  from file", restore behind a replace-confirm).
+- **4 · Planner shell (`src/app/planner.tsx`, Premium §4.4).** The **5-step stepper scaffold**
+  (Container · Substrate · Hardscape · Plants · Final) + the **persistent 2-D preview pane** (framed,
+  docked) + Back/Next + tappable step dots — **navigation chrome only, no build interactions** (drag,
+  live recommendations, preview sprites are Phase 6). Reads `?build=<id>` to title "Edit" vs "New";
+  loads/saves nothing. Registered as a hidden route (`href:null`) in `_layout`.
+- **Wiring.** Dashboard ⋮ **Export** now offers TXT/PDF (real share, not the placeholder Alert); a
+  **+ New** header button + the empty-state CTA route to `/planner`; build-detail gained an **Export**
+  header action and **Edit** now navigates to `/planner?build=<id>`. `expo-file-system ~56.0.8` added as
+  a direct dep (was transitive); lockfile reconciled.
+- **Honest CI-vs-device split (per the brief):** typecheck + the full 205-test suite + new-file lint +
+  the iOS bundle export all pass in CI. **The on-device/Expo *visual* render is still NOT done** —
+  `xcrun simctl` lists **no available iOS simulator** in this environment, and there is no RN
+  component-test harness in v2.0. The pure pipeline (TXT format, backup round-trip, migrate-refuse,
+  corrupt-reject, missing-photo degrade) is fully CI-verified; the screen *rendering* + the
+  device-only IO (share sheet, document picker, HTML→PDF) remain a device task. (Pre-existing template
+  lint: 1 error in the Phase-1 `use-color-scheme.web.ts` + a `guide.ts`/`_layout` warning predate this
+  phase — out of scope, untouched.)
+- **Method:** the backup envelope + import pipeline (touches the migrate ladder + a one-pass insert)
+  and the TXT string fn were kept in the orchestrating chat (cross-cutting); the planner shell, though
+  a subagent candidate, was built in-chat as a small static scaffold (lower-risk than a cold spawn
+  re-deriving the component-library context). No subagents this session.
+- **Tag:** `v2-phase-5-complete`.
+
 ---
 
-## ▶ NEXT — Phase 5 (chat 2) distilled brief: export/backup + planner shell
+## ▶ NEXT — Phase 6 distilled brief: the planner — 5-step flow + 2-D drag-to-place + 2-D preview
+
+**Goal.** The centerpiece overhaul (Sequence "Phase 6", Option A): replace v1's 1,068-line **2-step**
+`pages/planner.py` with the **5-step** flow (Container · Substrate · Hardscape · Plants · Final) and add
+the one genuinely new interaction — **drag-to-place in 2-D**, shown in the **2-D front-view preview**.
+**No 3-D at all** in v2.0 (decision 5); the 3-D display is a v2.1 fast-follow. Budgeted for **2 chats**.
+The **planner shell already exists** (Phase 5 chat 2: `src/app/planner.tsx` — stepper chrome + preview
+frame) — this phase makes it real.
+
+**Read only these:** `Terrarium_V2_Migration_Sequence.md` → "Phase 6 — The planner"; `Terrarium_V2_Premium_Design.md`
+→ **§4.4** (the planner — where the budget goes) + **§7.6** (the 5-step flow) + the §3.5 OKLCH meter
+sweep + the motion/haptics rules; `Terrarium_V2_Grill_Decisions.md` → **5** (no 3-D in v2.0; placements
+are pure data), **10** (substrate/drainage depths persisted; hardscape-step + build-guide are
+*derived*, not toggles), **12** (`maxHeightCm`-driven depth; `rootDepthCm` is reference-only), **14**
+(60fps on every device — transform/opacity-only on the UI thread), **15** (primary/secondary in live
+recommendations). v1 source-of-record: `pages/planner.py` (the real flow now), `components/container_builder.py`
+(the Container step), `engine/recommend.py` + `engine/containers.py` (`recommend_container_dimensions`,
+`default_layer_depths` — already pure in `src/logic`), and `pages/build_guide.py` (**deleted** — the
+guide becomes a static read-only projection on the Final step + the export).
+
+**Work (high level — the chat-1/chat-2 split is the orchestrator's to set).**
+1. **Container step** — port `container_builder.py`: shape / dimensions / opening + live volume readout
+   (`computeVolumeL`, pure) + the plants-first `recommendContainerDimensions` path. Write the snapshot
+   to the build.
+2. **Substrate step (entry point only)** — drainage + substrate depth seeded from `defaultLayerDepths`
+   (NOT `rootDepthCm`), **persisted** (decision 10); the mixer engine is Phase 8. Drainage material
+   defaults to "pebbles or LECA".
+3. **Hardscape step** — place/scale supplied assets in the 2-D front view, **clamped to the container**.
+   The build-guide hardscape line is **derived** from whether anything is placed (decision 10).
+4. **Plants step — the signature interaction.** Icon-first selector + tiered compatibility cards + live
+   `recommend()` + **drag-to-place on the UI thread** (Reanimated + Gesture Handler) writing
+   `(x, y, scale)` to `placements` (Phase-4 field), clamped to the container, `motion.dragReturn` on an
+   invalid drop, `impactAsync(Light)` snap. Eco-balance meter updates **live** (deep-green → warning-red,
+   §3.5 OKLCH sweep; survival-critical fires `notificationAsync(Warning)` + a red pulse). Primary
+   conflicts only; full matrix behind Tier-3.
+5. **Final step** — 2-D overview + Eco-balance + plant list + name & save → lands on Build detail. The
+   **build guide renders here as a static read-only projection** (and in the export).
+
+**Gotchas.** **Placements are pure data** — keep them a deterministic `(x,y,scale)` on the front plane so
+the v2.1 3-D display drops in as a clean add-on; **resist any in-3-D drag** (that is Option B, later
+still). The faux-3-D shell math (already ported pure in Phase 2) **renders nothing in v2.0**. Drag is
+**transform/opacity-only on the UI thread** → 60fps even on low-end (decision 14); the *measured* gate
+is the owner's iPhone (Android fps stays unverified — no device). `rootDepthCm` is **reference-only** —
+depth math is `maxHeightCm`-based (decision 12). The build repo + `placements` field already exist
+(Phase 4); the planner shell + preview frame already exist (Phase 5 chat 2) — **extend them, don't
+rebuild**. CI tests pure logic only (the geometry/recommend/clamp math); the *drag fps* + the live
+render are device-verified — be honest about the split.
+
+**Subagent plan.** The **drag-to-place interaction** (the highest-risk, net-new piece) stays in the
+orchestrating chat. The **Container builder** and the **Substrate/Hardscape steps** are more
+self-contained (port + form chrome) → reasonable subagent candidates once the placement data-model + the
+clamp helper are pinned in the main chat.
+
+**DoD (Phase 6 exit):** create + edit a build end-to-end through all five steps; placements **persist and
+re-render identically** on the dashboard and the planner's 2-D front view; the drag holds **60fps** on
+the owner's iPhone (transform/opacity on the UI thread); Eco-balance updates **live**. `npm run
+typecheck` clean; full Vitest suite green (Phases 2–5 untouched).
+
+**Verification:** `npm run typecheck` && `npm run test:run` (geometry / recommend / clamp / placement
+math) + `expo export -p ios` clean; **plus a device render + 60fps drag pass** on the owner's iPhone
+(note the split for anything not device-verified). Then **commit + `git tag -a v2-phase-6-...`** per the
+handoff protocol (this is a 2-chat phase → tag only at the full Phase-6 DoD; checkpoint chat 1 without a
+tag, like Phase 5).
+
+### Kickoff prompt (paste into a NEW chat)
+
+> You're continuing the Terrarium V2 RN+Expo migration in `terrarium-v2`. You are doing **Phase 6 — the
+> planner: 5-step flow + 2-D drag-to-place + 2-D preview** (a **2-chat** phase — this is **chat 1**). Read
+> `MIGRATION.md` (the phase table + the "▶ NEXT — Phase 6" brief + the Phase-5 chat-2 session-log entry)
+> and ONLY: Sequence "Phase 6 — The planner", Premium Design **§4.4 + §7.6** + the §3.5 OKLCH meter sweep
+> + motion/haptics rules, Decisions **5 / 10 / 12 / 14 / 15**. Do NOT read all four docs. **Phase 5 is
+> committed + tagged `v2-phase-5-complete`:** all four read-mostly screens + the component library
+> (`@/components/ui`, `@/constants/theme`), the pure logic (`src/logic/{eco,verdict,score-build,browse-filter,export-txt}.ts`),
+> the backup pipeline (`src/db/backup.ts` + `src/lib/backup-io.ts`), per-build export (`src/lib/export.ts`),
+> and the **planner shell** (`src/app/planner.tsx` — stepper chrome + 2-D preview frame, no interactions);
+> **205 tests green**, tsc/lint/iOS-bundle clean. **Your job: make the planner real** — the 5 steps
+> (Container builder · Substrate/drainage depths · Hardscape · Plants · Final) and the signature
+> **drag-to-place** writing `(x,y,scale)` to the Phase-4 `placements` field, in the **2-D front view**,
+> on the UI thread (Reanimated + Gesture Handler), with the **live Eco-balance meter**. **Extend the
+> existing shell + build repo — do NOT rebuild them, and keep `placements` pure data (no 3-D in v2.0,
+> decision 5).** Use subagents for the self-contained steps (Container builder, Substrate/Hardscape) once
+> the placement data-model + clamp helper are pinned in the main chat; keep the **drag interaction** in
+> the main chat. CI tests the pure math; the drag fps + live render are device-verified — be honest about
+> the split. When chat 1's slice is solid (typecheck + suite green), **checkpoint without a tag** and write
+> a Phase-6 chat-1 progress note + a "Phase 6 (chat 2)" brief + kickoff; tag `v2-phase-6-...` only at the
+> full Phase-6 DoD. Then stop.
+
+---
+
+## Phase 5 (chat 2) distilled brief (DONE — kept for history): export/backup + planner shell
 
 **Goal.** Finish Phase 5: per-build **export** (TXT + PDF) and **whole-app JSON backup/restore** (the
 decision-17 envelope, importing through the **Phase-4 migrate ladder**), plus the **planner shell**

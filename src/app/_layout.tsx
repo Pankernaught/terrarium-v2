@@ -66,6 +66,7 @@ export default function RootLayout() {
           {/* Non-tab routes: navigable, but hidden from the bar. */}
           <Tabs.Screen name="build/[id]" options={{ href: null }} />
           <Tabs.Screen name="plant/[slug]" options={{ href: null }} />
+          <Tabs.Screen name="planner" options={{ href: null }} />
           </Tabs>
         </DbProvider>
       </ThemeProvider>

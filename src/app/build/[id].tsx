@@ -34,6 +34,8 @@ import { loadContainers, loadPlants } from '@/data';
 import { useDbState, type Repos } from '@/db/provider';
 import type { Build } from '@/db/schema';
 import { resolveBuildContainer } from '@/logic/containers';
+import { resolveBuildSummary } from '@/logic/export-txt';
+import { shareBuildPdf, shareBuildTxt } from '@/lib/export';
 import { scoreBuild } from '@/logic/score-build';
 import type { CompatibilityResult, Conflict } from '@/types/results';
 import type { Plant } from '@/types/plant';
@@ -92,8 +94,17 @@ function BuildDetail({ repos }: { repos: Repos }) {
   const buildPlants = build.plantSlugs.map((slug) => bySlug.get(slug)).filter((p): p is Plant => !!p);
 
   function onEdit() {
-    // "Edit" re-opens the planner on this build — the planner lands in Phase 6.
-    Alert.alert('Edit', 'Editing a build opens in the planner, arriving in the next phase.');
+    // "Edit" re-opens the planner on this build (shell this phase; interactive in 6).
+    router.push(`/planner?build=${build.id}` as Href);
+  }
+
+  function onExport() {
+    const data = resolveBuildSummary(build, plants, containers);
+    Alert.alert('Export', `Choose a format for “${build.name}”.`, [
+      { text: 'Text (.txt)', onPress: () => shareBuildTxt(data).catch(reportExportError) },
+      { text: 'PDF', onPress: () => shareBuildPdf(data).catch(reportExportError) },
+      { text: 'Cancel', style: 'cancel' },
+    ]);
   }
 
   return (
@@ -121,11 +132,18 @@ function BuildDetail({ repos }: { repos: Repos }) {
             title={build.name}
             subtitle={subtitle(buildPlants.length, container?.name)}
             trailing={
-              <Pressable onPress={onEdit} accessibilityRole="button" hitSlop={8} style={[styles.editBtn, { borderColor: c.border }]}>
-                <Text variant="caption" role="primary">
-                  Edit
-                </Text>
-              </Pressable>
+              <View style={styles.headerActions}>
+                <Pressable onPress={onExport} accessibilityRole="button" hitSlop={8} style={[styles.editBtn, { borderColor: c.border }]}>
+                  <Text variant="caption" role="primary">
+                    Export
+                  </Text>
+                </Pressable>
+                <Pressable onPress={onEdit} accessibilityRole="button" hitSlop={8} style={[styles.editBtn, { borderColor: c.border }]}>
+                  <Text variant="caption" role="primary">
+                    Edit
+                  </Text>
+                </Pressable>
+              </View>
             }
           />
 
@@ -177,6 +195,10 @@ function BuildDetail({ repos }: { repos: Repos }) {
       </ScrollView>
     </Screen>
   );
+}
+
+function reportExportError(err: unknown) {
+  Alert.alert('Export failed', err instanceof Error ? err.message : String(err));
 }
 
 function subtitle(plantCount: number, containerName?: string): string {
@@ -294,6 +316,7 @@ const styles = StyleSheet.create({
   back: { alignSelf: 'flex-start' },
   hero: { width: '100%', height: 200, borderRadius: Radii.lg },
   heroFallback: { alignItems: 'center', justifyContent: 'center' },
+  headerActions: { flexDirection: 'row', gap: Spacing.sm },
   editBtn: { paddingHorizontal: Spacing.md, paddingVertical: Spacing.xs + 2, borderRadius: Radii.pill, borderWidth: 1 },
   section: { gap: Spacing.sm },
   card: { padding: Spacing.lg },
