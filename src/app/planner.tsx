@@ -1,20 +1,34 @@
 /**
- * Planner — **shell only** this phase (Premium §4.4). The 5-step stepper scaffold
- * (Container · Substrate · Hardscape · Plants · Final) + the persistent 2-D preview
- * pane that every step keeps in view. **No build interactions yet** — drag-to-place,
- * live recommendations, and the preview sprites are Phase 6; this lands the chrome
- * (step indicator, Back/Next, the preview frame) so "New" and "Edit" have a
- * destination and the layout is fixed before the signature interaction goes in.
+ * Planner — the 5-step build flow (Premium §4.4). Phase 6 makes the shell real:
+ * a shared {@link PlannerDraft} threads through Container · Substrate · Hardscape ·
+ * Plants · Final, each step a `(draft) → patch` body, with the persistent 2-D
+ * preview pane reading the single draft.
  *
- * Read-only of the route params: `?build=<id>` means "edit an existing build"
- * (shown in the title); no param means "new". Nothing is loaded or saved here.
+ * **Chat 1 (this slice):** the draft state machine + the **Container** and
+ * **Substrate** step bodies (the two non-drag form steps). Hardscape, Plants
+ * (drag-to-place), and Final — everything that shares the 2-D drag interaction —
+ * are the chat-2 placeholders below, and the preview pane stays a static frame
+ * until the drag/sprites land.
+ *
+ * `?build=<id>` hydrates the draft from that build (edit); no param starts empty
+ * (new). Editing waits on the store; a new build needs no DB until the Final save.
  */
 import { useLocalSearchParams, useRouter } from 'expo-router';
-import { useState } from 'react';
-import { Pressable, ScrollView, StyleSheet, View } from 'react-native';
+import { useEffect, useMemo, useRef, useState } from 'react';
+import { ActivityIndicator, Pressable, ScrollView, StyleSheet, View } from 'react-native';
 
+import { ContainerStep } from '@/components/planner/container-step';
+import {
+  type PlannerDraft,
+  draftFromBuild,
+  emptyDraft,
+} from '@/components/planner/draft';
+import type { StepProps } from '@/components/planner/step';
+import { SubstrateStep } from '@/components/planner/substrate-step';
 import { Card, GlanceHeader, haptics, Screen, SectionLabel, Text } from '@/components/ui';
 import { MaxContentWidth, Radii, Spacing } from '@/constants/theme';
+import { loadPlants } from '@/data';
+import { useDbState } from '@/db/provider';
 import { useTokens } from '@/hooks/use-tokens';
 
 interface Step {
@@ -35,15 +49,84 @@ export default function PlannerScreen() {
   const { build } = useLocalSearchParams<{ build?: string }>();
   const router = useRouter();
   const { c } = useTokens();
-  const [active, setActive] = useState(0);
+  const db = useDbState();
 
   const isEdit = typeof build === 'string' && build.length > 0;
-  const step = STEPS[active];
+  const [active, setActive] = useState(0);
+  // The draft is null until hydrated (immediately for a new build; after the
+  // store loads the row for an edit).
+  const [draft, setDraft] = useState<PlannerDraft | null>(isEdit ? null : emptyDraft());
+  const [loadError, setLoadError] = useState<string | null>(null);
+  const hydrated = useRef(!isEdit);
+
+  // Edit path: hydrate the draft from the saved build once the store is ready.
+  useEffect(() => {
+    if (hydrated.current || db.status !== 'ready' || !isEdit) return;
+    hydrated.current = true;
+    let cancelled = false;
+    (async () => {
+      try {
+        const row = await db.repos.builds.load(build as string);
+        if (!cancelled) setDraft(draftFromBuild(row));
+      } catch (err) {
+        if (!cancelled) setLoadError(err instanceof Error ? err.message : String(err));
+      }
+    })();
+    return () => {
+      cancelled = true;
+    };
+  }, [db, isEdit, build]);
+
+  // Selected plants, resolved from the seed bundle (decision 11 — no DB round-trip).
+  const plants = useMemo(() => {
+    if (!draft || draft.plantSlugs.length === 0) return [];
+    const bySlug = new Map(loadPlants().map((p) => [p.slug, p]));
+    return draft.plantSlugs.map((s) => bySlug.get(s)).filter((p): p is NonNullable<typeof p> => !!p);
+  }, [draft]);
 
   function go(next: number) {
     haptics.select();
     setActive(Math.max(0, Math.min(STEPS.length - 1, next)));
   }
+
+  function update(patch: Partial<PlannerDraft>) {
+    setDraft((d) => (d ? { ...d, ...patch } : d));
+  }
+
+  const step = STEPS[active];
+
+  // Edit-load gates.
+  if (loadError) {
+    return (
+      <Screen edges={{ bottom: true }}>
+        <View style={[styles.inner, styles.centerFill]}>
+          <Text variant="title">Couldn’t open this build</Text>
+          <Text variant="body" role="textMuted" style={styles.centerText}>
+            {loadError}
+          </Text>
+          <Pressable onPress={() => router.back()} accessibilityRole="button" hitSlop={8}>
+            <Text variant="caption" role="primary">
+              ‹ Go back
+            </Text>
+          </Pressable>
+        </View>
+      </Screen>
+    );
+  }
+  if (!draft) {
+    return (
+      <Screen edges={{ bottom: true }}>
+        <View style={[styles.inner, styles.centerFill]}>
+          <ActivityIndicator color={c.primary} />
+          <Text variant="caption" role="textMuted">
+            Loading this build…
+          </Text>
+        </View>
+      </Screen>
+    );
+  }
+
+  const stepProps: StepProps = { draft, plants, update };
 
   return (
     <Screen edges={{ bottom: true }}>
@@ -86,7 +169,7 @@ export default function PlannerScreen() {
             })}
           </View>
 
-          {/* Persistent 2-D preview pane — docked, framed, empty until Phase 6. */}
+          {/* Persistent 2-D preview pane — docked, framed. Live sprites + drag are chat 2. */}
           <View style={styles.section}>
             <SectionLabel>Preview</SectionLabel>
             <View style={[styles.preview, { backgroundColor: c.surfaceSunken, borderColor: c.border }]}>
@@ -94,20 +177,15 @@ export default function PlannerScreen() {
                 🪴
               </Text>
               <Text variant="caption" role="textMuted" style={styles.previewCaption}>
-                2-D front view — the live preview and drag-to-place arrive in the next phase.
+                2-D front view — the live preview and drag-to-place arrive next.
               </Text>
             </View>
           </View>
 
-          {/* Current step body — placeholder copy (no interactions this phase). */}
+          {/* Current step body. */}
           <View style={styles.section}>
             <SectionLabel>{step.label}</SectionLabel>
-            <Card style={styles.stepCard}>
-              <Text variant="body">{step.blurb}</Text>
-              <Text variant="caption" role="textMuted">
-                This step becomes interactive in Phase 6.
-              </Text>
-            </Card>
+            <StepBody stepKey={step.key} blurb={step.blurb} {...stepProps} />
           </View>
         </View>
       </ScrollView>
@@ -123,6 +201,25 @@ export default function PlannerScreen() {
       </View>
     </Screen>
   );
+}
+
+/** Route the active step to its body; chat-2 steps render the placeholder card. */
+function StepBody({ stepKey, blurb, ...props }: StepProps & { stepKey: string; blurb: string }) {
+  switch (stepKey) {
+    case 'container':
+      return <ContainerStep {...props} />;
+    case 'substrate':
+      return <SubstrateStep {...props} />;
+    default:
+      return (
+        <Card style={styles.stepCard}>
+          <Text variant="body">{blurb}</Text>
+          <Text variant="caption" role="textMuted">
+            This step becomes interactive in the next phase chat.
+          </Text>
+        </Card>
+      );
+  }
 }
 
 function NavButton({
@@ -160,6 +257,8 @@ function NavButton({
 const styles = StyleSheet.create({
   scroll: { alignItems: 'center', paddingBottom: Spacing.xxl },
   inner: { width: '100%', maxWidth: MaxContentWidth, alignSelf: 'center', gap: Spacing.lg, paddingTop: Spacing.sm },
+  centerFill: { flex: 1, alignItems: 'center', justifyContent: 'center', gap: Spacing.md },
+  centerText: { textAlign: 'center' },
   back: { alignSelf: 'flex-start' },
   steps: { flexDirection: 'row', justifyContent: 'space-between' },
   stepItem: { alignItems: 'center', gap: Spacing.xs, flex: 1 },

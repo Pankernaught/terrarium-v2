@@ -30,7 +30,7 @@ do NOT read all four docs every time.**
 | 3 | Ship the data (versioned JSON, images, presets) | 1 | ✅ **done** |
 | 4 | Local store (Drizzle/expo-sqlite) + repositories | 1 | ✅ **done** |
 | 5 | Core screens + component library + export/backup | 2 | ✅ **done** — chat 1 (component library + 4 read-mostly screens) + chat 2 (TXT/PDF export + JSON backup/restore + planner shell) |
-| 6 | Planner: 5-step flow + 2-D drag + 2-D preview | 2 | ⬜ |
+| 6 | Planner: 5-step flow + 2-D drag + 2-D preview | 2 | 🔄 **chat 1 done** (placement foundation + draft model + Container & Substrate steps) — chat 2 = Hardscape + Plants drag + Final |
 | 7 | Care reminders + photo timeline | 1 | ⬜ |
 | 8 | Substrate mixer (parallel to 7) | 1 | ⬜ |
 | 9 | Premium polish | 1 | ⬜ |
@@ -511,9 +511,192 @@ harness in v2.0 — note what was checked manually vs. in CI).
   re-deriving the component-library context). No subagents this session.
 - **Tag:** `v2-phase-5-complete`.
 
+### Phase 6 — chat 1, COMPLETE (placement foundation + draft model + Container & Substrate steps) — NOT tagged
+- **Scope this session:** the **non-drag half** of Phase 6 — work items **1 (Container step) + 2 (Substrate
+  step)** of the 5-step brief, plus the two cross-cutting foundations chat 2 builds on: the **pure
+  placement/clamp model** and the **planner draft state machine**. Items 3 (Hardscape), 4 (Plants /
+  drag-to-place), 5 (Final) — everything that shares the **2-D drag interaction** — are **chat 2**. **No
+  tag** (the Phase-6 DoD needs the drag + live Eco meter + end-to-end save, all chat 2).
+- **Why this split:** the chat-1/chat-2 line is **"non-drag form steps now, drag work next."** Container
+  and Substrate are form chrome over already-pure geometry; Hardscape + Plants + Final all render/​write
+  the 2-D front-plane placements and share the Reanimated+GH drag. Pinning the **placement data-model +
+  clamp helper** in chat 1 (the brief's gotcha) is exactly what chat 2's drag consumes — so it ships now,
+  CI-tested, as the foundation rather than entangled with the gesture.
+- **Result:** **220 Vitest tests green** (was 205 + **15 net-new** pure-logic `placement` cases) ·
+  `tsc --noEmit` clean · new/changed files lint-clean (`eslint`) · **`expo export -p ios` bundles clean**
+  (the new `@/logic/placement`, `@/components/planner/*`, and the rewired `planner` route all resolve
+  through Metro). Phases 2–5 suites untouched; `src/logic` still imports nothing from `src/db`/`src/data`
+  (the new `placement.ts` defines its **own** structural `Placement` type, mirroring how `containers.ts`
+  owns `Dimensions` — no `src/data/presets` import).
+- **Foundation 1 — `src/logic/placement.ts` (pure, CI-tested, the drag core for chat 2).** The
+  deterministic `(x, y, scale)` math on the **normalized [0,1] front plane** (y: 0=top→1=bottom — the same
+  shape the Phase-3 presets + the Phase-4 `builds.placements` column use): `clamp01` / `clampScale`
+  (band **0.4–1.4**) / `clampPlacement(p, margin?)` (margin insets the box by a sprite half-width so the
+  *whole* sprite stays on-vessel) / `isInsidePlane` (valid-drop test) / `movePlacement(p, dx, dy)` +
+  `scalePlacement` (the per-frame drag/pinch primitives) / `upsertPlacement` (the commit write-back).
+  **15 tests.** Chat 2's gesture handler calls these on the UI thread — deterministic math → trivially
+  60fps + directly unit-testable (decision 14 / Sequence "the interaction, concretely").
+- **Foundation 2 — the planner draft state machine (`src/components/planner/draft.ts` + `step.ts`).**
+  `PlannerDraft` = the editable fields of a build as plain step-driven state; `emptyDraft()` (new),
+  `draftFromBuild(row)` (the `?build=<id>` edit path), `draftToSaveInput` / `draftToUpdatePatch` (chat-2
+  Final-step save, already wired to the Phase-4 repo's `save`/`update`). `DEFAULT_DRAINAGE_MATERIAL =
+  "pebbles or LECA"` (decision 10 — material is a non-control here, the v2.1 mixer owns it). The **step
+  contract** `StepProps = { draft, plants, update }` is the fixed seam every step body implements — a step
+  is a pure `(draft)→patch` view, owns no persistence.
+- **`src/app/planner.tsx` rewired from shell → real flow.** Holds the draft (immediate `emptyDraft` for
+  new; hydrates from the store via `useRepos().builds.load` for edit, with honest loading / not-found
+  gates); resolves selected `plants` from the **seed bundle** (`loadPlants()`, decision 11 — zero DB
+  round-trip); routes the active step to its body (`StepBody` switch) with Container + Substrate live and
+  Hardscape/Plants/Final still the placeholder card. The stepper dots + persistent 2-D preview frame +
+  Back/Next chrome from the Phase-5 shell are **kept** (the live preview sprites + drag are chat 2).
+- **1 · Container step (`src/components/planner/container-step.tsx`).** Port of v1 `container_builder.py`:
+  shape (rectangular | cylindrical) + opening (sealed | lidded | open) as `Chip` segmented rows;
+  shape-dependent cm dimension `TextInput`s (string-mirrored so a partial entry never crashes the parse);
+  **live volume** off the pure `computeVolumeL` (try/catch → `—` until valid); a **"Size from plants"**
+  button running the pure `recommendContainerDimensions(plants)` (rationale lines shown), gated + hinted
+  when no plants are selected (lights up on edit of a planted build — Plants *selection* is chat 2). Any
+  hand-edit drops `containerSlug` (now custom). Writes geometry to the draft in handlers/effect, never in
+  render.
+- **2 · Substrate step (`src/components/planner/substrate-step.tsx`).** Decisions 10 & 12: two layer
+  depths only (mixer is v2.1). Seeds `substrateDepth`/`drainageDepth` from the pure
+  `defaultLayerDepths(plants, volumeL)` in a **guarded `useEffect`** (only when a value is null + volume
+  known → never overwrites an owner override, never loops); −/＋ steppers (0.5 cm, clamped [0,20]/[0,10]);
+  a `StatStrip` recap (Drainage / Substrate / Total); drainage **material read-only** as the decision-10
+  default with a v2.1-mixer note. When no container volume yet → a gentle "set the container first" hint.
+- **Method:** the two **foundations** (placement math + draft model + the planner rewire) were owned in the
+  orchestrating chat because chat 2's drag + both step bodies depend on the fixed `StepProps` seam; the
+  two **self-contained step bodies** (Container, Substrate) were each delegated to a general-purpose
+  subagent in **parallel** (separate files, no shared writes — the planner wiring stayed in the main chat),
+  then verified via typecheck + lint + the bundle export. Matches the brief's subagent plan ("Container
+  builder and Substrate steps are subagent candidates once the placement model + clamp helper are pinned").
+- **Honest CI-vs-device split (per the brief):** typecheck + the full 220-test suite + new-file lint + the
+  iOS bundle export all pass in CI. **The on-device/Expo *visual* render is still NOT done** — `xcrun
+  simctl` lists no available iOS simulator in this environment, and there's no RN component-test harness in
+  v2.0. The pure placement math is fully CI-verified; the Container/Substrate **screen rendering** (and the
+  `TextInput`/stepper feel) remain a device task — and the **drag fps gate** is by definition chat 2 +
+  the owner's iPhone. (New builds seed 0 plants, so the Container "Size from plants" path + the Substrate
+  seed both exercise the `plants:[]` branch live until plants are selected in chat 2 — or immediately when
+  editing a preset-instantiated build.)
+- **▶ RESUME HERE (chat 2):** build **Hardscape + Plants (drag-to-place + live Eco meter) + Final**, all on
+  the locked `@/logic/placement` core + the `StepProps` seam + the draft model. See the "Phase 6 (chat 2)"
+  brief below. Tag `v2-phase-6-complete` only at the **full** Phase-6 DoD (end-to-end create+edit, placements
+  persist + re-render identically, 60fps drag on the owner's iPhone, live Eco-balance).
+
 ---
 
-## ▶ NEXT — Phase 6 distilled brief: the planner — 5-step flow + 2-D drag-to-place + 2-D preview
+## ▶ NEXT — Phase 6 (chat 2) distilled brief: Hardscape + Plants drag-to-place + Final
+
+**Goal.** The **signature half** of the planner: the **drag-to-place** interaction on the 2-D front plane
+(decision 5 / Option A) across the **Hardscape**, **Plants**, and **Final** steps, with the **live
+Eco-balance meter** and end-to-end **create + edit + save**. Chat 1 shipped the non-drag foundation —
+**extend it, don't rebuild it.** This is the **highest-risk** slice (the interaction is net-new) and it
+**closes Phase 6 → tag `v2-phase-6-complete`**.
+
+**What already exists (do NOT rebuild).**
+- **`src/logic/placement.ts`** — the pure drag core: `clampPlacement(p, margin?)`, `movePlacement(p,dx,dy)`,
+  `scalePlacement`, `isInsidePlane`, `upsertPlacement`, the **0.4–1.4** scale band, normalized **[0,1]**
+  front plane (y 0=top→1=bottom). **15 tests.** Call these on the UI thread; add more pure helpers here if
+  the gesture needs them, and unit-test them (this is the CI-verifiable slice of chat 2).
+- **The draft + step seam** — `PlannerDraft` / `StepProps = { draft, plants, update }` /
+  `draftToSaveInput` + `draftToUpdatePatch` (already wired to the Phase-4 build repo). `src/app/planner.tsx`
+  hosts the draft, the edit-hydrate, the `plants` resolve (`loadPlants()`), the stepper dots, the
+  **persistent 2-D preview frame**, and Back/Next. The `StepBody` switch already routes `container` +
+  `substrate`; just light up `hardscape` / `plants` / `final`.
+- **Eco scoring** — `scoreBuild` + `summarizeVerdict` + `ecoColor` (the **OKLCH sweep**, §3.5) + `EcoMeter`
+  / `VerdictBand` from Phase 5. Reuse them for the live meter; don't re-derive scoring.
+- **The build repo** — `useRepos().builds.save` / `.update` accept `placements` + the container snapshot +
+  depths already (Phase 4). Final's save is `draftToSaveInput`→`save` (new) or `draftToUpdatePatch`→`update`
+  (edit), then route to `/build/<id>`.
+
+**Read only these:** `Terrarium_V2_Premium_Design.md` → **§4.4** (planner — drag, the budget) + **§3.1**
+(motion: `dragReturn`, `delight`) + **§3.5** (OKLCH Eco meter sweep) + **§3.6** (haptic map); the Sequence
+**"Phase 6"** "the interaction, concretely (Option A)" paragraph; `Terrarium_V2_Grill_Decisions.md` → **5**
+(no 3-D in v2.0; placements pure data; no in-3-D drag), **10** (hardscape line is **derived** from whether
+anything is placed — not a toggle; build guide = static Final-step projection), **14** (60fps via
+transform/opacity on the UI thread — the measured gate is the owner's iPhone), **15** (primary/secondary in
+live recommendations; **primary conflicts only** on the meter, full matrix Tier-3). v1 source-of-record:
+`../terrarium-app/pages/planner.py` (the real 2-step flow now expanded), `engine/recommend.py` (already
+pure in `src/logic/recommend.ts` — DB-free, candidates passed in), and `pages/build_guide.py` (**deleted**
+— the guide is a static read-only projection on Final + the export).
+
+**Work (chat 2).**
+3. **Hardscape step** — place/scale supplied assets on the **2-D front view**, clamped to the container via
+   `clampPlacement`. The build-guide hardscape line is **derived** from whether anything is placed
+   (decision 10), not a manual toggle. Writes hardscape entries into `draft.placements` (same `{slug,x,y,
+   scale}` shape — hardscape vs plant distinguished by slug namespace or a kept set). Drag is the shared
+   interaction below; hardscape is the lower-stakes place to land it first.
+4. **Plants step (the signature interaction).** Icon-first selector → writes `draft.plantSlugs` +
+   instantiates a `placement` per added plant; tiered compatibility cards off `recommend()` /
+   `checkGroup`; **drag-to-place on the UI thread** (Reanimated + Gesture Handler), plant glued to the
+   finger, `motion.dragReturn` on an invalid drop (`!isInsidePlane`), `impactAsync(Light)` snap on commit
+   (`upsertPlacement`). **Live Eco-balance meter** updates as plants/placements change (deep-green→amber→red
+   via `ecoColor`/§3.5, `motion.delight` fill); a survival-critical conflict fires
+   `notificationAsync(Warning)` + a red pulse. **Primary conflicts only** on the meter; full matrix behind
+   a Tier-3 expand (reuse the build-detail matrix pattern). The **persistent preview** now renders the
+   plant/hardscape **sprites** at their `(x,y,scale)` — this is the first time the preview is live.
+5. **Final step** — 2-D overview + Eco-balance + plant list + **name & save** → `save`/`update` via the
+   draft helpers → route to Build detail. The **build guide renders here as a static read-only projection**
+   of the saved build (and feeds the existing `expo-print` export) — decision 10.
+
+**Gotchas.** **Placements are pure data** — keep them deterministic `(x,y,scale)` on the front plane so the
+v2.1 3-D display drops in clean; **resist any in-3-D drag** (Option B, later). The faux-3-D shell math
+(`containerProfile`, already pure) **renders nothing in v2.0**. Drag = **transform/opacity-only on the UI
+thread** → 60fps even low-end (decision 14); the *measured* gate is the owner's iPhone (Android fps stays
+an unverified design budget). `rootDepthCm` is reference-only (decision 12). **Don't rebuild** the
+placement core, the draft model, the build repo, or the scoring/meter — all exist. The preview frame +
+stepper chrome exist — fill them, don't replace them. CI tests the **pure** placement/clamp/recommend math;
+the **drag fps + the live sprite render** are device-verified — be honest about the split (no simulator in
+this env; the fps gate is the owner's phone).
+
+**Subagent plan.** The **drag-to-place gesture** (Reanimated + GH, the net-new high-risk piece) stays in
+the orchestrating chat. The **Hardscape step** (place/scale on the shared drag primitive) and the **Final
+step** (static overview + save + guide projection) are reasonable subagent candidates once the **sprite
+renderer + the drag hook** are pinned in the main chat. Add any new pure placement helpers + their tests
+in the main chat.
+
+**DoD (Phase 6 exit — tag `v2-phase-6-complete` here):** create + edit a build end-to-end through all five
+steps; placements **persist and re-render identically** on the dashboard and the planner's 2-D front view;
+the drag holds **60fps** on the owner's iPhone (transform/opacity on the UI thread); Eco-balance updates
+**live**; the Final build-guide projection renders + exports. `npm run typecheck` clean; full Vitest suite
+green (Phases 2–5 + chat-1 untouched).
+
+**Verification:** `npm run typecheck` && `npm run test:run` (placement/clamp/recommend math) + `expo
+export -p ios` clean; **plus a device render + 60fps drag pass on the owner's iPhone** (note the split for
+anything not device-verified). Then **commit + `git tag -a v2-phase-6-complete`** + update the phase table
++ append a final Phase-6 session-log entry + write the **Phase 7** distilled brief + kickoff.
+
+### Kickoff prompt (paste into a NEW chat)
+
+> You're continuing the Terrarium V2 RN+Expo migration in `terrarium-v2`. You are doing **Phase 6 — chat 2**
+> (Hardscape + Plants drag-to-place + Final — the signature half that closes Phase 6 + tags it). Read
+> `MIGRATION.md` (the phase table + the **"▶ NEXT — Phase 6 (chat 2)"** brief + the **Phase-6 chat-1
+> COMPLETE** session-log entry) and ONLY: Premium Design **§4.4 + §3.1 + §3.5 + §3.6**, the Sequence
+> "Phase 6" "the interaction, concretely (Option A)" paragraph, Decisions **5 / 10 / 14 / 15**. Do NOT read
+> all four docs. **Chat 1 is DONE (committed, NOT tagged):** the pure drag core `@/logic/placement`
+> (`clampPlacement`/`movePlacement`/`scalePlacement`/`isInsidePlane`/`upsertPlacement`, 0.4–1.4 band,
+> normalized [0,1] front plane), the planner **draft model + `StepProps` seam** (`@/components/planner/{draft,
+> step}.ts`), the rewired `src/app/planner.tsx` (holds the draft, edit-hydrate, `loadPlants()` resolve,
+> stepper + persistent 2-D preview frame + Back/Next, `StepBody` switch), and the **Container + Substrate**
+> step bodies (`@/components/planner/{container,substrate}-step.tsx`); 220 tests green, tsc/lint/iOS-bundle
+> clean. **Your job: make the drag real + close the loop** — Hardscape (place/scale on the 2-D front view,
+> clamped; guide line *derived*), Plants (icon-first selector → `draft.plantSlugs` + a placement per plant;
+> tiered compatibility off `recommend()`/`checkGroup`; **drag-to-place on the UI thread** Reanimated+GH,
+> `motion.dragReturn` on `!isInsidePlane`, `impactAsync(Light)` snap, `upsertPlacement` commit; **live
+> Eco-balance** via `scoreBuild`+`ecoColor`+`EcoMeter`, `notificationAsync(Warning)`+red pulse on
+> survival-critical; primary conflicts only, full matrix Tier-3; the **preview now renders sprites**), and
+> Final (overview + name & save via `draftToSaveInput`/`draftToUpdatePatch`→`useRepos().builds` → route to
+> `/build/<id>`; the build guide as a static read-only projection, decision 10). **Extend the existing
+> shell + placement core + build repo — do NOT rebuild them; keep placements pure data, no 3-D in v2.0
+> (decision 5).** Keep the **drag gesture** in the main chat; Hardscape + Final are subagent candidates once
+> the sprite renderer + drag hook are pinned. CI tests the pure math; the **drag fps + live render** are
+> device-verified on the owner's iPhone — be honest about the split (no simulator here). When the **full**
+> Phase-6 DoD passes (`npm run typecheck` + `npm run test:run` + `expo export -p ios`; device drag pass),
+> **commit + tag `v2-phase-6-complete`**, update the phase table + session log, and write the **Phase 7**
+> brief + kickoff. Then stop.
+
+---
+
+## Phase 6 (full) distilled brief (kept for history): the planner — 5-step flow + 2-D drag-to-place + 2-D preview
 
 **Goal.** The centerpiece overhaul (Sequence "Phase 6", Option A): replace v1's 1,068-line **2-step**
 `pages/planner.py` with the **5-step** flow (Container · Substrate · Hardscape · Plants · Final) and add
