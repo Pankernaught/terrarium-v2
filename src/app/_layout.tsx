@@ -6,6 +6,7 @@ import { useColorScheme } from 'react-native';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 
 import { Colors } from '@/constants/theme';
+import { DbProvider } from '@/db/provider';
 
 /**
  * Root layout for the v2.0 skeleton.
@@ -26,13 +27,14 @@ export default function RootLayout() {
   return (
     <GestureHandlerRootView style={{ flex: 1 }}>
       <ThemeProvider value={isDark ? DarkTheme : DefaultTheme}>
-        <Tabs
-          screenOptions={{
-            headerShown: false,
-            tabBarActiveTintColor: c.text,
-            tabBarInactiveTintColor: c.textSecondary,
-            tabBarStyle: { backgroundColor: c.background },
-          }}>
+        <DbProvider>
+          <Tabs
+            screenOptions={{
+              headerShown: false,
+              tabBarActiveTintColor: c.primary,
+              tabBarInactiveTintColor: c.textMuted,
+              tabBarStyle: { backgroundColor: c.surface, borderTopColor: c.border },
+            }}>
           <Tabs.Screen
             name="index"
             options={{
@@ -61,7 +63,11 @@ export default function RootLayout() {
               tabBarIcon: ({ color, size }) => <Ionicons name="settings-outline" color={color} size={size} />,
             }}
           />
-        </Tabs>
+          {/* Non-tab routes: navigable, but hidden from the bar. */}
+          <Tabs.Screen name="build/[id]" options={{ href: null }} />
+          <Tabs.Screen name="plant/[slug]" options={{ href: null }} />
+          </Tabs>
+        </DbProvider>
       </ThemeProvider>
     </GestureHandlerRootView>
   );
