@@ -1,10 +1,11 @@
 /**
  * Tests for `src/logic/containers.ts` — geometry, construction, layer depths,
- * cross-section profile, and recommendations (port of v1's
- * `tests/test_containers.py`).
+ * cross-section profile, recommendations, and build-container resolution (port of
+ * v1's `tests/test_containers.py`).
  *
- * The 3 v1 `test_resolve_*` cases are intentionally **omitted**: they exercise
- * `resolve_build_container`, which is DB-coupled and deferred to a later phase.
+ * The 3 v1 `test_resolve_*` cases land here in Phase 4 (deferred from Phase 2 with
+ * `resolveBuildContainer`). They pass the candidate containers explicitly — the v2
+ * function is pure, so the v1 "from preset slug" case needs no DB.
  */
 import { describe, expect, it } from 'vitest';
 
@@ -16,6 +17,7 @@ import {
   makeContainer,
   parseDimensionsStr,
   recommendContainerDimensions,
+  resolveBuildContainer,
 } from '../containers';
 import { makePlant } from './factories';
 
@@ -169,5 +171,33 @@ describe('recommendContainerDimensions', () => {
 
   it('rejects an empty plant list', () => {
     expect(() => recommendContainerDimensions([])).toThrow(/no plants/);
+  });
+});
+
+// --- resolveBuildContainer (deferred from Phase 2) -------------------------
+
+describe('resolveBuildContainer', () => {
+  it('resolves from the geometry snapshot, no candidates needed', () => {
+    const c = resolveBuildContainer({
+      containerShape: 'rectangular',
+      containerDimensions: { length: 30, width: 20, height: 25 },
+      containerOpening: 'lidded',
+      containerSlug: null,
+    });
+    expect(c).not.toBeNull();
+    expect(c?.volumeL).toBe(15.0);
+    expect(c?.opening).toBe('lidded');
+  });
+
+  it('resolves from a preset slug against the supplied candidates', () => {
+    const demoJar = makeContainer('cylindrical', { diameter: 10, height: 12 }, 'sealed', 'demo-jar', 'Demo Jar');
+    const c = resolveBuildContainer({ containerSlug: 'demo-jar' }, [demoJar]);
+    expect(c).not.toBeNull();
+    expect(c?.name).toBe('Demo Jar');
+    expect(c?.shape).toBe('cylindrical');
+  });
+
+  it('returns null when neither a snapshot nor a known slug is present', () => {
+    expect(resolveBuildContainer({ containerSlug: null })).toBeNull();
   });
 });

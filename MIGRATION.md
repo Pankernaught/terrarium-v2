@@ -28,8 +28,8 @@ do NOT read all four docs every time.**
 | 1 | Lock decisions · freeze v1 · Expo skeleton | 1 | ✅ **done** |
 | 2 | Port the pure engine, test-first (+ primary/secondary) | 1 | ✅ **done** |
 | 3 | Ship the data (versioned JSON, images, presets) | 1 | ✅ **done** |
-| 4 | Local store (Drizzle/expo-sqlite) + repositories | 1 | ⬜ **next** |
-| 5 | Core screens + component library + export/backup | 2 | ⬜ |
+| 4 | Local store (Drizzle/expo-sqlite) + repositories | 1 | ✅ **done** |
+| 5 | Core screens + component library + export/backup | 2 | ⬜ **next** |
 | 6 | Planner: 5-step flow + 2-D drag + 2-D preview | 2 | ⬜ |
 | 7 | Care reminders + photo timeline | 1 | ⬜ |
 | 8 | Substrate mixer (parallel to 7) | 1 | ⬜ |
@@ -50,94 +50,114 @@ cross-cutting design (the scoring rule, the DB schema) in the orchestrating chat
 
 ---
 
-## ▶ NEXT — Phase 4 distilled brief: local store + repositories
+## ▶ NEXT — Phase 5 distilled brief: core screens + component library + export/backup
 
-**Goal.** Stand up a local DB (**Drizzle + expo-sqlite**) as the single source of truth, behind a
-**thin typed repository layer** so the UI never awaits a network call. The Phase-3 seed
-(`loadSeed()`) loads into it on first launch. Port v1's build/photo CRUD + the deferred
-container-resolve, and land the **forward-looking schema** (placements, care-marks, substrate/drainage
-depths) now — before any screen reads it — so Phases 5–7 never touch the DB shape.
+**Goal.** The first **read-mostly UI**, built on the proven engine (Phase 2) + store (Phase 4). **Lock
+the component library *first*,** then the dashboard, build-detail, and Browse/plant screens; then
+**export + whole-app JSON backup/restore** (the decision-17 envelope, importing through the
+**Phase-4 migrate ladder** already shipped in `src/db/migrate.ts`). Planner is **shell-only** this
+phase. Budgeted for **2 chats** (see kickoff) — do not rush both into one.
 
-**Read only these:** `Rebuild docs/Terrarium_V2_Migration_Sequence.md` → "Phase 4 — Local store +
-repositories"; `Terrarium_V2_Grill_Decisions.md` → decisions **9** (builds.py is pure CRUD → its 12
-tests port here, not Phase 2), **10** (`substrate_depth?`/`drainage_depth?` persisted on the build;
-guide is a static projection), **11** (only **three** persisted entities — builds, build-photos,
-care-marks; `plant_photos` is **struck**), **17** (**UUID** build PKs + a `migrate vN→vN+1` ladder for
-the Phase-5 backup round-trip). v1 source-of-record: `../terrarium-app/engine/builds.py`,
-`engine/photos.py`, `engine/models/builds.py`, `tests/test_builds.py` (12 CRUD), `tests/conftest.py`
-(isolated-DB fixture), and the **3 `resolve_*` cases in `tests/test_containers.py`** +
-`engine/containers.py::resolve_build_container` (both **deferred from Phase 2 to here**).
+**Read only these:** `Rebuild docs/Terrarium_V2_Migration_Sequence.md` → "Phase 5 — Core screens on
+the trusted foundation"; `Terrarium_V2_Premium_Design.md` → **§7.2 component library** + the screen
+sections (dashboard / build-detail / browse) + safe-area/spacing rules; `Terrarium_V2_Grill_Decisions.md`
+→ decisions **7** (manual JSON backup/export — the model), **8** (toxicity **display-only**, never a
+filter, **blank ≠ safe**), **3** (DB is curator-owned; "Suggest a plant" is **out-of-band**, no
+in-app community/backend), **17** (backup envelope + import = migrate→validate→one-transaction;
+refuse-newer; restore = replace — the **ladder + `STORE_SCHEMA_VERSION` + `BackupEnvelope` type
+already exist** from Phase 4). v1 source-of-record: `../terrarium-app/engine/export.py` (TXT is a pure
+string fn → port as-is; PDF used `reportlab` → becomes an **`expo-print` HTML→PDF** template +
+`expo-sharing`), `pages/home.py` (the `handle_builds_and_actions` mega-callback + the
+`except Exception: pass` grey-"⚠" at ~line 189 — **surface the diagnostic, don't swallow it**),
+`components/build_card.py` (the **7-button card** → collapses to hero + name + Eco chip + a single
+**⋮ overflow** + tap-to-open; "Post to Forum" is gone), `pages/build_detail.py` (728-line tabbed →
+glance → verdict band → Tier-2 expanders → Tier-3 matrix behind a gesture), `pages/plant_profile.py`
++ the browse page, and `pages/planner.py` (**shell only** — stepper scaffold + persistent preview
+pane, no interactions).
 
 **Work.**
-1. **Drizzle schema — three tables only** (decision 11): `builds`, `build_photos`, `care_marks`
-   (care-marks net-new, for Phase 7). **No `plant_photos`** (curator imagery is the static seed
-   `image` path from Phase 3). `builds` uses a **UUID PK** (decision 17), keeps the **container
-   snapshot** columns (`container_shape/dimensions/volume/opening`), and gains **`placements`**
-   (plant + hardscape `{x, y, scale}` — match the Phase-3 `presetSchema` placement shape in
-   `src/data/presets.ts` so a preset can instantiate into a build) plus **`substrateDepth?` /
-   `drainageDepth?`** (decision 10). `care_marks` key off the build UUID; plant refs stay **slugs**.
-2. **Migrate ladder scaffold** (decision 17): a `migrate vN→vN+1` chain, schemaVersion 1 = no-op,
-   present *so Phase 5's backup/restore + v2.1 can migrate* (reused by import in Phase 5).
-3. **Repository layer** — port `engine/builds.py` (CRUD) + `engine/photos.py` as repo functions.
-   **Preserve the photo invariants exactly:** first photo **auto-becomes primary**; on delete the
-   primary **reassigns to the earliest remaining**; the dashboard thumbnail is the **explicit
-   `primaryPhotoId`**, not newest-by-date. Repositories **call the engine, never the reverse** —
-   keep `src/logic` importing nothing from `src/db`/`src/data` (grep-verify, as in Phases 2–3).
-4. **Wire the Phase-3 seed**: `loadSeed()` → idempotent first-launch load (upsert-by-slug, mirroring
-   v1 `db/loader.py`) of the 67 plants / 16 containers / presets into the store.
-5. **Port `resolve_build_container`** (deferred from Phase 2) + its **3 `resolve_*` tests** — now that
-   the build + container snapshot exist, it mostly collapses into the pure container constructor.
-6. Confirm **social is fully gone** (no `LOCAL_AUTHOR`, no `engine/social.py` analog).
+1. **Component library FIRST** (Premium §7.2): stat strip, section label, glance header, **verdict band**
+   (Eco-balance meter + one plain-English sentence), chip/pill, bottom sheet, reusable meter. Pin the
+   **4 / 8 / 16 / 24 / 32** spacing scale. Respect **safe-area insets from screen one** (the instant
+   "web-wrapper" tell). Every screen pulls from these — build them before the screens.
+2. **Dashboard (Terrariums).** Responsive **centered** grid; card = hero photo + name + Eco-balance
+   chip + single **⋮ overflow** (Duplicate / Export / Delete) + tap-to-open. Wire load/rename/delete/
+   duplicate to the **Phase-4 build repo** (plain store calls — no mega-callback). A `checkGroup`
+   throw renders a **real diagnostic**, never a silent grey badge.
+3. **Build detail (read-only by default).** Glance header → verdict band → Tier-2 (container facts,
+   plant chips) → Tier-3 pairwise matrix behind a deliberate gesture. "Edit" re-opens the planner.
+4. **Browse + plant view.** Search + filter (type / biome / light / difficulty). **Toxicity is
+   display-only** (decision 8): a card indicator when non-empty (never color-alone) + a Tier-3 line;
+   **never render absence as "Non-toxic ✓."** "Suggest a plant" is out-of-band (mailto / web form).
+5. **Export & backup.** Per-build **TXT** = pure string fn (port `export.py` as-is, unit-testable);
+   **PDF** = `expo-print` HTML→PDF + `expo-sharing`. **Whole-app JSON backup/restore** (decisions 7/17)
+   via `expo-sharing` + `expo-document-picker`: export the **`{ schemaVersion, appVersion, exportedAt,
+   data }`** envelope (builds + placements + care-marks; **photos excluded** — binary, documented gap);
+   import = **`migratePayload()` (Phase-4 ladder) → zod-validate → insert in one transaction**, **refuse
+   a newer-than-current file** with a clear message, **restore = replace** (wipe + load, with a confirm),
+   any validation failure rejects the **whole file** (no half-import). The importer **degrades
+   gracefully** on a missing photo file (placeholder hero, never crash). UUID build IDs (Phase 4) keep
+   care-marks bound across the round-trip.
+6. **Planner shell only** — stepper scaffold + persistent preview pane, **no interactions** (Phase 6).
 
 **Gotchas.**
-- **expo-sqlite is native — it will NOT load in the pure-node Vitest runner** (the Phase-2/3 config is
-  `environment: 'node'`, no RN transform). Run the 12 repo unit tests against **`node:sqlite`** (the
-  built-in DB Phase 3 already used — flag-free in Node 22) via a thin driver adapter, mirroring
-  `conftest.py`'s isolated-DB fixture; the on-device path uses expo-sqlite. Reconcile the Drizzle
-  driver (expo-sqlite on device vs. a node driver for tests) behind the repository interface.
-- **UUID PKs, not autoincrement** (decision 17): care-marks reference builds and restore = replace
-  (Phase 5), so a renumbering reinsert would dangle every care-mark.
-- `placements` / `care_marks` / `substrateDepth` exist now though **no screen reads them until Phases
-  6–7** — deliberate, so those phases never touch the schema.
-- Keep the engine **pure** — it's the locked oracle; the repos are a new layer on top.
+- **Build the component library *before* the screens**, not alongside — the Sequence is explicit.
+- **`reportlab` does not exist in RN** → PDF is `expo-print` HTML. The TXT path stays a pure function.
+- **Photos are excluded from the backup** (binary). Restore must placeholder a missing photo, not crash.
+- **Don't re-implement persistence or versioning** — the repos (`createBuildRepository` /
+  `createPhotoRepository`), the seed (`seedStore`), and the migrate ladder (`migratePayload`,
+  `STORE_SCHEMA_VERSION`, `BackupEnvelope`) all exist in `src/db`. Construct the device DB via
+  `createExpoDb()` (`src/db/client.expo.ts`) at the app edge and hand it to the repos.
+- **Surface scoring failures** as diagnostics (kill the v1 `except: pass` grey badge).
+- **CI tests pure logic only** (vitest is `environment: 'node'`, no RN transform). Screen *rendering*
+  is verified on device/Expo, not in CI — be honest about that split in the session log.
 
-**Subagent plan.** Keep the **Drizzle schema + migrate ladder + seed-wiring** in the orchestrating
-chat (cross-cutting). Delegate self-contained chunks: (1) the **builds repository + the 12
-`test_builds.py` CRUD cases** against `node:sqlite`; (2) the **photos repository + its primary-photo
-invariants**; (3) `resolve_build_container` + its **3 `resolve_*` tests** (small — can ride with the
-builds chunk). Verify each subagent's output line-for-line against the v1 oracle (`../terrarium-app`).
+**Subagent plan (2-chat phase).** **Chat 1** = component library + dashboard + build-detail +
+Browse/plant. **Chat 2** = export/backup + planner shell. Keep the **component-library tokens/spacing**
+and the **backup envelope + import pipeline** in the orchestrating chat (cross-cutting); delegate
+self-contained *screens* (one screen + its pieces) to subagents. The export **TXT string fn** and the
+**backup round-trip** (export→migrate→validate→insert) are pure → unit-test them in Vitest.
 
-**DoD (Phase 4 exit):** all **12** repository unit tests (translated from `test_builds.py`) green
-against a temp DB (isolated-DB fixture, à la `conftest.py`); a build **round-trips save → reload with
-placements intact**; the **3 `resolve_*`** container tests green; the photo invariants (first =
-primary; delete reassigns to earliest) covered; first-launch **seed loads 67 / 16 + presets** into the
-store; `npx tsc --noEmit` clean; **full Vitest suite still green (Phases 2–3 untouched)**.
+**DoD (Phase 5 exit):** dashboard, build-detail, and Browse **render real seeded data**; per-build
+export produces **TXT + PDF**; **whole-app backup round-trips** (export → wipe → restore → identical,
+care-marks still bound to their builds, a missing photo degrading to a placeholder not a crash); a
+**newer-version** backup and a **corrupt** file are each **rejected cleanly** (no half-import); Browse
+shows toxicity as a **display-only** indicator (never a "safe" claim); tap-to-open + ⋮ overflow work; a
+deliberately broken build shows a **diagnostic, not a grey badge**. `npm run typecheck` clean; full
+Vitest suite green (Phase 2–4 untouched).
 
-**Verification:** `npm run typecheck` && `npm run test:run`.
+**Verification:** `npm run typecheck` && `npm run test:run` (logic: export string fn + backup
+round-trip + migrate); **plus an on-device/Expo render pass** for the screens (no RN component-test
+harness in v2.0 — note what was checked manually vs. in CI).
 
 ### Kickoff prompt (paste into a NEW chat)
 
 > You're continuing the Terrarium V2 RN+Expo migration in this repo (`terrarium-v2`). You are doing
-> **Phase 4 — Local store + repositories**. Read `MIGRATION.md` (the phase table + the "▶ NEXT —
-> Phase 4" brief + the Phase-3 session-log entry) and ONLY these doc sections: Sequence "Phase 4 —
-> Local store + repositories", Decisions 9 / 10 / 11 / 17. Do NOT read all four docs. v1
-> source-of-record: `../terrarium-app/engine/{builds,photos}.py`, `engine/models/builds.py`,
-> `tests/test_builds.py` (12 CRUD) + `tests/conftest.py`, and the 3 `resolve_*` cases in
-> `tests/test_containers.py` + `engine/containers.py::resolve_build_container` (deferred from Phase 2).
-> Phase 3 is committed + tagged `v2-phase-3-complete`; the validated seed (`loadSeed()` /
-> `loadPlants()` / `loadContainers()` / `loadPresets()`) is live in `src/data` (67 plants / 16
-> containers / 4 presets), the zod schemas + pure engine are in `src/{types,logic}`, and **112 tests
-> are green** — do NOT break them. Build the Drizzle/expo-sqlite schema for the **three** persisted
-> entities (builds w/ UUID PK + `placements` + `substrateDepth?`/`drainageDepth?`, build-photos,
-> care-marks — **no plant_photos**), a `migrate vN→vN+1` ladder scaffold (decision 17), the thin
-> repository layer (port `builds.py`/`photos.py`, preserve the primary-photo invariants), wire
-> `loadSeed()` to seed on first launch, and port `resolve_build_container` + its 3 tests. **Run the 12
-> repo tests against `node:sqlite`** (expo-sqlite won't load in the node Vitest runner). Keep the
-> engine pure (repos call the engine, never the reverse; grep-verify `src/logic` imports nothing from
-> `src/db`/`src/data`). Use subagents for the builds-repo + photos-repo chunks; keep the schema +
-> migrate ladder + seed-wiring in the main chat. When the DoD passes: run verification, `git add -A &&
-> git commit`, `git tag -a v2-phase-4-complete`, flip the phase table (4 → ✅ done), append a Phase-4
-> session-log entry, then write the Phase 5 distilled brief + this same kickoff prompt. Then stop.
+> **Phase 5 — Core screens + component library + export/backup** (a **2-chat** phase — this is
+> **chat 1**). Read `MIGRATION.md` (the phase table + the "▶ NEXT — Phase 5" brief + the Phase-4
+> session-log entry) and ONLY these doc sections: Sequence "Phase 5 — Core screens on the trusted
+> foundation", Premium Design **§7.2** + the dashboard/build-detail/browse + safe-area/spacing
+> sections, Decisions **7 / 8 / 3 / 17**. Do NOT read all four docs. v1 source-of-record:
+> `../terrarium-app/engine/export.py`, `pages/home.py`, `components/build_card.py`,
+> `pages/build_detail.py`, `pages/plant_profile.py` + browse, `pages/planner.py` (shell only). Phase 4
+> is committed + tagged `v2-phase-4-complete`: the local store is live in `src/db` — `createExpoDb()`
+> (device) / `createNodeDb()` (tests) behind `TerrariumDb`, `createBuildRepository` /
+> `createPhotoRepository` (faithful ports w/ UUID PKs + the primary-photo invariants), `seedStore()`
+> (idempotent 67/16+presets), and the decision-17 migrate ladder (`migratePayload`,
+> `STORE_SCHEMA_VERSION = 1`, `BackupEnvelope`). The pure engine + zod schemas are in `src/{logic,
+> types}`, the seed bundle in `src/data`, and **161 tests are green** — do NOT break them, and keep
+> `src/logic` importing nothing from `src/db`/`src/data`. **Chat 1:** lock the component library FIRST
+> (§7.2 + the 4/8/16/24/32 spacing scale + safe-area insets), then build the read-mostly screens —
+> dashboard (centered grid; card = hero + name + Eco chip + single ⋮ overflow; wire to the build repo;
+> surface scoring failures as a diagnostic, no silent grey badge), build-detail (glance → verdict band
+> → Tier-2 → Tier-3 matrix), Browse + plant view (filters; toxicity display-only, **blank ≠ safe**).
+> Construct the device DB via `createExpoDb()` and hand it to the repos — do NOT re-implement
+> persistence. Use subagents for self-contained screens; keep the component-library tokens in the main
+> chat. **Defer export/backup + planner-shell to chat 2.** When chat 1's slice is solid (screens render
+> real seeded data; typecheck clean; suite green), DON'T tag — instead append a Phase-5 chat-1
+> progress note to the session log and write a **"Phase 5 (chat 2)" distilled brief + kickoff**
+> (export/backup + planner shell) at the bottom. Tag `v2-phase-5-complete` only when the **full** Phase-5
+> DoD passes. Then stop.
 
 ---
 
@@ -241,3 +261,57 @@ store; `npx tsc --noEmit` clean; **full Vitest suite still green (Phases 2–3 u
   judgment) + presets + the seed test; **one general-purpose subagent** scaffolded the image layer
   (placeholders + manifest + image CI test), verified independently.
 - **Tag:** `v2-phase-3-complete`.
+
+### Phase 4 — local store + repositories (done)
+- **Result:** the local store is live in `src/db`. **161 Vitest tests green** (16 files) — the **112
+  Phase-2/3 tests untouched** + **49 net-new**; `tsc --noEmit` clean. Engine purity re-verified
+  (`src/logic` imports nothing from `src/db`/`src/data`, grep-clean) and **social is fully gone** (no
+  `LOCAL_AUTHOR`, no `engine/social.py` analog, `plant_photos` struck).
+- **Schema (`src/db/schema.ts`) — two groups, one DB.** (1) **User data, the three persisted entities
+  (decision 11):** `builds`, `build_photos`, `care_marks`. (2) **Seed reference tables (regenerable
+  from the bundle, never in a backup):** `plants` / `containers` / `presets` as `{ slug, data }` JSON.
+  `builds` carries the **container snapshot** + new **`placements`** (same `{slug,x,y,scale}` shape as
+  the Phase-3 preset `Placement`, so a preset instantiates straight into a build) + **`substrateDepth?`
+  / `drainageDepth?`** (decision 10). **Every row uses a generated UUID PK** (`src/db/ids.ts::newId`),
+  not just builds (decision 17) — uniform + restore-safe + sidesteps autoincrement/`lastInsertRowid`
+  through the proxy. `SCHEMA_DDL` is co-located with the Drizzle tables (applied via `exec` on both
+  drivers). `care_marks` (id/buildId/plantSlug?/kind/note?/dueAt?/completedAt?/createdAt) lands now but
+  has **no repo yet — Phase 7 owns it** (shape may still be refined there).
+- **Driver reconciliation (the key design move).** Schema defined once via `drizzle-orm/sqlite-core`.
+  **Device** = `drizzle-orm/expo-sqlite` (`client.expo.ts`); **tests** = Node's built-in `node:sqlite`
+  wrapped behind `drizzle-orm/sqlite-proxy` (`client.node.ts`) — because **expo-sqlite is native and
+  won't load in the pure-node Vitest runner**. Both return a permissive **`TerrariumDb`**; repositories
+  take it by DI and **import no concrete driver** (grep-verified). `makeTestDb()` is the per-test
+  isolated-DB fixture (à la `conftest.py`). A `client.node.test.ts` guards the proxy adapter (JSON +
+  `timestamp_ms`→`Date` + nullable + delete round-trip).
+- **Repositories (faithful ports, verified line-for-line vs the v1 oracle).** `createBuildRepository`
+  (port of `engine/builds.py`, **12 `test_builds.py` cases** green) and `createPhotoRepository` (port of
+  `engine/photos.py`, **17 invariant tests**: first photo auto-becomes primary; delete reassigns the
+  primary to the earliest remaining; `getPrimary` falls back through unset/dangling/foreign pointers).
+  Two intentional divergences, documented in the file headers: **(a)** `containerSlug` is simply
+  **nullable** — v2 drops v1's `"custom"` sentinel (a legacy NOT-NULL workaround); **(b)** photo
+  `sortOrder` is an explicit **append counter (`max+1`)** rather than v1's all-zero `sort_order`, making
+  "earliest remaining" deterministic without clock resolution (the `takenAt` ASC tiebreak is kept).
+- **`resolve_build_container` ported PURE** into `src/logic/containers.ts` (deferred from Phase 2): it
+  takes the candidate containers as an argument — the same dependency-inversion `recommend()` uses — so
+  the engine stays DB-free. The slug case (v1 hit `ContainerModel`) now resolves against the passed
+  `loadContainers()`. The **3 `resolve_*` tests** moved into `containers.test.ts`.
+- **Migrate ladder (`src/db/migrate.ts`, decision 17):** `STORE_SCHEMA_VERSION = 1`, an **empty**
+  `MIGRATIONS` map (no-op at v1; the v1→v2 step lands in v2.1), a **refuse-newer** guard, and a
+  testable `migrateWith(migrations, …)` core + the `BackupEnvelope` type. **Phase 5's import reuses
+  this** (migrate → validate → one transaction) — it is NOT re-implemented there.
+- **Seed wiring (`src/db/seed.ts`):** `seedStore(db)` does an **idempotent upsert-by-slug + prune**
+  (mirrors v1 `db/loader.py::load_seed_data`) of `loadSeed()` into the reference tables — first-launch
+  loads **67 / 16 + presets**, and re-running is a no-op (safe every launch).
+- **Reconciliation note (decision 11).** "Three persisted entities" = **user data** (builds / photos /
+  care-marks). `plants` / `containers` / `presets` are **seed reference tables** — regenerable from the
+  bundle, never in the backup payload — seeded by `seedStore`, mirroring v1's `db/loader.py` (which
+  likewise seeded plant/container tables by slug). So shipping them is consistent with decision 11, not
+  a contradiction; the engine still reads the **bundle** directly (zero DB round-trip, decision 11).
+- **49 net-new tests:** 12 builds-CRUD + 17 photo-invariant + 3 `resolve_*` + 8 migrate-ladder + 5
+  seed-store + 2 driver-adapter + 2 build-round-trip (save→reload with `placements` + depths intact).
+- **Method:** orchestrator owned the cross-cutting foundation (schema + both drivers + test harness +
+  migrate ladder + seed + the pure `resolve_build_container`); the **builds-repo** and **photos-repo**
+  chunks were each delegated to a general-purpose subagent (run **sequentially** to avoid shared-repo
+  tsc races) against `node:sqlite`, then verified line-for-line against `../terrarium-app`.
+- **Tag:** `v2-phase-4-complete`.

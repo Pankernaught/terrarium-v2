@@ -2,10 +2,12 @@
  * Container geometry, custom-container construction, and dimension advice
  * (port of the pure functions in `engine/containers.py`).
  *
- * **DB-free by design.** v1's `resolve_build_container` is DB-coupled (it imports
- * `db.loader` / `ContainerModel` / a SQLAlchemy `Session`) and is deferred to a
- * later phase, so it is intentionally **not** ported here. This module imports
- * nothing from `src/db` and references no DB/ORM concept.
+ * **DB-free by design.** v1's `resolve_build_container` was DB-coupled (it imported
+ * `db.loader` / `ContainerModel` / a SQLAlchemy `Session`), so it was deferred from
+ * Phase 2. It is ported here in Phase 4 as a **pure** function that takes the
+ * candidate containers as an argument (the same dependency-inversion `recommend()`
+ * uses) — so this module still imports nothing from `src/db`/`src/data`. The repo
+ * / UI layer passes the bundled seed containers (`loadContainers()`).
  *
  * **Dimension dicts (preserved exactly from v1):** rectangular shapes carry
  * `length`/`width`/`height`; cylindrical shapes carry `diameter`/`height`.
@@ -140,6 +142,51 @@ export function makeContainer(
     shape: shape as ContainerShape,
     suitableFor: suitableFor(opening),
   };
+}
+
+/**
+ * The container-bearing fields of a saved build — the snapshot the planner wrote
+ * plus the provenance slug. Matches the camelCase shape of the persisted `Build`
+ * row (and any plain object carrying these keys), without importing the DB layer.
+ */
+export interface BuildContainerSnapshot {
+  containerShape?: string | null;
+  containerDimensions?: Dimensions | null;
+  containerOpening?: string | null;
+  containerSlug?: string | null;
+}
+
+/**
+ * Resolve the `Container` for a build, from its geometry snapshot or its preset
+ * slug (port of v1 `engine/containers.resolve_build_container`, deferred from
+ * Phase 2).
+ *
+ * - A full snapshot (`shape` + `dimensions` + `opening`) is **authoritative** —
+ *   it rebuilds the container with the pure constructor, no lookup needed.
+ * - Otherwise a `slug` is resolved against the supplied `candidates` (the seed
+ *   containers, passed in by the caller — the engine never reaches the DB/bundle).
+ * - Neither present → `null`.
+ *
+ * v2 note: v1 looked the slug up in the `ContainerModel` table; here the caller
+ * passes `loadContainers()` so this stays pure and mostly collapses into
+ * `makeContainer`.
+ */
+export function resolveBuildContainer(
+  build: BuildContainerSnapshot,
+  candidates: readonly Container[] = [],
+): Container | null {
+  const shape = build.containerShape;
+  const dimensions = build.containerDimensions;
+  const opening = build.containerOpening;
+  const slug = build.containerSlug;
+
+  if (shape && dimensions && opening) {
+    return makeContainer(shape, dimensions, opening, slug ?? 'custom');
+  }
+  if (slug) {
+    return candidates.find((c) => c.slug === slug) ?? null;
+  }
+  return null;
 }
 
 /**
