@@ -34,12 +34,14 @@ export const PLACEMENT_SCALE_MAX = 1.4;
 
 /** Clamp a value into the closed unit interval [0, 1]. */
 export function clamp01(value: number): number {
+  'worklet';
   if (!Number.isFinite(value)) return 0;
   return Math.min(1, Math.max(0, value));
 }
 
 /** Clamp a scale multiplier into the sane [MIN, MAX] band. */
 export function clampScale(value: number): number {
+  'worklet';
   if (!Number.isFinite(value)) return PLACEMENT_SCALE_MIN;
   return Math.min(PLACEMENT_SCALE_MAX, Math.max(PLACEMENT_SCALE_MIN, value));
 }
@@ -54,6 +56,7 @@ export function clampScale(value: number): number {
  * stays inside the vessel during a drag.
  */
 export function clampPlacement(p: Placement, margin = 0): Placement {
+  'worklet';
   const m = Math.min(0.5, Math.max(0, margin));
   return {
     slug: p.slug,
@@ -65,6 +68,7 @@ export function clampPlacement(p: Placement, margin = 0): Placement {
 
 /** True if the placement's centre sits within the front plane (inside [0, 1]²). */
 export function isInsidePlane(p: Placement): boolean {
+  'worklet';
   return p.x >= 0 && p.x <= 1 && p.y >= 0 && p.y <= 1;
 }
 
@@ -74,11 +78,13 @@ export function isInsidePlane(p: Placement): boolean {
  * expressed as a fraction of the preview's width/height.
  */
 export function movePlacement(p: Placement, dx: number, dy: number, margin = 0): Placement {
+  'worklet';
   return clampPlacement({ ...p, x: p.x + dx, y: p.y + dy }, margin);
 }
 
 /** Apply a relative scale factor to a placement and re-clamp to the band. */
 export function scalePlacement(p: Placement, factor: number): Placement {
+  'worklet';
   return clampPlacement({ ...p, scale: p.scale * factor });
 }
 
@@ -93,4 +99,68 @@ export function upsertPlacement(placements: readonly Placement[], next: Placemen
   const copy = placements.slice();
   copy[idx] = clamped;
   return copy;
+}
+
+/** Drop the placement for one slug, leaving the rest in order. */
+export function removePlacement(placements: readonly Placement[], slug: string): Placement[] {
+  return placements.filter((p) => p.slug !== slug);
+}
+
+// --- Hardscape vs plant namespacing -----------------------------------------
+// A placement's `slug` is the only thing distinguishing a hardscape asset from a
+// plant on the shared front plane. Plant placements use the plant slug verbatim;
+// hardscape placements carry a reserved `hardscape:` prefix so the two never
+// collide and either set can be split out (the build-guide hardscape line is
+// *derived* from whether any hardscape placement exists — decision 10).
+
+/** Reserved slug prefix marking a placement as a hardscape asset (not a plant). */
+export const HARDSCAPE_PREFIX = 'hardscape:';
+
+/** Namespace a hardscape asset id into a placement slug (`rock` → `hardscape:rock`). */
+export function hardscapeSlug(assetId: string): string {
+  return `${HARDSCAPE_PREFIX}${assetId}`;
+}
+
+/** True when a slug is a hardscape placement (vs. a plant slug). */
+export function isHardscapeSlug(slug: string): boolean {
+  return slug.startsWith(HARDSCAPE_PREFIX);
+}
+
+/** Strip the namespace back to the bare hardscape asset id. */
+export function hardscapeAssetId(slug: string): string {
+  return isHardscapeSlug(slug) ? slug.slice(HARDSCAPE_PREFIX.length) : slug;
+}
+
+/** Decision 10: the guide's hardscape line is derived from whether anything is placed. */
+export function hasHardscape(placements: readonly Placement[]): boolean {
+  return placements.some((p) => isHardscapeSlug(p.slug));
+}
+
+/** Partition placements into plant + hardscape sets (for rendering / the guide). */
+export function splitPlacements(placements: readonly Placement[]): {
+  plants: Placement[];
+  hardscape: Placement[];
+} {
+  const plants: Placement[] = [];
+  const hardscape: Placement[] = [];
+  for (const p of placements) (isHardscapeSlug(p.slug) ? hardscape : plants).push(p);
+  return { plants, hardscape };
+}
+
+/** Golden-ratio low-discrepancy constant — successive adds spread, never stack. */
+const GOLDEN = 0.618033988749895;
+/** Three y-rows a fresh placement cycles through (lower-third bias — ground level). */
+const SEED_ROWS = [0.62, 0.5, 0.74];
+
+/**
+ * A deterministic starting placement for a newly added plant/hardscape asset.
+ * `index` (its position in the add order) drives a golden-ratio x sweep + a
+ * 3-row y cycle so several quick adds fan out across the plane instead of
+ * landing on top of each other. Inset by an 8% margin so the seed sits clear of
+ * the vessel edge; the owner then drags it where they want.
+ */
+export function defaultPlacement(slug: string, index: number, scale = 1): Placement {
+  const x = ((index + 1) * GOLDEN) % 1;
+  const y = SEED_ROWS[index % SEED_ROWS.length];
+  return clampPlacement({ slug, x, y, scale }, 0.08);
 }

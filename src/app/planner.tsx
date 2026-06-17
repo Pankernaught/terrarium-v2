@@ -13,16 +13,22 @@
  * `?build=<id>` hydrates the draft from that build (edit); no param starts empty
  * (new). Editing waits on the store; a new build needs no DB until the Final save.
  */
-import { useLocalSearchParams, useRouter } from 'expo-router';
+import { type Href, useLocalSearchParams, useRouter } from 'expo-router';
 import { useEffect, useMemo, useRef, useState } from 'react';
-import { ActivityIndicator, Pressable, ScrollView, StyleSheet, View } from 'react-native';
+import { ActivityIndicator, Alert, Pressable, ScrollView, StyleSheet, View } from 'react-native';
 
 import { ContainerStep } from '@/components/planner/container-step';
 import {
   type PlannerDraft,
   draftFromBuild,
+  draftToSaveInput,
+  draftToUpdatePatch,
   emptyDraft,
 } from '@/components/planner/draft';
+import { FinalStep } from '@/components/planner/final-step';
+import { HardscapeStep } from '@/components/planner/hardscape-step';
+import { PlantsStep } from '@/components/planner/plants-step';
+import { type DraggableKind, PlannerPreview } from '@/components/planner/preview';
 import type { StepProps } from '@/components/planner/step';
 import { SubstrateStep } from '@/components/planner/substrate-step';
 import { Card, GlanceHeader, haptics, Screen, SectionLabel, Text } from '@/components/ui';
@@ -30,6 +36,7 @@ import { MaxContentWidth, Radii, Spacing } from '@/constants/theme';
 import { loadPlants } from '@/data';
 import { useDbState } from '@/db/provider';
 import { useTokens } from '@/hooks/use-tokens';
+import { upsertPlacement, type Placement } from '@/logic/placement';
 
 interface Step {
   key: string;
@@ -44,6 +51,9 @@ const STEPS: Step[] = [
   { key: 'plants', label: 'Plants', blurb: 'Add plants and watch the Eco-balance settle, live.' },
   { key: 'final', label: 'Final', blurb: 'Name it, review the verdict, and save.' },
 ];
+
+/** Which sprite category the persistent preview lets you drag on each step. */
+const DRAG_KIND: Record<string, DraggableKind> = { hardscape: 'hardscape', plants: 'plant' };
 
 export default function PlannerScreen() {
   const { build } = useLocalSearchParams<{ build?: string }>();
@@ -93,7 +103,35 @@ export default function PlannerScreen() {
     setDraft((d) => (d ? { ...d, ...patch } : d));
   }
 
+  // Commit a dragged/scaled placement from the preview back into the draft.
+  function commitPlacement(next: Placement) {
+    setDraft((d) => (d ? { ...d, placements: upsertPlacement(d.placements, next) } : d));
+  }
+
+  const [saving, setSaving] = useState(false);
+
+  // Final-step save: new → save, edit → update, then land on the build detail.
+  async function handleSave() {
+    if (!draft || saving) return;
+    if (db.status !== 'ready') {
+      Alert.alert('Not ready', 'Your library is still loading — try again in a moment.');
+      return;
+    }
+    setSaving(true);
+    try {
+      const id = draft.id
+        ? (await db.repos.builds.update(draft.id, draftToUpdatePatch(draft))).id
+        : (await db.repos.builds.save(draftToSaveInput(draft))).id;
+      haptics.success();
+      router.replace(`/build/${id}` as Href);
+    } catch (err) {
+      setSaving(false);
+      Alert.alert('Couldn’t save', err instanceof Error ? err.message : String(err));
+    }
+  }
+
   const step = STEPS[active];
+  const isFinal = active === STEPS.length - 1;
 
   // Edit-load gates.
   if (loadError) {
@@ -169,17 +207,16 @@ export default function PlannerScreen() {
             })}
           </View>
 
-          {/* Persistent 2-D preview pane — docked, framed. Live sprites + drag are chat 2. */}
+          {/* Persistent 2-D preview pane — docked, framed, live. The active step
+              decides which sprites are draggable (hardscape vs plants). */}
           <View style={styles.section}>
             <SectionLabel>Preview</SectionLabel>
-            <View style={[styles.preview, { backgroundColor: c.surfaceSunken, borderColor: c.border }]}>
-              <Text variant="display" role="textMuted">
-                🪴
-              </Text>
-              <Text variant="caption" role="textMuted" style={styles.previewCaption}>
-                2-D front view — the live preview and drag-to-place arrive next.
-              </Text>
-            </View>
+            <PlannerPreview
+              placements={draft.placements}
+              plants={plants}
+              draggableKind={DRAG_KIND[step.key] ?? null}
+              onCommit={commitPlacement}
+            />
           </View>
 
           {/* Current step body. */}
@@ -190,13 +227,14 @@ export default function PlannerScreen() {
         </View>
       </ScrollView>
 
-      {/* Back / Next chrome. */}
+      {/* Back / Next chrome. The final step's primary action saves the build. */}
       <View style={[styles.nav, { borderTopColor: c.border, backgroundColor: c.background }]}>
-        <NavButton label="Back" disabled={active === 0} onPress={() => go(active - 1)} />
+        <NavButton label="Back" disabled={active === 0 || saving} onPress={() => go(active - 1)} />
         <NavButton
-          label={active === STEPS.length - 1 ? 'Done' : 'Next'}
+          label={isFinal ? (saving ? 'Saving…' : 'Save') : 'Next'}
           primary
-          onPress={() => (active === STEPS.length - 1 ? router.back() : go(active + 1))}
+          disabled={saving}
+          onPress={() => (isFinal ? handleSave() : go(active + 1))}
         />
       </View>
     </Screen>
@@ -210,13 +248,16 @@ function StepBody({ stepKey, blurb, ...props }: StepProps & { stepKey: string; b
       return <ContainerStep {...props} />;
     case 'substrate':
       return <SubstrateStep {...props} />;
+    case 'hardscape':
+      return <HardscapeStep {...props} />;
+    case 'plants':
+      return <PlantsStep {...props} />;
+    case 'final':
+      return <FinalStep {...props} />;
     default:
       return (
         <Card style={styles.stepCard}>
           <Text variant="body">{blurb}</Text>
-          <Text variant="caption" role="textMuted">
-            This step becomes interactive in the next phase chat.
-          </Text>
         </Card>
       );
   }
@@ -271,16 +312,6 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   section: { gap: Spacing.sm },
-  preview: {
-    height: 200,
-    borderRadius: Radii.lg,
-    borderWidth: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
-    gap: Spacing.sm,
-    padding: Spacing.lg,
-  },
-  previewCaption: { textAlign: 'center', maxWidth: 320, lineHeight: 18 },
   stepCard: { padding: Spacing.lg, gap: Spacing.sm },
   nav: {
     flexDirection: 'row',

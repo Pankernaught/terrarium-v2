@@ -30,8 +30,8 @@ do NOT read all four docs every time.**
 | 3 | Ship the data (versioned JSON, images, presets) | 1 | ✅ **done** |
 | 4 | Local store (Drizzle/expo-sqlite) + repositories | 1 | ✅ **done** |
 | 5 | Core screens + component library + export/backup | 2 | ✅ **done** — chat 1 (component library + 4 read-mostly screens) + chat 2 (TXT/PDF export + JSON backup/restore + planner shell) |
-| 6 | Planner: 5-step flow + 2-D drag + 2-D preview | 2 | 🔄 **chat 1 done** (placement foundation + draft model + Container & Substrate steps) — chat 2 = Hardscape + Plants drag + Final |
-| 7 | Care reminders + photo timeline | 1 | ⬜ |
+| 6 | Planner: 5-step flow + 2-D drag + 2-D preview | 2 | ✅ **done** — chat 1 (placement core + draft + Container/Substrate) + chat 2 (drag-to-place + Hardscape/Plants/Final + live Eco + end-to-end save) |
+| 7 | Care reminders + photo timeline | 1 | ⬜ **next** |
 | 8 | Substrate mixer (parallel to 7) | 1 | ⬜ |
 | 9 | Premium polish | 1 | ⬜ |
 
@@ -582,9 +582,177 @@ harness in v2.0 — note what was checked manually vs. in CI).
   brief below. Tag `v2-phase-6-complete` only at the **full** Phase-6 DoD (end-to-end create+edit, placements
   persist + re-render identically, 60fps drag on the owner's iPhone, live Eco-balance).
 
+### Phase 6 — chat 2, COMPLETE (Hardscape + Plants drag-to-place + Final) — **tagged `v2-phase-6-complete`**
+- **Scope this session:** the **signature half** of the planner — the **drag-to-place** interaction on the 2-D
+  front plane (decision 5 / Option A) across **Hardscape**, **Plants**, and **Final**, with the **live
+  Eco-balance meter** and **end-to-end create + edit + save**. Built on chat-1's pure `@/logic/placement`
+  core + the `StepProps` seam + the draft model — **extended, not rebuilt.** Closes Phase 6 → tagged.
+- **Result:** **230 Vitest tests green** (was 220 + **10 net-new** pure-logic `placement` cases) ·
+  `tsc --noEmit` clean · new/changed files lint-clean (`eslint`) · **`expo export -p ios` bundles clean** —
+  the worklet directives + the Reanimated/Gesture-Handler drag + all new imports resolve through Metro/babel
+  (Hermes `.hbc` compiled). Phases 2–5 + chat-1 suites untouched; `src/logic` still imports nothing from
+  `src/db`/`src/data` (the new placement helpers keep the local structural `Placement` type).
+- **Drag core extensions — `src/logic/placement.ts` (pure, +10 tests).** Added the helpers the gesture +
+  steps needed, all CI-tested: `removePlacement`; the **hardscape namespace** (`HARDSCAPE_PREFIX`,
+  `hardscapeSlug`/`isHardscapeSlug`/`hardscapeAssetId`, `hasHardscape`, `splitPlacements`) so hardscape vs
+  plant share one `placements` column without colliding (the guide's hardscape line is **derived** from
+  `hasHardscape` — decision 10); and `defaultPlacement(slug, index)` — a deterministic golden-ratio x-sweep +
+  3-row y-cycle so successive adds fan out (8% edge inset) instead of stacking. **`'worklet'` directives**
+  added to `clamp01`/`clampScale`/`clampPlacement`/`isInsidePlane`/`movePlacement`/`scalePlacement` so they're
+  genuinely UI-thread-callable (the directive is a no-op string in the node/Vitest runner → tests unaffected).
+- **The drag interaction (main chat) — `src/components/planner/preview.tsx`.** `PlannerPreview` measures its
+  own frame (`onLayout`) and renders each placement as a sprite at its normalized `(x,y,scale)`; the active
+  step passes `draggableKind` (`'plant'`|`'hardscape'`|`null`) deciding which sprites are draggable.
+  `DraggableSprite` runs the gesture **on the UI thread** (Gesture Handler + Reanimated, **transform/opacity
+  only** → 60fps, decision 14): pan glues the sprite to the finger (free, un-clamped) so a drop **outside** the
+  plane springs back with **`motion.dragReturn`** (`!isInsidePlane`), a drop **inside** commits via
+  `upsertPlacement` with an `impactAsync(Light)` snap; a composed **pinch** scales within the 0.4–1.4 band.
+  The single transformed `Animated.View` *is* the gesture target (the touch area tracks the sprite, not a
+  fixed anchor) — and shared values re-seed from the draft when a placement changes externally. No real art
+  (the plant-photo long-pole stands): sprites are labelled emoji badges (🌿 / 🪵🪨⚪🟤 hardscape).
+- **Plants step (signature, main chat) — `plants-step.tsx`.** Icon-first searchable catalog over `loadPlants()`
+  (decision 11, no DB); tap toggles `draft.plantSlugs` **and** seeds/clears a `placement` (so an added plant
+  drops into the preview to drag). **Live `recommend()`** companion suggestions off the resolved container +
+  current selection; **live Eco-balance** via the shared `scoreBuild`+`EcoMeter` — a **survival-critical**
+  conflict fires `notificationAsync(Warning)` + a **red pulse** overlay (Reanimated `withSequence`). The meter
+  carries the headline verdict; the **full pairwise matrix is a Tier-3 expand** (decision 15 — primary
+  conflicts lead, via-secondary annotated). Kept in the main chat (couples to the shared scorer + the live
+  meter).
+- **Hardscape (`hardscape-step.tsx`) + Final (`final-step.tsx`) — subagents.** Once the preview/drag + placement
+  API were pinned, the two self-contained step bodies were each delegated to a general-purpose subagent in
+  **parallel** (matches the brief's subagent plan): **Hardscape** = a toggle palette of the 4 generic
+  wood/rock assets writing namespaced placements (drag happens in the shared preview; guide line derived);
+  **Final** = name input + `VerdictBand` + plant list + the **static build-guide projection**
+  (`generateBuildGuide`, `includeHardscape` derived from placements; decision 10 — guide is read-only here +
+  feeds the export). Each verified typecheck + lint clean, then integrated.
+- **Planner wired (`src/app/planner.tsx`).** The static preview frame is replaced by the **live
+  `PlannerPreview`** (persistent across all 5 steps; `draggableKind` per step); `StepBody` now routes all five
+  steps; placement commits flow through `commitPlacement`→`upsertPlacement`. **Final's nav button saves**:
+  new → `draftToSaveInput`→`builds.save`, edit → `draftToUpdatePatch`→`builds.update`, `notificationAsync
+  (Success)`, then `router.replace('/build/<id>')`. Honest saving/not-ready/error gates.
+- **Honest CI-vs-device split (per the brief):** typecheck + the full 230-test suite + new-file lint + the iOS
+  bundle export all pass in CI. **The device render + the 60fps drag pass are NOT done here** — `xcrun simctl`
+  lists **no available iOS simulator** in this environment and there's no RN component-test harness in v2.0.
+  The pure placement/clamp/recommend math is fully CI-verified + the bundle compiles the worklets; the
+  **live sprite render, the drag feel, and the measured 60fps gate remain the owner's iPhone** (decision 14;
+  Android fps stays an unverified design budget). **⚠️ Top device-verification item:** the per-sprite pan runs
+  inside the planner's vertical `ScrollView` — confirm the drag claims the gesture cleanly (no scroll-steal); if
+  it fights, add `blocksExternalGesture`/`simultaneousHandlers` (a known, localized tuning, not a redesign).
+- **Method:** the **drag gesture + sprite renderer + the placement-core extensions + the Plants step** (all
+  cross-cutting / high-risk) stayed in the orchestrating chat; the two **self-contained step bodies**
+  (Hardscape, Final) were delegated to parallel subagents once the API was pinned — exactly the brief's plan.
+- **Tag:** `v2-phase-6-complete`.
+
 ---
 
-## ▶ NEXT — Phase 6 (chat 2) distilled brief: Hardscape + Plants drag-to-place + Final
+## ▶ NEXT — Phase 7 distilled brief: Care reminders + photo timeline
+
+**Goal.** Give the app a reason to be re-opened: the **Care tab** (per-terrarium reminder schedule + mark-done)
+backed by **local repeating notifications**, plus the **date-grouped photo timeline** on Build detail. This is a
+**1-chat** phase. It's the first phase that **writes the `care_marks` table** (shipped empty in Phase 4 — its
+repo is net-new here) and the **first to touch device notifications + the camera/picker**.
+
+**What already exists (do NOT rebuild).**
+- **`care_marks` table** (`src/db/schema.ts`): `id/buildId/plantSlug?/kind/note?/dueAt?/completedAt?/createdAt`,
+  UUID PK — **no repo yet, Phase 7 owns it** (the shape may be refined here; it was deliberately left flexible).
+- **`createPhotoRepository`** (`src/db/photos-repo.ts`) — full primary-photo invariants (first photo auto-primary;
+  delete reassigns to earliest remaining; `getPrimary` fallback). Wire the timeline to it; **don't re-implement.**
+- **`generateCareGuide`** (`src/logic/care.ts`, ported Phase 2) — emits the **static tip text**; reuse it as the
+  notification **body**. The *schedule* (intervals) is net-new — see below.
+- **The repos + provider** — `useRepos()` / `DbProvider` (`src/db/provider.tsx`) hand down `builds` + `photos`;
+  add `careMarks` to the provider once its repo exists. `expo-notifications` + `expo-image-picker` + `expo-camera`
+  are already installed (Phase 1).
+- **The component library** (`@/components/ui`) + the Care tab shell (`src/app/care.tsx`, a Phase-1 placeholder).
+
+**Read only these:** `Terrarium_V2_Migration_Sequence.md` → **"Phase 7 — Care reminders + photo timeline"**;
+`Terrarium_V2_Premium_Design.md` → **§4.6** (Care tab — the calmest screen, `notificationAsync(Success)` on
+mark-done, gentle not alarmist) + **§4.5** (bottom sheet, for the photo add/source flow) + the §3.6 haptic map;
+`Terrarium_V2_Grill_Decisions.md` → **13** (care scope — watering is an **inspection** reminder "look, don't pour,"
+NOT a timer; the intervals are a **provisional curator-tunable lookup table**, not false-precision "smart" math),
+**16** (scheduling — **one native *repeating* trigger per (terrarium × enabled task)** = one permanent pending
+slot firing without the app open; respect iOS's **64-pending cap** with a **soonest-due ~50-slot budget guard**
+that disclosures overflow in the Care tab rather than silently dropping; mark-done = cancel + reschedule one
+interval from the mark-done timestamp; the per-terrarium digest model is the **v2.1** escape hatch), **11**
+(care-marks + photos are persisted user entities). v1 source-of-record: `../terrarium-app/engine/care.py` (static
+tips — already ported), and there is **no** v1 scheduler/notification/photo-timeline code (all net-new).
+
+**Work.**
+1. **`careSchedule.ts` (net-new pure engine, CI-tested).** A `(taskType × coarse bucket) → interval` **lookup
+   table** (provisional, like the scoring constants — easy to retune). Task types: **trimming** (when growth
+   rates are mixed — reuse the existing detection), **lid-opening** (by opening type + volume), **watering-
+   inspection** (by moisture profile — never a fixed timer). First occurrence due **one interval after build
+   creation** (don't nag on save). Pure → unit-test the table + the "next due" math in Vitest.
+2. **`care_marks` repo** (`src/db/care-repo.ts`) — CRUD + mark-done (writes `completedAt`, computes the next due);
+   add to `DbProvider`. Unit-test against `node:sqlite` like the build/photo repos.
+3. **Care tab** (`src/app/care.tsx`, Premium §4.6 / Sequence §7.8) — per-terrarium schedule, the three task types,
+   **mark-done per task**, fully **disable-able per terrarium**, calm motion, `notificationAsync(Success)` on done.
+4. **Notifications** (`expo-notifications`, local only, **decision 16**) — ask permission **after the first build**
+   (not on launch); schedule **one repeating trigger per (terrarium × enabled task)**; the **~50-slot soonest-due
+   budget guard** (prioritize nearest-due, refill on app-open + on each fire, **disclose overflow** in the Care
+   tab — never drop the 65th silently); mark-done = cancel + reschedule. Device-only IO — keep the **slot-budget
+   selection logic pure + CI-tested** (a synthetic 25-terrarium account stays ≤64 pending and surfaces the notice).
+5. **Photo timeline** on Build detail — date-grouped, `expo-image-picker` / `expo-camera` in, wired to the
+   **Phase-4 photo repo** (primary-photo invariants already enforced). The add/source picker is a good **§4.5
+   bottom sheet**.
+
+**Gotchas.** Watering is an **inspection** reminder, not a watering timer (decision 13 is emphatic — the engine
+encodes moisture as a profile, not a clock). The intervals are **provisional**, not science — don't dress them as
+precise. **Don't re-implement** the photo repo / its invariants, or the seed/provider plumbing. Notifications +
+camera are **device-only** (no simulator here; `expo-notifications` won't fire in the node runner) → keep the
+**schedule table + the slot-budget guard pure** so CI verifies them, and be honest about the device split (the
+permission prompt, a real notification firing, the camera, the slot cap under load). The **64-pending cap is
+iOS-only** (the guard never trips on Android).
+
+**Subagent plan.** Keep the **`careSchedule` table + the slot-budget guard** (the cross-cutting, CI-verifiable
+core) and the **notification scheduling glue** in the orchestrating chat. The **care-marks repo** (a self-contained
+port-shaped CRUD against `node:sqlite`) and the **photo-timeline UI** (self-contained, reuses the existing photo
+repo) are reasonable subagent candidates once the care-mark shape + the repo seam are pinned.
+
+**DoD (Phase 7 exit — tag `v2-phase-7-complete`):** a saved build generates a schedule; **marking a task done
+persists and reschedules**; a local notification **fires** (device); permission is requested **post-first-build**;
+scheduling uses **repeating triggers** within the **~50-slot budget guard** (a synthetic 25-terrarium account never
+exceeds 64 pending and **surfaces the Care-tab overflow notice** instead of silently dropping); **photos add, group
+by date, and set/replace the thumbnail** correctly. `npm run typecheck` clean; full Vitest suite green (Phases 2–6
+untouched).
+
+**Verification:** `npm run typecheck` && `npm run test:run` (the care-schedule table + "next due" math + the
+slot-budget guard + the care-marks repo round-trip) + `expo export -p ios` clean; **plus a device pass** for the
+permission prompt, a real notification firing, the camera/picker, and the photo timeline render (note the split for
+anything not device-verified — no simulator in this env). Then **commit + `git tag -a v2-phase-7-complete`** + update
+the phase table + append a Phase-7 session-log entry + write the **Phase 8** distilled brief + kickoff.
+
+### Kickoff prompt (paste into a NEW chat)
+
+> You're continuing the Terrarium V2 RN+Expo migration in `terrarium-v2`. You are doing **Phase 7 — Care reminders
+> + photo timeline** (a **1-chat** phase). Read `MIGRATION.md` (the phase table + the **"▶ NEXT — Phase 7"** brief +
+> the **Phase-6 chat-2 COMPLETE** session-log entry) and ONLY: Sequence **"Phase 7 — Care reminders + photo
+> timeline"**, Premium Design **§4.6 + §4.5 + §3.6**, Decisions **13 / 16 / 11**. Do NOT read all four docs. **Phase
+> 6 is committed + tagged `v2-phase-6-complete`:** the full planner is live — the 5-step flow, the pure
+> `@/logic/placement` core (now with the hardscape namespace + `defaultPlacement` + worklet directives), the
+> `PlannerPreview` drag-to-place (Reanimated+GH, UI-thread, `dragReturn`/snap/pinch), the Plants step (live
+> `recommend()` + `scoreBuild` Eco meter + survival-critical warn-pulse + Tier-3 matrix), Hardscape + Final steps,
+> and end-to-end save (`draftToSaveInput`/`draftToUpdatePatch`→`useRepos().builds`→`/build/<id>`); **230 tests
+> green**, tsc/lint/iOS-bundle clean. **Your job:** (1) **`careSchedule.ts`** — a pure, CI-tested `(taskType ×
+> bucket)→interval` **lookup table** (provisional, decision 13: trimming / lid-opening / watering-**inspection**,
+> never a timer; first due one interval after creation) reusing `generateCareGuide` text as the notification body;
+> (2) a **`care_marks` repo** (`src/db/care-repo.ts`, the table exists from Phase 4 with no repo) + add it to
+> `DbProvider`, unit-tested vs `node:sqlite`; (3) the **Care tab** (`src/app/care.tsx`, §4.6 — per-terrarium
+> schedule, 3 task types, mark-done, disable-able, calm, `notificationAsync(Success)`); (4) **`expo-notifications`**
+> local-only (**decision 16**) — permission **post-first-build**, **one repeating trigger per (terrarium × enabled
+> task)**, a **~50-slot soonest-due budget guard** vs iOS's 64-cap that **discloses overflow** in the Care tab
+> (keep the selection logic **pure + CI-tested** — a synthetic 25-terrarium account stays ≤64); mark-done = cancel
+> + reschedule; (5) the **photo timeline** on Build detail (`expo-image-picker`/`expo-camera`, date-grouped, wired
+> to the **existing Phase-4 photo repo** — do NOT re-implement its primary-photo invariants; the add/source picker
+> is a §4.5 bottom sheet). Keep the schedule table + slot-budget guard + notification glue in the main chat; the
+> **care-marks repo** and the **photo-timeline UI** are subagent candidates once the care-mark shape is pinned. CI
+> tests the pure math + repo round-trips; the permission prompt, a real notification firing, the camera, and the
+> slot cap under load are **device-verified** — be honest about the split (no simulator here). When the **full**
+> Phase-7 DoD passes (`npm run typecheck` + `npm run test:run` + `expo export -p ios`; device pass), **commit + tag
+> `v2-phase-7-complete`**, update the phase table + session log, and write the **Phase 8** brief + kickoff. Then stop.
+
+---
+
+## Phase 6 (chat 2) distilled brief (DONE — kept for history): Hardscape + Plants drag-to-place + Final
 
 **Goal.** The **signature half** of the planner: the **drag-to-place** interaction on the 2-D front plane
 (decision 5 / Option A) across the **Hardscape**, **Plants**, and **Final** steps, with the **live

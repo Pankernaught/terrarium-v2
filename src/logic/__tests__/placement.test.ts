@@ -4,12 +4,20 @@ import {
   clamp01,
   clampPlacement,
   clampScale,
+  defaultPlacement,
+  hardscapeAssetId,
+  hardscapeSlug,
+  hasHardscape,
+  HARDSCAPE_PREFIX,
+  isHardscapeSlug,
   isInsidePlane,
   movePlacement,
   type Placement,
   PLACEMENT_SCALE_MAX,
   PLACEMENT_SCALE_MIN,
+  removePlacement,
   scalePlacement,
+  splitPlacements,
   upsertPlacement,
 } from '../placement';
 
@@ -97,5 +105,74 @@ describe('upsertPlacement', () => {
     expect(out).toHaveLength(2);
     expect(out[0]).toEqual({ slug: 'a', x: 0.9, y: 0.9, scale: 0.8 });
     expect(out[1]).toBe(b);
+  });
+});
+
+describe('removePlacement', () => {
+  const a: Placement = { slug: 'a', x: 0.1, y: 0.1, scale: 1 };
+  const b: Placement = { slug: 'b', x: 0.2, y: 0.2, scale: 1 };
+
+  it('drops the matching slug, keeping the rest in order', () => {
+    expect(removePlacement([a, b], 'a')).toEqual([b]);
+  });
+  it('is a no-op for an absent slug', () => {
+    expect(removePlacement([a, b], 'zzz')).toEqual([a, b]);
+  });
+});
+
+describe('hardscape namespacing', () => {
+  it('prefixes and round-trips an asset id', () => {
+    const slug = hardscapeSlug('rock');
+    expect(slug).toBe(`${HARDSCAPE_PREFIX}rock`);
+    expect(isHardscapeSlug(slug)).toBe(true);
+    expect(hardscapeAssetId(slug)).toBe('rock');
+  });
+  it('treats a bare plant slug as a plant', () => {
+    expect(isHardscapeSlug('fittonia')).toBe(false);
+    // a non-namespaced slug is returned unchanged
+    expect(hardscapeAssetId('fittonia')).toBe('fittonia');
+  });
+  it('hasHardscape is true only when a hardscape placement exists', () => {
+    const plant: Placement = { slug: 'moss', x: 0.5, y: 0.5, scale: 1 };
+    const rock: Placement = { slug: hardscapeSlug('rock'), x: 0.3, y: 0.7, scale: 1 };
+    expect(hasHardscape([plant])).toBe(false);
+    expect(hasHardscape([plant, rock])).toBe(true);
+  });
+  it('splitPlacements partitions plants from hardscape, order preserved', () => {
+    const moss: Placement = { slug: 'moss', x: 0.5, y: 0.5, scale: 1 };
+    const fern: Placement = { slug: 'fern', x: 0.6, y: 0.4, scale: 1 };
+    const rock: Placement = { slug: hardscapeSlug('rock'), x: 0.3, y: 0.7, scale: 1 };
+    const { plants, hardscape } = splitPlacements([moss, rock, fern]);
+    expect(plants).toEqual([moss, fern]);
+    expect(hardscape).toEqual([rock]);
+  });
+});
+
+describe('defaultPlacement', () => {
+  it('returns an in-plane placement at the requested scale', () => {
+    const p = defaultPlacement('fern', 0);
+    expect(isInsidePlane(p)).toBe(true);
+    expect(p.slug).toBe('fern');
+    expect(p.scale).toBe(1);
+  });
+  it('sits clear of the edges (8% inset)', () => {
+    for (let i = 0; i < 12; i++) {
+      const p = defaultPlacement(`s${i}`, i);
+      expect(p.x).toBeGreaterThanOrEqual(0.08 - 1e-9);
+      expect(p.x).toBeLessThanOrEqual(0.92 + 1e-9);
+      expect(p.y).toBeGreaterThanOrEqual(0.08 - 1e-9);
+      expect(p.y).toBeLessThanOrEqual(0.92 + 1e-9);
+    }
+  });
+  it('spreads successive adds (no two identical positions in the first handful)', () => {
+    const seen = new Set<string>();
+    for (let i = 0; i < 6; i++) {
+      const p = defaultPlacement('x', i);
+      seen.add(`${p.x.toFixed(4)},${p.y.toFixed(4)}`);
+    }
+    expect(seen.size).toBe(6);
+  });
+  it('is deterministic for a given index', () => {
+    expect(defaultPlacement('a', 3)).toEqual(defaultPlacement('a', 3));
   });
 });
