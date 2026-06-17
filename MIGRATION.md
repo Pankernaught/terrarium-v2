@@ -26,8 +26,8 @@ do NOT read all four docs every time.**
 | Phase | Goal | Chats | Status |
 |---|---|---|---|
 | 1 | Lock decisions · freeze v1 · Expo skeleton | 1 | ✅ **done** |
-| 2 | Port the pure engine, test-first (+ primary/secondary) | 1 | ⬜ **next** |
-| 3 | Ship the data (versioned JSON, images, presets) | 1 | ⬜ |
+| 2 | Port the pure engine, test-first (+ primary/secondary) | 1 | ✅ **done** |
+| 3 | Ship the data (versioned JSON, images, presets) | 1 | ⬜ **next** |
 | 4 | Local store (Drizzle/expo-sqlite) + repositories | 1 | ⬜ |
 | 5 | Core screens + component library + export/backup | 2 | ⬜ |
 | 6 | Planner: 5-step flow + 2-D drag + 2-D preview | 2 | ⬜ |
@@ -50,68 +50,89 @@ cross-cutting design (the scoring rule, the DB schema) in the orchestrating chat
 
 ---
 
-## ▶ NEXT — Phase 2 distilled brief: port the pure engine, test-first
+## ▶ NEXT — Phase 3 distilled brief: ship the data
 
-**Goal.** Reproduce the entire v1 scoring/derivation engine in TypeScript under `src/logic/` +
-`src/types/`, proven by the ~79 carried-over engine tests in Vitest, with the **one sanctioned
-divergence** folded in: primary/secondary `light`/`soil_moisture`.
+**Goal.** Turn v1's **67 plants + 16 containers** into **versioned, typed JSON** that validates
+against the Phase-2 `zod` schemas and seeds a local DB on first launch — folding in the data-model
+changes (decisions 4 / 8 / 11 / 12 / 18). The **~67 plant images are the long pole and gate the
+phase exit.**
 
-**Read only these:** `Rebuild docs/Terrarium_V2_Migration_Sequence.md` → "Phase 2"; 
-`Terrarium_V2_Migration_Plan.md` → §1.1–1.2 + §2.1; 
-`Terrarium_V2_Grill_Decisions.md` → decisions **6, 9, 15**. v1 source: `../terrarium-app/engine/*.py`
-+ `../terrarium-app/tests/test_{compatibility,containers,guide,models,environment,care}.py`.
+**Read only these:** `Rebuild docs/Terrarium_V2_Migration_Sequence.md` → "Phase 3 — Ship the data";
+`Terrarium_V2_Migration_Plan.md` → §2.2–2.5; `Terrarium_V2_Grill_Decisions.md` → decisions **11**
+(drop `plant_photos`; one static `image` path/plant), **12** (substrate-vocab freeze +
+reference-only root-depth range; property matrix deferred to v2.1), **18** (CC/PD photos,
+accuracy-first, + 3–5 onboarding presets). v1 seed-of-record: `../terrarium-app/data/{plants,containers}.yaml`
++ `../terrarium-app/db/loader.py` (how v1 seeds).
 
-**Port map (module → target · test count):**
-- `engine/compatibility.py` → `src/logic/compatibility.ts` + `src/logic/constants.ts` · **36**
-- `engine/containers.py` (math only) → `src/logic/containers.ts` · **22**
-- `engine/guide.py` → `src/logic/guide.ts` · **7**
-- `engine/models/*` (Pydantic) → `src/types/*.ts` (+ zod) · **7**
-- `engine/environment.py` → `src/logic/environment.ts` · **4**
-- `engine/care.py` → `src/logic/care.ts` · **3**
-- `engine/recommend.py` → `recommend(selected, container, candidates)` (candidates passed IN) +
-  `makeContainer()` as a **pure** constructor. **Exclude:** `test_builds.py` (12, CRUD → Phase 4),
-  `test_social.py` (9, scrapped).
+**Work (in order — images gate the exit, so start them first):**
+1. **`src/data/containers.json`** from `containers.yaml` (16 rows) — a serialize step; camelCase the
+   keys, add `schemaVersion`. The shape already matches `containerSchema`. Validate all 16.
+2. **`src/data/plants.json`** from `plants.yaml` (67 rows), camelCased, with these authored changes:
+   - **`light`/`soilMoisture` → `{primary, secondary?}`** — pure widening; scalar → `{primary}`.
+     **Author `secondary` only where botanically real** (NOT all 67); primary-only is intentional +
+     documented (decision 4).
+   - **`toxicity?: string`** top-level nullable free text — hand-authored for toxic/irritant species
+     only; **blank ≠ safe**, never rendered as a safety claim (decision 8).
+   - **Substrate hygiene (decision 12):** freeze the ~9-material component vocabulary (perlite, peat,
+     sphagnum, sand, coco coir, grit, orchid bark, pumice, mud) as a canonical `{id,label}` list
+     (new small module, e.g. `src/data/substrate-components.ts`); **split `wood`/`rock` out of
+     `substrateTags` as hardscape.** Do **not** author the per-component property matrix (v2.1).
+   - **Root depth → `rootDepthMinCm`/`rootDepthMaxCm`** range, authored for all, **reference-only** —
+     NOT wired into depth math (that stays `maxHeightCm`-driven, preserving Phase-2 oracle parity).
+   - **`image` path per plant** (decision 11) + **`imageCredit` + `imageLicense`** (seed-only, **never**
+     in the backup/export payload). Source CC0/PD → CC-BY → CC-BY-SA (no `-NC`/`-ND`), Wikimedia
+     primary, accuracy first (AI ruled out as default — a wrong species corrupts trust).
+   - Optional: short free-text `nativeContext` sentence (Tier-3 view); keep `nativeBiome` scored.
+3. **Bundle the ~67 plant images** as static assets, uniform card treatment (fixed aspect/crop).
+   **This is the long pole** — owner is source of record (ASPCA et al. are references, not a gate).
+4. **3–5 onboarding presets** (decision 18): curated starter builds (container + compatible plants +
+   placements) as bundled seed. They **depend on the images**, so author last. Keep preset placements
+   as plain `{slug, x, y, scale}` data (the build-schema `placements` field lands in Phase 4).
+5. **Seed script** loads the JSON into a throwaway `expo-sqlite` DB; **validate every record against
+   the Phase-2 zod schemas at build/CI time** so a malformed plant fails CI, not the device.
 
-**Constants are the rules — port verbatim into `constants.ts`:** `_LIGHT_ORDER` (note `direct:4`,
-the deliberate gap), `_MOISTURE_ORDER`, `_PH_ORDER`; survival penalty 35; survival gaps
-(moisture 3, pH 2); `_PH_CAUTION_PENALTY` 7; `_SURVIVAL_SCORE_CEILING` 40; crowding thresholds
-(2.0 L, >2 / >4 plants); 1.0 L gas-exchange threshold; verdict bands (≥80 / ≥50).
+**Schema additions in `src/types/plant.ts`** (extend, don't break the 96 Phase-2 tests): `toxicity?`,
+`rootDepthMinCm?`/`rootDepthMaxCm?`, `image` + `imageCredit?`/`imageLicense?`, `nativeContext?`.
+Confirm the engine still imports nothing from `src/db`.
 
-**Primary/secondary (decision 15) — the ONLY divergence.** Only `light` + `soil_moisture` become
-`{primary, secondary?}`; **pH untouched**. All leverage is in `check_pair` (`check_group` +
-`recommend` delegate to it).
-- *15a graduated:* score the **best-matching** pair across `{a.primary,a.secondary} × {b.primary,b.secondary}`
-  on the v1 ladder (light 1→−15 / ≥2→−30; moisture 1→−7 / 2→−14). "via secondary" is a UI
-  annotation, not an extra penalty.
-- *15a distance-0 cap:* a best pair at distance 0 reached **only via a secondary** deducts the
-  one-step caution penalty (−15 light / −7 moisture) → lands in caution, never a free 100.
-  Both-secondary takes the same single deduction (escalation deferred to v2.1).
-- *15b survival = primaries only:* lethal predicates (light `direct`+`low`/`medium`; moisture
-  `dry`+`wet`, dist 3) evaluate `a.primary` vs `b.primary` **only**. A secondary never downgrades
-  survival; suppress the "via secondary" annotation when survival-critical.
-- *Ripples:* `recommend()` ~line 49 `candidate.light != sp.light` exact-equality → make
-  primary/secondary-aware (cosmetic reason text); `derive_envelope` unions primary∪secondary for
-  **display sets only** (recommender re-runs `check_pair`, never reads the envelope); add **two**
-  net-new test families — the distance-0 secondary cap, and primaries-only survival (incl. an
-  explicit "a secondary does NOT rescue a lethal pairing" assertion).
+**Gotchas.**
+- Root-depth range is **display-only** — never let it masquerade as a live depth driver (that would
+  diverge from the oracle Phase 2 just locked; the depth seed stays `maxHeightCm`-based).
+- `imageCredit`/`imageLicense` are **seed-only** — never in the backup/export payload.
+- Toxicity blank surfaces as "no note authored," **never** "Non-toxic ✓."
+- No `plant_photos` table (decision 11) and no substrate property matrix (decision 12) in v2.0.
 
-**Gotchas.** Keep `growth_rate` **unscored** in `check_pair` (intentional once-surfaced care
-note — re-adding it as a per-pair penalty is the classic mistake). Preserve `check_group`'s
-upper-triangle averaging, container-penalty tiers, and survival-clamp. The engine should **throw
-cleanly** on bad input (the v1 `except Exception: pass` score-swallow at `home.py:189` is a bug to
-NOT carry over; the diagnostic UI is Phase 5).
+**Subagent plan.** (1) One agent: `containers.yaml`→JSON serializer + a zod-validation seed test
+(small, mechanical). (2) One agent: the `plants.yaml`→JSON transform with the field reshapes + a
+zod-validation test over all 67. (3) Image sourcing + licensing is **curator/owner work**
+(accuracy-first) — an agent can scaffold the `image`/credit/license fields + a "every plant has an
+image + license" CI check, but the photo selection is a human pass (the true long pole). Keep preset
+authoring in the orchestrating chat (depends on images + judgment).
 
-**Subagent plan.** (1) One **Explore** agent maps `../terrarium-app/engine` + `tests`: return the
-exact constant values, function signatures, and each test's intent. (2) The orchestrator owns
-`constants.ts` + `compatibility.ts` (the primary/secondary change lives here) + the 2 net-new test
-families. (3) Delegate the mechanical modules to one general-purpose agent each — `containers.ts`,
-`guide.ts`, `environment.ts`, `care.ts`, `types/*` — "port the module + translate its pytest
-suite to `src/logic/__tests__/X.test.ts`, make `npx vitest run` green, report a summary."
+**DoD (Phase 3 exit):** both JSON files validate against the zod schemas; a seed script loads them
+into a throwaway `expo-sqlite` DB with row counts **67 / 16**; toxicity present only where
+botanically real (blank = "no note," never "safe"); **every plant has an `image`** (+ credit/license
+for any CC-BY[-SA] source); the **3–5 onboarding presets load through the seed**; `npx tsc --noEmit`
+clean; full Vitest suite still green (Phase-2 tests untouched).
 
-**DoD (Phase 2 exit):** `npx vitest run` green on all ported cases (≈79 + the 2 net-new families);
-`recommend()` and the container builder import nothing from `src/db`; `npx tsc --noEmit` clean.
+**Verification:** `npm run typecheck` && `npm run test:run` (+ the new seed/validation test).
 
-**Verification:** `npm run typecheck` && `npm run test:run`.
+### Kickoff prompt (paste into a NEW chat)
+
+> You're continuing the Terrarium V2 RN+Expo migration in this repo (`terrarium-v2`). You are doing
+> **Phase 3 — Ship the data**. Read `MIGRATION.md` (the phase table + the "▶ NEXT — Phase 3" brief +
+> the Phase-2 session-log entry) and ONLY these doc sections: Sequence "Phase 3 — Ship the data",
+> Plan §2.2–2.5, Decisions 11 / 12 / 18. Do NOT read all four docs. v1 seed-of-record:
+> `../terrarium-app/data/{plants,containers}.yaml` (67 plants / 16 containers) + `db/loader.py`.
+> Phase 2 is committed + tagged `v2-phase-2-complete`; the engine + zod schemas are live in
+> `src/{logic,types}` and **96 tests are green** — EXTEND the plant schema, don't break it. Emit
+> versioned `src/data/{plants,containers}.json` with the decision-4/8/11/12/18 field changes, bundle
+> the ~67 plant images (the long pole — accuracy-first, CC/PD, owner is source of record), author
+> 3–5 onboarding presets, and add a zod-validated seed script. Use subagents for the mechanical
+> serialize+validate chunks (containers, plants); keep image curation + preset authoring in the main
+> chat. When the DoD passes: run verification, `git add -A && git commit`, `git tag -a
+> v2-phase-3-complete`, flip the phase table (3 → ✅ done), append a Phase-3 session-log entry, then
+> write the Phase 4 distilled brief + this same kickoff prompt. Then stop.
 
 ---
 
@@ -134,3 +155,38 @@ suite to `src/logic/__tests__/X.test.ts`, make `npx vitest run` green, report a 
   - Added `src/global.d.ts` (`declare module '*.css'`) so the template's web CSS import typechecks.
 - **Verified:** `tsc --noEmit` clean · `vitest run` green (sanity test) · `expo start` boots Metro.
 - **Tag:** `v2-phase-1-complete`.
+
+### Phase 2 — port the pure engine, test-first (done)
+- **Result:** the full v1 scoring/derivation engine is reproduced in TS under `src/logic/` +
+  `src/types/`. **96 Vitest tests green** (8 files), `tsc --noEmit` clean. `recommend()` + the
+  container builder import nothing from `src/db` (grep-verified).
+- **Modules ported:** `constants.ts` (verbatim), `compatibility.ts` (`checkPair`/`checkGroup`),
+  `environment.ts` (`deriveEnvelope`), `recommend.ts` (DB-free; candidates passed in),
+  `containers.ts` (pure geometry — `resolve_build_container` **excluded** → Phase 4), `guide.ts`,
+  `care.ts`; types `plant`/`container`/`results` (zod for persisted/validated shapes, plain TS for
+  engine result types) + shared `__tests__/factories.ts` (`makePlant` / `makeContainerSpec`).
+- **The one divergence (decision 15) — primary/secondary:** `light` + `soilMoisture` reshaped to
+  `{primary, secondary?}` (pH untouched). 15a: score the best-matching pair on the v1 ladder; a
+  distance-0 pair reached **only via a secondary** deducts the one-step caution penalty (−15 light /
+  −7 moisture, `viaSecondary=true`). 15b: survival/lethal tier judged on **primaries only**
+  (annotation suppressed). `growthRate` stays intentionally unscored.
+- **Test-count reconciliation (96):** **71 faithful ports** (36 compatibility + 19 containers + 7
+  guide + 4 environment + 3 care + 2 plant-model) + **25 net-new/replacement**: 8 new compatibility
+  cases (the 2 sanctioned families — distance-0 secondary cap; primaries-only survival, incl. an
+  explicit "a secondary does NOT rescue a lethal pairing"), 1 envelope-union, 5 recommend-coverage
+  (recommend refactored to take candidates), 10 plant zod-validation tests (the 5 `test_models.py`
+  social-schema tests dropped — social scrapped — and replaced), 1 Phase-1 sanity. The 3
+  `test_containers` `resolve_*` cases are **deferred to Phase 4** with `resolve_build_container`;
+  `test_builds.py` (12, CRUD) and `test_social.py` (9) were always Phase-4 / scrapped.
+- **DESIGN NUANCE (flag for v2.1):** a *single* via-secondary distance-0 match scores **85 (light) /
+  93 (moisture)** — inside the ≥80 "compatible" band. This is faithful to the frozen −15/−7 penalty
+  + the ≥80 band (decision 6): only the composed multi-factor case reaches caution (100−15−7=78).
+  The docs' "lands in caution / never a free 100" holds at the **conflict-severity** level (a
+  via-secondary match always emits a caution conflict with `viaSecondary=true`, never a free 100).
+  Whether to **hard-cap the verdict at caution** for any via-secondary match is an open **v2.1**
+  question — deliberately NOT forced by changing a frozen constant during the faithful port.
+- **Method:** orchestrator owned the entangled primary/secondary work (constants, compatibility,
+  environment, recommend, types, factories) + the 2 net-new families; the 3 mechanical modules
+  (containers, guide, care) + their suites were each delegated to a general-purpose subagent in
+  parallel, then verified line-for-line against the v1 oracle (`../terrarium-app`).
+- **Tag:** `v2-phase-2-complete`.
