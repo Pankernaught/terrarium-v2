@@ -7,11 +7,16 @@ import { defineConfig } from 'vitest/config';
  * component tests are out of scope for v2.0.
  *
  * Phase 2 fills `src/logic/` and `src/types/` with the ~79 engine cases translated
- * from the v1 pytest suite.
+ * from the v1 pytest suite. Phase 3 adds `src/data/` — the seed-validation gate
+ * (zod over every record + a throwaway `node:sqlite` load), still pure-node.
  */
 export default defineConfig({
   test: {
-    include: ['src/logic/**/*.{test,spec}.ts', 'src/types/**/*.{test,spec}.ts'],
+    include: [
+      'src/logic/**/*.{test,spec}.ts',
+      'src/types/**/*.{test,spec}.ts',
+      'src/data/**/*.{test,spec}.ts',
+    ],
     environment: 'node',
     passWithNoTests: true,
   },

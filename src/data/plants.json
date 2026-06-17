@@ -1,0 +1,2412 @@
+{
+  "schemaVersion": 1,
+  "plants": [
+    {
+      "slug": "fittonia-albivenis",
+      "commonName": "Nerve Plant",
+      "scientificName": "Fittonia albivenis",
+      "light": {
+        "primary": "medium"
+      },
+      "soilMoisture": {
+        "primary": "moist"
+      },
+      "humidityPctRange": [
+        70,
+        90
+      ],
+      "tempCRange": [
+        18,
+        27
+      ],
+      "maxHeightCm": 15,
+      "rootDepthMinCm": 2,
+      "rootDepthMaxCm": 6,
+      "phPreference": "acidic",
+      "growthRate": "slow",
+      "substrateTags": [
+        "peat",
+        "perlite",
+        "coco-coir"
+      ],
+      "closedTerrariumOk": true,
+      "openTerrariumOk": false,
+      "difficulty": 2,
+      "image": "plants/fittonia-albivenis.png",
+      "nativeContext": "Native to the rainforest understorey of Peru and neighbouring South America, carpeting damp, shaded forest floors.",
+      "notes": "Classic beginner closed-terrarium plant. Wilts dramatically when dry but recovers quickly with water. Avoid direct light."
+    },
+    {
+      "slug": "selaginella-uncinata",
+      "commonName": "Rainbow Moss",
+      "scientificName": "Selaginella uncinata",
+      "light": {
+        "primary": "low"
+      },
+      "soilMoisture": {
+        "primary": "moist"
+      },
+      "humidityPctRange": [
+        80,
+        100
+      ],
+      "tempCRange": [
+        15,
+        25
+      ],
+      "maxHeightCm": 5,
+      "rootDepthMinCm": 2,
+      "rootDepthMaxCm": 4,
+      "phPreference": "acidic",
+      "growthRate": "moderate",
+      "substrateTags": [
+        "peat",
+        "coco-coir",
+        "sphagnum"
+      ],
+      "closedTerrariumOk": true,
+      "openTerrariumOk": false,
+      "difficulty": 2,
+      "image": "plants/selaginella-uncinata.png",
+      "nativeContext": "A spikemoss from the humid subtropical forests of southern China.",
+      "notes": "Iridescent blue-green foliage. Needs consistently high humidity; thrives in sealed containers. Spreads as a low ground cover."
+    },
+    {
+      "slug": "taxiphyllum-barbieri",
+      "commonName": "Java Moss",
+      "scientificName": "Taxiphyllum barbieri",
+      "light": {
+        "primary": "low"
+      },
+      "soilMoisture": {
+        "primary": "wet"
+      },
+      "humidityPctRange": [
+        80,
+        100
+      ],
+      "tempCRange": [
+        15,
+        28
+      ],
+      "maxHeightCm": 5,
+      "rootDepthMinCm": 2,
+      "rootDepthMaxCm": 4,
+      "phPreference": "acidic",
+      "growthRate": "moderate",
+      "substrateTags": [
+        "sphagnum",
+        "coco-coir"
+      ],
+      "closedTerrariumOk": true,
+      "openTerrariumOk": false,
+      "difficulty": 1,
+      "image": "plants/taxiphyllum-barbieri.png",
+      "notes": "Extremely forgiving. Attach to wood or rocks or use as ground cover. Tolerates a wide temperature range."
+    },
+    {
+      "slug": "soleirolia-soleirolii",
+      "commonName": "Baby Tears",
+      "scientificName": "Soleirolia soleirolii",
+      "light": {
+        "primary": "medium"
+      },
+      "soilMoisture": {
+        "primary": "moist"
+      },
+      "humidityPctRange": [
+        70,
+        95
+      ],
+      "tempCRange": [
+        10,
+        24
+      ],
+      "maxHeightCm": 5,
+      "rootDepthMinCm": 2,
+      "rootDepthMaxCm": 4,
+      "phPreference": "acidic",
+      "growthRate": "fast",
+      "substrateTags": [
+        "peat",
+        "coco-coir",
+        "sphagnum"
+      ],
+      "closedTerrariumOk": true,
+      "openTerrariumOk": false,
+      "difficulty": 2,
+      "image": "plants/soleirolia-soleirolii.png",
+      "nativeContext": "Native to shaded, damp rocks on islands of the western Mediterranean.",
+      "notes": "Tiny-leaved creeping ground cover. Can spread aggressively; trim regularly. Prefers cooler temps than most tropical species."
+    },
+    {
+      "slug": "pellionia-repens",
+      "commonName": "Trailing Watermelon Begonia",
+      "scientificName": "Pellionia repens",
+      "light": {
+        "primary": "low"
+      },
+      "soilMoisture": {
+        "primary": "moist"
+      },
+      "humidityPctRange": [
+        70,
+        90
+      ],
+      "tempCRange": [
+        18,
+        26
+      ],
+      "maxHeightCm": 10,
+      "rootDepthMinCm": 2,
+      "rootDepthMaxCm": 4,
+      "phPreference": "acidic",
+      "growthRate": "moderate",
+      "substrateTags": [
+        "peat",
+        "coco-coir",
+        "perlite"
+      ],
+      "closedTerrariumOk": true,
+      "openTerrariumOk": false,
+      "difficulty": 2,
+      "image": "plants/pellionia-repens.png",
+      "notes": "Attractive silvery-green patterned leaves. Trails nicely over substrate or rocks. Not a true begonia despite the common name."
+    },
+    {
+      "slug": "maranta-leuconeura",
+      "commonName": "Prayer Plant",
+      "scientificName": "Maranta leuconeura",
+      "light": {
+        "primary": "low",
+        "secondary": "medium"
+      },
+      "soilMoisture": {
+        "primary": "moist"
+      },
+      "humidityPctRange": [
+        60,
+        85
+      ],
+      "tempCRange": [
+        18,
+        27
+      ],
+      "maxHeightCm": 25,
+      "rootDepthMinCm": 4,
+      "rootDepthMaxCm": 10,
+      "phPreference": "acidic",
+      "growthRate": "slow",
+      "substrateTags": [
+        "peat",
+        "perlite"
+      ],
+      "closedTerrariumOk": true,
+      "openTerrariumOk": false,
+      "difficulty": 3,
+      "image": "plants/maranta-leuconeura.png",
+      "nativeContext": "Native to the humid tropical rainforests of Brazil, on the shaded forest floor.",
+      "notes": "Leaves fold upward at night. Sensitive to fluoride in tap water; use rainwater or distilled. Watch for spider mites."
+    },
+    {
+      "slug": "calathea-ornata",
+      "commonName": "Pinstripe Calathea",
+      "scientificName": "Calathea ornata",
+      "light": {
+        "primary": "medium"
+      },
+      "soilMoisture": {
+        "primary": "moist"
+      },
+      "humidityPctRange": [
+        65,
+        90
+      ],
+      "tempCRange": [
+        18,
+        27
+      ],
+      "maxHeightCm": 30,
+      "rootDepthMinCm": 5,
+      "rootDepthMaxCm": 12,
+      "phPreference": "acidic",
+      "growthRate": "slow",
+      "substrateTags": [
+        "peat",
+        "perlite",
+        "coco-coir"
+      ],
+      "closedTerrariumOk": true,
+      "openTerrariumOk": false,
+      "difficulty": 4,
+      "image": "plants/calathea-ornata.png",
+      "nativeContext": "From the warm, humid rainforests of Colombia and Ecuador, in deep shade beneath the canopy.",
+      "notes": "Striking pink-striped foliage. Highly sensitive to drafts, cold, and mineral-heavy water. Rewarding in a stable sealed environment."
+    },
+    {
+      "slug": "hypoestes-phyllostachya",
+      "commonName": "Polka Dot Plant",
+      "scientificName": "Hypoestes phyllostachya",
+      "light": {
+        "primary": "medium"
+      },
+      "soilMoisture": {
+        "primary": "moist"
+      },
+      "humidityPctRange": [
+        60,
+        85
+      ],
+      "tempCRange": [
+        18,
+        27
+      ],
+      "maxHeightCm": 30,
+      "rootDepthMinCm": 5,
+      "rootDepthMaxCm": 12,
+      "phPreference": "acidic",
+      "growthRate": "fast",
+      "substrateTags": [
+        "peat",
+        "perlite"
+      ],
+      "closedTerrariumOk": true,
+      "openTerrariumOk": false,
+      "difficulty": 3,
+      "image": "plants/hypoestes-phyllostachya.png",
+      "notes": "Fast grower — pinch tips regularly to stay compact. Leggy growth in low light. Loses colour intensity without adequate indirect light."
+    },
+    {
+      "slug": "adiantum-raddianum",
+      "commonName": "Maidenhair Fern",
+      "scientificName": "Adiantum raddianum",
+      "light": {
+        "primary": "medium"
+      },
+      "soilMoisture": {
+        "primary": "moist"
+      },
+      "humidityPctRange": [
+        70,
+        95
+      ],
+      "tempCRange": [
+        18,
+        24
+      ],
+      "maxHeightCm": 30,
+      "rootDepthMinCm": 5,
+      "rootDepthMaxCm": 12,
+      "phPreference": "acidic",
+      "growthRate": "slow",
+      "substrateTags": [
+        "peat",
+        "perlite",
+        "sphagnum"
+      ],
+      "closedTerrariumOk": true,
+      "openTerrariumOk": false,
+      "difficulty": 4,
+      "image": "plants/adiantum-raddianum.png",
+      "nativeContext": "From humid, shaded ravines and waterfall splash zones in tropical South America.",
+      "notes": "Delicate fan-shaped leaflets. Drops fronds immediately if humidity drops. One of the most demanding ferns; excels in sealed vivariums."
+    },
+    {
+      "slug": "asplenium-nidus",
+      "commonName": "Bird's Nest Fern",
+      "scientificName": "Asplenium nidus",
+      "light": {
+        "primary": "medium",
+        "secondary": "low"
+      },
+      "soilMoisture": {
+        "primary": "moist"
+      },
+      "humidityPctRange": [
+        60,
+        85
+      ],
+      "tempCRange": [
+        18,
+        27
+      ],
+      "maxHeightCm": 60,
+      "rootDepthMinCm": 9,
+      "rootDepthMaxCm": 20,
+      "phPreference": "acidic",
+      "growthRate": "slow",
+      "substrateTags": [
+        "peat",
+        "coco-coir"
+      ],
+      "closedTerrariumOk": true,
+      "openTerrariumOk": false,
+      "difficulty": 2,
+      "image": "plants/asplenium-nidus.png",
+      "nativeContext": "An epiphytic fern of tropical Asian and Pacific rainforests, perched in the forks of canopy trees.",
+      "notes": "Bold, glossy strap-shaped fronds. More tolerant than delicate ferns. Avoid water sitting in the crown. Gets large — best in bigger builds."
+    },
+    {
+      "slug": "pilea-involucrata",
+      "commonName": "Friendship Plant",
+      "scientificName": "Pilea involucrata",
+      "light": {
+        "primary": "medium"
+      },
+      "soilMoisture": {
+        "primary": "moist"
+      },
+      "humidityPctRange": [
+        60,
+        80
+      ],
+      "tempCRange": [
+        18,
+        26
+      ],
+      "maxHeightCm": 20,
+      "rootDepthMinCm": 3,
+      "rootDepthMaxCm": 8,
+      "phPreference": "acidic",
+      "growthRate": "moderate",
+      "substrateTags": [
+        "peat",
+        "perlite",
+        "coco-coir"
+      ],
+      "closedTerrariumOk": true,
+      "openTerrariumOk": false,
+      "difficulty": 2,
+      "image": "plants/pilea-involucrata.png",
+      "notes": "Deeply textured, bronze-green leaves. Easy to propagate from cuttings. Good mid-layer plant for closed builds."
+    },
+    {
+      "slug": "microsorum-pteropus",
+      "commonName": "Java Fern",
+      "scientificName": "Microsorum pteropus",
+      "light": {
+        "primary": "low"
+      },
+      "soilMoisture": {
+        "primary": "wet",
+        "secondary": "moist"
+      },
+      "humidityPctRange": [
+        75,
+        95
+      ],
+      "tempCRange": [
+        18,
+        28
+      ],
+      "maxHeightCm": 20,
+      "rootDepthMinCm": 1,
+      "rootDepthMaxCm": 3,
+      "phPreference": "acidic",
+      "growthRate": "slow",
+      "substrateTags": [
+        "sphagnum",
+        "coco-coir"
+      ],
+      "closedTerrariumOk": true,
+      "openTerrariumOk": false,
+      "difficulty": 2,
+      "image": "plants/microsorum-pteropus.png",
+      "nativeContext": "An aquatic fern from the streams and riverbanks of Southeast Asia, attached to rocks and wood.",
+      "notes": "Attach rhizome to wood or rock — do not bury it in substrate. Propagates via plantlets that form on older fronds."
+    },
+    {
+      "slug": "episcia-cupreata",
+      "commonName": "Flame Violet",
+      "scientificName": "Episcia cupreata",
+      "light": {
+        "primary": "medium"
+      },
+      "soilMoisture": {
+        "primary": "moist"
+      },
+      "humidityPctRange": [
+        65,
+        85
+      ],
+      "tempCRange": [
+        20,
+        28
+      ],
+      "maxHeightCm": 15,
+      "rootDepthMinCm": 2,
+      "rootDepthMaxCm": 6,
+      "phPreference": "acidic",
+      "growthRate": "moderate",
+      "substrateTags": [
+        "peat",
+        "perlite"
+      ],
+      "closedTerrariumOk": true,
+      "openTerrariumOk": false,
+      "difficulty": 3,
+      "image": "plants/episcia-cupreata.png",
+      "notes": "Metallic copper-green foliage with orange-red flowers. Needs warmth; cold drafts cause leaf drop. Spreads via stolons."
+    },
+    {
+      "slug": "philodendron-hederaceum-mini",
+      "commonName": "Heartleaf Philodendron (mini)",
+      "scientificName": "Philodendron hederaceum",
+      "light": {
+        "primary": "medium",
+        "secondary": "low"
+      },
+      "soilMoisture": {
+        "primary": "moist"
+      },
+      "humidityPctRange": [
+        60,
+        80
+      ],
+      "tempCRange": [
+        18,
+        28
+      ],
+      "maxHeightCm": 30,
+      "rootDepthMinCm": 5,
+      "rootDepthMaxCm": 12,
+      "phPreference": "acidic",
+      "growthRate": "moderate",
+      "substrateTags": [
+        "peat",
+        "perlite",
+        "coco-coir"
+      ],
+      "closedTerrariumOk": true,
+      "openTerrariumOk": false,
+      "difficulty": 2,
+      "image": "plants/philodendron-hederaceum-mini.png",
+      "toxicity": "Contains insoluble calcium oxalate crystals — chewing or ingesting causes intense mouth and throat irritation, drooling, and vomiting in pets and people. Keep away from curious pets and children.",
+      "notes": "Trailing or climbing habit. Trim regularly to keep scale manageable in enclosed builds. Very adaptable and forgiving."
+    },
+    {
+      "slug": "miniature-orchid",
+      "commonName": "Miniature Orchid",
+      "scientificName": "Lepanthes telipogoniflora",
+      "light": {
+        "primary": "bright-indirect"
+      },
+      "soilMoisture": {
+        "primary": "moderate"
+      },
+      "humidityPctRange": [
+        70,
+        90
+      ],
+      "tempCRange": [
+        18,
+        25
+      ],
+      "maxHeightCm": 10,
+      "rootDepthMinCm": 1,
+      "rootDepthMaxCm": 3,
+      "phPreference": "acidic",
+      "growthRate": "slow",
+      "substrateTags": [
+        "orchid-bark",
+        "sphagnum",
+        "perlite"
+      ],
+      "closedTerrariumOk": true,
+      "openTerrariumOk": false,
+      "difficulty": 4,
+      "image": "plants/miniature-orchid.png",
+      "notes": "Miniature-growing pleurothallid orchid. Prefers good airflow even in high humidity. Mount on cork bark or fine sphagnum for best results."
+    },
+    {
+      "slug": "peperomia-caperata",
+      "commonName": "Emerald Ripple Peperomia",
+      "scientificName": "Peperomia caperata",
+      "light": {
+        "primary": "medium"
+      },
+      "soilMoisture": {
+        "primary": "moderate",
+        "secondary": "dry"
+      },
+      "humidityPctRange": [
+        50,
+        75
+      ],
+      "tempCRange": [
+        18,
+        26
+      ],
+      "maxHeightCm": 20,
+      "rootDepthMinCm": 3,
+      "rootDepthMaxCm": 8,
+      "phPreference": "neutral",
+      "growthRate": "slow",
+      "substrateTags": [
+        "peat",
+        "perlite",
+        "sand"
+      ],
+      "closedTerrariumOk": true,
+      "openTerrariumOk": true,
+      "difficulty": 2,
+      "image": "plants/peperomia-caperata.png",
+      "notes": "Textured rippled leaves. Semi-succulent stems store some water; allow top of substrate to dry slightly between watering."
+    },
+    {
+      "slug": "peperomia-rotundifolia",
+      "commonName": "Trailing Jade",
+      "scientificName": "Peperomia rotundifolia",
+      "light": {
+        "primary": "medium"
+      },
+      "soilMoisture": {
+        "primary": "moderate"
+      },
+      "humidityPctRange": [
+        50,
+        80
+      ],
+      "tempCRange": [
+        18,
+        26
+      ],
+      "maxHeightCm": 10,
+      "rootDepthMinCm": 2,
+      "rootDepthMaxCm": 4,
+      "phPreference": "neutral",
+      "growthRate": "slow",
+      "substrateTags": [
+        "peat",
+        "perlite",
+        "sand"
+      ],
+      "closedTerrariumOk": true,
+      "openTerrariumOk": true,
+      "difficulty": 2,
+      "image": "plants/peperomia-rotundifolia.png",
+      "notes": "Delicate trailing stems with small round leaves. Excellent for cascading over edges of backgrounds or wood."
+    },
+    {
+      "slug": "cryptanthus-bivittatus",
+      "commonName": "Earth Star Bromeliad",
+      "scientificName": "Cryptanthus bivittatus",
+      "light": {
+        "primary": "bright-indirect",
+        "secondary": "medium"
+      },
+      "soilMoisture": {
+        "primary": "moderate"
+      },
+      "humidityPctRange": [
+        50,
+        75
+      ],
+      "tempCRange": [
+        18,
+        27
+      ],
+      "maxHeightCm": 20,
+      "rootDepthMinCm": 3,
+      "rootDepthMaxCm": 8,
+      "phPreference": "neutral",
+      "growthRate": "slow",
+      "substrateTags": [
+        "orchid-bark",
+        "perlite",
+        "sand"
+      ],
+      "closedTerrariumOk": true,
+      "openTerrariumOk": true,
+      "difficulty": 2,
+      "image": "plants/cryptanthus-bivittatus.png",
+      "nativeContext": "A terrestrial bromeliad from the shaded forest floors of eastern Brazil.",
+      "notes": "Star-shaped rosette bromeliad. Holds water in its central cup; do not let cup go dry. Pups freely after flowering."
+    },
+    {
+      "slug": "ophiopogon-japonicus-mini",
+      "commonName": "Dwarf Mondo Grass",
+      "scientificName": "Ophiopogon japonicus 'Nana'",
+      "light": {
+        "primary": "medium"
+      },
+      "soilMoisture": {
+        "primary": "moderate"
+      },
+      "humidityPctRange": [
+        50,
+        80
+      ],
+      "tempCRange": [
+        10,
+        28
+      ],
+      "maxHeightCm": 10,
+      "rootDepthMinCm": 2,
+      "rootDepthMaxCm": 4,
+      "phPreference": "neutral",
+      "growthRate": "slow",
+      "substrateTags": [
+        "peat",
+        "perlite",
+        "sand"
+      ],
+      "closedTerrariumOk": true,
+      "openTerrariumOk": true,
+      "difficulty": 1,
+      "image": "plants/ophiopogon-japonicus-mini.png",
+      "notes": "Grass-like tufts; stays very compact. Excellent as a ground-cover accent. Very cold-tolerant — one of the few options for cool builds."
+    },
+    {
+      "slug": "syngonium-podophyllum-mini",
+      "commonName": "Arrowhead Plant (mini)",
+      "scientificName": "Syngonium podophyllum",
+      "light": {
+        "primary": "medium",
+        "secondary": "low"
+      },
+      "soilMoisture": {
+        "primary": "moist"
+      },
+      "humidityPctRange": [
+        60,
+        85
+      ],
+      "tempCRange": [
+        18,
+        27
+      ],
+      "maxHeightCm": 25,
+      "rootDepthMinCm": 4,
+      "rootDepthMaxCm": 10,
+      "phPreference": "acidic",
+      "growthRate": "moderate",
+      "substrateTags": [
+        "peat",
+        "perlite"
+      ],
+      "closedTerrariumOk": true,
+      "openTerrariumOk": false,
+      "difficulty": 2,
+      "image": "plants/syngonium-podophyllum-mini.png",
+      "toxicity": "Foliage and sap carry calcium oxalate crystals; ingestion irritates the mouth and digestive tract and the sap can irritate skin. Toxic to cats and dogs.",
+      "notes": "Arrow-shaped leaves on compact juvenile growth. Trim frequently; mature climbing growth is not suitable for enclosed builds."
+    },
+    {
+      "slug": "pilea-nummulariifolia",
+      "commonName": "Creeping Charlie",
+      "scientificName": "Pilea nummulariifolia",
+      "light": {
+        "primary": "medium"
+      },
+      "soilMoisture": {
+        "primary": "moderate"
+      },
+      "humidityPctRange": [
+        55,
+        80
+      ],
+      "tempCRange": [
+        18,
+        27
+      ],
+      "maxHeightCm": 8,
+      "rootDepthMinCm": 2,
+      "rootDepthMaxCm": 3,
+      "phPreference": "neutral",
+      "growthRate": "moderate",
+      "substrateTags": [
+        "peat",
+        "perlite",
+        "coco-coir"
+      ],
+      "closedTerrariumOk": true,
+      "openTerrariumOk": true,
+      "difficulty": 1,
+      "image": "plants/pilea-nummulariifolia.png",
+      "notes": "Fast-spreading carpet plant with tiny round leaves. Easy to control with trimming. Good filler for open midground areas."
+    },
+    {
+      "slug": "begonia-rex",
+      "commonName": "Rex Begonia",
+      "scientificName": "Begonia rex-cultorum",
+      "light": {
+        "primary": "bright-indirect"
+      },
+      "soilMoisture": {
+        "primary": "moderate"
+      },
+      "humidityPctRange": [
+        60,
+        80
+      ],
+      "tempCRange": [
+        18,
+        24
+      ],
+      "maxHeightCm": 35,
+      "rootDepthMinCm": 5,
+      "rootDepthMaxCm": 14,
+      "phPreference": "neutral",
+      "growthRate": "moderate",
+      "substrateTags": [
+        "peat",
+        "perlite"
+      ],
+      "closedTerrariumOk": true,
+      "openTerrariumOk": false,
+      "difficulty": 3,
+      "image": "plants/begonia-rex.png",
+      "toxicity": "Begonias contain soluble calcium oxalates, most concentrated in the tubers; ingestion can cause mouth irritation, drooling, and vomiting in cats and dogs.",
+      "notes": "Spectacular metallic, patterned foliage. High humidity is essential but avoid water on leaves — promotes botrytis. Needs bright indirect light."
+    },
+    {
+      "slug": "haworthia-attenuata",
+      "commonName": "Zebra Haworthia",
+      "scientificName": "Haworthia attenuata",
+      "light": {
+        "primary": "bright-indirect",
+        "secondary": "medium"
+      },
+      "soilMoisture": {
+        "primary": "dry"
+      },
+      "humidityPctRange": [
+        20,
+        50
+      ],
+      "tempCRange": [
+        10,
+        32
+      ],
+      "maxHeightCm": 15,
+      "rootDepthMinCm": 2,
+      "rootDepthMaxCm": 6,
+      "phPreference": "neutral",
+      "growthRate": "slow",
+      "substrateTags": [
+        "sand",
+        "perlite",
+        "grit"
+      ],
+      "closedTerrariumOk": false,
+      "openTerrariumOk": true,
+      "difficulty": 1,
+      "image": "plants/haworthia-attenuata.png",
+      "nativeContext": "From shaded, rocky ground in the Eastern Cape of South Africa, often sheltered under shrubs.",
+      "notes": "Tolerates low light better than most succulents. White warty stripes on leaves. Prefers bright indirect rather than direct sun — windows without afternoon sun are ideal."
+    },
+    {
+      "slug": "echeveria-elegans",
+      "commonName": "Mexican Snowball",
+      "scientificName": "Echeveria elegans",
+      "light": {
+        "primary": "direct",
+        "secondary": "bright-indirect"
+      },
+      "soilMoisture": {
+        "primary": "dry"
+      },
+      "humidityPctRange": [
+        10,
+        40
+      ],
+      "tempCRange": [
+        5,
+        35
+      ],
+      "maxHeightCm": 10,
+      "rootDepthMinCm": 2,
+      "rootDepthMaxCm": 4,
+      "phPreference": "neutral",
+      "growthRate": "slow",
+      "substrateTags": [
+        "sand",
+        "perlite",
+        "grit"
+      ],
+      "closedTerrariumOk": false,
+      "openTerrariumOk": true,
+      "difficulty": 1,
+      "image": "plants/echeveria-elegans.png",
+      "nativeContext": "From semi-arid rocky outcrops in the highlands of Mexico, in bright sun and fast-draining ground.",
+      "notes": "Classic rosette succulent. Needs bright direct sun to maintain compact form; etiolates quickly in shade. Pups prolifically."
+    },
+    {
+      "slug": "sedum-rubrotinctum",
+      "commonName": "Jelly Bean Plant",
+      "scientificName": "Sedum rubrotinctum",
+      "light": {
+        "primary": "direct",
+        "secondary": "bright-indirect"
+      },
+      "soilMoisture": {
+        "primary": "dry"
+      },
+      "humidityPctRange": [
+        10,
+        40
+      ],
+      "tempCRange": [
+        7,
+        32
+      ],
+      "maxHeightCm": 20,
+      "rootDepthMinCm": 3,
+      "rootDepthMaxCm": 8,
+      "phPreference": "neutral",
+      "growthRate": "slow",
+      "substrateTags": [
+        "sand",
+        "perlite",
+        "grit"
+      ],
+      "closedTerrariumOk": false,
+      "openTerrariumOk": true,
+      "difficulty": 1,
+      "image": "plants/sedum-rubrotinctum.png",
+      "notes": "Bean-shaped leaves turn red at tips with sun stress. Stems are brittle — handle carefully. Leaves propagate easily."
+    },
+    {
+      "slug": "crassula-ovata-mini",
+      "commonName": "Mini Jade Plant",
+      "scientificName": "Crassula ovata (dwarf cultivar)",
+      "light": {
+        "primary": "bright-indirect"
+      },
+      "soilMoisture": {
+        "primary": "dry"
+      },
+      "humidityPctRange": [
+        20,
+        50
+      ],
+      "tempCRange": [
+        10,
+        30
+      ],
+      "maxHeightCm": 25,
+      "rootDepthMinCm": 4,
+      "rootDepthMaxCm": 10,
+      "phPreference": "neutral",
+      "growthRate": "slow",
+      "substrateTags": [
+        "sand",
+        "perlite",
+        "grit"
+      ],
+      "closedTerrariumOk": false,
+      "openTerrariumOk": true,
+      "difficulty": 1,
+      "image": "plants/crassula-ovata-mini.png",
+      "toxicity": "Jade is toxic to cats and dogs; ingestion can cause vomiting, lethargy, and incoordination. Keep away from pets.",
+      "notes": "Dwarf jade stays compact for years. Water only when completely dry. Good for rock-garden style open terrariums."
+    },
+    {
+      "slug": "pilea-peperomioides",
+      "commonName": "Chinese Money Plant",
+      "scientificName": "Pilea peperomioides",
+      "light": {
+        "primary": "bright-indirect",
+        "secondary": "medium"
+      },
+      "soilMoisture": {
+        "primary": "moderate"
+      },
+      "humidityPctRange": [
+        40,
+        65
+      ],
+      "tempCRange": [
+        13,
+        27
+      ],
+      "maxHeightCm": 30,
+      "rootDepthMinCm": 5,
+      "rootDepthMaxCm": 12,
+      "phPreference": "neutral",
+      "growthRate": "moderate",
+      "substrateTags": [
+        "peat",
+        "perlite",
+        "sand"
+      ],
+      "closedTerrariumOk": false,
+      "openTerrariumOk": true,
+      "difficulty": 2,
+      "image": "plants/pilea-peperomioides.png",
+      "nativeContext": "Native to the forested foothills of the Himalayas in Yunnan, China.",
+      "notes": "Round pancake-shaped leaves. Rotate regularly for even growth. Pups freely at the base. Prefers cooler temperatures than tropical species."
+    },
+    {
+      "slug": "tradescantia-fluminensis",
+      "commonName": "Wandering Dude",
+      "scientificName": "Tradescantia fluminensis",
+      "light": {
+        "primary": "medium"
+      },
+      "soilMoisture": {
+        "primary": "moderate"
+      },
+      "humidityPctRange": [
+        40,
+        70
+      ],
+      "tempCRange": [
+        15,
+        27
+      ],
+      "maxHeightCm": 20,
+      "rootDepthMinCm": 3,
+      "rootDepthMaxCm": 8,
+      "phPreference": "neutral",
+      "growthRate": "fast",
+      "substrateTags": [
+        "peat",
+        "perlite"
+      ],
+      "closedTerrariumOk": false,
+      "openTerrariumOk": true,
+      "difficulty": 1,
+      "image": "plants/tradescantia-fluminensis.png",
+      "toxicity": "The sap causes contact dermatitis in pets and can irritate sensitive skin in people; ingestion may cause mild digestive upset. Listed toxic to cats and dogs.",
+      "notes": "Very fast-growing trailing plant. Can overwhelm smaller companions; trim frequently. Purple-leaf varieties need brighter light for colour retention."
+    },
+    {
+      "slug": "leucobryum-glaucum",
+      "commonName": "Cushion Moss",
+      "scientificName": "Leucobryum glaucum",
+      "light": {
+        "primary": "low"
+      },
+      "soilMoisture": {
+        "primary": "moist"
+      },
+      "humidityPctRange": [
+        70,
+        100
+      ],
+      "tempCRange": [
+        10,
+        25
+      ],
+      "maxHeightCm": 4,
+      "rootDepthMinCm": 2,
+      "rootDepthMaxCm": 4,
+      "phPreference": "acidic",
+      "growthRate": "slow",
+      "substrateTags": [
+        "sphagnum",
+        "coco-coir",
+        "peat"
+      ],
+      "closedTerrariumOk": true,
+      "openTerrariumOk": false,
+      "difficulty": 1,
+      "image": "plants/leucobryum-glaucum.png",
+      "notes": "Forms dense, velvety light-green clumps. Perfect for micro containers and jars as a primary ground cover."
+    },
+    {
+      "slug": "fissidens-fontanus",
+      "commonName": "Pocket Moss",
+      "scientificName": "Fissidens fontanus",
+      "light": {
+        "primary": "low"
+      },
+      "soilMoisture": {
+        "primary": "wet"
+      },
+      "humidityPctRange": [
+        80,
+        100
+      ],
+      "tempCRange": [
+        15,
+        26
+      ],
+      "maxHeightCm": 3,
+      "rootDepthMinCm": 1,
+      "rootDepthMaxCm": 3,
+      "phPreference": "acidic",
+      "growthRate": "slow",
+      "substrateTags": [
+        "sphagnum"
+      ],
+      "closedTerrariumOk": true,
+      "openTerrariumOk": false,
+      "difficulty": 2,
+      "image": "plants/fissidens-fontanus.png",
+      "hardscapeTags": [
+        "rock",
+        "wood"
+      ],
+      "notes": "Feathery aquatic moss that grows beautifully on damp wood or rocks. Excellent choice for miniature sealed setups."
+    },
+    {
+      "slug": "davallia-fejeensis",
+      "commonName": "Rabbit's Foot Fern",
+      "scientificName": "Davallia fejeensis",
+      "light": {
+        "primary": "medium"
+      },
+      "soilMoisture": {
+        "primary": "moderate",
+        "secondary": "moist"
+      },
+      "humidityPctRange": [
+        60,
+        85
+      ],
+      "tempCRange": [
+        15,
+        27
+      ],
+      "maxHeightCm": 25,
+      "rootDepthMinCm": 4,
+      "rootDepthMaxCm": 10,
+      "phPreference": "neutral",
+      "growthRate": "moderate",
+      "substrateTags": [
+        "peat",
+        "perlite",
+        "orchid-bark"
+      ],
+      "closedTerrariumOk": true,
+      "openTerrariumOk": true,
+      "difficulty": 2,
+      "image": "plants/davallia-fejeensis.png",
+      "notes": "Features furry surface rhizomes that resemble animal feet. Thrives in both closed or well-ventilated open terrariums."
+    },
+    {
+      "slug": "asplenium-bulbiferum",
+      "commonName": "Mother Spleenwort",
+      "scientificName": "Asplenium bulbiferum",
+      "light": {
+        "primary": "medium"
+      },
+      "soilMoisture": {
+        "primary": "moist"
+      },
+      "humidityPctRange": [
+        65,
+        90
+      ],
+      "tempCRange": [
+        12,
+        24
+      ],
+      "maxHeightCm": 30,
+      "rootDepthMinCm": 5,
+      "rootDepthMaxCm": 12,
+      "phPreference": "acidic",
+      "growthRate": "moderate",
+      "substrateTags": [
+        "peat",
+        "perlite",
+        "sphagnum"
+      ],
+      "closedTerrariumOk": true,
+      "openTerrariumOk": false,
+      "difficulty": 3,
+      "image": "plants/asplenium-bulbiferum.png",
+      "notes": "Graceful fern that grows miniature plantlets directly on its fronds. Prefers stable, highly humid closed systems."
+    },
+    {
+      "slug": "peperomia-argyreia",
+      "commonName": "Watermelon Peperomia",
+      "scientificName": "Peperomia argyreia",
+      "light": {
+        "primary": "bright-indirect"
+      },
+      "soilMoisture": {
+        "primary": "moderate"
+      },
+      "humidityPctRange": [
+        50,
+        75
+      ],
+      "tempCRange": [
+        18,
+        26
+      ],
+      "maxHeightCm": 20,
+      "rootDepthMinCm": 3,
+      "rootDepthMaxCm": 8,
+      "phPreference": "neutral",
+      "growthRate": "moderate",
+      "substrateTags": [
+        "peat",
+        "perlite",
+        "sand"
+      ],
+      "closedTerrariumOk": true,
+      "openTerrariumOk": true,
+      "difficulty": 2,
+      "image": "plants/peperomia-argyreia.png",
+      "notes": "Stunning leaves patterned exactly like watermelon rinds. Semi-succulent stems make it sensitive to overwatering in closed glass."
+    },
+    {
+      "slug": "peperomia-obtusifolia",
+      "commonName": "Baby Rubber Plant",
+      "scientificName": "Peperomia obtusifolia",
+      "light": {
+        "primary": "bright-indirect",
+        "secondary": "medium"
+      },
+      "soilMoisture": {
+        "primary": "moderate",
+        "secondary": "dry"
+      },
+      "humidityPctRange": [
+        40,
+        70
+      ],
+      "tempCRange": [
+        15,
+        30
+      ],
+      "maxHeightCm": 25,
+      "rootDepthMinCm": 4,
+      "rootDepthMaxCm": 10,
+      "phPreference": "neutral",
+      "growthRate": "moderate",
+      "substrateTags": [
+        "peat",
+        "perlite",
+        "sand"
+      ],
+      "closedTerrariumOk": true,
+      "openTerrariumOk": true,
+      "difficulty": 1,
+      "image": "plants/peperomia-obtusifolia.png",
+      "notes": "Thick, glossy leaves that store moisture. Highly durable choice for larger open terrariums or monitored closed ones."
+    },
+    {
+      "slug": "bucephalandra-sp-mini",
+      "commonName": "Mini Bucephalandra",
+      "scientificName": "Bucephalandra sp.",
+      "light": {
+        "primary": "low"
+      },
+      "soilMoisture": {
+        "primary": "wet",
+        "secondary": "moist"
+      },
+      "humidityPctRange": [
+        80,
+        100
+      ],
+      "tempCRange": [
+        18,
+        28
+      ],
+      "maxHeightCm": 4,
+      "rootDepthMinCm": 1,
+      "rootDepthMaxCm": 3,
+      "phPreference": "acidic",
+      "growthRate": "slow",
+      "substrateTags": [
+        "sphagnum"
+      ],
+      "closedTerrariumOk": true,
+      "openTerrariumOk": false,
+      "difficulty": 3,
+      "image": "plants/bucephalandra-sp-mini.png",
+      "hardscapeTags": [
+        "rock",
+        "wood"
+      ],
+      "notes": "An elegant slow grower with dark metallic hues. Must be attached to rock or wood rather than buried; ideal for micro sealed jars."
+    },
+    {
+      "slug": "anubias-nana-petite",
+      "commonName": "Anubias Petite",
+      "scientificName": "Anubias barteri var. nana 'Petite'",
+      "light": {
+        "primary": "low"
+      },
+      "soilMoisture": {
+        "primary": "wet",
+        "secondary": "moist"
+      },
+      "humidityPctRange": [
+        75,
+        100
+      ],
+      "tempCRange": [
+        15,
+        28
+      ],
+      "maxHeightCm": 5,
+      "rootDepthMinCm": 1,
+      "rootDepthMaxCm": 3,
+      "phPreference": "acidic",
+      "growthRate": "slow",
+      "substrateTags": [
+        "sphagnum"
+      ],
+      "closedTerrariumOk": true,
+      "openTerrariumOk": false,
+      "difficulty": 1,
+      "image": "plants/anubias-nana-petite.png",
+      "hardscapeTags": [
+        "rock",
+        "wood"
+      ],
+      "notes": "Extremely robust miniature aquatic plant. Thrives perfectly in waterlogged, hyper-humid conditions on wood or hardscape inside tiny jars."
+    },
+    {
+      "slug": "hydrocotyle-tripartita",
+      "commonName": "Dwarf Pennywort",
+      "scientificName": "Hydrocotyle tripartita",
+      "light": {
+        "primary": "bright-indirect"
+      },
+      "soilMoisture": {
+        "primary": "moist"
+      },
+      "humidityPctRange": [
+        70,
+        95
+      ],
+      "tempCRange": [
+        15,
+        26
+      ],
+      "maxHeightCm": 8,
+      "rootDepthMinCm": 2,
+      "rootDepthMaxCm": 3,
+      "phPreference": "acidic",
+      "growthRate": "fast",
+      "substrateTags": [
+        "peat",
+        "coco-coir",
+        "sand"
+      ],
+      "closedTerrariumOk": true,
+      "openTerrariumOk": false,
+      "difficulty": 2,
+      "image": "plants/hydrocotyle-tripartita.png",
+      "notes": "Produces small clover-like leaves on fast-growing creeping runners. Forms a dense green carpet if trimmed regularly."
+    },
+    {
+      "slug": "pilea-glauca",
+      "commonName": "Silver Sparkle Pilea",
+      "scientificName": "Pilea glauca",
+      "light": {
+        "primary": "medium"
+      },
+      "soilMoisture": {
+        "primary": "moderate"
+      },
+      "humidityPctRange": [
+        60,
+        85
+      ],
+      "tempCRange": [
+        15,
+        26
+      ],
+      "maxHeightCm": 10,
+      "rootDepthMinCm": 2,
+      "rootDepthMaxCm": 4,
+      "phPreference": "neutral",
+      "growthRate": "fast",
+      "substrateTags": [
+        "peat",
+        "perlite",
+        "sand"
+      ],
+      "closedTerrariumOk": true,
+      "openTerrariumOk": true,
+      "difficulty": 2,
+      "image": "plants/pilea-glauca.png",
+      "notes": "A beautiful trailing plant with red stems and tiny metallic blue-silver leaves. Spreads quickly and looks magnificent cascading down."
+    },
+    {
+      "slug": "epipremnum-pinnatum-mini",
+      "commonName": "Miniature Pothos",
+      "scientificName": "Epipremnum pinnatum",
+      "light": {
+        "primary": "medium",
+        "secondary": "low"
+      },
+      "soilMoisture": {
+        "primary": "moderate"
+      },
+      "humidityPctRange": [
+        55,
+        80
+      ],
+      "tempCRange": [
+        18,
+        28
+      ],
+      "maxHeightCm": 25,
+      "rootDepthMinCm": 4,
+      "rootDepthMaxCm": 10,
+      "phPreference": "neutral",
+      "growthRate": "moderate",
+      "substrateTags": [
+        "peat",
+        "perlite",
+        "coco-coir"
+      ],
+      "closedTerrariumOk": true,
+      "openTerrariumOk": true,
+      "difficulty": 1,
+      "image": "plants/epipremnum-pinnatum-mini.png",
+      "toxicity": "Pothos contains insoluble calcium oxalates; ingestion causes oral irritation, drooling, and vomiting. Toxic to cats and dogs.",
+      "notes": "A scaled-down cultivar of the incredibly tough pothos vine. Highly adaptable, handles trailing or climbing with ease."
+    },
+    {
+      "slug": "ludwigia-repens",
+      "commonName": "Creeping Primrose-Willow",
+      "scientificName": "Ludwigia repens",
+      "light": {
+        "primary": "bright-indirect"
+      },
+      "soilMoisture": {
+        "primary": "wet"
+      },
+      "humidityPctRange": [
+        75,
+        100
+      ],
+      "tempCRange": [
+        15,
+        26
+      ],
+      "maxHeightCm": 20,
+      "rootDepthMinCm": 3,
+      "rootDepthMaxCm": 8,
+      "phPreference": "acidic",
+      "growthRate": "fast",
+      "substrateTags": [
+        "peat",
+        "sand",
+        "mud"
+      ],
+      "closedTerrariumOk": true,
+      "openTerrariumOk": false,
+      "difficulty": 2,
+      "image": "plants/ludwigia-repens.png",
+      "notes": "An amphibious species whose leaves flush attractive reddish colors under bright light. Excels in swampy closed layouts."
+    },
+    {
+      "slug": "vesicularia-dubyana",
+      "commonName": "Christmas Moss",
+      "scientificName": "Vesicularia dubyana",
+      "light": {
+        "primary": "low"
+      },
+      "soilMoisture": {
+        "primary": "wet"
+      },
+      "humidityPctRange": [
+        75,
+        100
+      ],
+      "tempCRange": [
+        15,
+        28
+      ],
+      "maxHeightCm": 4,
+      "rootDepthMinCm": 1,
+      "rootDepthMaxCm": 3,
+      "phPreference": "acidic",
+      "growthRate": "moderate",
+      "substrateTags": [
+        "sphagnum"
+      ],
+      "closedTerrariumOk": true,
+      "openTerrariumOk": false,
+      "difficulty": 1,
+      "image": "plants/vesicularia-dubyana.png",
+      "hardscapeTags": [
+        "rock",
+        "wood"
+      ],
+      "notes": "Grows in triangular, fern-like branch structures resembling a pine tree. Highly forgiving and spectacular for miniature setups."
+    },
+    {
+      "slug": "soleirolia-soleirolii-minor",
+      "commonName": "Miniature Baby Tears",
+      "scientificName": "Soleirolia soleirolii 'Minor'",
+      "light": {
+        "primary": "medium"
+      },
+      "soilMoisture": {
+        "primary": "moist"
+      },
+      "humidityPctRange": [
+        70,
+        95
+      ],
+      "tempCRange": [
+        10,
+        24
+      ],
+      "maxHeightCm": 3,
+      "rootDepthMinCm": 2,
+      "rootDepthMaxCm": 4,
+      "phPreference": "acidic",
+      "growthRate": "fast",
+      "substrateTags": [
+        "peat",
+        "coco-coir",
+        "sphagnum"
+      ],
+      "closedTerrariumOk": true,
+      "openTerrariumOk": false,
+      "difficulty": 2,
+      "image": "plants/soleirolia-soleirolii-minor.png",
+      "notes": "Even smaller and more compact than standard Baby Tears. Forms an ultra-dense microscopic bright green carpet."
+    },
+    {
+      "slug": "rhipsalis-baccifera",
+      "commonName": "Mistletoe Cactus",
+      "scientificName": "Rhipsalis baccifera",
+      "light": {
+        "primary": "bright-indirect",
+        "secondary": "medium"
+      },
+      "soilMoisture": {
+        "primary": "moderate"
+      },
+      "humidityPctRange": [
+        40,
+        70
+      ],
+      "tempCRange": [
+        15,
+        27
+      ],
+      "maxHeightCm": 30,
+      "rootDepthMinCm": 5,
+      "rootDepthMaxCm": 12,
+      "phPreference": "neutral",
+      "growthRate": "slow",
+      "substrateTags": [
+        "orchid-bark",
+        "peat",
+        "perlite"
+      ],
+      "closedTerrariumOk": true,
+      "openTerrariumOk": true,
+      "difficulty": 2,
+      "image": "plants/rhipsalis-baccifera.png",
+      "nativeContext": "An epiphytic jungle cactus of tropical American rainforests, dangling from tree branches.",
+      "notes": "An epiphytic jungle cactus that prefers indirect light. Tolerates well-monitored closed terrariums surprisingly well."
+    },
+    {
+      "slug": "drosera-capensis",
+      "commonName": "Cape Sundew",
+      "scientificName": "Drosera capensis",
+      "light": {
+        "primary": "bright-indirect",
+        "secondary": "direct"
+      },
+      "soilMoisture": {
+        "primary": "moist"
+      },
+      "humidityPctRange": [
+        50,
+        80
+      ],
+      "tempCRange": [
+        5,
+        30
+      ],
+      "maxHeightCm": 15,
+      "rootDepthMinCm": 2,
+      "rootDepthMaxCm": 6,
+      "phPreference": "acidic",
+      "growthRate": "moderate",
+      "substrateTags": [
+        "sphagnum",
+        "sand",
+        "peat"
+      ],
+      "closedTerrariumOk": false,
+      "openTerrariumOk": true,
+      "difficulty": 3,
+      "image": "plants/drosera-capensis.png",
+      "growthHabit": "rosette",
+      "plantType": "carnivorous",
+      "nativeBiome": "subtropical",
+      "nativeContext": "From the winter-rainfall fynbos of South Africa's Western Cape, in permanently damp, nutrient-poor seeps.",
+      "notes": "Forgiving beginner carnivore. Use only rain/distilled water — minerals are lethal. Wants bright light and airflow; dews drop in stale air."
+    },
+    {
+      "slug": "nepenthes-ventricosa",
+      "commonName": "Tropical Pitcher Plant",
+      "scientificName": "Nepenthes ventricosa",
+      "light": {
+        "primary": "bright-indirect"
+      },
+      "soilMoisture": {
+        "primary": "moist"
+      },
+      "humidityPctRange": [
+        60,
+        90
+      ],
+      "tempCRange": [
+        15,
+        29
+      ],
+      "maxHeightCm": 30,
+      "rootDepthMinCm": 5,
+      "rootDepthMaxCm": 12,
+      "phPreference": "acidic",
+      "growthRate": "moderate",
+      "substrateTags": [
+        "sphagnum",
+        "perlite",
+        "orchid-bark"
+      ],
+      "closedTerrariumOk": true,
+      "openTerrariumOk": false,
+      "difficulty": 4,
+      "image": "plants/nepenthes-ventricosa.png",
+      "growthHabit": "climbing",
+      "plantType": "carnivorous",
+      "nativeBiome": "tropical",
+      "nativeContext": "A highland pitcher plant endemic to the Philippines, on mossy mountain slopes in cool, humid cloud forest.",
+      "notes": "A tolerant highland Nepenthes that pitchers well in humid enclosures. Never let the airy, chunky mix stay soggy. Distilled water only."
+    },
+    {
+      "slug": "pinguicula-moranensis",
+      "commonName": "Mexican Butterwort",
+      "scientificName": "Pinguicula moranensis",
+      "light": {
+        "primary": "bright-indirect"
+      },
+      "soilMoisture": {
+        "primary": "moderate"
+      },
+      "humidityPctRange": [
+        50,
+        80
+      ],
+      "tempCRange": [
+        10,
+        30
+      ],
+      "maxHeightCm": 8,
+      "rootDepthMinCm": 2,
+      "rootDepthMaxCm": 3,
+      "phPreference": "neutral",
+      "growthRate": "slow",
+      "substrateTags": [
+        "sand",
+        "perlite",
+        "peat"
+      ],
+      "closedTerrariumOk": false,
+      "openTerrariumOk": true,
+      "difficulty": 3,
+      "image": "plants/pinguicula-moranensis.png",
+      "growthHabit": "rosette",
+      "plantType": "carnivorous",
+      "nativeBiome": "montane",
+      "nativeContext": "Native to rocky, seasonally dry slopes in the mountains of Mexico and Central America.",
+      "notes": "Sticky-leaved gnat catcher with a mineral, near-neutral mix (unusual for a carnivore). Has a drier winter succulent phase — ease off water then."
+    },
+    {
+      "slug": "nephrolepis-duffii",
+      "commonName": "Lemon Button Fern",
+      "scientificName": "Nephrolepis cordifolia 'Duffii'",
+      "light": {
+        "primary": "medium",
+        "secondary": "low"
+      },
+      "soilMoisture": {
+        "primary": "moist",
+        "secondary": "moderate"
+      },
+      "humidityPctRange": [
+        50,
+        85
+      ],
+      "tempCRange": [
+        15,
+        27
+      ],
+      "maxHeightCm": 20,
+      "rootDepthMinCm": 3,
+      "rootDepthMaxCm": 8,
+      "phPreference": "acidic",
+      "growthRate": "moderate",
+      "substrateTags": [
+        "peat",
+        "perlite",
+        "coco-coir"
+      ],
+      "closedTerrariumOk": true,
+      "openTerrariumOk": true,
+      "difficulty": 2,
+      "image": "plants/nephrolepis-duffii.png",
+      "growthHabit": "upright",
+      "plantType": "fern",
+      "nativeBiome": "tropical",
+      "notes": "Compact, lemon-scented button fronds. One of the easiest ferns for both open and closed setups; keep evenly moist."
+    },
+    {
+      "slug": "pteris-cretica",
+      "commonName": "Silver Lace Fern",
+      "scientificName": "Pteris cretica",
+      "light": {
+        "primary": "medium"
+      },
+      "soilMoisture": {
+        "primary": "moist"
+      },
+      "humidityPctRange": [
+        50,
+        80
+      ],
+      "tempCRange": [
+        15,
+        26
+      ],
+      "maxHeightCm": 25,
+      "rootDepthMinCm": 4,
+      "rootDepthMaxCm": 10,
+      "phPreference": "neutral",
+      "growthRate": "moderate",
+      "substrateTags": [
+        "peat",
+        "perlite"
+      ],
+      "closedTerrariumOk": true,
+      "openTerrariumOk": true,
+      "difficulty": 2,
+      "image": "plants/pteris-cretica.png",
+      "growthHabit": "upright",
+      "plantType": "fern",
+      "nativeBiome": "subtropical",
+      "notes": "Variegated cretan brake fern. Tolerates a touch of lime, so a neutral mix is fine. Airy fronds suit medium-sized planted terraria."
+    },
+    {
+      "slug": "microsorum-musifolium",
+      "commonName": "Crocodile Fern",
+      "scientificName": "Microsorum musifolium",
+      "light": {
+        "primary": "medium"
+      },
+      "soilMoisture": {
+        "primary": "moist",
+        "secondary": "moderate"
+      },
+      "humidityPctRange": [
+        60,
+        90
+      ],
+      "tempCRange": [
+        16,
+        27
+      ],
+      "maxHeightCm": 30,
+      "rootDepthMinCm": 5,
+      "rootDepthMaxCm": 12,
+      "phPreference": "acidic",
+      "growthRate": "slow",
+      "substrateTags": [
+        "sphagnum",
+        "peat",
+        "perlite"
+      ],
+      "closedTerrariumOk": true,
+      "openTerrariumOk": false,
+      "difficulty": 3,
+      "image": "plants/microsorum-musifolium.png",
+      "growthHabit": "upright",
+      "plantType": "fern",
+      "nativeBiome": "tropical",
+      "notes": "Puckered, crocodile-skin fronds. An epiphyte at heart — loves humidity and a chunky, never-waterlogged root run."
+    },
+    {
+      "slug": "selaginella-kraussiana",
+      "commonName": "Golden Clubmoss",
+      "scientificName": "Selaginella kraussiana 'Aurea'",
+      "light": {
+        "primary": "low"
+      },
+      "soilMoisture": {
+        "primary": "moist"
+      },
+      "humidityPctRange": [
+        70,
+        100
+      ],
+      "tempCRange": [
+        15,
+        25
+      ],
+      "maxHeightCm": 8,
+      "rootDepthMinCm": 2,
+      "rootDepthMaxCm": 4,
+      "phPreference": "acidic",
+      "growthRate": "moderate",
+      "substrateTags": [
+        "peat",
+        "coco-coir",
+        "sphagnum"
+      ],
+      "closedTerrariumOk": true,
+      "openTerrariumOk": false,
+      "difficulty": 2,
+      "image": "plants/selaginella-kraussiana.png",
+      "growthHabit": "creeping",
+      "plantType": "fern-ally",
+      "nativeBiome": "tropical",
+      "notes": "Chartreuse carpeting spikemoss. Needs constant humidity — crisps fast in open air. Excellent foreground groundcover in sealed jars."
+    },
+    {
+      "slug": "hypnum-moss",
+      "commonName": "Sheet Moss",
+      "scientificName": "Hypnum cupressiforme",
+      "light": {
+        "primary": "low"
+      },
+      "soilMoisture": {
+        "primary": "moist"
+      },
+      "humidityPctRange": [
+        70,
+        100
+      ],
+      "tempCRange": [
+        5,
+        25
+      ],
+      "maxHeightCm": 3,
+      "rootDepthMinCm": 2,
+      "rootDepthMaxCm": 4,
+      "phPreference": "acidic",
+      "growthRate": "slow",
+      "substrateTags": [
+        "sphagnum",
+        "coco-coir"
+      ],
+      "closedTerrariumOk": true,
+      "openTerrariumOk": false,
+      "difficulty": 1,
+      "image": "plants/hypnum-moss.png",
+      "growthHabit": "creeping",
+      "plantType": "moss",
+      "nativeBiome": "temperate",
+      "notes": "Flat carpeting moss that knits into a lawn over substrate and hardscape. Mist to establish; thrives on the high humidity of a closed lid."
+    },
+    {
+      "slug": "dicranum-scoparium",
+      "commonName": "Mood Moss",
+      "scientificName": "Dicranum scoparium",
+      "light": {
+        "primary": "low"
+      },
+      "soilMoisture": {
+        "primary": "moist"
+      },
+      "humidityPctRange": [
+        70,
+        100
+      ],
+      "tempCRange": [
+        5,
+        24
+      ],
+      "maxHeightCm": 5,
+      "rootDepthMinCm": 2,
+      "rootDepthMaxCm": 4,
+      "phPreference": "acidic",
+      "growthRate": "slow",
+      "substrateTags": [
+        "sphagnum",
+        "peat"
+      ],
+      "closedTerrariumOk": true,
+      "openTerrariumOk": false,
+      "difficulty": 2,
+      "image": "plants/dicranum-scoparium.png",
+      "growthHabit": "mounding",
+      "plantType": "moss",
+      "nativeBiome": "temperate",
+      "notes": "Forms plush cushions (\"mood\" = it flexes with humidity). Wants shade and a sealed, humid microclimate; dislikes being buried or sat in water."
+    },
+    {
+      "slug": "rhaphidophora-tetrasperma",
+      "commonName": "Mini Monstera",
+      "scientificName": "Rhaphidophora tetrasperma",
+      "light": {
+        "primary": "bright-indirect"
+      },
+      "soilMoisture": {
+        "primary": "moderate"
+      },
+      "humidityPctRange": [
+        50,
+        80
+      ],
+      "tempCRange": [
+        18,
+        29
+      ],
+      "maxHeightCm": 35,
+      "rootDepthMinCm": 5,
+      "rootDepthMaxCm": 14,
+      "phPreference": "neutral",
+      "growthRate": "fast",
+      "substrateTags": [
+        "peat",
+        "perlite",
+        "orchid-bark"
+      ],
+      "closedTerrariumOk": false,
+      "openTerrariumOk": true,
+      "difficulty": 2,
+      "image": "plants/rhaphidophora-tetrasperma.png",
+      "growthHabit": "climbing",
+      "plantType": "aroid",
+      "nativeBiome": "tropical",
+      "toxicity": "An aroid containing calcium oxalate crystals; ingestion irritates the mouth and digestive tract. Toxic to cats and dogs.",
+      "nativeContext": "From the rainforests of southern Thailand and Malaysia, climbing tree trunks toward the light.",
+      "notes": "Fast fenestrated climber for larger open terraria — give it a moss pole or it sprawls. Too vigorous for small sealed jars."
+    },
+    {
+      "slug": "anthurium-scandens",
+      "commonName": "Climbing Anthurium",
+      "scientificName": "Anthurium scandens",
+      "light": {
+        "primary": "bright-indirect"
+      },
+      "soilMoisture": {
+        "primary": "moist"
+      },
+      "humidityPctRange": [
+        60,
+        90
+      ],
+      "tempCRange": [
+        18,
+        29
+      ],
+      "maxHeightCm": 25,
+      "rootDepthMinCm": 4,
+      "rootDepthMaxCm": 10,
+      "phPreference": "acidic",
+      "growthRate": "moderate",
+      "substrateTags": [
+        "sphagnum",
+        "orchid-bark",
+        "perlite"
+      ],
+      "closedTerrariumOk": true,
+      "openTerrariumOk": false,
+      "difficulty": 3,
+      "image": "plants/anthurium-scandens.png",
+      "growthHabit": "climbing",
+      "plantType": "aroid",
+      "nativeBiome": "tropical",
+      "toxicity": "An aroid containing calcium oxalate crystals; sap can irritate skin and ingestion irritates the mouth and gut. Toxic to cats and dogs.",
+      "nativeContext": "A small epiphytic aroid of Central and South American rainforests, perched on branches and trunks.",
+      "notes": "A small epiphytic anthurium with pearly berries. Wants an airy, bark-rich mix and high humidity — ideal climbing a background in a closed tank."
+    },
+    {
+      "slug": "spathiphyllum-wallisii",
+      "commonName": "Peace Lily",
+      "scientificName": "Spathiphyllum wallisii",
+      "light": {
+        "primary": "low",
+        "secondary": "medium"
+      },
+      "soilMoisture": {
+        "primary": "moist",
+        "secondary": "moderate"
+      },
+      "humidityPctRange": [
+        50,
+        80
+      ],
+      "tempCRange": [
+        18,
+        27
+      ],
+      "maxHeightCm": 30,
+      "rootDepthMinCm": 5,
+      "rootDepthMaxCm": 12,
+      "phPreference": "neutral",
+      "growthRate": "moderate",
+      "substrateTags": [
+        "peat",
+        "perlite"
+      ],
+      "closedTerrariumOk": true,
+      "openTerrariumOk": true,
+      "difficulty": 2,
+      "image": "plants/spathiphyllum-wallisii.png",
+      "growthHabit": "upright",
+      "plantType": "aroid",
+      "nativeBiome": "tropical",
+      "toxicity": "Peace lily contains insoluble calcium oxalate crystals; ingestion irritates the mouth and throat and causes drooling and vomiting. Toxic to cats and dogs.",
+      "nativeContext": "Native to the humid rainforest floor of Central and South America.",
+      "notes": "Low-light tolerant and a useful humidity gauge (it droops when dry). A compact specimen suits medium terraria; remove once it outgrows."
+    },
+    {
+      "slug": "begonia-pavonina",
+      "commonName": "Peacock Begonia",
+      "scientificName": "Begonia pavonina",
+      "light": {
+        "primary": "low"
+      },
+      "soilMoisture": {
+        "primary": "moist"
+      },
+      "humidityPctRange": [
+        70,
+        95
+      ],
+      "tempCRange": [
+        18,
+        26
+      ],
+      "maxHeightCm": 20,
+      "rootDepthMinCm": 3,
+      "rootDepthMaxCm": 8,
+      "phPreference": "acidic",
+      "growthRate": "moderate",
+      "substrateTags": [
+        "sphagnum",
+        "peat",
+        "perlite"
+      ],
+      "closedTerrariumOk": true,
+      "openTerrariumOk": false,
+      "difficulty": 3,
+      "image": "plants/begonia-pavonina.png",
+      "growthHabit": "mounding",
+      "plantType": "begonia",
+      "nativeBiome": "montane",
+      "toxicity": "Begonias contain soluble calcium oxalates, most concentrated in the tubers; ingestion can cause mouth irritation, drooling, and vomiting in cats and dogs.",
+      "nativeContext": "From the dim understorey of Malaysian montane rainforest, where its leaves shimmer blue in low light.",
+      "notes": "Iridescent blue leaves (structural colour in low light). A true terrarium begonia — needs sealed humidity and shade to keep the shimmer."
+    },
+    {
+      "slug": "begonia-maculata",
+      "commonName": "Polka Dot Begonia",
+      "scientificName": "Begonia maculata",
+      "light": {
+        "primary": "bright-indirect"
+      },
+      "soilMoisture": {
+        "primary": "moderate"
+      },
+      "humidityPctRange": [
+        50,
+        80
+      ],
+      "tempCRange": [
+        18,
+        27
+      ],
+      "maxHeightCm": 30,
+      "rootDepthMinCm": 5,
+      "rootDepthMaxCm": 12,
+      "phPreference": "neutral",
+      "growthRate": "moderate",
+      "substrateTags": [
+        "peat",
+        "perlite"
+      ],
+      "closedTerrariumOk": false,
+      "openTerrariumOk": true,
+      "difficulty": 3,
+      "image": "plants/begonia-maculata.png",
+      "growthHabit": "upright",
+      "plantType": "begonia",
+      "nativeBiome": "tropical",
+      "toxicity": "Begonias contain soluble calcium oxalates, most concentrated in the tubers; ingestion can cause mouth irritation, drooling, and vomiting in cats and dogs.",
+      "notes": "Silver-spotted angel-wing begonia. Prefers airflow over a sealed lid to avoid mildew; best as a centrepiece in an open terrarium."
+    },
+    {
+      "slug": "aeschynanthus-radicans",
+      "commonName": "Lipstick Plant",
+      "scientificName": "Aeschynanthus radicans",
+      "light": {
+        "primary": "bright-indirect"
+      },
+      "soilMoisture": {
+        "primary": "moderate"
+      },
+      "humidityPctRange": [
+        50,
+        80
+      ],
+      "tempCRange": [
+        18,
+        27
+      ],
+      "maxHeightCm": 20,
+      "rootDepthMinCm": 3,
+      "rootDepthMaxCm": 8,
+      "phPreference": "acidic",
+      "growthRate": "moderate",
+      "substrateTags": [
+        "peat",
+        "perlite",
+        "sphagnum"
+      ],
+      "closedTerrariumOk": false,
+      "openTerrariumOk": true,
+      "difficulty": 2,
+      "image": "plants/aeschynanthus-radicans.png",
+      "growthHabit": "trailing",
+      "plantType": "foliage",
+      "nativeBiome": "tropical",
+      "notes": "Epiphytic trailer with tubular red blooms. Let it cascade from the rim of an open container; an airy epiphyte mix keeps the roots happy."
+    },
+    {
+      "slug": "streptocarpus-hybrid",
+      "commonName": "Cape Primrose",
+      "scientificName": "Streptocarpus hybridus",
+      "light": {
+        "primary": "medium"
+      },
+      "soilMoisture": {
+        "primary": "moderate"
+      },
+      "humidityPctRange": [
+        50,
+        80
+      ],
+      "tempCRange": [
+        15,
+        25
+      ],
+      "maxHeightCm": 20,
+      "rootDepthMinCm": 3,
+      "rootDepthMaxCm": 8,
+      "phPreference": "neutral",
+      "growthRate": "moderate",
+      "substrateTags": [
+        "peat",
+        "perlite"
+      ],
+      "closedTerrariumOk": false,
+      "openTerrariumOk": true,
+      "difficulty": 2,
+      "image": "plants/streptocarpus-hybrid.png",
+      "growthHabit": "rosette",
+      "plantType": "foliage",
+      "nativeBiome": "subtropical",
+      "notes": "Long-blooming gesneriad for open, airy terraria. Water the substrate, not the crown, and let the top dry slightly between waterings."
+    },
+    {
+      "slug": "senecio-rowleyanus",
+      "commonName": "String of Pearls",
+      "scientificName": "Curio rowleyanus",
+      "light": {
+        "primary": "bright-indirect"
+      },
+      "soilMoisture": {
+        "primary": "dry"
+      },
+      "humidityPctRange": [
+        30,
+        50
+      ],
+      "tempCRange": [
+        18,
+        27
+      ],
+      "maxHeightCm": 8,
+      "rootDepthMinCm": 2,
+      "rootDepthMaxCm": 3,
+      "phPreference": "neutral",
+      "growthRate": "moderate",
+      "substrateTags": [
+        "sand",
+        "perlite",
+        "grit"
+      ],
+      "closedTerrariumOk": false,
+      "openTerrariumOk": true,
+      "difficulty": 2,
+      "image": "plants/senecio-rowleyanus.png",
+      "growthHabit": "trailing",
+      "plantType": "succulent",
+      "nativeBiome": "arid",
+      "toxicity": "String of pearls is toxic if ingested — causing drooling, vomiting, and lethargy in pets — and the sap can irritate skin. Mildly toxic to people.",
+      "nativeContext": "Native to the dry scrublands of south-western Africa, trailing over rock in the shade of larger plants.",
+      "notes": "Bead-like trailing succulent for the edge of an open dish. Hates humidity and wet feet — strictly open, gritty, and dry between soaks."
+    },
+    {
+      "slug": "lithops-sp",
+      "commonName": "Living Stones",
+      "scientificName": "Lithops sp.",
+      "light": {
+        "primary": "direct"
+      },
+      "soilMoisture": {
+        "primary": "dry"
+      },
+      "humidityPctRange": [
+        20,
+        40
+      ],
+      "tempCRange": [
+        15,
+        32
+      ],
+      "maxHeightCm": 4,
+      "rootDepthMinCm": 2,
+      "rootDepthMaxCm": 4,
+      "phPreference": "alkaline",
+      "growthRate": "slow",
+      "substrateTags": [
+        "sand",
+        "grit",
+        "pumice"
+      ],
+      "closedTerrariumOk": false,
+      "openTerrariumOk": true,
+      "difficulty": 4,
+      "image": "plants/lithops-sp.png",
+      "growthHabit": "rosette",
+      "plantType": "succulent",
+      "nativeBiome": "arid",
+      "nativeContext": "From the arid gravel plains of southern Africa, mimicking surrounding stones to escape grazing.",
+      "notes": "Mimicry succulents that look like pebbles. Need direct sun, a mineral alkaline grit, and near-zero water in winter. Open containers only."
+    },
+    {
+      "slug": "mammillaria-gracilis",
+      "commonName": "Thimble Cactus",
+      "scientificName": "Mammillaria gracilis",
+      "light": {
+        "primary": "direct"
+      },
+      "soilMoisture": {
+        "primary": "dry"
+      },
+      "humidityPctRange": [
+        20,
+        45
+      ],
+      "tempCRange": [
+        12,
+        32
+      ],
+      "maxHeightCm": 12,
+      "rootDepthMinCm": 2,
+      "rootDepthMaxCm": 5,
+      "phPreference": "alkaline",
+      "growthRate": "slow",
+      "substrateTags": [
+        "sand",
+        "grit",
+        "pumice"
+      ],
+      "closedTerrariumOk": false,
+      "openTerrariumOk": true,
+      "difficulty": 3,
+      "image": "plants/mammillaria-gracilis.png",
+      "growthHabit": "mounding",
+      "plantType": "succulent",
+      "nativeBiome": "arid",
+      "nativeContext": "Native to arid limestone hills in central Mexico.",
+      "notes": "Clustering thimble cactus whose offsets drop and root easily. Bright sun and a sharp, lime-tolerant mix; never enclose — rot is certain."
+    },
+    {
+      "slug": "sedum-morganianum",
+      "commonName": "Burro's Tail",
+      "scientificName": "Sedum morganianum",
+      "light": {
+        "primary": "bright-indirect"
+      },
+      "soilMoisture": {
+        "primary": "dry"
+      },
+      "humidityPctRange": [
+        30,
+        50
+      ],
+      "tempCRange": [
+        15,
+        29
+      ],
+      "maxHeightCm": 20,
+      "rootDepthMinCm": 3,
+      "rootDepthMaxCm": 8,
+      "phPreference": "neutral",
+      "growthRate": "slow",
+      "substrateTags": [
+        "sand",
+        "grit",
+        "perlite"
+      ],
+      "closedTerrariumOk": false,
+      "openTerrariumOk": true,
+      "difficulty": 2,
+      "image": "plants/sedum-morganianum.png",
+      "growthHabit": "trailing",
+      "plantType": "succulent",
+      "nativeBiome": "arid",
+      "nativeContext": "From shaded cliffs in southern Mexico, where its stems trail down rock faces.",
+      "notes": "Trailing rope of plump blue-green leaves that shed at a touch — site it where it won't be brushed. Open, dry, and bright."
+    },
+    {
+      "slug": "ficus-pumila",
+      "commonName": "Creeping Fig",
+      "scientificName": "Ficus pumila",
+      "light": {
+        "primary": "bright-indirect",
+        "secondary": "medium"
+      },
+      "soilMoisture": {
+        "primary": "moderate",
+        "secondary": "moist"
+      },
+      "humidityPctRange": [
+        50,
+        85
+      ],
+      "tempCRange": [
+        15,
+        27
+      ],
+      "maxHeightCm": 20,
+      "rootDepthMinCm": 3,
+      "rootDepthMaxCm": 8,
+      "phPreference": "neutral",
+      "growthRate": "fast",
+      "substrateTags": [
+        "peat",
+        "perlite",
+        "coco-coir"
+      ],
+      "closedTerrariumOk": true,
+      "openTerrariumOk": true,
+      "difficulty": 2,
+      "image": "plants/ficus-pumila.png",
+      "growthHabit": "climbing",
+      "plantType": "vine",
+      "nativeBiome": "subtropical",
+      "toxicity": "Ficus sap (a milky latex) can irritate skin and the mouth; ingestion may cause mild digestive upset. Toxic to cats and dogs.",
+      "nativeContext": "From the forests and rocky slopes of East Asia, climbing tree trunks and walls.",
+      "notes": "Tiny-leaved self-clinging vine that carpets backgrounds and hardscape. Vigorous — pinch often or it blankets everything in a closed tank."
+    },
+    {
+      "slug": "saxifraga-stolonifera",
+      "commonName": "Strawberry Begonia",
+      "scientificName": "Saxifraga stolonifera",
+      "light": {
+        "primary": "medium"
+      },
+      "soilMoisture": {
+        "primary": "moist"
+      },
+      "humidityPctRange": [
+        50,
+        80
+      ],
+      "tempCRange": [
+        10,
+        24
+      ],
+      "maxHeightCm": 20,
+      "rootDepthMinCm": 3,
+      "rootDepthMaxCm": 8,
+      "phPreference": "neutral",
+      "growthRate": "moderate",
+      "substrateTags": [
+        "peat",
+        "perlite",
+        "coco-coir"
+      ],
+      "closedTerrariumOk": true,
+      "openTerrariumOk": true,
+      "difficulty": 2,
+      "image": "plants/saxifraga-stolonifera.png",
+      "growthHabit": "creeping",
+      "plantType": "ground-cover",
+      "nativeBiome": "temperate",
+      "notes": "Neither strawberry nor begonia — a hardy rosette that throws plantlets on runners. Cooler-growing; happy in open or lidded setups."
+    },
+    {
+      "slug": "pilea-cadierei",
+      "commonName": "Aluminum Plant",
+      "scientificName": "Pilea cadierei",
+      "light": {
+        "primary": "medium"
+      },
+      "soilMoisture": {
+        "primary": "moderate"
+      },
+      "humidityPctRange": [
+        50,
+        80
+      ],
+      "tempCRange": [
+        16,
+        27
+      ],
+      "maxHeightCm": 25,
+      "rootDepthMinCm": 4,
+      "rootDepthMaxCm": 10,
+      "phPreference": "neutral",
+      "growthRate": "moderate",
+      "substrateTags": [
+        "peat",
+        "perlite"
+      ],
+      "closedTerrariumOk": false,
+      "openTerrariumOk": true,
+      "difficulty": 2,
+      "image": "plants/pilea-cadierei.png",
+      "growthHabit": "upright",
+      "plantType": "foliage",
+      "nativeBiome": "tropical",
+      "notes": "Silver-splashed quilted leaves on an easy, bushy grower. Pinch tips to keep it dense; prefers airflow to a fully sealed lid."
+    },
+    {
+      "slug": "tradescantia-zebrina",
+      "commonName": "Inch Plant",
+      "scientificName": "Tradescantia zebrina",
+      "light": {
+        "primary": "bright-indirect",
+        "secondary": "medium"
+      },
+      "soilMoisture": {
+        "primary": "moderate"
+      },
+      "humidityPctRange": [
+        50,
+        80
+      ],
+      "tempCRange": [
+        15,
+        27
+      ],
+      "maxHeightCm": 15,
+      "rootDepthMinCm": 2,
+      "rootDepthMaxCm": 6,
+      "phPreference": "neutral",
+      "growthRate": "fast",
+      "substrateTags": [
+        "peat",
+        "perlite"
+      ],
+      "closedTerrariumOk": false,
+      "openTerrariumOk": true,
+      "difficulty": 1,
+      "image": "plants/tradescantia-zebrina.png",
+      "growthHabit": "trailing",
+      "plantType": "vine",
+      "nativeBiome": "tropical",
+      "toxicity": "The sap causes contact dermatitis in pets and can irritate sensitive skin in people; ingestion may cause mild digestive upset. Listed toxic to cats and dogs.",
+      "notes": "Fast purple-striped trailer — nearly unkillable and great for quick coverage in open terraria. Cut back hard whenever it gets leggy."
+    }
+  ]
+}

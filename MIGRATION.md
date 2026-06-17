@@ -27,8 +27,8 @@ do NOT read all four docs every time.**
 |---|---|---|---|
 | 1 | Lock decisions · freeze v1 · Expo skeleton | 1 | ✅ **done** |
 | 2 | Port the pure engine, test-first (+ primary/secondary) | 1 | ✅ **done** |
-| 3 | Ship the data (versioned JSON, images, presets) | 1 | ⬜ **next** |
-| 4 | Local store (Drizzle/expo-sqlite) + repositories | 1 | ⬜ |
+| 3 | Ship the data (versioned JSON, images, presets) | 1 | ✅ **done** |
+| 4 | Local store (Drizzle/expo-sqlite) + repositories | 1 | ⬜ **next** |
 | 5 | Core screens + component library + export/backup | 2 | ⬜ |
 | 6 | Planner: 5-step flow + 2-D drag + 2-D preview | 2 | ⬜ |
 | 7 | Care reminders + photo timeline | 1 | ⬜ |
@@ -50,89 +50,94 @@ cross-cutting design (the scoring rule, the DB schema) in the orchestrating chat
 
 ---
 
-## ▶ NEXT — Phase 3 distilled brief: ship the data
+## ▶ NEXT — Phase 4 distilled brief: local store + repositories
 
-**Goal.** Turn v1's **67 plants + 16 containers** into **versioned, typed JSON** that validates
-against the Phase-2 `zod` schemas and seeds a local DB on first launch — folding in the data-model
-changes (decisions 4 / 8 / 11 / 12 / 18). The **~67 plant images are the long pole and gate the
-phase exit.**
+**Goal.** Stand up a local DB (**Drizzle + expo-sqlite**) as the single source of truth, behind a
+**thin typed repository layer** so the UI never awaits a network call. The Phase-3 seed
+(`loadSeed()`) loads into it on first launch. Port v1's build/photo CRUD + the deferred
+container-resolve, and land the **forward-looking schema** (placements, care-marks, substrate/drainage
+depths) now — before any screen reads it — so Phases 5–7 never touch the DB shape.
 
-**Read only these:** `Rebuild docs/Terrarium_V2_Migration_Sequence.md` → "Phase 3 — Ship the data";
-`Terrarium_V2_Migration_Plan.md` → §2.2–2.5; `Terrarium_V2_Grill_Decisions.md` → decisions **11**
-(drop `plant_photos`; one static `image` path/plant), **12** (substrate-vocab freeze +
-reference-only root-depth range; property matrix deferred to v2.1), **18** (CC/PD photos,
-accuracy-first, + 3–5 onboarding presets). v1 seed-of-record: `../terrarium-app/data/{plants,containers}.yaml`
-+ `../terrarium-app/db/loader.py` (how v1 seeds).
+**Read only these:** `Rebuild docs/Terrarium_V2_Migration_Sequence.md` → "Phase 4 — Local store +
+repositories"; `Terrarium_V2_Grill_Decisions.md` → decisions **9** (builds.py is pure CRUD → its 12
+tests port here, not Phase 2), **10** (`substrate_depth?`/`drainage_depth?` persisted on the build;
+guide is a static projection), **11** (only **three** persisted entities — builds, build-photos,
+care-marks; `plant_photos` is **struck**), **17** (**UUID** build PKs + a `migrate vN→vN+1` ladder for
+the Phase-5 backup round-trip). v1 source-of-record: `../terrarium-app/engine/builds.py`,
+`engine/photos.py`, `engine/models/builds.py`, `tests/test_builds.py` (12 CRUD), `tests/conftest.py`
+(isolated-DB fixture), and the **3 `resolve_*` cases in `tests/test_containers.py`** +
+`engine/containers.py::resolve_build_container` (both **deferred from Phase 2 to here**).
 
-**Work (in order — images gate the exit, so start them first):**
-1. **`src/data/containers.json`** from `containers.yaml` (16 rows) — a serialize step; camelCase the
-   keys, add `schemaVersion`. The shape already matches `containerSchema`. Validate all 16.
-2. **`src/data/plants.json`** from `plants.yaml` (67 rows), camelCased, with these authored changes:
-   - **`light`/`soilMoisture` → `{primary, secondary?}`** — pure widening; scalar → `{primary}`.
-     **Author `secondary` only where botanically real** (NOT all 67); primary-only is intentional +
-     documented (decision 4).
-   - **`toxicity?: string`** top-level nullable free text — hand-authored for toxic/irritant species
-     only; **blank ≠ safe**, never rendered as a safety claim (decision 8).
-   - **Substrate hygiene (decision 12):** freeze the ~9-material component vocabulary (perlite, peat,
-     sphagnum, sand, coco coir, grit, orchid bark, pumice, mud) as a canonical `{id,label}` list
-     (new small module, e.g. `src/data/substrate-components.ts`); **split `wood`/`rock` out of
-     `substrateTags` as hardscape.** Do **not** author the per-component property matrix (v2.1).
-   - **Root depth → `rootDepthMinCm`/`rootDepthMaxCm`** range, authored for all, **reference-only** —
-     NOT wired into depth math (that stays `maxHeightCm`-driven, preserving Phase-2 oracle parity).
-   - **`image` path per plant** (decision 11) + **`imageCredit` + `imageLicense`** (seed-only, **never**
-     in the backup/export payload). Source CC0/PD → CC-BY → CC-BY-SA (no `-NC`/`-ND`), Wikimedia
-     primary, accuracy first (AI ruled out as default — a wrong species corrupts trust).
-   - Optional: short free-text `nativeContext` sentence (Tier-3 view); keep `nativeBiome` scored.
-3. **Bundle the ~67 plant images** as static assets, uniform card treatment (fixed aspect/crop).
-   **This is the long pole** — owner is source of record (ASPCA et al. are references, not a gate).
-4. **3–5 onboarding presets** (decision 18): curated starter builds (container + compatible plants +
-   placements) as bundled seed. They **depend on the images**, so author last. Keep preset placements
-   as plain `{slug, x, y, scale}` data (the build-schema `placements` field lands in Phase 4).
-5. **Seed script** loads the JSON into a throwaway `expo-sqlite` DB; **validate every record against
-   the Phase-2 zod schemas at build/CI time** so a malformed plant fails CI, not the device.
-
-**Schema additions in `src/types/plant.ts`** (extend, don't break the 96 Phase-2 tests): `toxicity?`,
-`rootDepthMinCm?`/`rootDepthMaxCm?`, `image` + `imageCredit?`/`imageLicense?`, `nativeContext?`.
-Confirm the engine still imports nothing from `src/db`.
+**Work.**
+1. **Drizzle schema — three tables only** (decision 11): `builds`, `build_photos`, `care_marks`
+   (care-marks net-new, for Phase 7). **No `plant_photos`** (curator imagery is the static seed
+   `image` path from Phase 3). `builds` uses a **UUID PK** (decision 17), keeps the **container
+   snapshot** columns (`container_shape/dimensions/volume/opening`), and gains **`placements`**
+   (plant + hardscape `{x, y, scale}` — match the Phase-3 `presetSchema` placement shape in
+   `src/data/presets.ts` so a preset can instantiate into a build) plus **`substrateDepth?` /
+   `drainageDepth?`** (decision 10). `care_marks` key off the build UUID; plant refs stay **slugs**.
+2. **Migrate ladder scaffold** (decision 17): a `migrate vN→vN+1` chain, schemaVersion 1 = no-op,
+   present *so Phase 5's backup/restore + v2.1 can migrate* (reused by import in Phase 5).
+3. **Repository layer** — port `engine/builds.py` (CRUD) + `engine/photos.py` as repo functions.
+   **Preserve the photo invariants exactly:** first photo **auto-becomes primary**; on delete the
+   primary **reassigns to the earliest remaining**; the dashboard thumbnail is the **explicit
+   `primaryPhotoId`**, not newest-by-date. Repositories **call the engine, never the reverse** —
+   keep `src/logic` importing nothing from `src/db`/`src/data` (grep-verify, as in Phases 2–3).
+4. **Wire the Phase-3 seed**: `loadSeed()` → idempotent first-launch load (upsert-by-slug, mirroring
+   v1 `db/loader.py`) of the 67 plants / 16 containers / presets into the store.
+5. **Port `resolve_build_container`** (deferred from Phase 2) + its **3 `resolve_*` tests** — now that
+   the build + container snapshot exist, it mostly collapses into the pure container constructor.
+6. Confirm **social is fully gone** (no `LOCAL_AUTHOR`, no `engine/social.py` analog).
 
 **Gotchas.**
-- Root-depth range is **display-only** — never let it masquerade as a live depth driver (that would
-  diverge from the oracle Phase 2 just locked; the depth seed stays `maxHeightCm`-based).
-- `imageCredit`/`imageLicense` are **seed-only** — never in the backup/export payload.
-- Toxicity blank surfaces as "no note authored," **never** "Non-toxic ✓."
-- No `plant_photos` table (decision 11) and no substrate property matrix (decision 12) in v2.0.
+- **expo-sqlite is native — it will NOT load in the pure-node Vitest runner** (the Phase-2/3 config is
+  `environment: 'node'`, no RN transform). Run the 12 repo unit tests against **`node:sqlite`** (the
+  built-in DB Phase 3 already used — flag-free in Node 22) via a thin driver adapter, mirroring
+  `conftest.py`'s isolated-DB fixture; the on-device path uses expo-sqlite. Reconcile the Drizzle
+  driver (expo-sqlite on device vs. a node driver for tests) behind the repository interface.
+- **UUID PKs, not autoincrement** (decision 17): care-marks reference builds and restore = replace
+  (Phase 5), so a renumbering reinsert would dangle every care-mark.
+- `placements` / `care_marks` / `substrateDepth` exist now though **no screen reads them until Phases
+  6–7** — deliberate, so those phases never touch the schema.
+- Keep the engine **pure** — it's the locked oracle; the repos are a new layer on top.
 
-**Subagent plan.** (1) One agent: `containers.yaml`→JSON serializer + a zod-validation seed test
-(small, mechanical). (2) One agent: the `plants.yaml`→JSON transform with the field reshapes + a
-zod-validation test over all 67. (3) Image sourcing + licensing is **curator/owner work**
-(accuracy-first) — an agent can scaffold the `image`/credit/license fields + a "every plant has an
-image + license" CI check, but the photo selection is a human pass (the true long pole). Keep preset
-authoring in the orchestrating chat (depends on images + judgment).
+**Subagent plan.** Keep the **Drizzle schema + migrate ladder + seed-wiring** in the orchestrating
+chat (cross-cutting). Delegate self-contained chunks: (1) the **builds repository + the 12
+`test_builds.py` CRUD cases** against `node:sqlite`; (2) the **photos repository + its primary-photo
+invariants**; (3) `resolve_build_container` + its **3 `resolve_*` tests** (small — can ride with the
+builds chunk). Verify each subagent's output line-for-line against the v1 oracle (`../terrarium-app`).
 
-**DoD (Phase 3 exit):** both JSON files validate against the zod schemas; a seed script loads them
-into a throwaway `expo-sqlite` DB with row counts **67 / 16**; toxicity present only where
-botanically real (blank = "no note," never "safe"); **every plant has an `image`** (+ credit/license
-for any CC-BY[-SA] source); the **3–5 onboarding presets load through the seed**; `npx tsc --noEmit`
-clean; full Vitest suite still green (Phase-2 tests untouched).
+**DoD (Phase 4 exit):** all **12** repository unit tests (translated from `test_builds.py`) green
+against a temp DB (isolated-DB fixture, à la `conftest.py`); a build **round-trips save → reload with
+placements intact**; the **3 `resolve_*`** container tests green; the photo invariants (first =
+primary; delete reassigns to earliest) covered; first-launch **seed loads 67 / 16 + presets** into the
+store; `npx tsc --noEmit` clean; **full Vitest suite still green (Phases 2–3 untouched)**.
 
-**Verification:** `npm run typecheck` && `npm run test:run` (+ the new seed/validation test).
+**Verification:** `npm run typecheck` && `npm run test:run`.
 
 ### Kickoff prompt (paste into a NEW chat)
 
 > You're continuing the Terrarium V2 RN+Expo migration in this repo (`terrarium-v2`). You are doing
-> **Phase 3 — Ship the data**. Read `MIGRATION.md` (the phase table + the "▶ NEXT — Phase 3" brief +
-> the Phase-2 session-log entry) and ONLY these doc sections: Sequence "Phase 3 — Ship the data",
-> Plan §2.2–2.5, Decisions 11 / 12 / 18. Do NOT read all four docs. v1 seed-of-record:
-> `../terrarium-app/data/{plants,containers}.yaml` (67 plants / 16 containers) + `db/loader.py`.
-> Phase 2 is committed + tagged `v2-phase-2-complete`; the engine + zod schemas are live in
-> `src/{logic,types}` and **96 tests are green** — EXTEND the plant schema, don't break it. Emit
-> versioned `src/data/{plants,containers}.json` with the decision-4/8/11/12/18 field changes, bundle
-> the ~67 plant images (the long pole — accuracy-first, CC/PD, owner is source of record), author
-> 3–5 onboarding presets, and add a zod-validated seed script. Use subagents for the mechanical
-> serialize+validate chunks (containers, plants); keep image curation + preset authoring in the main
-> chat. When the DoD passes: run verification, `git add -A && git commit`, `git tag -a
-> v2-phase-3-complete`, flip the phase table (3 → ✅ done), append a Phase-3 session-log entry, then
-> write the Phase 4 distilled brief + this same kickoff prompt. Then stop.
+> **Phase 4 — Local store + repositories**. Read `MIGRATION.md` (the phase table + the "▶ NEXT —
+> Phase 4" brief + the Phase-3 session-log entry) and ONLY these doc sections: Sequence "Phase 4 —
+> Local store + repositories", Decisions 9 / 10 / 11 / 17. Do NOT read all four docs. v1
+> source-of-record: `../terrarium-app/engine/{builds,photos}.py`, `engine/models/builds.py`,
+> `tests/test_builds.py` (12 CRUD) + `tests/conftest.py`, and the 3 `resolve_*` cases in
+> `tests/test_containers.py` + `engine/containers.py::resolve_build_container` (deferred from Phase 2).
+> Phase 3 is committed + tagged `v2-phase-3-complete`; the validated seed (`loadSeed()` /
+> `loadPlants()` / `loadContainers()` / `loadPresets()`) is live in `src/data` (67 plants / 16
+> containers / 4 presets), the zod schemas + pure engine are in `src/{types,logic}`, and **112 tests
+> are green** — do NOT break them. Build the Drizzle/expo-sqlite schema for the **three** persisted
+> entities (builds w/ UUID PK + `placements` + `substrateDepth?`/`drainageDepth?`, build-photos,
+> care-marks — **no plant_photos**), a `migrate vN→vN+1` ladder scaffold (decision 17), the thin
+> repository layer (port `builds.py`/`photos.py`, preserve the primary-photo invariants), wire
+> `loadSeed()` to seed on first launch, and port `resolve_build_container` + its 3 tests. **Run the 12
+> repo tests against `node:sqlite`** (expo-sqlite won't load in the node Vitest runner). Keep the
+> engine pure (repos call the engine, never the reverse; grep-verify `src/logic` imports nothing from
+> `src/db`/`src/data`). Use subagents for the builds-repo + photos-repo chunks; keep the schema +
+> migrate ladder + seed-wiring in the main chat. When the DoD passes: run verification, `git add -A &&
+> git commit`, `git tag -a v2-phase-4-complete`, flip the phase table (4 → ✅ done), append a Phase-4
+> session-log entry, then write the Phase 5 distilled brief + this same kickoff prompt. Then stop.
 
 ---
 
@@ -190,3 +195,49 @@ clean; full Vitest suite still green (Phase-2 tests untouched).
   (containers, guide, care) + their suites were each delegated to a general-purpose subagent in
   parallel, then verified line-for-line against the v1 oracle (`../terrarium-app`).
 - **Tag:** `v2-phase-2-complete`.
+
+### Phase 3 — ship the data (done)
+- **Result:** v1's **67 plants + 16 containers** are now **versioned, typed JSON** (`src/data/{plants,
+  containers}.json`, `schemaVersion: 1`) that validate against the Phase-2 zod schemas. **112 Vitest
+  tests green** (10 files) — the **96 Phase-2 tests untouched** + **16 net-new** (12 seed + 4 image);
+  `tsc --noEmit` clean. Engine isolation re-verified: `src/logic` imports nothing from `src/db`/`src/data`.
+- **Reproducible generator, not hand-written rows:** `scripts/build-seed.mjs` reads the v1 YAML and
+  applies the transforms + the in-repo **botanical authoring tables** (the human-judgment part) → emits
+  both JSON files; re-run if the YAML changes. The authoring tables are reviewable in that one file.
+- **Schema (`src/types/plant.ts`) — extend, don't break:** all Phase-3 fields are **optional in the
+  base `plantSchema`** (so `makePlant` + the Phase-2 zod fixtures still parse), and a stricter
+  **`seedPlantSchema`** (in `src/data/index.ts`) *requires* `image` + the root-depth range + the frozen
+  vocab for every shipped plant. `rootDepthCm` (read by nothing) replaced by the min/max range.
+- **Data-model changes applied** (decisions 4/8/11/12/18): `light`/`soilMoisture` → `{primary,
+  secondary?}` with **17 light / 10 moisture** secondaries authored (only where botanically real;
+  every secondary one ladder-step from its primary — adjacency-checked; primary-only is intentional).
+  **Toxicity** free text on **14/67** toxic/irritant species (aroids, begonias, tradescantia, jade,
+  ficus, string-of-pearls) — a test guarantees a note **never reads as a safety claim** (`/non-?toxic|
+  safe/i`), blank = "no note." **Substrate vocab frozen** to the 9 canonical `{id,label}` materials
+  (`src/data/substrate-components.ts`), tags normalized to ids; **`wood`/`rock` split into
+  `hardscapeTags`** on the **4** mounted epiphytes. **Root-depth** min/max authored for all 67,
+  **reference-only** (height-derived heuristic + moss/epiphyte/succulent overrides — NOT a depth
+  driver; depth math stays `maxHeightCm`-based, oracle parity preserved). **`nativeContext`** sentence
+  on 25/67 (optional Tier-3 copy). `phPreference` carried through on all 67.
+- **Onboarding presets:** **4** curated, mutually-compatible starter builds (`src/data/presets.ts`) —
+  Beginner Sealed Jar, Tropical Terrarium, Desert Open Bowl, Open Foliage Garden — placements as plain
+  `{slug, x, y, scale}`; referential integrity (container + plant slugs resolve) is tested.
+- **Seed gate (`src/data/__tests__/seed.test.ts`):** zod-validates every record **and loads them into a
+  throwaway in-memory SQLite DB asserting counts 67 / 16** — using Node's built-in **`node:sqlite`**
+  (flag-free in Node 22) rather than pulling native expo-sqlite into the pure-node runner. Vitest
+  config gained `src/data/**`.
+- **⚠️ Images — the long pole is HANDED OFF, not finished.** The decision-18 accuracy-first CC/PD photo
+  curation is **owner work** and is **NOT done**. What Phase 3 shipped is the *scaffolding* (exactly
+  the agent-side split the brief specified): every plant carries an `image: "plants/<slug>.png"` path;
+  **67 clearly-marked stylized placeholder SVGs** live in `assets/plants/_placeholders/`; a 67-row
+  **`assets/plants/IMAGE_SOURCING.md`** worklist (all `Pending`) tracks the human pass; and a CI check
+  (`images.test.ts`) enforces the path convention, placeholder-per-plant, the **license→credit**
+  obligation, and **no `-NC`/`-ND`** (the last two vacuous until real photos + their licenses land).
+  `imageCredit`/`imageLicense` are authored empty on purpose — **no attribution was fabricated.**
+  Toxicity notes are likewise first-pass drafts from standard references for the owner (source of
+  record) to verify. **Net: the engineering DoD passes; sourcing 67 real species photos remains the
+  outstanding owner task.**
+- **Method:** orchestrator owned the cross-cutting schema + the generator/authoring tables (botanical
+  judgment) + presets + the seed test; **one general-purpose subagent** scaffolded the image layer
+  (placeholders + manifest + image CI test), verified independently.
+- **Tag:** `v2-phase-3-complete`.

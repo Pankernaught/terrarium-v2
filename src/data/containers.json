@@ -1,0 +1,149 @@
+{
+  "schemaVersion": 1,
+  "containers": [
+    {
+      "slug": "nano-jar",
+      "name": "Nano Sealed Jar",
+      "volumeL": 1,
+      "opening": "sealed",
+      "dimensionsCm": "10x10x12",
+      "shape": "cylindrical",
+      "suitableFor": "closed"
+    },
+    {
+      "slug": "small-dome",
+      "name": "Small Glass Dome",
+      "volumeL": 4,
+      "opening": "lidded",
+      "dimensionsCm": "15x15x18",
+      "shape": "cylindrical",
+      "suitableFor": "closed"
+    },
+    {
+      "slug": "medium-aquarium",
+      "name": "Medium Converted Aquarium",
+      "volumeL": 20,
+      "opening": "lidded",
+      "dimensionsCm": "40x25x25",
+      "shape": "rectangular",
+      "suitableFor": "closed"
+    },
+    {
+      "slug": "large-wardian-case",
+      "name": "Large Wardian Case",
+      "volumeL": 38,
+      "opening": "lidded",
+      "dimensionsCm": "40x30x40",
+      "shape": "rectangular",
+      "suitableFor": "closed"
+    },
+    {
+      "slug": "open-bowl-small",
+      "name": "Small Open Glass Bowl",
+      "volumeL": 3,
+      "opening": "open",
+      "dimensionsCm": "20x20x10",
+      "shape": "cylindrical",
+      "suitableFor": "open"
+    },
+    {
+      "slug": "open-terrarium-medium",
+      "name": "Medium Open Terrarium",
+      "volumeL": 10,
+      "opening": "open",
+      "dimensionsCm": "30x20x25",
+      "shape": "rectangular",
+      "suitableFor": "both"
+    },
+    {
+      "slug": "micro-jar",
+      "name": "Micro Specimen Jar",
+      "volumeL": 0.3,
+      "opening": "sealed",
+      "dimensionsCm": "6x6x10",
+      "shape": "cylindrical",
+      "suitableFor": "closed"
+    },
+    {
+      "slug": "small-bottle",
+      "name": "Small Apothecary Bottle",
+      "volumeL": 0.2,
+      "opening": "sealed",
+      "dimensionsCm": "5x5x12",
+      "shape": "cylindrical",
+      "suitableFor": "closed"
+    },
+    {
+      "slug": "mason-jar-medium",
+      "name": "Medium Wide-Mouth Mason Jar",
+      "volumeL": 1.5,
+      "opening": "lidded",
+      "dimensionsCm": "11x11x18",
+      "shape": "cylindrical",
+      "suitableFor": "closed"
+    },
+    {
+      "slug": "large-apothecary-jar",
+      "name": "Large Sealed Apothecary Jar",
+      "volumeL": 2,
+      "opening": "sealed",
+      "dimensionsCm": "12x12x22",
+      "shape": "cylindrical",
+      "suitableFor": "closed"
+    },
+    {
+      "slug": "small-demijohn",
+      "name": "Small Glass Demijohn Carboy",
+      "volumeL": 5,
+      "opening": "sealed",
+      "dimensionsCm": "18x18x28",
+      "shape": "cylindrical",
+      "suitableFor": "closed"
+    },
+    {
+      "slug": "geometric-prism-small",
+      "name": "Small Geometric Prism Container",
+      "volumeL": 1.2,
+      "opening": "open",
+      "dimensionsCm": "12x12x12",
+      "shape": "rectangular",
+      "suitableFor": "open"
+    },
+    {
+      "slug": "bubble-bowl-medium",
+      "name": "Medium Glass Bubble Bowl",
+      "volumeL": 5.5,
+      "opening": "open",
+      "dimensionsCm": "22x22x20",
+      "shape": "cylindrical",
+      "suitableFor": "open"
+    },
+    {
+      "slug": "hexagonal-cookie-jar",
+      "name": "Hexagonal Glass Cookie Jar",
+      "volumeL": 3.5,
+      "opening": "lidded",
+      "dimensionsCm": "15x18x22",
+      "shape": "cylindrical",
+      "suitableFor": "closed"
+    },
+    {
+      "slug": "tilted-candy-jar",
+      "name": "Tilted Glass Candy Jar",
+      "volumeL": 2.5,
+      "opening": "lidded",
+      "dimensionsCm": "14x18x18",
+      "shape": "cylindrical",
+      "suitableFor": "closed"
+    },
+    {
+      "slug": "glass-cylinder-tall",
+      "name": "Tall Glass Cylinder Vase",
+      "volumeL": 4.5,
+      "opening": "open",
+      "dimensionsCm": "12x12x40",
+      "shape": "cylindrical",
+      "suitableFor": "open"
+    }
+  ]
+}

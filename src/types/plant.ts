@@ -9,6 +9,20 @@
  * happiest condition (the v1 scalar's analog); the optional secondary is a
  * tolerable, adjacent condition authored only where botanically real. **pH is
  * untouched** — it stays a single scalar with no secondary.
+ *
+ * **Phase 3 additions (decisions 8 / 11 / 12 / 18).** Several seed-authored fields
+ * land here. They are all `nullish()`/optional in this *base* schema so the engine
+ * test fixtures (`makePlant`) and the Phase-2 cases need not carry them. The seed
+ * loader (`src/data`) validates every shipped plant against a stricter
+ * `seedPlantSchema` that *requires* `image` + the root-depth range — so "every
+ * plant has an image" is enforced at the data boundary, not by breaking fixtures.
+ *   - `toxicity` — free text, toxic/irritant species only; **blank ≠ safe** (d.8).
+ *   - `rootDepthMinCm`/`rootDepthMaxCm` — **reference-only** range; NOT a depth
+ *     driver (depth math stays `maxHeightCm`-based, preserving oracle parity) (d.12).
+ *   - `hardscapeTags` — `wood`/`rock` split out of `substrateTags` (d.12 / d.10).
+ *   - `image` + `imageCredit`/`imageLicense` — static seed asset; credit/license are
+ *     **seed-only, never in the backup/export payload** (d.11 / d.18).
+ *   - `nativeContext` — optional Tier-3 sentence; `nativeBiome` stays the scored one.
  */
 import { z } from 'zod';
 
@@ -95,8 +109,13 @@ export const plantSchema = z.object({
   spreadMinCm: z.number().nullish(),
   spreadMaxCm: z.number().nullish(),
 
-  // Typical rooting depth — informs substrate-depth planning.
-  rootDepthCm: z.number().nullish(),
+  // Typical rooting depth — a sortable **reference-only** range (decision 12).
+  // Replaces v1's single `rootDepthCm` float. Authored for every seed plant but
+  // deliberately NOT wired into the depth math: the substrate-depth seed stays
+  // `maxHeightCm`-driven, so this never diverges from the Phase-2 oracle. It is
+  // display data + a ready input for the v2.1 substrate mixer's depth refinement.
+  rootDepthMinCm: z.number().nullish(),
+  rootDepthMaxCm: z.number().nullish(),
 
   // Preferred substrate pH: numeric range (reference) + scored categorical band.
   soilPhMin: z.number().nullish(),
@@ -104,7 +123,14 @@ export const plantSchema = z.object({
   phPreference: z.enum(PH_PREFERENCES).nullish(),
 
   growthRate: z.enum(GROWTH_RATES),
+  // Frozen component vocabulary (decision 12). Stored as canonical ids; the
+  // `{ id, label }` source of truth + the seed-time vocab check live in
+  // `src/data/substrate-components.ts`. Kept permissive here so engine fixtures
+  // can use bare strings; the seed loader enforces the frozen set.
   substrateTags: z.array(z.string()).default([]),
+  // `wood`/`rock` split out of substrate as hardscape (decision 12 / decision 10:
+  // hardscape is placement-driven). Populated only for epiphytes that mount on it.
+  hardscapeTags: z.array(z.string()).nullish(),
 
   // Optional descriptive classifiers.
   growthHabit: z.enum(GROWTH_HABITS).nullish(),
@@ -112,10 +138,25 @@ export const plantSchema = z.object({
   nativeBiome: z.enum(NATIVE_BIOMES).nullish(),
   rarity: z.enum(RARITIES).nullish(),
 
+  // Free-text safety note, toxic/irritant species only (decision 8). Display-only;
+  // **blank/absent means "no note authored," NEVER "non-toxic" — never render it
+  // as a safety claim.** Free text by design (no vocabulary to facet/filter).
+  toxicity: z.string().nullish(),
+  // Optional short origin sentence for the Tier-3 plant view (plan §2.3).
+  nativeContext: z.string().nullish(),
+
   closedTerrariumOk: z.boolean(),
   openTerrariumOk: z.boolean(),
   difficulty: z.number().int().min(1).max(5),
   notes: z.string().nullish(),
+
+  // Single static seed image (decision 11): both the selector thumbnail and the
+  // profile hero. `imageCredit`/`imageLicense` satisfy CC-BY[-SA] attribution and
+  // are **seed-only — they must never enter the backup/export payload** (decision
+  // 17/18). Optional here; required by `seedPlantSchema` in `src/data`.
+  image: z.string().nullish(),
+  imageCredit: z.string().nullish(),
+  imageLicense: z.string().nullish(),
 
   // Open key/value extension point for plant-specific care details.
   specialNotes: z.record(z.string(), z.string()).nullish(),
