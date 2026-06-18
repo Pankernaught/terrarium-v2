@@ -12,6 +12,7 @@ import { createContext, type ReactNode, useContext, useEffect, useState } from '
 
 import { createExpoDb } from './client.expo';
 import { type BuildRepository, createBuildRepository } from './builds-repo';
+import { type CareRepository, createCareRepository } from './care-repo';
 import { createPhotoRepository, type PhotoRepository } from './photos-repo';
 import { type TerrariumDb } from './schema';
 import { seedStore } from './seed';
@@ -20,6 +21,7 @@ export interface Repos {
   db: TerrariumDb;
   builds: BuildRepository;
   photos: PhotoRepository;
+  careMarks: CareRepository;
 }
 
 type DbState =
@@ -41,7 +43,12 @@ export function DbProvider({ children }: { children: ReactNode }) {
         if (cancelled) return;
         setState({
           status: 'ready',
-          repos: { db, builds: createBuildRepository(db), photos: createPhotoRepository(db) },
+          repos: {
+            db,
+            builds: createBuildRepository(db),
+            photos: createPhotoRepository(db),
+            careMarks: createCareRepository(db),
+          },
           error: null,
         });
       } catch (err) {

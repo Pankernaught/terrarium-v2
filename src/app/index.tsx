@@ -120,6 +120,9 @@ function Dashboard({ repos }: { repos: Repos }) {
     if (deleteTimer.current) clearTimeout(deleteTimer.current);
     setPendingDelete(null);
     await repos.builds.delete(row.build.id);
+    // Cascade: drop the build's care reminders so no orphan pending rows linger
+    // (its native triggers get re-reconciled to the budget next Care-tab focus).
+    await repos.careMarks.purgeForBuild(row.build.id);
   }
 
   function undoDelete() {

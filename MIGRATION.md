@@ -31,8 +31,8 @@ do NOT read all four docs every time.**
 | 4 | Local store (Drizzle/expo-sqlite) + repositories | 1 | ✅ **done** |
 | 5 | Core screens + component library + export/backup | 2 | ✅ **done** — chat 1 (component library + 4 read-mostly screens) + chat 2 (TXT/PDF export + JSON backup/restore + planner shell) |
 | 6 | Planner: 5-step flow + 2-D drag + 2-D preview | 2 | ✅ **done** — chat 1 (placement core + draft + Container/Substrate) + chat 2 (drag-to-place + Hardscape/Plants/Final + live Eco + end-to-end save) |
-| 7 | Care reminders + photo timeline | 1 | ⬜ **next** |
-| 8 | Substrate mixer (parallel to 7) | 1 | ⬜ |
+| 7 | Care reminders + photo timeline | 1 | ✅ **done** — careSchedule + slot-budget guard (pure) · care-marks repo · Care tab (per-terrarium toggle + mark-done) · local repeating notifications · date-grouped photo timeline |
+| 8 | Substrate mixer (parallel to 7) | 1 | ⬜ **next** |
 | 9 | Premium polish | 1 | ⬜ |
 
 ## Handoff protocol (every phase chat follows this)
@@ -47,117 +47,6 @@ do NOT read all four docs every time.**
 **Subagents:** a subagent runs in its own context and returns only a summary, so use them for
 self-contained chunks (one engine module + its test suite; one isolated screen/component). Keep
 cross-cutting design (the scoring rule, the DB schema) in the orchestrating chat.
-
----
-
-## Phase 5 distilled brief (DONE — kept for history): core screens + component library + export/backup
-
-**Goal.** The first **read-mostly UI**, built on the proven engine (Phase 2) + store (Phase 4). **Lock
-the component library *first*,** then the dashboard, build-detail, and Browse/plant screens; then
-**export + whole-app JSON backup/restore** (the decision-17 envelope, importing through the
-**Phase-4 migrate ladder** already shipped in `src/db/migrate.ts`). Planner is **shell-only** this
-phase. Budgeted for **2 chats** (see kickoff) — do not rush both into one.
-
-**Read only these:** `Rebuild docs/Terrarium_V2_Migration_Sequence.md` → "Phase 5 — Core screens on
-the trusted foundation"; `Terrarium_V2_Premium_Design.md` → **§7.2 component library** + the screen
-sections (dashboard / build-detail / browse) + safe-area/spacing rules; `Terrarium_V2_Grill_Decisions.md`
-→ decisions **7** (manual JSON backup/export — the model), **8** (toxicity **display-only**, never a
-filter, **blank ≠ safe**), **3** (DB is curator-owned; "Suggest a plant" is **out-of-band**, no
-in-app community/backend), **17** (backup envelope + import = migrate→validate→one-transaction;
-refuse-newer; restore = replace — the **ladder + `STORE_SCHEMA_VERSION` + `BackupEnvelope` type
-already exist** from Phase 4). v1 source-of-record: `../terrarium-app/engine/export.py` (TXT is a pure
-string fn → port as-is; PDF used `reportlab` → becomes an **`expo-print` HTML→PDF** template +
-`expo-sharing`), `pages/home.py` (the `handle_builds_and_actions` mega-callback + the
-`except Exception: pass` grey-"⚠" at ~line 189 — **surface the diagnostic, don't swallow it**),
-`components/build_card.py` (the **7-button card** → collapses to hero + name + Eco chip + a single
-**⋮ overflow** + tap-to-open; "Post to Forum" is gone), `pages/build_detail.py` (728-line tabbed →
-glance → verdict band → Tier-2 expanders → Tier-3 matrix behind a gesture), `pages/plant_profile.py`
-+ the browse page, and `pages/planner.py` (**shell only** — stepper scaffold + persistent preview
-pane, no interactions).
-
-**Work.**
-1. **Component library FIRST** (Premium §7.2): stat strip, section label, glance header, **verdict band**
-   (Eco-balance meter + one plain-English sentence), chip/pill, bottom sheet, reusable meter. Pin the
-   **4 / 8 / 16 / 24 / 32** spacing scale. Respect **safe-area insets from screen one** (the instant
-   "web-wrapper" tell). Every screen pulls from these — build them before the screens.
-2. **Dashboard (Terrariums).** Responsive **centered** grid; card = hero photo + name + Eco-balance
-   chip + single **⋮ overflow** (Duplicate / Export / Delete) + tap-to-open. Wire load/rename/delete/
-   duplicate to the **Phase-4 build repo** (plain store calls — no mega-callback). A `checkGroup`
-   throw renders a **real diagnostic**, never a silent grey badge.
-3. **Build detail (read-only by default).** Glance header → verdict band → Tier-2 (container facts,
-   plant chips) → Tier-3 pairwise matrix behind a deliberate gesture. "Edit" re-opens the planner.
-4. **Browse + plant view.** Search + filter (type / biome / light / difficulty). **Toxicity is
-   display-only** (decision 8): a card indicator when non-empty (never color-alone) + a Tier-3 line;
-   **never render absence as "Non-toxic ✓."** "Suggest a plant" is out-of-band (mailto / web form).
-5. **Export & backup.** Per-build **TXT** = pure string fn (port `export.py` as-is, unit-testable);
-   **PDF** = `expo-print` HTML→PDF + `expo-sharing`. **Whole-app JSON backup/restore** (decisions 7/17)
-   via `expo-sharing` + `expo-document-picker`: export the **`{ schemaVersion, appVersion, exportedAt,
-   data }`** envelope (builds + placements + care-marks; **photos excluded** — binary, documented gap);
-   import = **`migratePayload()` (Phase-4 ladder) → zod-validate → insert in one transaction**, **refuse
-   a newer-than-current file** with a clear message, **restore = replace** (wipe + load, with a confirm),
-   any validation failure rejects the **whole file** (no half-import). The importer **degrades
-   gracefully** on a missing photo file (placeholder hero, never crash). UUID build IDs (Phase 4) keep
-   care-marks bound across the round-trip.
-6. **Planner shell only** — stepper scaffold + persistent preview pane, **no interactions** (Phase 6).
-
-**Gotchas.**
-- **Build the component library *before* the screens**, not alongside — the Sequence is explicit.
-- **`reportlab` does not exist in RN** → PDF is `expo-print` HTML. The TXT path stays a pure function.
-- **Photos are excluded from the backup** (binary). Restore must placeholder a missing photo, not crash.
-- **Don't re-implement persistence or versioning** — the repos (`createBuildRepository` /
-  `createPhotoRepository`), the seed (`seedStore`), and the migrate ladder (`migratePayload`,
-  `STORE_SCHEMA_VERSION`, `BackupEnvelope`) all exist in `src/db`. Construct the device DB via
-  `createExpoDb()` (`src/db/client.expo.ts`) at the app edge and hand it to the repos.
-- **Surface scoring failures** as diagnostics (kill the v1 `except: pass` grey badge).
-- **CI tests pure logic only** (vitest is `environment: 'node'`, no RN transform). Screen *rendering*
-  is verified on device/Expo, not in CI — be honest about that split in the session log.
-
-**Subagent plan (2-chat phase).** **Chat 1** = component library + dashboard + build-detail +
-Browse/plant. **Chat 2** = export/backup + planner shell. Keep the **component-library tokens/spacing**
-and the **backup envelope + import pipeline** in the orchestrating chat (cross-cutting); delegate
-self-contained *screens* (one screen + its pieces) to subagents. The export **TXT string fn** and the
-**backup round-trip** (export→migrate→validate→insert) are pure → unit-test them in Vitest.
-
-**DoD (Phase 5 exit):** dashboard, build-detail, and Browse **render real seeded data**; per-build
-export produces **TXT + PDF**; **whole-app backup round-trips** (export → wipe → restore → identical,
-care-marks still bound to their builds, a missing photo degrading to a placeholder not a crash); a
-**newer-version** backup and a **corrupt** file are each **rejected cleanly** (no half-import); Browse
-shows toxicity as a **display-only** indicator (never a "safe" claim); tap-to-open + ⋮ overflow work; a
-deliberately broken build shows a **diagnostic, not a grey badge**. `npm run typecheck` clean; full
-Vitest suite green (Phase 2–4 untouched).
-
-**Verification:** `npm run typecheck` && `npm run test:run` (logic: export string fn + backup
-round-trip + migrate); **plus an on-device/Expo render pass** for the screens (no RN component-test
-harness in v2.0 — note what was checked manually vs. in CI).
-
-### Kickoff prompt (paste into a NEW chat)
-
-> You're continuing the Terrarium V2 RN+Expo migration in this repo (`terrarium-v2`). You are doing
-> **Phase 5 — Core screens + component library + export/backup** (a **2-chat** phase — this is
-> **chat 1**). Read `MIGRATION.md` (the phase table + the "▶ NEXT — Phase 5" brief + the Phase-4
-> session-log entry) and ONLY these doc sections: Sequence "Phase 5 — Core screens on the trusted
-> foundation", Premium Design **§7.2** + the dashboard/build-detail/browse + safe-area/spacing
-> sections, Decisions **7 / 8 / 3 / 17**. Do NOT read all four docs. v1 source-of-record:
-> `../terrarium-app/engine/export.py`, `pages/home.py`, `components/build_card.py`,
-> `pages/build_detail.py`, `pages/plant_profile.py` + browse, `pages/planner.py` (shell only). Phase 4
-> is committed + tagged `v2-phase-4-complete`: the local store is live in `src/db` — `createExpoDb()`
-> (device) / `createNodeDb()` (tests) behind `TerrariumDb`, `createBuildRepository` /
-> `createPhotoRepository` (faithful ports w/ UUID PKs + the primary-photo invariants), `seedStore()`
-> (idempotent 67/16+presets), and the decision-17 migrate ladder (`migratePayload`,
-> `STORE_SCHEMA_VERSION = 1`, `BackupEnvelope`). The pure engine + zod schemas are in `src/{logic,
-> types}`, the seed bundle in `src/data`, and **161 tests are green** — do NOT break them, and keep
-> `src/logic` importing nothing from `src/db`/`src/data`. **Chat 1:** lock the component library FIRST
-> (§7.2 + the 4/8/16/24/32 spacing scale + safe-area insets), then build the read-mostly screens —
-> dashboard (centered grid; card = hero + name + Eco chip + single ⋮ overflow; wire to the build repo;
-> surface scoring failures as a diagnostic, no silent grey badge), build-detail (glance → verdict band
-> → Tier-2 → Tier-3 matrix), Browse + plant view (filters; toxicity display-only, **blank ≠ safe**).
-> Construct the device DB via `createExpoDb()` and hand it to the repos — do NOT re-implement
-> persistence. Use subagents for self-contained screens; keep the component-library tokens in the main
-> chat. **Defer export/backup + planner-shell to chat 2.** When chat 1's slice is solid (screens render
-> real seeded data; typecheck clean; suite green), DON'T tag — instead append a Phase-5 chat-1
-> progress note to the session log and write a **"Phase 5 (chat 2)" distilled brief + kickoff**
-> (export/backup + planner shell) at the bottom. Tag `v2-phase-5-complete` only when the **full** Phase-5
-> DoD passes. Then stop.
 
 ---
 
@@ -643,9 +532,151 @@ harness in v2.0 — note what was checked manually vs. in CI).
   (Hardscape, Final) were delegated to parallel subagents once the API was pinned — exactly the brief's plan.
 - **Tag:** `v2-phase-6-complete`.
 
+### Phase 7 — COMPLETE (care reminders + photo timeline) — **tagged `v2-phase-7-complete`**
+- **Scope this session:** the first phase the app **earns repeat opens** — the **Care tab** (per-terrarium reminder
+  schedule + mark-done) on **local repeating notifications**, plus the **date-grouped photo timeline** on Build
+  detail. First phase to **write the `care_marks` table** (shipped empty in Phase 4; its repo is net-new here) and
+  the first to touch **device notifications + the camera/picker**. 1 chat.
+- **Result:** **255 Vitest tests green** (was 230 + **25 net-new** pure-logic: 15 careSchedule + 10 care-repo) ·
+  `tsc --noEmit` clean · new/changed files lint-clean (`eslint`) · **`expo export -p ios` bundles clean** — the new
+  `expo-notifications` + `expo-image-picker` imports resolve through Metro/babel (Hermes `.hbc`). Phases 2–6
+  untouched; `src/logic` still imports nothing from `src/db`/`src/data`.
+- **Pure core — `src/logic/careSchedule.ts` (+15 tests), kept in the orchestrating chat.** The provisional,
+  curator-tunable **(taskType × coarse bucket) → interval** lookup table for the **3 build-level tasks** (decision
+  13): **watering-*inspection*** ("look, don't pour," never a timer — bucketed by the *wettest* moisture present),
+  **lid-opening** (sealed/lidded only, by opening × volume bucket), **trimming** (only when growth rates are mixed,
+  by the fastest grower). `buildCareSchedule(plants, container, createdAt)` → `CareTask[]` with **`firstDueAt = one
+  interval after creation`** (don't nag on save) + bodies **reused from `generateCareGuide`**. `nextDueAfter` = one
+  interval from the mark-done timestamp. **Plus the slot-budget guard** `planNotificationBudget` (decision 16):
+  soonest-due across all (terrarium, task), schedule ≤ `PENDING_BUDGET` (50, vs iOS's 64-cap), defer the rest,
+  report `deferred/scheduledBuildCount` for disclosure. CI-tested incl. the **synthetic 25-terrarium (75-slot)**
+  case → exactly 50 scheduled, ≤64, overflow surfaced.
+- **Persistence — `src/db/care-repo.ts` (+10 tests), subagent.** A care_mark row = **one scheduled occurrence**
+  (`dueAt` fires it; `completedAt` null = pending). `createCareRepository`: `add` / `listForBuild` /
+  `pendingForBuild` / `listPending` (budget refill) / **`markDone(id, intervalDays)`** (stamps `completedAt`, appends
+  the next pending occurrence one interval out, returns it) / `disableForBuild` (pending-only delete = toggle off) /
+  `purgeForBuild` (build delete). **"Reminders enabled" is *derived* from the presence of pending rows** — no schema
+  change. Wired into `DbProvider` (`useRepos().careMarks`) + the `@/db` barrel.
+- **Device glue — `src/lib/notifications.ts` (device-only, not CI'd), main chat.** `ensureCarePermission` (asks only
+  if undecided), `syncCareNotifications(pending, meta)` = `planNotificationBudget` → cancel-all → re-arm the budgeted
+  set as **`TIME_INTERVAL { repeats:true }`** triggers (Model A, decision 16) → returns the `BudgetPlan`;
+  `configureCareNotifications` (no-sound foreground handler, §4.6). The pure selection stays in `careSchedule`; this
+  shell is the untestable native edge.
+- **Care tab — `src/app/care.tsx` (§4.6 calm), main chat.** Per terrarium: a single **on/off toggle** (presence of
+  pending rows; enabling asks permission **post-first-build** then seeds the schedule; disabling clears it), the 3
+  task rows with **next-due** + **mark-done** (`markDone` → reschedule → `haptics.success`), and a gentle **overflow
+  disclosure** when the budget guard defers builds ("active on your N nearest-due…"). **Refills notifications on
+  every focus** (`useFocusEffect` = app-open/tab-return). Build-delete now **cascades** `purgeForBuild` from the
+  dashboard so no orphan pending rows linger.
+- **Photo timeline — `src/app/build/[id].tsx`, subagent.** Date-grouped progress photos (newest day first) wired to
+  the **existing Phase-4 photo repo** (primary-photo invariants untouched); tap a non-cover thumbnail → `setPrimary`
+  (sets the dashboard hero); **Add photo** via an `ActionSheet` (Take photo / Choose from library, `expo-image-picker`
+  permissions handled, friendly-Alert on denial/failure, never crash); calm empty state.
+- **Honest CI-vs-device split (per the brief):** typecheck + the full 255-test suite + new-file lint + the iOS
+  bundle export all pass in CI — the **pure cadence table, next-due math, and the slot-budget guard** are fully
+  CI-verified. **NOT verified here (no iOS simulator; `expo-notifications` doesn't fire in the node runner):** the
+  permission prompt, a real notification firing, the camera/picker, the photo render, and the slot cap under real
+  load. Those remain the owner's iPhone.
+- **Method:** the cross-cutting `careSchedule` (cadence table + budget guard) + the notification glue + the Care tab
+  stayed in the orchestrating chat; the **care-marks repo** and the **photo-timeline UI** (both self-contained, once
+  the care-mark shape + the photo seam were pinned) were delegated to subagents — exactly the brief's plan.
+- **Tag:** `v2-phase-7-complete`.
+
 ---
 
-## ▶ NEXT — Phase 7 distilled brief: Care reminders + photo timeline
+## ▶ NEXT — Phase 8 distilled brief: Substrate mixer (the v2.1 fast-follow, parallel to Phase 7)
+
+**Goal.** The **component-ratio substrate mixer** — a satisfying differentiator, but **net-new data + engine + UI**,
+so it runs as its own track (it has **no dependency on Phase 7**). Roll a component ratio into derived stats
+(**aeration / water-retention / nutrient / buffering**), show them **live** in the planner's Substrate step (the
+*entry point* already shipped in Phase 6), and feed the **static build-guide substrate line** (decision 10). **1-chat**
+phase, and the **one phase explicitly optional for v2.0** — if v2.0 slips, this is the cheapest cut.
+
+**What already exists (do NOT rebuild).**
+- **The frozen component vocabulary** — `src/data/substrate-components.ts`: `SUBSTRATE_COMPONENTS` = the 9 canonical
+  `{ id, label }` materials (perlite, peat, sphagnum, sand, coco-coir, grit, orchid-bark, pumice, mud[outlier]);
+  `HARDSCAPE_COMPONENTS` (wood/rock, split out). The seed loader already **rejects any `substrateTags` outside this
+  set** (CI-guarded). The **per-component property matrix is deliberately NOT authored yet** (decision 12) — that is
+  **this phase's job**, co-located with the mixer that is its only consumer.
+- **The Substrate step** — `src/components/planner/substrate-step.tsx`: Phase 6 shipped it as drainage + substrate
+  **depth** (seeded from `default_layer_depths` / `max_height_cm`, **not** `root_depth_cm`), with `substrateDepth` /
+  `drainageDepth` overrides **persisted to the build** (decision 10). It takes `StepProps` (`{ draft, plants, update }`).
+  The **ratio UI slots in here** — extend the step, don't rebuild it.
+- **`root_depth_min_cm` / `root_depth_max_cm`** — authored Phase 3, **reference-only** (decision 12): a depth
+  refinement *may* now draw on the range, but the depth seed stays `max_height_cm`-driven (no divergence from the v1
+  oracle).
+- **The build guide** — `generateBuildGuide` already emits the substrate line from `substrateTags`; the mixer output
+  refines it (decision 10).
+
+**Read only these:** `Terrarium_V2_Migration_Sequence.md` → **"Phase 8 — Substrate mixer"**;
+`Terrarium_V2_Grill_Decisions.md` → **12** (substrate-component dataset deferred to v2.1 → **author the property
+matrix HERE**, co-located with the mixer; the matrix = aeration / water-retention / nutrient / buffering /
+particle-size; `root_depth` range stays reference-only) + **10** (the build-guide substrate line is the mixer's
+downstream consumer). Premium Design has **no mixer-specific section** (it flags substrate as "no token-level impact")
+— reuse the §4.4 planner / §7.2 component-library idioms already in `src/components/ui`. v1 source-of-record: there is
+**no v1 mixer** (all net-new); `../terrarium-app/engine/containers.py` is the depth-math reference only.
+
+**Work.**
+1. **Author the per-component property matrix** (decision 12) — for each of the 9 `SUBSTRATE_COMPONENTS`, a record of
+   `{ aeration, waterRetention, nutrient, buffering, particleSize }` (normalized 0–1 or a small ordinal scale).
+   **Provisional, like the scoring constants** — co-locate it with the mixer (its only consumer), not back in the
+   shared seed bundle. Document it as authored/provisional, not science.
+2. **`src/logic/substrateMixer.ts` (pure, CI-tested from day one).** Given a component ratio (id → parts or %), roll up
+   the **derived stats** (weighted blend of the matrix). Edge cases: empty/zero ratio, single component, normalization.
+   Keep `src/logic` importing nothing from `src/db`/`src/data` (take the matrix as a local module or injected input).
+3. **Wire the Substrate step** — a ratio UI (steppers/sliders over the 9 components) showing the **live derived stats**
+   as the ratio changes; **persist the mix to the build.** ⚠️ **The build schema has `substrateDepth`/`drainageDepth`
+   but NO mix column** — adding one (`substrateMix` json) ripples through `SCHEMA_DDL` + the Drizzle table + the
+   **backup payload** + the **migrate ladder** (`STORE_SCHEMA_VERSION` bump, decision 17). Treat that as the phase's
+   one schema change and do it carefully (or, if a smaller seam exists, justify it) — do **not** break the Phase-4
+   store/backup round-trip.
+4. **Feed the build-guide substrate line** (decision 10) — the static guide's substrate sentence draws on the mix.
+
+**Gotchas.** The property values are **authored + provisional** (not science) — don't dress them as precise.
+**Persisting the mix likely needs a schema column + a `STORE_SCHEMA_VERSION` bump + backup-payload inclusion** — the
+Phase-4 store/backup/migrate must keep round-tripping (don't dangle care-marks/photos). The mixer math is **pure → CI**;
+the **live Substrate-step render is device-verified** (no simulator here — be honest about the split). This phase is
+**parallel to / independent of Phase 7** and **explicitly optional** for v2.0.
+
+**Subagent plan.** Keep the **property matrix + `substrateMixer.ts` + its tests** (the cross-cutting CI core) and the
+**schema/migrate/backup change** in the orchestrating chat. The **Substrate-step ratio UI** (self-contained, once the
+mixer API + the persisted mix shape are pinned) is a reasonable subagent candidate.
+
+**DoD (Phase 8 exit — tag `v2-phase-8-complete`):** the mixer logic has its **own green test module**; the Substrate
+step shows **live derived stats** as ratios change; **saved builds persist the mix** (and the backup round-trip still
+passes, including a `STORE_SCHEMA_VERSION` migrate if one was added). `npm run typecheck` clean; full Vitest suite
+green (Phases 2–7 untouched).
+
+**Verification:** `npm run typecheck` && `npm run test:run` (the mixer roll-up + any migrate/backup change) +
+`expo export -p ios` clean; **plus a device pass** for the live Substrate-step ratio UI (note the split). Then
+**commit + `git tag -a v2-phase-8-complete`** + update the phase table + append a Phase-8 session-log entry + write the
+**Phase 9** distilled brief + kickoff.
+
+### Kickoff prompt (paste into a NEW chat)
+
+> You're continuing the Terrarium V2 RN+Expo migration in `terrarium-v2`. You are doing **Phase 8 — Substrate mixer**
+> (a **1-chat**, **optional-for-v2.0**, independent-of-Phase-7 phase). Read `MIGRATION.md` (the phase table + the
+> **"▶ NEXT — Phase 8"** brief + the **Phase-7 COMPLETE** session-log entry) and ONLY: Sequence **"Phase 8 — Substrate
+> mixer"**, Decisions **12 + 10**. Do NOT read all four docs (Premium Design has no mixer section — reuse the existing
+> `@/components/ui` idioms). **Phase 7 is committed + tagged `v2-phase-7-complete`:** the Care tab + local repeating
+> notifications + the date-grouped photo timeline are live; **255 tests green**, tsc/lint/iOS-bundle clean. **Your
+> job:** (1) **author the per-component property matrix** (decision 12 — aeration / water-retention / nutrient /
+> buffering / particle-size for the 9 `SUBSTRATE_COMPONENTS` in `src/data/substrate-components.ts`; provisional,
+> co-located with the mixer); (2) **`src/logic/substrateMixer.ts`** — a pure, CI-tested ratio→derived-stats roll-up
+> (`src/logic` imports nothing from `src/db`/`src/data`); (3) wire the **Substrate step**
+> (`src/components/planner/substrate-step.tsx`, `StepProps`) with a ratio UI showing **live derived stats** +
+> **persist the mix** — ⚠️ this likely needs a new `substrateMix` json column → a careful `SCHEMA_DDL` + Drizzle +
+> **backup payload + `STORE_SCHEMA_VERSION` migrate** change that keeps the Phase-4 round-trip green; (4) feed the
+> **build-guide substrate line** (decision 10). Keep the matrix + mixer + schema/migrate change in the main chat; the
+> Substrate-step UI is a subagent candidate once the mixer API + mix shape are pinned. CI tests the pure math + the
+> backup/migrate; the live Substrate-step render is **device-verified** — be honest about the split (no simulator
+> here). When the **full** Phase-8 DoD passes (`npm run typecheck` + `npm run test:run` + `expo export -p ios`; device
+> pass), **commit + tag `v2-phase-8-complete`**, update the phase table + session log, and write the **Phase 9** brief
+> + kickoff. Then stop.
+
+---
+
+## Phase 7 distilled brief (DONE — kept for history): Care reminders + photo timeline
 
 **Goal.** Give the app a reason to be re-opened: the **Care tab** (per-terrarium reminder schedule + mark-done)
 backed by **local repeating notifications**, plus the **date-grouped photo timeline** on Build detail. This is a

@@ -12,5 +12,6 @@ export * from './schema';
 export * from './ids';
 export * from './builds-repo';
 export * from './photos-repo';
+export * from './care-repo';
 export * from './seed';
 export * from './migrate';
