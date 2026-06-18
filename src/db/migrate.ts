@@ -1,14 +1,16 @@
 /**
  * Backup-payload schema versioning + the migrate ladder (decision 17).
  *
- * This is the **scaffold** the Phase-5 backup/restore reuses — no migration runs
- * in v2.0, but shipping an *unversioned* backup is the one unfixable mistake (v2.0
- * files in the wild would carry no version, so v2.1 couldn't tell what it's
- * reading). So:
- *   - the backup envelope is **versioned now** — `schemaVersion` starts at **1**;
- *   - the `vN → vN+1` chain exists but is **empty** at v1 (a no-op migrate). The
- *     first real step (v1 → v2: substrate-mix fields + reusing `placements` for the
- *     3-D display) lands in **v2.1**;
+ * This is the **scaffold** the Phase-5 backup/restore reuses (decision 17). Shipping
+ * an *unversioned* backup is the one unfixable mistake (files in the wild would carry
+ * no version, so a later app couldn't tell what it's reading). So:
+ *   - the backup envelope is **versioned** — `schemaVersion` is now **2**;
+ *   - the `vN → vN+1` chain has its first real entry at **v1 → v2** (Phase 8): the
+ *     substrate-mixer `substrateMix` field. It is an **additive nullish column**, so
+ *     the step is the **identity** transform — a v1 build simply lacks the key, which
+ *     resolves to `null` at insert. Bumping the stamp (rather than leaving it at 1)
+ *     exercises the ladder + the refuse-newer guard for real, and is correct if the
+ *     mixer ships in an update *after* base v2.0;
  *   - a payload **newer** than this build is **refused** with a clear message — a
  *     foundation never best-effort-guesses a future schema.
  *
@@ -19,7 +21,7 @@
  */
 
 /** The current local-store / backup schema version. Bump when a `MIGRATIONS` step is added. */
-export const STORE_SCHEMA_VERSION = 1;
+export const STORE_SCHEMA_VERSION = 2;
 
 /**
  * The decision-17 backup envelope. `data` holds only user data that round-trips:
@@ -46,9 +48,16 @@ export type Migration = (data: any) => any;
 
 /**
  * The migration ladder, keyed by **source** version (`N` migrates `N → N+1`).
- * Empty at schema v1; the first entry (`1`) is added in v2.1.
+ *
+ * `1` (v1 → v2, Phase 8): the substrate-mixer `substrateMix` field. Additive +
+ * nullish — a v1 build just omits the key, and the importer resolves a missing
+ * `substrateMix` to `null` — so no payload transform is needed (**identity**). The
+ * step still exists so the ladder is walked for real (and so a future v2 → v3 has a
+ * registered predecessor).
  */
-export const MIGRATIONS: Readonly<Record<number, Migration>> = {};
+export const MIGRATIONS: Readonly<Record<number, Migration>> = {
+  1: (data) => data,
+};
 
 /** Message for a payload made by a newer app than this build understands. */
 export function newerSchemaMessage(fromVersion: number, toVersion: number): string {
@@ -88,8 +97,8 @@ export function migrateWith<T = unknown>(
 
 /**
  * Migrate a backup payload from its on-file `fromVersion` up to the app's current
- * `STORE_SCHEMA_VERSION`, using the real ladder. A v1 file with `toVersion === 1`
- * is returned unchanged (the no-op migrate).
+ * `STORE_SCHEMA_VERSION`, using the real ladder. A current-version file is returned
+ * unchanged; a v1 file runs the v1 → v2 identity step (additive `substrateMix`).
  */
 export function migratePayload<T = unknown>(
   data: T,

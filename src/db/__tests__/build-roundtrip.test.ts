@@ -41,12 +41,14 @@ describe('build save → reload round-trip', () => {
       placements,
       substrateDepth: 5,
       drainageDepth: 2.5,
+      substrateMix: { 'coco-coir': 2, perlite: 1, sphagnum: 1 },
     });
 
     const reloaded = await repo.load(saved.id);
     expect(reloaded.placements).toEqual(placements);
     expect(reloaded.substrateDepth).toBe(5);
     expect(reloaded.drainageDepth).toBe(2.5);
+    expect(reloaded.substrateMix).toEqual({ 'coco-coir': 2, perlite: 1, sphagnum: 1 });
     expect(reloaded.containerShape).toBe('cylindrical');
     expect(reloaded.containerDimensions).toEqual({ diameter: 12, height: 18 });
     expect(reloaded.containerOpening).toBe('sealed');
@@ -59,6 +61,7 @@ describe('build save → reload round-trip', () => {
     expect(reloaded.placements).toBeNull();
     expect(reloaded.substrateDepth).toBeNull();
     expect(reloaded.drainageDepth).toBeNull();
+    expect(reloaded.substrateMix).toBeNull();
     expect(reloaded.primaryPhotoId).toBeNull();
   });
 });

@@ -52,6 +52,40 @@ describe('generateBuildGuide', () => {
     expect(titles).toContain('Hardscape Placement');
   });
 
+  it('keeps the generic substrate-tags sentence when no mix recipe is given', () => {
+    const plant = makePlant({ substrateTags: ['peat', 'sphagnum'] });
+    const guide = generateBuildGuide([plant], makeContainerSpec());
+    const substrateStep = guide.find((s) => s.title === 'Substrate Layer')!;
+    expect(substrateStep.instruction).toContain('substrate explicitly supporting: peat, sphagnum');
+    expect(substrateStep.instruction).not.toContain('custom mix');
+  });
+
+  it('describes the custom mix recipe + character when a mix is given', () => {
+    const plant = makePlant({ substrateTags: ['peat'] });
+    const guide = generateBuildGuide([plant], makeContainerSpec(), {
+      substrateMix: {
+        recipe: '2 parts coco coir, 1 part perlite, 1 part sphagnum moss',
+        character: 'airy, moisture-retentive',
+      },
+    });
+    const substrateStep = guide.find((s) => s.title === 'Substrate Layer')!;
+    // "an" before the vowel-initial character phrase; recipe verbatim.
+    expect(substrateStep.instruction).toContain(
+      'your custom mix: 2 parts coco coir, 1 part perlite, 1 part sphagnum moss — ' +
+        'an airy, moisture-retentive blend.',
+    );
+    expect(substrateStep.instruction).not.toContain('explicitly supporting');
+  });
+
+  it('uses "a" before a consonant-initial character phrase', () => {
+    const plant = makePlant({ substrateTags: ['peat'] });
+    const guide = generateBuildGuide([plant], makeContainerSpec(), {
+      substrateMix: { recipe: '1 part coco coir', character: 'well-balanced' },
+    });
+    const substrateStep = guide.find((s) => s.title === 'Substrate Layer')!;
+    expect(substrateStep.instruction).toContain('a well-balanced blend.');
+  });
+
   it('numbers steps sequentially starting from 1', () => {
     const plant = makePlant({ substrateTags: ['rock'] }); // hardscape to max out steps
     const container = makeContainerSpec({ volumeL: 5.0 }); // drainage included

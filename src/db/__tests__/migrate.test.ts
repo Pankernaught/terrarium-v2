@@ -15,19 +15,28 @@ import {
 } from '../migrate';
 
 describe('store schema version', () => {
-  it('starts at 1', () => {
-    expect(STORE_SCHEMA_VERSION).toBe(1);
+  it('is at 2 (substrate-mix additive field, Phase 8)', () => {
+    expect(STORE_SCHEMA_VERSION).toBe(2);
   });
 });
 
-describe('migratePayload (real ladder, empty at v1)', () => {
-  it('is a no-op for a current-version payload', () => {
+describe('migratePayload (real ladder, v1 → v2 identity)', () => {
+  it('is a no-op for a current-version (v2) payload', () => {
     const data = { builds: [{ id: 'b1' }], careMarks: [] };
-    expect(migratePayload(data, 1)).toBe(data); // same reference — nothing ran
+    expect(migratePayload(data, 2)).toBe(data); // same reference — nothing ran
+  });
+
+  it('migrates a v1 payload up to v2 via the identity step (additive substrateMix)', () => {
+    // A v1 build simply lacks `substrateMix`; the identity step carries it through
+    // unchanged (the importer resolves the missing field to null at insert).
+    const data = { builds: [{ id: 'b1', name: 'Legacy' }], careMarks: [] };
+    expect(migratePayload(data, 1)).toEqual(data);
   });
 
   it('refuses a payload newer than this app', () => {
-    expect(() => migratePayload({ builds: [], careMarks: [] }, 2)).toThrow(/newer version/i);
+    expect(() =>
+      migratePayload({ builds: [], careMarks: [] }, STORE_SCHEMA_VERSION + 1),
+    ).toThrow(/newer version/i);
   });
 });
 

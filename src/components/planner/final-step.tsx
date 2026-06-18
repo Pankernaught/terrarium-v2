@@ -17,10 +17,12 @@ import { Card, Chip, SectionLabel, Text, VerdictBand } from '@/components/ui';
 import { Radii, Spacing } from '@/constants/theme';
 import { useTokens } from '@/hooks/use-tokens';
 import { loadContainers, loadPlants } from '@/data';
+import { componentLabel } from '@/data/substrate-components';
 import { resolveBuildContainer } from '@/logic/containers';
-import { generateBuildGuide, type BuildStep } from '@/logic/guide';
+import { generateBuildGuide, type BuildStep, type SubstrateMixGuide } from '@/logic/guide';
 import { hasHardscape } from '@/logic/placement';
 import { scoreBuild } from '@/logic/score-build';
+import { describeMix, formatMixRecipe, mixSubstrate } from '@/logic/substrateMixer';
 
 import { DEFAULT_DRAINAGE_MATERIAL } from './draft';
 import type { StepProps } from './step';
@@ -43,6 +45,18 @@ export function FinalStep({ draft, plants, update }: StepProps) {
     [draft, seedContainers],
   );
 
+  // A custom substrate-mixer recipe → the concrete recipe + soft character for the
+  // guide's Substrate-Layer line (decision 10). Pre-formatted here (labels live in
+  // src/data) so `@/logic/guide` stays import-pure. Null mix → undefined → the guide
+  // keeps its generic substrateTags sentence.
+  const substrateMix = useMemo<SubstrateMixGuide | undefined>(() => {
+    const mix = draft.substrateMix;
+    if (!mix) return undefined;
+    const recipe = formatMixRecipe(mix, componentLabel);
+    if (!recipe) return undefined;
+    return { recipe, character: describeMix(mixSubstrate(mix)) };
+  }, [draft.substrateMix]);
+
   // Build the read-only guide projection. `generateBuildGuide` THROWS on empty
   // plants, so only call it with plants + a resolved container, wrapped in try/catch.
   // We deliberately omit substrateDepth/drainageDepth: the guide's opts take preset
@@ -53,11 +67,12 @@ export function FinalStep({ draft, plants, update }: StepProps) {
       return generateBuildGuide(plants, container, {
         drainageMaterial: DEFAULT_DRAINAGE_MATERIAL,
         includeHardscape: hasHardscape(draft.placements),
+        substrateMix,
       });
     } catch {
       return null;
     }
-  }, [plants, container, draft.placements]);
+  }, [plants, container, draft.placements, substrateMix]);
 
   const canGuide = plants.length > 0 && container != null;
 

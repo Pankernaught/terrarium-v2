@@ -63,6 +63,10 @@ const backupBuildSchema = z.object({
   placements: z.array(placementSchema).nullish(),
   substrateDepth: z.number().nullish(),
   drainageDepth: z.number().nullish(),
+  // The substrate-mixer recipe (Phase 8) — `componentId → parts`. Nullish: a v1
+  // backup (schema v1) simply lacks the key, which the v1→v2 identity migration
+  // carries through to `null` here (additive field).
+  substrateMix: z.record(z.string(), z.number()).nullish(),
   // Kept so the round-trip is identical; the photo it points at is gone (excluded),
   // which getPrimary degrades to a placeholder rather than crashing.
   primaryPhotoId: z.string().nullish(),
@@ -185,6 +189,7 @@ export async function restoreBackup(
     placements: b.placements ?? null,
     substrateDepth: b.substrateDepth ?? null,
     drainageDepth: b.drainageDepth ?? null,
+    substrateMix: b.substrateMix ?? null,
     primaryPhotoId: b.primaryPhotoId ?? null,
     createdAt: b.createdAt,
     updatedAt: b.updatedAt,

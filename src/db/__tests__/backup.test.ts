@@ -45,6 +45,7 @@ describe('whole-app backup/restore (decisions 7 / 17)', () => {
       containerDimensions: { length: 15, width: 15, height: 20 },
       containerOpening: 'sealed',
       placements: [{ slug: 'fittonia', x: 0.3, y: 0.6, scale: 1 }],
+      substrateMix: { 'coco-coir': 2, sphagnum: 1 },
     });
     const b = await builds.save({ name: 'Desert Bowl', plantSlugs: ['cactus'], tags: [] });
     await addCareMark(source, a.id, 'water', 'weekly');
@@ -65,6 +66,7 @@ describe('whole-app backup/restore (decisions 7 / 17)', () => {
     expect(restored.plantSlugs).toEqual(['fittonia', 'moss']);
     expect(restored.tags).toEqual(['sealed', 'beginner']);
     expect(restored.placements).toEqual([{ slug: 'fittonia', x: 0.3, y: 0.6, scale: 1 }]);
+    expect(restored.substrateMix).toEqual({ 'coco-coir': 2, sphagnum: 1 });
     expect(restored.createdAt.getTime()).toBe(a.createdAt.getTime());
 
     const restoredMarks = await target.select().from(careMarks);

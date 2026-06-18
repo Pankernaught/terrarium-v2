@@ -16,6 +16,7 @@ import type { Build } from '@/db/schema';
 import type { SaveBuildInput, UpdateBuildPatch } from '@/db/builds-repo';
 import type { Dimensions } from '@/logic/containers';
 import type { Placement } from '@/logic/placement';
+import type { SubstrateMix } from '@/logic/substrateMixer';
 import type { ContainerOpening, ContainerShape } from '@/types';
 
 /**
@@ -38,6 +39,8 @@ export interface PlannerDraft {
   placements: Placement[];
   substrateDepth: number | null;
   drainageDepth: number | null;
+  /** The custom substrate-mixer recipe (Phase 8), or `null` for no custom mix (opt-in). */
+  substrateMix: SubstrateMix | null;
   tags: string[];
   description: string | null;
 }
@@ -55,6 +58,7 @@ export function emptyDraft(): PlannerDraft {
     placements: [],
     substrateDepth: null,
     drainageDepth: null,
+    substrateMix: null,
     tags: [],
     description: null,
   };
@@ -74,6 +78,7 @@ export function draftFromBuild(b: Build): PlannerDraft {
     placements: b.placements ?? [],
     substrateDepth: b.substrateDepth,
     drainageDepth: b.drainageDepth,
+    substrateMix: b.substrateMix ?? null,
     tags: b.tags ?? [],
     description: b.description,
   };
@@ -92,6 +97,7 @@ export function draftToSaveInput(d: PlannerDraft): SaveBuildInput {
     placements: d.placements,
     substrateDepth: d.substrateDepth,
     drainageDepth: d.drainageDepth,
+    substrateMix: d.substrateMix,
     tags: d.tags,
     description: d.description,
   };

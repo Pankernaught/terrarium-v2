@@ -40,6 +40,7 @@ export interface SaveBuildInput {
   placements?: Build['placements'];
   substrateDepth?: Build['substrateDepth'];
   drainageDepth?: Build['drainageDepth'];
+  substrateMix?: Build['substrateMix'];
 }
 
 /**
@@ -59,6 +60,7 @@ export interface UpdateBuildPatch {
   placements?: Build['placements'];
   substrateDepth?: Build['substrateDepth'];
   drainageDepth?: Build['drainageDepth'];
+  substrateMix?: Build['substrateMix'];
 }
 
 export interface BuildRepository {
@@ -99,6 +101,7 @@ export function createBuildRepository(db: TerrariumDb): BuildRepository {
         placements: input.placements ?? null,
         substrateDepth: input.substrateDepth ?? null,
         drainageDepth: input.drainageDepth ?? null,
+        substrateMix: input.substrateMix ?? null,
         primaryPhotoId: null,
         createdAt: now,
         updatedAt: now,
@@ -135,6 +138,7 @@ export function createBuildRepository(db: TerrariumDb): BuildRepository {
       if (patch.placements !== undefined) set.placements = patch.placements;
       if (patch.substrateDepth !== undefined) set.substrateDepth = patch.substrateDepth;
       if (patch.drainageDepth !== undefined) set.drainageDepth = patch.drainageDepth;
+      if (patch.substrateMix !== undefined) set.substrateMix = patch.substrateMix;
 
       await db.update(builds).set(set).where(eq(builds.id, id));
       return loadOrThrow(id);
@@ -165,6 +169,7 @@ export function createBuildRepository(db: TerrariumDb): BuildRepository {
         placements: original.placements,
         substrateDepth: original.substrateDepth,
         drainageDepth: original.drainageDepth,
+        substrateMix: original.substrateMix,
         // A duplicate carries no photos yet.
         primaryPhotoId: null,
         createdAt: now,

@@ -19,6 +19,19 @@ export interface BuildStep {
   instruction: string;
 }
 
+/**
+ * A custom substrate-mixer recipe for the guide's Substrate-Layer line (decision 10
+ * / Phase 8). Pre-formatted by the caller (which owns component labels in
+ * `src/data`) so this module stays import-pure: `recipe` is the human "N parts …"
+ * list and `character` is the soft `describeMix` phrase (e.g. "airy,
+ * moisture-retentive"). When present, it replaces the default `substrateTags`
+ * sentence; when absent, that sentence is unchanged.
+ */
+export interface SubstrateMixGuide {
+  recipe: string;
+  character: string;
+}
+
 /** Optional overrides for {@link generateBuildGuide} (mirror of the v1 keyword args). */
 export interface BuildGuideOptions {
   /** Override substrate depth ("3-5cm" | "6-8cm"). If omitted, computed from plant heights. */
@@ -35,6 +48,17 @@ export interface BuildGuideOptions {
    * omitted, include only when substrate tags contain "rock" or "wood".
    */
   includeHardscape?: boolean;
+  /**
+   * A custom substrate-mixer recipe (Phase 8). When present (non-empty `recipe`),
+   * the Substrate-Layer step describes the concrete mix + its character instead of
+   * the generic `substrateTags` sentence.
+   */
+  substrateMix?: SubstrateMixGuide;
+}
+
+/** "a"/"an" for a character phrase — only the vowel-initial "airy" takes "an". */
+function articleFor(phrase: string): string {
+  return /^[aeiou]/i.test(phrase) ? 'an' : 'a';
 }
 
 /**
@@ -56,6 +80,7 @@ export function generateBuildGuide(
     drainageDepth,
     drainageMaterial = 'pebbles or LECA',
     includeHardscape,
+    substrateMix,
   } = opts;
 
   // Working steps without numbers; sequential `step` is stamped on at the end.
@@ -113,10 +138,15 @@ export function generateBuildGuide(
     actualSubstrateDepth = hasTallPlants ? '6-8cm' : '3-5cm';
   }
 
-  stepsData.push({
-    title: 'Substrate Layer',
-    instruction: `Add ${actualSubstrateDepth} of substrate explicitly supporting: ${tagsStr}.`,
-  });
+  // A custom mixer recipe (decision 10) supersedes the generic substrate-tags
+  // sentence; with no recipe, the original tags line is unchanged (the fallback).
+  const substrateInstruction =
+    substrateMix && substrateMix.recipe
+      ? `Add ${actualSubstrateDepth} of your custom mix: ${substrateMix.recipe} — ` +
+        `${articleFor(substrateMix.character)} ${substrateMix.character} blend.`
+      : `Add ${actualSubstrateDepth} of substrate explicitly supporting: ${tagsStr}.`;
+
+  stepsData.push({ title: 'Substrate Layer', instruction: substrateInstruction });
 
   // 5. Hardscape Placement
   if (

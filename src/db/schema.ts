@@ -39,6 +39,7 @@ import { index, integer, real, sqliteTable, text } from 'drizzle-orm/sqlite-core
 
 import type { Placement } from '../data/presets';
 import type { Dimensions } from '../logic/containers';
+import type { SubstrateMix } from '../logic/substrateMixer';
 
 // --- User data: the three persisted entities (decision 11) ------------------
 
@@ -71,6 +72,14 @@ export const builds = sqliteTable('builds', {
   // diagram both read these (single source of truth). Phase 6 writes them.
   substrateDepth: real('substrate_depth'),
   drainageDepth: real('drainage_depth'),
+  /**
+   * The substrate **mixer** recipe (decision 12, Phase 8) — `componentId → integer
+   * parts`, or `null` when the owner built no custom mix (opt-in; never seeded).
+   * Drives the build-guide recipe line + the live planner bars; does NOT feed the
+   * compatibility score. Additive column → an existing store gets it via the
+   * guarded ALTER on open (`ensureSubstrateMixColumn`), not `CREATE TABLE`.
+   */
+  substrateMix: text('substrate_mix', { mode: 'json' }).$type<SubstrateMix>(),
   /** Explicit hero pointer (decision: NOT newest-by-date) → `build_photos.id`. */
   primaryPhotoId: text('primary_photo_id'),
   createdAt: integer('created_at', { mode: 'timestamp_ms' }).notNull(),
@@ -168,6 +177,7 @@ CREATE TABLE IF NOT EXISTS builds (
   placements TEXT,
   substrate_depth REAL,
   drainage_depth REAL,
+  substrate_mix TEXT,
   primary_photo_id TEXT,
   created_at INTEGER NOT NULL,
   updated_at INTEGER NOT NULL
@@ -210,3 +220,33 @@ CREATE TABLE IF NOT EXISTS presets (
   data TEXT NOT NULL
 );
 `;
+
+/** The one additive column the substrate mixer (Phase 8) adds to `builds`. */
+export const SUBSTRATE_MIX_COLUMN = 'substrate_mix';
+
+/**
+ * Guarded additive migration, run on every store open after `SCHEMA_DDL`.
+ *
+ * `CREATE TABLE IF NOT EXISTS` is a no-op against an existing table, so it can
+ * **never add a column** — a store created before the mixer shipped would be missing
+ * `builds.substrate_mix`. This checks the live columns and `ALTER TABLE … ADD
+ * COLUMN`s it only when absent (idempotent: a fresh DB already has it from the DDL,
+ * so the guard does nothing). The column is appended on upgrade, but every query
+ * Drizzle issues names its columns explicitly, so physical order never matters.
+ *
+ * Both drivers route through this single function (device `client.expo.ts` + the
+ * node test helper) so CI exercises the same upgrade path the phone takes. This is
+ * the *only* additive column v2.0 → (mixer) introduces — deliberately not a full
+ * migration framework.
+ *
+ * @param buildsColumns the live column names of `builds` (from `PRAGMA table_info`).
+ * @param exec runs a result-less DDL statement on the underlying driver.
+ */
+export function ensureSubstrateMixColumn(
+  buildsColumns: readonly string[],
+  exec: (sql: string) => void,
+): void {
+  if (!buildsColumns.includes(SUBSTRATE_MIX_COLUMN)) {
+    exec(`ALTER TABLE builds ADD COLUMN ${SUBSTRATE_MIX_COLUMN} TEXT`);
+  }
+}

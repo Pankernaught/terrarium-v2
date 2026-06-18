@@ -10,7 +10,7 @@
 import { DatabaseSync } from 'node:sqlite';
 
 import { createNodeDb } from '../client.node';
-import { SCHEMA_DDL, type TerrariumDb } from '../schema';
+import { ensureSubstrateMixColumn, SCHEMA_DDL, type TerrariumDb } from '../schema';
 
 export interface TestDb {
   /** The Drizzle handle the repositories accept. */
@@ -23,5 +23,13 @@ export interface TestDb {
 export function makeTestDb(): TestDb {
   const sqlite = new DatabaseSync(':memory:');
   sqlite.exec(SCHEMA_DDL);
+  // Mirror the device open path: the guarded additive ALTER (Phase 8). A fresh DB
+  // already has `substrate_mix` from the DDL, so this is a no-op here — but it keeps
+  // CI walking the same code the phone runs, and the dedicated old-schema migration
+  // test drives the branch that actually adds the column.
+  const cols = (sqlite.prepare('PRAGMA table_info(builds)').all() as { name: string }[]).map(
+    (c) => c.name,
+  );
+  ensureSubstrateMixColumn(cols, (sql) => sqlite.exec(sql));
   return { db: createNodeDb(sqlite), sqlite };
 }
