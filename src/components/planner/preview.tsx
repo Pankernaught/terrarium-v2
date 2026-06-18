@@ -15,8 +15,9 @@
  * and there is no in-3-D drag (decision 5).
  */
 import { useEffect, useState } from 'react';
-import { LayoutChangeEvent, StyleSheet, View } from 'react-native';
+import { LayoutChangeEvent, StyleSheet, View, Image } from 'react-native';
 import { Gesture, GestureDetector } from 'react-native-gesture-handler';
+import MaskedView from '@react-native-masked-view/masked-view';
 import Animated, {
   runOnJS,
   useAnimatedStyle,
@@ -155,6 +156,12 @@ function DraggableSprite({ sprite, w, h, draggable, onCommit }: DraggableSpriteP
   const startY = useSharedValue(placement.y);
   const startScale = useSharedValue(placement.scale);
 
+  // w and h as shared values so the UI-thread worklets (useAnimatedStyle,
+  // gesture .onChange) can read them without relying on JS-closure serialisation,
+  // which the React Compiler can memoize away and leave stale.
+  const sharedW = useSharedValue(w);
+  const sharedH = useSharedValue(h);
+
   useEffect(() => {
     px.value = placement.x;
     py.value = placement.y;
@@ -162,6 +169,12 @@ function DraggableSprite({ sprite, w, h, draggable, onCommit }: DraggableSpriteP
     // Shared-value refs are stable and mutated in worklets; not effect deps.
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [placement.x, placement.y, placement.scale]);
+
+  useEffect(() => {
+    sharedW.value = w;
+    sharedH.value = h;
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [w, h]);
 
   function commit(next: Placement) {
     haptics.snap();
@@ -178,8 +191,8 @@ function DraggableSprite({ sprite, w, h, draggable, onCommit }: DraggableSpriteP
     .onChange((e) => {
       // Glued to the finger — follow freely (no clamp), so a drop outside the
       // plane can spring back. translation is px; /w,/h normalizes to [0,1].
-      px.value = startX.value + e.translationX / w;
-      py.value = startY.value + e.translationY / h;
+      px.value = startX.value + e.translationX / sharedW.value;
+      py.value = startY.value + e.translationY / sharedH.value;
     })
     .onEnd(() => {
       grab.value = withSpring(0, Motion.snappy);
@@ -219,8 +232,8 @@ function DraggableSprite({ sprite, w, h, draggable, onCommit }: DraggableSpriteP
 
   const animStyle = useAnimatedStyle(() => ({
     transform: [
-      { translateX: px.value * w - SPRITE / 2 },
-      { translateY: py.value * h - SPRITE / 2 },
+      { translateX: px.value * sharedW.value - SPRITE / 2 },
+      { translateY: py.value * sharedH.value - SPRITE / 2 },
       { scale: liveScale.value * (1 + grab.value * 0.12) },
     ],
     // Lift opacity/shadow a touch while held.

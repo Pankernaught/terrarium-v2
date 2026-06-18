@@ -13,8 +13,8 @@
  * `?build=<id>` hydrates the draft from that build (edit); no param starts empty
  * (new). Editing waits on the store; a new build needs no DB until the Final save.
  */
-import { type Href, useLocalSearchParams, useRouter } from 'expo-router';
-import { useEffect, useMemo, useRef, useState } from 'react';
+import { type Href, useFocusEffect, useLocalSearchParams, useRouter } from 'expo-router';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { ActivityIndicator, Alert, Pressable, ScrollView, StyleSheet, View } from 'react-native';
 
 import { ContainerStep } from '@/components/planner/container-step';
@@ -68,6 +68,16 @@ export default function PlannerScreen() {
   const [draft, setDraft] = useState<PlannerDraft | null>(isEdit ? null : emptyDraft());
   const [loadError, setLoadError] = useState<string | null>(null);
   const hydrated = useRef(!isEdit);
+
+  // Reset to a blank slate every time the new-build planner gains focus so a
+  // cached navigation instance never shows a stale half-finished draft.
+  useFocusEffect(
+    useCallback(() => {
+      if (isEdit) return;
+      setActive(0);
+      setDraft(emptyDraft());
+    }, [isEdit]),
+  );
 
   // Edit path: hydrate the draft from the saved build once the store is ready.
   useEffect(() => {
@@ -125,8 +135,10 @@ export default function PlannerScreen() {
       haptics.success();
       router.replace(`/build/${id}` as Href);
     } catch (err) {
+      Alert.alert("Couldn’t save", err instanceof Error ? err.message : String(err));
+    } finally {
+      // Always reset — no-op if the component already unmounted after navigation.
       setSaving(false);
-      Alert.alert('Couldn’t save', err instanceof Error ? err.message : String(err));
     }
   }
 
