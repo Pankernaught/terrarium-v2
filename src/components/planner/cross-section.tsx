@@ -64,7 +64,7 @@ import {
   isHardscapeSlug,
   type Placement,
 } from '@/logic/placement';
-import type { ContainerOpening, Plant } from '@/types';
+import type { ContainerOpening, ContainerShape, Plant } from '@/types';
 
 import {
   getContainerProfile,
@@ -204,6 +204,7 @@ interface Scene {
   cmToPx: number;
   widthCm: number;
   heightCm: number;
+  containerShape: ContainerShape;
 }
 
 const PLANT_EMOJI = '🌿';
@@ -303,6 +304,7 @@ function buildScene(
     cmToPx: scale,
     widthCm,
     heightCm,
+    containerShape: shape,
   };
 }
 
@@ -432,11 +434,13 @@ function DimensionLines({
   geom,
   widthCm,
   heightCm,
+  containerShape,
   c,
 }: {
   geom: GeomRect;
   widthCm: number;
   heightCm: number;
+  containerShape: ContainerShape;
   c: ReturnType<typeof useTokens>['c'];
 }) {
   const { x, y, width, height } = geom;
@@ -452,12 +456,12 @@ function DimensionLines({
       <Line x1={hx - DIM_TICK} y1={y} x2={hx + DIM_TICK} y2={y} stroke={c.textMuted} strokeWidth={1} />
       <Line x1={hx - DIM_TICK} y1={y + height} x2={hx + DIM_TICK} y2={y + height} stroke={c.textMuted} strokeWidth={1} />
       <SvgText
-        x={hx}
+        x={hx - 6}
         y={midY}
         fontSize={DIM_FONT}
         fill={c.textMuted}
         textAnchor="middle"
-        transform={`rotate(-90, ${hx}, ${midY})`}
+        transform={`rotate(-90, ${hx - 6}, ${midY})`}
       >
         {`H: ${formatDim(heightCm)}cm`}
       </SvgText>
@@ -467,7 +471,7 @@ function DimensionLines({
       <Line x1={x} y1={wy - DIM_TICK} x2={x} y2={wy + DIM_TICK} stroke={c.textMuted} strokeWidth={1} />
       <Line x1={x + width} y1={wy - DIM_TICK} x2={x + width} y2={wy + DIM_TICK} stroke={c.textMuted} strokeWidth={1} />
       <SvgText x={midX} y={wy + DIM_FONT + 2} fontSize={DIM_FONT} fill={c.textMuted} textAnchor="middle">
-        {`W: ${formatDim(widthCm)}cm`}
+        {`${containerShape === 'cylindrical' ? 'D' : 'W'}: ${formatDim(widthCm)}cm`}
       </SvgText>
     </G>
   );
@@ -618,7 +622,7 @@ function SceneSvg({
         <Line x1={rimX0 - 3} y1={geom.y - LID_GAP} x2={rimX0 + rimW + 3} y2={geom.y - LID_GAP} stroke={c.text} strokeOpacity={0.5} strokeWidth={3} strokeLinecap="round" />
       ) : null}
 
-      <DimensionLines geom={geom} widthCm={scene.widthCm} heightCm={scene.heightCm} c={c} />
+      <DimensionLines geom={geom} widthCm={scene.widthCm} heightCm={scene.heightCm} containerShape={scene.containerShape} c={c} />
     </Svg>
   );
 }
