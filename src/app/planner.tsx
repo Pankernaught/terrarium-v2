@@ -1,14 +1,8 @@
 /**
- * Planner — the 5-step build flow (Premium §4.4). Phase 6 makes the shell real:
- * a shared {@link PlannerDraft} threads through Container · Substrate · Hardscape ·
- * Plants · Final, each step a `(draft) → patch` body, with the persistent 2-D
- * preview pane reading the single draft.
- *
- * **Chat 1 (this slice):** the draft state machine + the **Container** and
- * **Substrate** step bodies (the two non-drag form steps). Hardscape, Plants
- * (drag-to-place), and Final — everything that shares the 2-D drag interaction —
- * are the chat-2 placeholders below, and the preview pane stays a static frame
- * until the drag/sprites land.
+ * Planner — the 5-step build flow. A shared {@link PlannerDraft} threads through
+ * Container · Substrate · Hardscape · Plants · Final, each step a
+ * `(draft) → patch` body, with the persistent 2-D preview pane reading the single
+ * draft.
  *
  * `?build=<id>` hydrates the draft from that build (edit); no param starts empty
  * (new). Editing waits on the store; a new build needs no DB until the Final save.
@@ -25,10 +19,11 @@ import {
   draftToUpdatePatch,
   emptyDraft,
 } from '@/components/planner/draft';
+import type { DraggableKind } from '@/components/planner/cross-section';
 import { FinalStep } from '@/components/planner/final-step';
 import { HardscapeStep } from '@/components/planner/hardscape-step';
 import { PlantsStep } from '@/components/planner/plants-step';
-import { type DraggableKind, PlannerPreview } from '@/components/planner/preview';
+import { PlannerPreviewPane } from '@/components/planner/preview-pane';
 import type { StepProps } from '@/components/planner/step';
 import { SubstrateStep } from '@/components/planner/substrate-step';
 import { Card, GlanceHeader, haptics, Screen, SectionLabel, Text } from '@/components/ui';
@@ -52,7 +47,7 @@ const STEPS: Step[] = [
   { key: 'final', label: 'Final', blurb: 'Name it, review the verdict, and save.' },
 ];
 
-/** Which sprite category the persistent preview lets you drag on each step. */
+/** Which item category the persistent cross-section lets you slide on each step. */
 const DRAG_KIND: Record<string, DraggableKind> = { hardscape: 'hardscape', plants: 'plant' };
 
 export default function PlannerScreen() {
@@ -97,7 +92,7 @@ export default function PlannerScreen() {
     };
   }, [db, isEdit, build]);
 
-  // Selected plants, resolved from the seed bundle (decision 11 — no DB round-trip).
+  // Selected plants, resolved from the seed bundle (no DB round-trip).
   const plants = useMemo(() => {
     if (!draft || draft.plantSlugs.length === 0) return [];
     const bySlug = new Map(loadPlants().map((p) => [p.slug, p]));
@@ -180,7 +175,10 @@ export default function PlannerScreen() {
 
   return (
     <Screen edges={{ bottom: true }}>
-      <ScrollView contentContainerStyle={styles.scroll} showsVerticalScrollIndicator={false}>
+      {/* Fixed header — Cancel, title, step dots and the live preview stay docked
+          so a change made deep in a long step is visible the instant it's made;
+          only the step body below scrolls. */}
+      <View style={styles.header}>
         <View style={styles.inner}>
           <Pressable onPress={() => router.back()} accessibilityRole="button" hitSlop={8} style={styles.back}>
             <Text variant="caption" role="primary">
@@ -219,19 +217,27 @@ export default function PlannerScreen() {
             })}
           </View>
 
-          {/* Persistent 2-D preview pane — docked, framed, live. The active step
-              decides which sprites are draggable (hardscape vs plants). */}
+          {/* Persistent cross-section viewer — docked, framed, live. Tap to expand
+              to the working size; the active step decides which items can be slid
+              horizontally (hardscape vs plants) once expanded. */}
           <View style={styles.section}>
             <SectionLabel>Preview</SectionLabel>
-            <PlannerPreview
-              placements={draft.placements}
+            <PlannerPreviewPane
+              draft={draft}
               plants={plants}
               draggableKind={DRAG_KIND[step.key] ?? null}
               onCommit={commitPlacement}
             />
           </View>
+        </View>
+      </View>
 
-          {/* Current step body. */}
+      {/* Current step body — the only scrolling region. */}
+      <ScrollView
+        style={styles.scrollFill}
+        contentContainerStyle={styles.scroll}
+        showsVerticalScrollIndicator={false}>
+        <View style={styles.inner}>
           <View style={styles.section}>
             <SectionLabel>{step.label}</SectionLabel>
             <StepBody stepKey={step.key} blurb={step.blurb} {...stepProps} />
@@ -308,7 +314,9 @@ function NavButton({
 }
 
 const styles = StyleSheet.create({
-  scroll: { alignItems: 'center', paddingBottom: Spacing.xxl },
+  header: { alignItems: 'center' },
+  scrollFill: { flex: 1 },
+  scroll: { alignItems: 'center', paddingTop: Spacing.lg, paddingBottom: Spacing.xxl },
   inner: { width: '100%', maxWidth: MaxContentWidth, alignSelf: 'center', gap: Spacing.lg, paddingTop: Spacing.sm },
   centerFill: { flex: 1, alignItems: 'center', justifyContent: 'center', gap: Spacing.md },
   centerText: { textAlign: 'center' },
