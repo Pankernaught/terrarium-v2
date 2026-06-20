@@ -26,7 +26,7 @@ import { PlantsStep } from '@/components/planner/plants-step';
 import { PlannerPreviewPane } from '@/components/planner/preview-pane';
 import type { StepProps } from '@/components/planner/step';
 import { SubstrateStep } from '@/components/planner/substrate-step';
-import { Card, GlanceHeader, haptics, Screen, SectionLabel, Text } from '@/components/ui';
+import { Card, Collapse, GlanceHeader, haptics, Screen, SectionLabel, Text } from '@/components/ui';
 import { MaxContentWidth, Radii, Spacing } from '@/constants/theme';
 import { loadPlants } from '@/data';
 import { useDbState } from '@/db/provider';
@@ -58,6 +58,9 @@ export default function PlannerScreen() {
 
   const isEdit = typeof build === 'string' && build.length > 0;
   const [active, setActive] = useState(0);
+  // When the preview is expanded, the header chrome (title, step counter, dots)
+  // collapses so the preview slides up to the top.
+  const [previewExpanded, setPreviewExpanded] = useState(false);
   // The draft is null until hydrated (immediately for a new build; after the
   // store loads the row for an edit).
   const [draft, setDraft] = useState<PlannerDraft | null>(isEdit ? null : emptyDraft());
@@ -70,6 +73,7 @@ export default function PlannerScreen() {
     useCallback(() => {
       if (isEdit) return;
       setActive(0);
+      setPreviewExpanded(false);
       setDraft(emptyDraft());
     }, [isEdit]),
   );
@@ -175,10 +179,11 @@ export default function PlannerScreen() {
 
   return (
     <Screen edges={{ bottom: true }}>
-      {/* Fixed header — Cancel, title, step dots and the live preview stay docked
-          so a change made deep in a long step is visible the instant it's made;
-          only the step body below scrolls. */}
-      <View style={styles.header}>
+      {/* Fixed header — Cancel and the live preview stay docked so a change made
+          deep in a long step is visible the instant it's made; only the step body
+          below scrolls, tucking behind the header's bottom divider. Expanding the
+          preview collapses the title/step chrome so it slides up to the top. */}
+      <View style={[styles.header, { backgroundColor: c.background, borderBottomColor: c.border }]}>
         <View style={styles.inner}>
           <Pressable onPress={() => router.back()} accessibilityRole="button" hitSlop={8} style={styles.back}>
             <Text variant="caption" role="primary">
@@ -186,49 +191,54 @@ export default function PlannerScreen() {
             </Text>
           </Pressable>
 
-          <GlanceHeader
-            title={isEdit ? 'Edit terrarium' : 'New terrarium'}
-            subtitle={`Step ${active + 1} of ${STEPS.length} · ${step.label}`}
-          />
+          {/* Title, step counter and step dots — collapse away when the preview is
+              expanded so it can take the top. */}
+          <Collapse open={!previewExpanded}>
+            <View style={styles.chrome}>
+              <GlanceHeader
+                title={isEdit ? 'Edit terrarium' : 'New terrarium'}
+                subtitle={`Step ${active + 1} of ${STEPS.length} · ${step.label}`}
+              />
 
-          {/* Step indicator — tappable dots (navigation chrome, not a build action). */}
-          <View style={styles.steps}>
-            {STEPS.map((s, i) => {
-              const state = i === active ? 'active' : i < active ? 'done' : 'todo';
-              const dot =
-                state === 'active' ? c.primary : state === 'done' ? c.sage : c.surfaceSunken;
-              return (
-                <Pressable
-                  key={s.key}
-                  onPress={() => go(i)}
-                  accessibilityRole="button"
-                  accessibilityState={{ selected: i === active }}
-                  style={styles.stepItem}>
-                  <View style={[styles.stepDot, { backgroundColor: dot, borderColor: c.border }]}>
-                    <Text variant="caption" style={{ color: state === 'todo' ? c.textMuted : c.onPrimary }}>
-                      {i + 1}
-                    </Text>
-                  </View>
-                  <Text variant="overline" role={i === active ? 'primary' : 'textMuted'}>
-                    {s.label}
-                  </Text>
-                </Pressable>
-              );
-            })}
-          </View>
+              {/* Step indicator — tappable dots (navigation chrome, not a build action). */}
+              <View style={styles.steps}>
+                {STEPS.map((s, i) => {
+                  const state = i === active ? 'active' : i < active ? 'done' : 'todo';
+                  const dot =
+                    state === 'active' ? c.primary : state === 'done' ? c.sage : c.surfaceSunken;
+                  return (
+                    <Pressable
+                      key={s.key}
+                      onPress={() => go(i)}
+                      accessibilityRole="button"
+                      accessibilityState={{ selected: i === active }}
+                      style={styles.stepItem}>
+                      <View style={[styles.stepDot, { backgroundColor: dot, borderColor: c.border }]}>
+                        <Text variant="caption" style={{ color: state === 'todo' ? c.textMuted : c.onPrimary }}>
+                          {i + 1}
+                        </Text>
+                      </View>
+                      <Text variant="overline" role={i === active ? 'primary' : 'textMuted'}>
+                        {s.label}
+                      </Text>
+                    </Pressable>
+                  );
+                })}
+              </View>
+            </View>
+          </Collapse>
 
           {/* Persistent cross-section viewer — docked, framed, live. Tap to expand
               to the working size; the active step decides which items can be slid
               horizontally (hardscape vs plants) once expanded. */}
-          <View style={styles.section}>
-            <SectionLabel>Preview</SectionLabel>
-            <PlannerPreviewPane
-              draft={draft}
-              plants={plants}
-              draggableKind={DRAG_KIND[step.key] ?? null}
-              onCommit={commitPlacement}
-            />
-          </View>
+          <PlannerPreviewPane
+            draft={draft}
+            plants={plants}
+            draggableKind={DRAG_KIND[step.key] ?? null}
+            onCommit={commitPlacement}
+            expanded={previewExpanded}
+            onExpandedChange={setPreviewExpanded}
+          />
         </View>
       </View>
 
@@ -314,13 +324,28 @@ function NavButton({
 }
 
 const styles = StyleSheet.create({
-  header: { alignItems: 'center' },
+  // The fixed header floats above the scroll: a hairline divider plus a soft
+  // downward shadow so the step body visibly disappears behind it as it scrolls.
+  header: {
+    alignItems: 'center',
+    paddingBottom: Spacing.md,
+    borderBottomWidth: StyleSheet.hairlineWidth,
+    zIndex: 10,
+    shadowColor: '#000',
+    shadowOpacity: 0.1,
+    shadowRadius: 6,
+    shadowOffset: { width: 0, height: 4 },
+    elevation: 6,
+  },
   scrollFill: { flex: 1 },
   scroll: { alignItems: 'center', paddingTop: Spacing.lg, paddingBottom: Spacing.xxl },
-  inner: { width: '100%', maxWidth: MaxContentWidth, alignSelf: 'center', gap: Spacing.lg, paddingTop: Spacing.sm },
+  inner: { width: '100%', maxWidth: MaxContentWidth, alignSelf: 'center', paddingTop: Spacing.sm },
+  // Collapsing chrome content — its own spacing so it animates away cleanly with
+  // the collapse (no residual gap left behind in the header).
+  chrome: { gap: Spacing.lg, paddingBottom: Spacing.lg },
   centerFill: { flex: 1, alignItems: 'center', justifyContent: 'center', gap: Spacing.md },
   centerText: { textAlign: 'center' },
-  back: { alignSelf: 'flex-start' },
+  back: { alignSelf: 'flex-start', marginBottom: Spacing.md },
   steps: { flexDirection: 'row', justifyContent: 'space-between' },
   stepItem: { alignItems: 'center', gap: Spacing.xs, flex: 1 },
   stepDot: {

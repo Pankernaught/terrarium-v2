@@ -1,10 +1,11 @@
 /**
- * The Phase-5 component library (Premium §3 tokens + §4 screen pieces). Locked
- * *before* the screens — every screen pulls from here, never from a raw token or
+ * The component library. Every screen pulls from here, never from a raw token or
  * an off-scale value.
  */
 export { ActionSheet, BottomSheet, type SheetAction } from './bottom-sheet';
 export { Card } from './card';
+export { Collapse, type CollapseProps } from './collapse';
+export { CollapsibleCard, type CollapsibleCardProps } from './collapsible-card';
 export { Chip, type ChipTone } from './chip';
 export { EcoChip } from './eco-chip';
 export { EcoMeter } from './eco-meter';

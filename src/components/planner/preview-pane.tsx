@@ -22,7 +22,7 @@
  * gestures — the chevron remains the collapse control, alongside auto-collapse on
  * a committed placement.
  */
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { Pressable, StyleSheet } from 'react-native';
 import Animated, {
   Easing,
@@ -52,15 +52,24 @@ export interface PlannerPreviewPaneProps {
   /** The category this step *would* let you drag — applied only when expanded. */
   draggableKind: DraggableKind;
   onCommit: (next: Placement) => void;
+  /** Controlled expand state — lifted so the planner can collapse its chrome too. */
+  expanded: boolean;
+  onExpandedChange: (next: boolean) => void;
 }
 
-export function PlannerPreviewPane({ draft, plants, draggableKind, onCommit }: PlannerPreviewPaneProps) {
+export function PlannerPreviewPane({
+  draft,
+  plants,
+  draggableKind,
+  onCommit,
+  expanded,
+  onExpandedChange,
+}: PlannerPreviewPaneProps) {
   const { c } = useTokens();
-  const [expanded, setExpanded] = useState(false);
 
   // 0 → collapsed, 1 → expanded. One value drives both the window height and the
   // chevron so they stay in lockstep. Mutated only in the effect below.
-  const progress = useSharedValue(0);
+  const progress = useSharedValue(expanded ? 1 : 0);
   useEffect(() => {
     progress.value = withTiming(expanded ? 1 : 0, { duration: ANIM_MS, easing: EASE });
     // progress is a stable shared-value ref — mutated here, never a dependency.
@@ -77,7 +86,7 @@ export function PlannerPreviewPane({ draft, plants, draggableKind, onCommit }: P
 
   function toggle() {
     haptics.select();
-    setExpanded((e) => !e);
+    onExpandedChange(!expanded);
   }
 
   // Drag lives on the expanded view only; collapsed is a read-only glance.
@@ -85,7 +94,7 @@ export function PlannerPreviewPane({ draft, plants, draggableKind, onCommit }: P
   // Auto-collapse once a placement is committed so the full step body returns.
   function handleCommit(next: Placement) {
     onCommit(next);
-    setExpanded(false);
+    onExpandedChange(false);
   }
 
   // A full-area tap target is safe unless live drag handles are present — then it
