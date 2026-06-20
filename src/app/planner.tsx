@@ -71,9 +71,12 @@ export default function PlannerScreen() {
   // collapses so the preview slides up to the top.
   const [previewExpanded, setPreviewExpanded] = useState(false);
   // The chrome also collapses once the step body scrolls down, keeping just the
-  // preview pinned. Hysteresis (collapse past 36px, restore under 8px) avoids
-  // flicker around the threshold.
+  // preview pinned. A ref guards the setState call so it only fires when the
+  // boolean actually flips — prevents layout-shift feedback loops where the
+  // collapsing header triggers a corrective scroll event that re-crosses the
+  // threshold. Dead zone: collapse past 60px, restore under 4px.
   const [scrolledDown, setScrolledDown] = useState(false);
+  const scrolledDownRef = useRef(false);
   const scrollRef = useRef<ScrollView>(null);
   // The draft is null until hydrated (immediately for a new build; after the
   // store loads the row for an edit).
@@ -89,6 +92,7 @@ export default function PlannerScreen() {
       setActive(0);
       setPreviewExpanded(false);
       setScrolledDown(false);
+      scrolledDownRef.current = false;
       setDraft(emptyDraft());
     }, [isEdit]),
   );
@@ -123,12 +127,17 @@ export default function PlannerScreen() {
     setActive(Math.max(0, Math.min(STEPS.length - 1, next)));
     // Start the new step fresh at the top with the chrome restored.
     scrollRef.current?.scrollTo({ y: 0, animated: false });
+    scrolledDownRef.current = false;
     setScrolledDown(false);
   }
 
   function onBodyScroll(e: NativeSyntheticEvent<NativeScrollEvent>) {
     const y = e.nativeEvent.contentOffset.y;
-    setScrolledDown((prev) => (prev ? y > 8 : y > 36));
+    const next = scrolledDownRef.current ? y > 4 : y > 60;
+    if (next !== scrolledDownRef.current) {
+      scrolledDownRef.current = next;
+      setScrolledDown(next);
+    }
   }
 
   function update(patch: Partial<PlannerDraft>) {
@@ -355,13 +364,13 @@ const styles = StyleSheet.create({
   header: {
     alignItems: 'center',
     paddingBottom: Spacing.md,
-    borderBottomWidth: StyleSheet.hairlineWidth,
+    borderBottomWidth: 1,
     zIndex: 10,
     shadowColor: '#000',
-    shadowOpacity: 0.1,
-    shadowRadius: 6,
+    shadowOpacity: 0.18,
+    shadowRadius: 8,
     shadowOffset: { width: 0, height: 4 },
-    elevation: 6,
+    elevation: 8,
   },
   scrollFill: { flex: 1 },
   scroll: { alignItems: 'center', paddingTop: Spacing.lg, paddingBottom: Spacing.xxl },
