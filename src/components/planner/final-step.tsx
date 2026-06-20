@@ -1,14 +1,14 @@
 /**
- * Final step — the planner's review screen (Container · Substrate · Hardscape ·
- * Plants · **Final**). The owner names the build, reads the Eco-balance verdict,
+ * Final step — the planner's review screen (Container · Substrate · Plants ·
+ * **Final**). The owner names the build, reads the Eco-balance verdict,
  * scans the chosen plants, and previews a static, read-only **build guide
  * projection** of what the saved build will look like.
  *
  * Strictly presentational and side-effect-light: it neither saves nor navigates —
- * the planner screen's nav button owns the save (Phase 6 chat 2). The only `update`
- * here is the name field. Scoring + guide are derived live off the pure
- * `@/logic` modules over the seed bundle (`loadPlants` / `loadContainers`,
- * decision 11 — no DB round-trip); nothing from `@/db` is imported.
+ * the planner screen's nav button owns the save. The only `update` here is the
+ * name field. Scoring + guide are derived live off the pure `@/logic` modules over
+ * the seed bundle (`loadPlants` / `loadContainers` — no DB round-trip); nothing
+ * from `@/db` is imported.
  */
 import { useMemo } from 'react';
 import { StyleSheet, TextInput, View } from 'react-native';
@@ -20,7 +20,6 @@ import { loadContainers, loadPlants } from '@/data';
 import { componentLabel } from '@/data/substrate-components';
 import { resolveBuildContainer } from '@/logic/containers';
 import { generateBuildGuide, type BuildStep, type SubstrateMixGuide } from '@/logic/guide';
-import { hasHardscape } from '@/logic/placement';
 import { scoreBuild } from '@/logic/score-build';
 import { describeMix, formatMixRecipe, mixSubstrate } from '@/logic/substrateMixer';
 
@@ -30,7 +29,7 @@ import type { StepProps } from './step';
 export function FinalStep({ draft, plants, update }: StepProps) {
   const { c } = useTokens();
 
-  // Seed bundle (decision 11): one read each, memoised — no DB round-trip.
+  // Seed bundle: one read each, memoised — no DB round-trip.
   const seedPlants = useMemo(() => loadPlants(), []);
   const seedContainers = useMemo(() => loadContainers(), []);
 
@@ -46,9 +45,9 @@ export function FinalStep({ draft, plants, update }: StepProps) {
   );
 
   // A custom substrate-mixer recipe → the concrete recipe + soft character for the
-  // guide's Substrate-Layer line (decision 10). Pre-formatted here (labels live in
-  // src/data) so `@/logic/guide` stays import-pure. Null mix → undefined → the guide
-  // keeps its generic substrateTags sentence.
+  // guide's Substrate-Layer line. Pre-formatted here (labels live in src/data) so
+  // `@/logic/guide` stays import-pure. Null mix → undefined → the guide keeps its
+  // generic substrateTags sentence.
   const substrateMix = useMemo<SubstrateMixGuide | undefined>(() => {
     const mix = draft.substrateMix;
     if (!mix) return undefined;
@@ -59,20 +58,29 @@ export function FinalStep({ draft, plants, update }: StepProps) {
 
   // Build the read-only guide projection. `generateBuildGuide` THROWS on empty
   // plants, so only call it with plants + a resolved container, wrapped in try/catch.
-  // We deliberately omit substrateDepth/drainageDepth: the guide's opts take preset
-  // depth STRINGS ("3-5cm"), not the draft's numeric cm — let the guide compute them.
+  // Pass the draft's real numeric depths so the guide describes the substrate
+  // actually built in the container (depths default to a preset only when null).
   const guide = useMemo<BuildStep[] | null>(() => {
     if (plants.length === 0 || !container) return null;
     try {
       return generateBuildGuide(plants, container, {
+        substrateDepth: draft.substrateDepth,
+        drainageDepth: draft.drainageDepth,
+        charcoalDepth: draft.charcoalDepth,
         drainageMaterial: DEFAULT_DRAINAGE_MATERIAL,
-        includeHardscape: hasHardscape(draft.placements),
         substrateMix,
       });
     } catch {
       return null;
     }
-  }, [plants, container, draft.placements, substrateMix]);
+  }, [
+    plants,
+    container,
+    draft.substrateDepth,
+    draft.drainageDepth,
+    draft.charcoalDepth,
+    substrateMix,
+  ]);
 
   const canGuide = plants.length > 0 && container != null;
 

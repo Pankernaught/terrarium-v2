@@ -2,7 +2,7 @@
 
 *The techniques we’re using, the token system that drives them, and how they map onto each screen. For a solo, offline-first RN/Expo build.*
 
-*Amended by the V2 grill session (decisions 1–18) — see `Terrarium_V2_Grill_Decisions.md`. Most relevant here: desktop is cut (iOS + Android only, decision 1); the 3-D scene is deferred to v2.1 (decision 5), so v2.0’s only preview is the 2-D front view; and the **60fps performance gate is now thread-split** (decision 14) — the drag holds 60fps on every device because it is transform/opacity-only on the UI thread, while 30fps is a JS-thread design budget on a low-end reference, so the §1/§3 “animate transform+opacity only” rule is load-bearing, not stylistic. Decisions 10–13 and 15–18 (build-guide projection, plant-image source, substrate deferral, care scope, scoring algorithm, notification scheduling, backup versioning, content pipeline) are data/flow/content concerns with no token-level impact here.*
+*Scope: iOS + Android only — no desktop, no left rail. The 3-D scene is deferred to v2.1, so v2.0’s only preview is the 2-D front view. **The 60fps performance gate is thread-split:** the drag holds 60fps on every device because it is transform/opacity-only on the UI thread, while 30fps is a JS-thread design budget on a low-end reference — so the §1/§3 “animate transform+opacity only” rule is load-bearing, not stylistic.*
 
 Premium is restraint: pick a few techniques and execute them relentlessly. For a solo, offline-first RN app the wins are a small token system (spacing / type / shadow / color / motion / haptics), semantic haptics, gentle springs, and progressive disclosure — applied everywhere. This document lists the techniques we’re keeping, turns them into tokens, and maps them onto the dashboard, planner, and plant sheet.
 
@@ -23,14 +23,14 @@ Each is tuned for two facts: we’re building in React Native (mobile), not the 
 | Macro-whitespace / Gestalt grouping | Negative space as the boundary, not borders/boxes — operationalized by the spacing scale so it’s consistent, not vibes. |
 | Optimistic UI | Offline writes are effectively instant: never await the SQLite write before re-rendering — update state, persist async. Add an undo snackbar for destructive actions. |
 | Precompute & memoize | The offline equivalent of predictive fetch: cache each build’s score and its 2-D preview layout (and, in v2.1, its 3-D mesh) so screen transitions are instant rather than recomputing on navigate. |
-| 60fps / no layout thrash | Animate only transform + opacity via Reanimated worklets; never width/height/margin/top (that triggers layout). The drag holds **60fps on every device** — the UI-thread/transform rule is what earns it (decision 14); 30fps is the floor for JS-thread work on a low-end reference only. |
+| 60fps / no layout thrash | Animate only transform + opacity via Reanimated worklets; never width/height/margin/top (that triggers layout). The drag holds **60fps on every device** because it is transform/opacity-only on the UI thread; 30fps is the floor for JS-thread work on a low-end reference only. |
 
 ## 2.  Beyond the tokens: what else counts as premium
 
 - **Accessibility is premium.** Respect reduce motion (Reanimated useReducedMotion() / AccessibilityInfo) by toning springs down to fades; support OS dynamic type without breaking layouts; never encode meaning in color alone. These are also App Store review items.
 - **Empty & skeleton states.** No network doesn’t mean no waiting — the compatibility recompute and the 2-D preview still need graceful states (the 3-D scene is a v2.1 concern). Use skeleton shapes (not spinners), and make them flash, not linger.
 - **Calm microcopy.** The Tier-1 plain-English verdict (“Mostly healthy — one plant wants more light”) does more for “premium” than any meter. Budget real effort into generating good versions from the score.
-- **The signature interaction is the budget sink.** Every other technique here is cheap polish. In v2.0, spend the delight budget on the one signature interaction — **drag-to-plant in the 2-D front view** — and keep everything else calm and consistent. The 3-D terrarium scene (where weeks otherwise go) is **deferred to v2.1** (decision 5), so it can’t sink the v2.0 budget.
+- **The signature interaction is the budget sink.** Every other technique here is cheap polish. In v2.0, spend the delight budget on the one signature interaction — **drag-to-plant in the 2-D front view** — and keep everything else calm and consistent. The 3-D terrarium scene (where weeks otherwise go) is **deferred to v2.1**, so it can’t sink the v2.0 budget.
 
 ## 3.  The token system — the engine of “premium”
 
@@ -146,7 +146,7 @@ Shared-element card → hero · drag-to-place physics in the planner · velocity
 
 #### P2 — expensive; do NOT let these block v2.0
 
-The entire 3-D scene (display **and** any 3-D drag) — deferred to v2.1 (decision 5) · true multi-layer iOS ambient shadows · a runtime OKLCH theming engine · variable-font optical sizing · audio design.
+The entire 3-D scene (display **and** any 3-D drag) — deferred to v2.1 · true multi-layer iOS ambient shadows · a runtime OKLCH theming engine · variable-font optical sizing · audio design.
 
 ## 6.  Anti-patterns — the “trying too hard” tells
 

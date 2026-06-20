@@ -11,9 +11,9 @@ import type { PlannerDraft } from './draft';
 export interface StepProps {
   draft: PlannerDraft;
   /**
-   * The selected plants resolved from the seed bundle (`loadPlants()`, decision 11
-   * — zero DB round-trip). Used to seed/recommend from the chosen plants. Empty for
-   * a brand-new build until the Plants step (Phase 6 chat 2) populates `plantSlugs`.
+   * The selected plants resolved from the seed bundle (`loadPlants()` — zero DB
+   * round-trip). Used to seed/recommend from the chosen plants. Empty for a
+   * brand-new build until the Plants step populates `plantSlugs`.
    */
   plants: Plant[];
   /** Shallow-merge a partial patch into the draft. */

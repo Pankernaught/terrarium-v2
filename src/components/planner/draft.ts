@@ -1,9 +1,9 @@
 /**
  * The planner **draft** — the in-flight working copy of a build as the owner moves
- * through the 5 steps (Container · Substrate · Hardscape · Plants · Final). It
+ * through the 4 steps (Container · Substrate · Plants · Final). It
  * mirrors the editable fields of a persisted `Build` but is plain React state; it
- * is only written to the store via the build repo on the **Final** step's save
- * (Phase 6 chat 2). Holding it as one object keeps every step a pure
+ * is only written to the store via the build repo on the **Final** step's save.
+ * Holding it as one object keeps every step a pure
  * `(draft) → patch` function and lets the persistent preview read a single source.
  *
  * **New** vs **edit**: a planner opened with `?build=<id>` hydrates the draft from
@@ -20,8 +20,8 @@ import type { SubstrateMix } from '@/logic/substrateMixer';
 import type { ContainerOpening, ContainerShape } from '@/types';
 
 /**
- * Drainage *material* is dropped as a v2.0 control (decision 10); the v2.1
- * substrate mixer owns material choice. The Substrate step shows this default.
+ * Drainage *material* is not a user-controlled field in v2.0; the Substrate step
+ * shows this default and the v2.1 substrate mixer will own material choice.
  */
 export const DEFAULT_DRAINAGE_MATERIAL = 'pebbles or LECA';
 
@@ -39,7 +39,14 @@ export interface PlannerDraft {
   placements: Placement[];
   substrateDepth: number | null;
   drainageDepth: number | null;
-  /** The custom substrate-mixer recipe (Phase 8), or `null` for no custom mix (opt-in). */
+  /**
+   * Depth (cm) of the discrete horticultural-charcoal filtration layer that sits
+   * between drainage and substrate, or `null` when no charcoal layer is included.
+   * Charcoal is a distinct layer, not a substrate-mix component (see ADR 0003);
+   * the Substrate step toggles it on at a fixed default depth.
+   */
+  charcoalDepth: number | null;
+  /** The custom substrate-mixer recipe, or `null` for no custom mix (opt-in). */
   substrateMix: SubstrateMix | null;
   tags: string[];
   description: string | null;
@@ -58,6 +65,7 @@ export function emptyDraft(): PlannerDraft {
     placements: [],
     substrateDepth: null,
     drainageDepth: null,
+    charcoalDepth: null,
     substrateMix: null,
     tags: [],
     description: null,
@@ -78,6 +86,7 @@ export function draftFromBuild(b: Build): PlannerDraft {
     placements: b.placements ?? [],
     substrateDepth: b.substrateDepth,
     drainageDepth: b.drainageDepth,
+    charcoalDepth: b.charcoalDepth ?? null,
     substrateMix: b.substrateMix ?? null,
     tags: b.tags ?? [],
     description: b.description,
@@ -97,6 +106,7 @@ export function draftToSaveInput(d: PlannerDraft): SaveBuildInput {
     placements: d.placements,
     substrateDepth: d.substrateDepth,
     drainageDepth: d.drainageDepth,
+    charcoalDepth: d.charcoalDepth,
     substrateMix: d.substrateMix,
     tags: d.tags,
     description: d.description,

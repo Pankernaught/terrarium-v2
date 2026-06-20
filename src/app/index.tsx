@@ -1,6 +1,5 @@
 /**
- * Terrariums — the dashboard (Premium §4.2). A responsive, centered grid of build
- * cards on the trusted Phase-4 store + Phase-2 engine.
+ * Terrariums — the dashboard. A responsive, centered grid of build cards.
  *
  * This replaces v1's `pages/home.py` mega-callback (`handle_builds_and_actions`,
  * which folded load + rename + delete + duplicate into one Output owner): here
@@ -8,10 +7,10 @@
  * `home.py:189` — a scoring failure renders a real "Needs review" Eco chip + a
  * surfaced diagnostic, never a silent grey badge.
  *
- * Loading / error / empty all have honest states (no spinners that linger, §2):
+ * Loading / error / empty all have honest states (no lingering spinners):
  * a flash of skeleton cards, a plain diagnostic, or an empty-state nudge.
  */
-import { type Href, useRouter } from 'expo-router';
+import { type Href, useFocusEffect, useRouter } from 'expo-router';
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { Alert, Pressable, ScrollView, StyleSheet, useWindowDimensions, View } from 'react-native';
 
@@ -77,15 +76,17 @@ function Dashboard({ repos }: { repos: Repos }) {
 
   const reload = useCallback(async () => setRows(await fetchRows()), [fetchRows]);
 
-  useEffect(() => {
-    let active = true;
-    fetchRows().then((next) => {
-      if (active) setRows(next);
-    });
-    return () => {
-      active = false;
-    };
-  }, [fetchRows]);
+  useFocusEffect(
+    useCallback(() => {
+      let active = true;
+      fetchRows().then((next) => {
+        if (active) setRows(next);
+      });
+      return () => {
+        active = false;
+      };
+    }, [fetchRows]),
+  );
 
   // --- Grid geometry: centered, capped, 1–2 columns ---
   const avail = Math.min(width - 2 * Spacing.md, MaxContentWidth);

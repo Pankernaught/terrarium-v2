@@ -3,11 +3,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 
 import { Colors, Spacing } from '@/constants/theme';
 
-/**
- * Phase 1 skeleton placeholder. The real screens (component library, dashboard,
- * browse, care, settings) are built in Phases 5+. This just proves the tab shell
- * boots and respects safe-area insets.
- */
+/** Skeleton placeholder — proves the tab shell boots and respects safe-area insets. */
 export function PlaceholderScreen({ title, subtitle }: { title: string; subtitle?: string }) {
   const scheme = useColorScheme();
   const c = Colors[scheme === 'dark' ? 'dark' : 'light'];

@@ -1,9 +1,9 @@
 /**
- * Semantic haptics (§3.6) — the best ROI on the premium list, but *only* mapped
- * to meaning, never decoration (a buzz with no meaning trains users to ignore
- * them, §6). Components call these named events, not `expo-haptics` directly, so
- * the mapping stays in one place. All are fire-and-forget and swallow the
- * "unsupported on this device" rejection.
+ * Semantic haptics — the best ROI on the premium list, but *only* mapped to
+ * meaning, never decoration (a buzz with no meaning trains users to ignore them).
+ * Components call these named events, not `expo-haptics` directly, so the mapping
+ * stays in one place. All are fire-and-forget and swallow the "unsupported on this
+ * device" rejection.
  */
 import * as Haptics from 'expo-haptics';
 

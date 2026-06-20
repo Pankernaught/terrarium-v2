@@ -1,7 +1,7 @@
 /**
- * Image-layer invariants (decision 11 / decision 18). The real plant photos are a
- * human, accuracy-first CC pass that lands later; this gate guards the *scaffolding*
- * around it so the layer can never drift into an unsafe state:
+ * Image-layer invariants. The real plant photos are a human, accuracy-first CC
+ * pass that lands later; this gate guards the *scaffolding* around it so the
+ * layer can never drift into an unsafe state:
  *
  *   (a) every plant declares a slug-consistent `plants/<slug>.png` image path;
  *   (b) every plant has a stylized PLACEHOLDER asset on disk
@@ -36,7 +36,7 @@ const CC_BY = /cc[- ]?by/i;
 // Anchored on `-` / boundary so it never matches an "nc"/"nd" buried in a word.
 const FORBIDDEN_LICENSE = /[-\s](nc|nd)\b|noncommercial|noderiv/i;
 
-describe('image path (decision 11: every plant has a slug-consistent image)', () => {
+describe('image path — every plant has a slug-consistent image', () => {
   it('is a non-empty `plants/<slug>.png` matching the record’s own slug', () => {
     for (const p of plants) {
       expect(typeof p.image).toBe('string');
@@ -46,7 +46,7 @@ describe('image path (decision 11: every plant has a slug-consistent image)', ()
   });
 });
 
-describe('placeholder assets (decision 18: stylized fallback for every plant)', () => {
+describe('placeholder assets — stylized fallback for every plant', () => {
   it('has a placeholder SVG on disk for every plant slug', () => {
     const missing = plants
       .map((p) => p.slug)
@@ -66,7 +66,7 @@ describe('license → credit invariant (CC-BY[-SA] requires attribution)', () =>
   });
 });
 
-describe('forbidden licenses (no -NC, no -ND — decision 18)', () => {
+describe('forbidden licenses (no -NC, no -ND)', () => {
   it('no plant ships a NonCommercial or NoDerivatives license', () => {
     for (const p of plants) {
       if (p.imageLicense) {

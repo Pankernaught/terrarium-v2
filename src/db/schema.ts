@@ -1,33 +1,28 @@
 /**
- * Local-store schema (Phase 4) — Drizzle + SQLite.
+ * Local-store schema — Drizzle + SQLite.
  *
  * **Two groups of tables, one DB.**
  *
- * 1. **User data — the three persisted entities (decision 11).** `builds`,
- *    `build_photos`, `care_marks`. These are the mutable, per-install rows that
- *    ride the backup/restore payload (`care_marks` excepted only by the photo
- *    rule — see decision 17). v1's `plant_photos` is **struck** (decision 11):
- *    curator plant imagery is a static seed `image` path, not DB rows.
+ * 1. **User data — the three persisted entities.** `builds`, `build_photos`,
+ *    `care_marks`. These are the mutable, per-install rows that ride the
+ *    backup/restore payload (`care_marks` excluded — they are ephemeral reminders,
+ *    not content). v1's `plant_photos` is **struck**: curator plant imagery is a
+ *    static seed `image` path, not DB rows.
  *
  * 2. **Seed reference data — derived from the bundle (mirrors v1 `db/loader.py`).**
  *    `plants`, `containers`, `presets`. The engine reads the *bundle JSON*
- *    (`src/data`, zero DB round-trip — decision 11), so these tables are a
- *    queryable mirror seeded idempotently by `seedStore()` (upsert-by-slug), not
- *    the engine's read path. They are **regenerable from the bundle and never
- *    enter the backup payload** (decision 17). Stored as `{ slug, data }` JSON
- *    blobs — the validated record is the source of truth in `src/data`, so we do
- *    not re-model 30+ plant columns in SQL.
+ *    (`src/data`, zero DB round-trip), so these tables are a queryable mirror
+ *    seeded idempotently by `seedStore()` (upsert-by-slug), not the engine's read
+ *    path. They are **regenerable from the bundle and never enter the backup
+ *    payload**. Stored as `{ slug, data }` JSON blobs — the validated record is
+ *    the source of truth in `src/data`, so we do not re-model 30+ plant columns
+ *    in SQL.
  *
- * **Decision 17 — UUID primary keys on every row.** `builds` (and, for
- * consistency + restore-safety, photos and care-marks) use a generated UUID, not
- * v1's integer autoincrement: care-marks reference builds and restore = replace,
- * so a renumbering reinsert would dangle every reference. UUIDs are round-trip
- * safe and the natural key for the eventual sync backend (decision 7).
- *
- * **Forward-looking on purpose (decisions 10 / Phase 6–7).** `builds.placements`,
- * `builds.substrateDepth/drainageDepth`, and the whole `care_marks` table exist
- * now though **no screen reads them until Phases 6–7** — landed here so those
- * phases never touch the DB shape.
+ * **UUID primary keys on every row.** `builds` (and, for consistency +
+ * restore-safety, photos and care-marks) use a generated UUID, not v1's integer
+ * autoincrement: care-marks reference builds and restore = replace, so a
+ * renumbering reinsert would dangle every reference. UUIDs are round-trip safe
+ * and the natural key for the eventual sync backend.
  *
  * `SCHEMA_DDL` (below) is the `CREATE TABLE` form of these definitions, applied by
  * the node test harness and the on-device first run. **Keep it in sync with the
@@ -41,10 +36,10 @@ import type { Placement } from '../data/presets';
 import type { Dimensions } from '../logic/containers';
 import type { SubstrateMix } from '../logic/substrateMixer';
 
-// --- User data: the three persisted entities (decision 11) ------------------
+// --- User data: the three persisted entities ------------------
 
 export const builds = sqliteTable('builds', {
-  /** UUID (decision 17) — generated on create, never renumbered. */
+  /** UUID — generated on create, never renumbered. */
   id: text('id').primaryKey(),
   name: text('name').notNull(),
   /**
@@ -63,24 +58,30 @@ export const builds = sqliteTable('builds', {
   tags: text('tags', { mode: 'json' }).$type<string[]>().notNull(),
   description: text('description'),
   /**
-   * Plant + hardscape front-plane placements (Phase 6 reads). Same shape as the
-   * Phase-3 preset `Placement` (`{ slug, x, y, scale }`) so a preset instantiates
-   * straight into a build. Build *data*, not render state — survives restart.
+   * Plant front-plane placements (`{ slug, x, y, scale }`).
+   * Build *data*, not render state — survives restart.
    */
   placements: text('placements', { mode: 'json' }).$type<Placement[]>(),
-  // Persisted Substrate-step overrides (decision 10) — the guide + the container
-  // diagram both read these (single source of truth). Phase 6 writes them.
+  // Persisted Substrate-step overrides — the guide + the container diagram both
+  // read these (single source of truth).
   substrateDepth: real('substrate_depth'),
   drainageDepth: real('drainage_depth'),
   /**
-   * The substrate **mixer** recipe (decision 12, Phase 8) — `componentId → integer
-   * parts`, or `null` when the owner built no custom mix (opt-in; never seeded).
-   * Drives the build-guide recipe line + the live planner bars; does NOT feed the
-   * compatibility score. Additive column → an existing store gets it via the
-   * guarded ALTER on open (`ensureSubstrateMixColumn`), not `CREATE TABLE`.
+   * Depth (cm) of the discrete horticultural-charcoal filtration layer between
+   * drainage and substrate, or `null` for no charcoal layer. A distinct layer, not
+   * a `substrateMix` component (ADR 0003). Additive column → an existing store gets
+   * it via the guarded ALTER on open (`ensureCharcoalDepthColumn`), not `CREATE TABLE`.
+   */
+  charcoalDepth: real('charcoal_depth'),
+  /**
+   * The substrate **mixer** recipe — `componentId → integer parts`, or `null` when
+   * the owner built no custom mix (opt-in; never seeded). Drives the build-guide
+   * recipe line + the live planner bars; does NOT feed the compatibility score.
+   * Additive column → an existing store gets it via the guarded ALTER on open
+   * (`ensureSubstrateMixColumn`), not `CREATE TABLE`.
    */
   substrateMix: text('substrate_mix', { mode: 'json' }).$type<SubstrateMix>(),
-  /** Explicit hero pointer (decision: NOT newest-by-date) → `build_photos.id`. */
+  /** Explicit hero pointer — not necessarily the newest photo — into `build_photos.id`. */
   primaryPhotoId: text('primary_photo_id'),
   createdAt: integer('created_at', { mode: 'timestamp_ms' }).notNull(),
   updatedAt: integer('updated_at', { mode: 'timestamp_ms' }).notNull(),
@@ -102,9 +103,8 @@ export const buildPhotos = sqliteTable(
 );
 
 /**
- * Care-marks (net-new, **Phase 7**: reminders + timeline). Keyed off the build
- * UUID; plant refs stay slugs (`plantSlug` null = whole-build). Shape lands now
- * so Phase 7 never alters the schema; Phase 7 owns the repo + may refine columns.
+ * Care-marks (reminders + timeline). Keyed off the build UUID; plant refs stay
+ * slugs (`plantSlug` null = whole-build).
  */
 export const careMarks = sqliteTable(
   'care_marks',
@@ -177,6 +177,7 @@ CREATE TABLE IF NOT EXISTS builds (
   placements TEXT,
   substrate_depth REAL,
   drainage_depth REAL,
+  charcoal_depth REAL,
   substrate_mix TEXT,
   primary_photo_id TEXT,
   created_at INTEGER NOT NULL,
@@ -221,8 +222,11 @@ CREATE TABLE IF NOT EXISTS presets (
 );
 `;
 
-/** The one additive column the substrate mixer (Phase 8) adds to `builds`. */
+/** The additive column the substrate mixer adds to `builds`. */
 export const SUBSTRATE_MIX_COLUMN = 'substrate_mix';
+
+/** The additive column the charcoal layer adds to `builds`. */
+export const CHARCOAL_DEPTH_COLUMN = 'charcoal_depth';
 
 /**
  * Guarded additive migration, run on every store open after `SCHEMA_DDL`.
@@ -248,5 +252,24 @@ export function ensureSubstrateMixColumn(
 ): void {
   if (!buildsColumns.includes(SUBSTRATE_MIX_COLUMN)) {
     exec(`ALTER TABLE builds ADD COLUMN ${SUBSTRATE_MIX_COLUMN} TEXT`);
+  }
+}
+
+/**
+ * Guarded additive migration for the charcoal layer — same pattern and rationale
+ * as {@link ensureSubstrateMixColumn}: a store created before the cross-section
+ * revamp shipped has every table but lacks `builds.charcoal_depth`, and `CREATE
+ * TABLE IF NOT EXISTS` can't backfill it. Both drivers route through this on open;
+ * idempotent (a fresh DB already has the column from the DDL, so the guard no-ops).
+ *
+ * @param buildsColumns the live column names of `builds` (from `PRAGMA table_info`).
+ * @param exec runs a result-less DDL statement on the underlying driver.
+ */
+export function ensureCharcoalDepthColumn(
+  buildsColumns: readonly string[],
+  exec: (sql: string) => void,
+): void {
+  if (!buildsColumns.includes(CHARCOAL_DEPTH_COLUMN)) {
+    exec(`ALTER TABLE builds ADD COLUMN ${CHARCOAL_DEPTH_COLUMN} REAL`);
   }
 }

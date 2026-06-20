@@ -1,5 +1,5 @@
 /**
- * Care-mark repository (Phase 7: reminders + timeline).
+ * Care-mark repository (reminders + timeline).
  *
  * A care-mark row models **one scheduled occurrence** of a care task. The model
  * is intentionally minimal — there is no separate "schedule" entity, just rows:

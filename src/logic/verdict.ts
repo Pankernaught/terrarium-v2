@@ -1,6 +1,6 @@
 /**
- * The Tier-1 plain-English verdict (Premium §2 "calm microcopy"): one sentence
- * that does more for "premium" than any meter. Derived purely from a `GroupReport`
+ * The Tier-1 plain-English verdict: one sentence that does more for "premium" than
+ * any meter. Derived purely from a `GroupReport`
  * so it is deterministic and unit-testable — no rendering, no `src/db`/`src/data`.
  *
  * The sentence leads with the band, then names the single most important issue

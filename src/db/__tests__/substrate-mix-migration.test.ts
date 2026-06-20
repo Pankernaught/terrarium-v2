@@ -1,5 +1,5 @@
 /**
- * The Phase-8 additive-column upgrade path (decision 12 / decision 17).
+ * The additive-column upgrade path for `substrate_mix`.
  *
  * `CREATE TABLE IF NOT EXISTS` can't add a column to a store that predates the
  * substrate mixer, so `ensureSubstrateMixColumn` runs a guarded `ALTER TABLE … ADD
@@ -14,10 +14,10 @@ import { restoreBackup } from '../backup';
 import { createBuildRepository } from '../builds-repo';
 import { createNodeDb } from '../client.node';
 import { STORE_SCHEMA_VERSION } from '../migrate';
-import { ensureSubstrateMixColumn, SUBSTRATE_MIX_COLUMN } from '../schema';
+import { ensureCharcoalDepthColumn, ensureSubstrateMixColumn, SUBSTRATE_MIX_COLUMN } from '../schema';
 import { makeTestDb } from './helpers';
 
-/** A `builds` table as it existed BEFORE Phase 8 — no `substrate_mix` column. */
+/** A `builds` table as it existed before the substrate mixer shipped — no `substrate_mix` column. */
 const OLD_BUILDS_DDL = `
 CREATE TABLE builds (
   id TEXT PRIMARY KEY NOT NULL,
@@ -57,6 +57,10 @@ describe('substrate_mix additive ALTER (pre-Phase-8 store upgrade)', () => {
 
     // Running it again is a no-op (idempotent).
     ensureSubstrateMixColumn(buildsColumns(sqlite), (sql) => sqlite.exec(sql));
+
+    // A pre-mixer store also predates the charcoal layer — the real open path runs
+    // both guarded ALTERs, so the repo can write every current column.
+    ensureCharcoalDepthColumn(buildsColumns(sqlite), (sql) => sqlite.exec(sql));
 
     const repo = createBuildRepository(createNodeDb(sqlite));
     const saved = await repo.save({

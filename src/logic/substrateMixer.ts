@@ -3,7 +3,7 @@
  * stats, plus a soft one-line character. Net-new in this phase (there is no v1
  * mixer to port). CI-tested from day one.
  *
- * **Import-pure (decision 12).** This module imports *only* its co-located property
+ * **Import-pure.** This module imports *only* its co-located property
  * matrix (`./substrate-matrix`) — nothing from `src/db` or `src/data`. The recipe
  * *formatter* takes an injected `labelOf` so even component labels (which live in
  * `src/data`) never create a dependency edge from `src/logic`.
@@ -17,8 +17,8 @@
  *   - a single component → its matrix row, verbatim (the formula already gives this).
  *
  * The stats feed the live planner bars **only** — they are deliberately *separate*
- * from the Eco-compatibility score (decision 12: the recipe does not move the
- * verdict) and there is no plant-data coupling (no seeded-from-plants default).
+ * from the Eco-compatibility score (the recipe does not move the verdict) and
+ * there is no plant-data coupling (no seeded-from-plants default).
  */
 import {
   MATRIX_COMPONENT_IDS,
@@ -83,7 +83,7 @@ export function mixSubstrate(mix: SubstrateMix): MixStats | null {
   return stats;
 }
 
-// --- Soft character summary (decision 10's build-guide line) ----------------
+// --- Soft character summary (feeds the build-guide substrate line) -----------
 
 /** One soft plain word per property — kept gentle, never a precise claim. */
 const PROPERTY_WORD: Record<SubstrateProperty, string> = {

@@ -1,21 +1,21 @@
 /**
- * Care tab (Premium §4.6) — deliberately the calmest screen: no sound, minimal
- * motion, `notificationAsync(Success)` on mark-done, gentle (never alarmist) nudges.
+ * Care tab — deliberately the calmest screen: no sound, minimal motion,
+ * `notificationAsync(Success)` on mark-done, gentle (never alarmist) nudges.
  *
  * Per terrarium it shows the derived reminder schedule (3 build-level tasks —
- * watering-**inspection**, lid-opening, trimming; decision 13) with a single
- * per-terrarium on/off toggle and a mark-done button per task. The schedule itself
- * is *derived* every render from the pure `@/logic/careSchedule`; persistence is
- * just the **presence of pending `care_marks` rows** — enabling seeds them (and asks
- * notification permission, decision 13), disabling clears them.
+ * watering-**inspection**, lid-opening, trimming) with a single per-terrarium
+ * on/off toggle and a mark-done button per task. The schedule itself is *derived*
+ * every render from the pure `@/logic/careSchedule`; persistence is just the
+ * **presence of pending `care_marks` rows** — enabling seeds them (and asks
+ * notification permission at that moment), disabling clears them.
  *
  * Notifications are reconciled against the OS on focus + after every change through
  * the device-only `@/lib/notifications`: the soonest-due **~50-slot budget guard**
- * (decision 16) picks what to arm and reports any overflow, which this screen
- * discloses — never a silent 65th-drop.
+ * picks what to arm and reports any overflow, which this screen discloses — never a
+ * silent 65th-drop.
  */
 import { useFocusEffect } from 'expo-router';
-import { useCallback, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { Alert, ScrollView, StyleSheet, Switch, View } from 'react-native';
 
 import { Card, GlanceHeader, haptics, Screen, SectionLabel, Text } from '@/components/ui';
@@ -39,10 +39,13 @@ import {
   syncCareNotifications,
 } from '@/lib/notifications';
 
-configureCareNotifications();
-
 export default function CareScreen() {
   const state = useDbState();
+
+  useEffect(() => {
+    configureCareNotifications();
+  }, []);
+
   if (state.status === 'loading') return <CareMessage title="Care" body="Loading your terrariums…" />;
   if (state.status === 'error') return <CareMessage title="Care" body={state.error} accent />;
   return <Care repos={state.repos} />;
@@ -122,7 +125,7 @@ function Care({ repos }: { repos: Repos }) {
     await resync(next).catch(() => {}); // device-only; a scheduling hiccup never blocks the UI.
   }, [fetchRows, resync]);
 
-  // Refill on every focus (app-open / tab-return) — decision 16.
+  // Refill on every focus (app-open / tab-return).
   useFocusEffect(
     useCallback(() => {
       let active = true;
@@ -144,8 +147,8 @@ function Care({ repos }: { repos: Repos }) {
       await reload();
       return;
     }
-    // Enabling: ask permission at the obvious moment (decision 13), then seed the
-    // schedule as pending rows. Permission refusal leaves reminders off, with a note.
+    // Enabling: ask permission at the obvious moment (first enable, not on launch),
+    // then seed the schedule as pending rows. Permission refusal leaves reminders off.
     const granted = await ensureCarePermission();
     if (!granted) {
       Alert.alert(
@@ -165,7 +168,7 @@ function Care({ repos }: { repos: Repos }) {
     const mark = row.pendingByType.get(task.type);
     if (!mark) return;
     await repos.careMarks.markDone(mark.id, task.intervalDays);
-    haptics.success(); // §4.6 — the one acknowledgement this calm screen makes.
+    haptics.success(); // the one acknowledgement this calm screen makes.
     await reload();
   }
 

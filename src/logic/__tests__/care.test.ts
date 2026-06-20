@@ -59,8 +59,9 @@ describe('generateCareGuide', () => {
     expect(categories).toContain('Watering');
     expect(categories).toContain('Humidity');
     expect(categories).toContain('Light');
-    expect(categories).toContain('Substrate');
     expect(categories).toContain('Trimming');
+    // Substrate is built once, not maintained — the care guide stays silent on it.
+    expect(categories).not.toContain('Substrate');
 
     // Both rates are named inside the tip content.
     const trimmingItem = guide.find((i) => i.category === 'Trimming');

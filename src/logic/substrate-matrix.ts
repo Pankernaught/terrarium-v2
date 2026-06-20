@@ -1,11 +1,10 @@
 /**
- * Per-component substrate **property matrix** (decision 12, authored in this phase).
+ * Per-component substrate **property matrix**.
  *
- * The substrate mixer's only data dependency. It is **co-located in `src/logic`**
- * (not back in `src/data/substrate-components.ts`) so the import-pure mixer can
- * read it without `src/logic` ever reaching into `src/data` — exactly the "author
- * the dataset next to its sole consumer" rule decision 12 set when it deferred this
- * from Phase 3.
+ * The substrate mixer's only data dependency. Co-located in `src/logic` (not in
+ * `src/data/substrate-components.ts`) so the import-pure mixer can read it without
+ * `src/logic` ever reaching into `src/data` — keep the dataset next to its sole
+ * consumer.
  *
  * **These values are AUTHORED + PROVISIONAL, not science.** They are a coarse,
  * horticulturally-plausible ranking on a small ordinal scale — the substrate analog
@@ -20,9 +19,9 @@
  * Scale — ordinal **0–4**: 0 none · 1 low · 2 medium · 3 high · 4 very high.
  * The mixer normalizes the parts-weighted blend to 0–1 (÷ {@link PROPERTY_MAX}).
  *
- * The keys are exactly the 9 canonical `SUBSTRATE_COMPONENTS` ids (decision 12),
+ * The keys are exactly the 13 canonical `SUBSTRATE_COMPONENTS` ids,
  * `mud` included as the outlier. A drift guard test cross-checks these keys against
- * the frozen vocabulary so adding a 10th material without a row fails CI — kept as a
+ * the frozen vocabulary so adding a new material without a row fails CI — kept as a
  * *test* rather than an `import type` so `src/logic` stays free of any `src/data`
  * coupling.
  */
@@ -75,6 +74,14 @@ export const SUBSTRATE_MATRIX: Readonly<Record<string, PropertyVector>> = {
   pumice: { aeration: 3, waterRetention: 2, nutrient: 0, buffering: 2 },
   // The outlier — dense and water-logging, rich and strongly pH-buffering (clay).
   mud: { aeration: 0, waterRetention: 4, nutrient: 3, buffering: 4 },
+  // General-purpose base — balanced air/water, well-fed, decent buffering.
+  'potting-soil': { aeration: 2, waterRetention: 3, nutrient: 3, buffering: 3 },
+  // Bioactive feed — fine and moisture-holding, very rich, good cation exchange.
+  'worm-castings': { aeration: 1, waterRetention: 3, nutrient: 4, buffering: 3 },
+  // Mineral sponge — soaks water while staying open, inert feed, mild buffering.
+  vermiculite: { aeration: 2, waterRetention: 4, nutrient: 1, buffering: 2 },
+  // Fired clay balls — pure drainage/aeration, holds nothing, near-inert.
+  leca: { aeration: 4, waterRetention: 1, nutrient: 0, buffering: 1 },
 };
 
 /** The component ids that have an authored row (the mixer's blendable domain). */

@@ -14,10 +14,10 @@
  * Nothing from `@/db` / `@/data`. All `update` calls happen in event handlers /
  * effects — never during render.
  */
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { Pressable, StyleSheet, TextInput, View } from 'react-native';
 
-import { Card, Chip, haptics, SectionLabel, StatStrip, Text } from '@/components/ui';
+import { CollapsibleCard, Chip, haptics, StatStrip, Text } from '@/components/ui';
 import { Radii, Spacing } from '@/constants/theme';
 import { useTokens } from '@/hooks/use-tokens';
 import {
@@ -47,6 +47,14 @@ const FIELDS: Record<ContainerShape, (keyof Dimensions)[]> = {
   rectangular: ['length', 'width', 'height'],
   cylindrical: ['diameter', 'height'],
 };
+
+/** Starter dimensions (cm) pre-filled when a shape is selected on a blank draft. */
+const DEFAULT_DIMS: Record<ContainerShape, Dimensions> = {
+  rectangular: { length: 30, width: 20, height: 25 },
+  cylindrical: { diameter: 20, height: 30 },
+};
+
+const DEFAULT_OPENING: ContainerOpening = 'lidded';
 const FIELD_LABEL: Record<keyof Dimensions, string> = {
   length: 'Length',
   width: 'Width',
@@ -94,43 +102,86 @@ export function ContainerStep({ draft, plants, update }: StepProps) {
   const [dimStr, setDimStr] = useState<Record<string, string>>(() => toStrings(draft.containerDimensions));
   const [rationale, setRationale] = useState<string[]>([]);
 
+  // Step-level collapse state: primary cards start open, secondary starts collapsed.
+  const [open, setOpen] = useState({ shape: true, dimensions: true, opening: true, sizeFromPlants: false });
+  function toggle(key: keyof typeof open) {
+    setOpen((prev) => ({ ...prev, [key]: !prev[key] }));
+  }
+
   const dims = toDimensions(dimStr);
   const volumeL = safeVolume(shape, dims);
+  const fields = shape ? FIELDS[shape] : [];
+  const canSizeFromPlants = plants.length > 0;
 
-  // Persist the current geometry to the draft whenever it changes. Kept in an
-  // effect (not render) so `update` never fires mid-render; the parent's shallow
-  // merge makes a redundant patch a no-op.
-  useEffect(() => {
-    update({
-      containerShape: shape,
-      containerDimensions: Object.keys(dims).length > 0 ? dims : null,
-      containerOpening: opening,
-      containerVolumeL: volumeL,
-    });
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [shape, opening, JSON.stringify(dimStr)]);
+  // --- Collapse summary strings ---
+  const shapeSummary = shape ? SHAPE_LABEL[shape] : 'Not set';
+  const dimSummary =
+    shape && fields.every((k) => dimStr[k])
+      ? fields.map((k) => dimStr[k]).join(' × ') + ' cm'
+      : 'Not set';
+  const openingSummary = opening ? OPENING_LABEL[opening] : 'Not set';
+  const sizeFromPlantsSummary = canSizeFromPlants
+    ? `${plants.length} plant${plants.length !== 1 ? 's' : ''}`
+    : 'Add plants first';
 
   function pickShape(next: ContainerShape) {
     if (next === shape) return;
     haptics.select();
+
+    // Map dimensions to the new shape so the cross-section never goes blank.
+    // rect → cyl: carry length as diameter; cyl → rect: carry diameter as length.
+    // Height is always preserved. When nothing exists yet, seed the defaults.
+    const hasAny = Object.values(dimStr).some((v) => v !== '');
+    let nextDimStr: Record<string, string>;
+    if (!hasAny) {
+      nextDimStr = toStrings(DEFAULT_DIMS[next]);
+    } else if (next === 'cylindrical') {
+      nextDimStr = {};
+      const d = dimStr.diameter ?? dimStr.length;
+      if (d) nextDimStr.diameter = d;
+      if (dimStr.height) nextDimStr.height = dimStr.height;
+    } else {
+      nextDimStr = {};
+      const l = dimStr.length ?? dimStr.diameter;
+      if (l) nextDimStr.length = l;
+      if (dimStr.width) nextDimStr.width = dimStr.width;
+      if (dimStr.height) nextDimStr.height = dimStr.height;
+    }
+
+    const nextDims = toDimensions(nextDimStr);
+    const nextOpening = opening ?? DEFAULT_OPENING;
+    setDimStr(nextDimStr);
     setShape(next);
-    // Switching shape changes the dimension set → this is now a custom container.
-    update({ containerSlug: null });
+    if (!opening) setOpening(nextOpening);
+    update({
+      containerShape: next,
+      containerDimensions: Object.keys(nextDims).length > 0 ? nextDims : null,
+      containerVolumeL: safeVolume(next, nextDims),
+      containerOpening: nextOpening,
+      containerSlug: null,
+    });
   }
 
   function pickOpening(next: ContainerOpening) {
     if (next === opening) return;
     haptics.select();
     setOpening(next);
-    update({ containerSlug: null });
+    update({ containerOpening: next, containerSlug: null });
   }
 
   function editDim(key: keyof Dimensions, text: string) {
     // Keep only digits and a single decimal point; tolerate empty/partial input.
     const cleaned = text.replace(/[^0-9.]/g, '');
-    setDimStr((prev) => ({ ...prev, [key]: cleaned }));
-    // A hand-edited geometry is custom, no longer a preset.
-    update({ containerSlug: null });
+    // Compute next dims synchronously from the current dimStr so the draft and
+    // the cross-section update in the same render cycle (no effect lag).
+    const nextDimStr = { ...dimStr, [key]: cleaned };
+    setDimStr(nextDimStr);
+    const nextDims = toDimensions(nextDimStr);
+    update({
+      containerSlug: null,
+      containerDimensions: Object.keys(nextDims).length > 0 ? nextDims : null,
+      containerVolumeL: safeVolume(shape, nextDims),
+    });
   }
 
   function sizeFromPlants() {
@@ -152,14 +203,14 @@ export function ContainerStep({ draft, plants, update }: StepProps) {
     });
   }
 
-  const fields = shape ? FIELDS[shape] : [];
-  const canSizeFromPlants = plants.length > 0;
-
   return (
     <View style={styles.root}>
       {/* Shape */}
-      <Card style={styles.card}>
-        <SectionLabel>Shape</SectionLabel>
+      <CollapsibleCard
+        title="Shape"
+        summary={shapeSummary}
+        isOpen={open.shape}
+        onToggle={() => toggle('shape')}>
         <View style={styles.chipRow}>
           {SHAPES.map((s) => (
             <Chip
@@ -171,11 +222,14 @@ export function ContainerStep({ draft, plants, update }: StepProps) {
             />
           ))}
         </View>
-      </Card>
+      </CollapsibleCard>
 
       {/* Dimensions */}
-      <Card style={styles.card}>
-        <SectionLabel>Dimensions (cm)</SectionLabel>
+      <CollapsibleCard
+        title="Dimensions (cm)"
+        summary={dimSummary}
+        isOpen={open.dimensions}
+        onToggle={() => toggle('dimensions')}>
         {shape ? (
           <View style={styles.dimRow}>
             {fields.map((key) => (
@@ -204,15 +258,17 @@ export function ContainerStep({ draft, plants, update }: StepProps) {
             Pick a shape to set its dimensions.
           </Text>
         )}
-
         <StatStrip
           items={[{ label: 'Volume', value: volumeL != null ? `${volumeL} L` : '—' }]}
         />
-      </Card>
+      </CollapsibleCard>
 
       {/* Opening */}
-      <Card style={styles.card}>
-        <SectionLabel>Opening</SectionLabel>
+      <CollapsibleCard
+        title="Opening"
+        summary={openingSummary}
+        isOpen={open.opening}
+        onToggle={() => toggle('opening')}>
         <View style={styles.chipRow}>
           {OPENINGS.map((o) => (
             <Chip
@@ -224,11 +280,14 @@ export function ContainerStep({ draft, plants, update }: StepProps) {
             />
           ))}
         </View>
-      </Card>
+      </CollapsibleCard>
 
       {/* Size from plants */}
-      <Card style={styles.card}>
-        <SectionLabel>Size from plants</SectionLabel>
+      <CollapsibleCard
+        title="Size from plants"
+        summary={sizeFromPlantsSummary}
+        isOpen={open.sizeFromPlants}
+        onToggle={() => toggle('sizeFromPlants')}>
         <Pressable
           onPress={sizeFromPlants}
           disabled={!canSizeFromPlants}
@@ -267,14 +326,13 @@ export function ContainerStep({ draft, plants, update }: StepProps) {
             Pick plants first to size the container from them.
           </Text>
         )}
-      </Card>
+      </CollapsibleCard>
     </View>
   );
 }
 
 const styles = StyleSheet.create({
   root: { gap: Spacing.md },
-  card: { padding: Spacing.lg, gap: Spacing.sm },
   chipRow: { flexDirection: 'row', flexWrap: 'wrap', gap: Spacing.sm },
   dimRow: { flexDirection: 'row', flexWrap: 'wrap', gap: Spacing.md },
   dimField: { gap: Spacing.xs, flexGrow: 1, minWidth: 88 },

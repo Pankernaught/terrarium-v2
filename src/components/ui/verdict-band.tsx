@@ -1,9 +1,9 @@
 /**
- * The verdict band (§4.3): the Eco-balance meter + one plain-English sentence —
- * the single most "premium" element on build detail. Renders a `VerdictSummary`
+ * The verdict band: the Eco-balance meter + one plain-English sentence — the
+ * single most "premium" element on build detail. Renders a `VerdictSummary`
  * (from `summarizeVerdict`) over the meter; when scoring failed it shows the real
  * `diagnostic` instead of a meter, so a broken build reads as a diagnostic, not a
- * silent grey badge (Phase 5 DoD).
+ * silent grey badge.
  */
 import { StyleSheet, View } from 'react-native';
 

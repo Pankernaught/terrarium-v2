@@ -5,11 +5,6 @@ import {
   clampPlacement,
   clampScale,
   defaultPlacement,
-  hardscapeAssetId,
-  hardscapeSlug,
-  hasHardscape,
-  HARDSCAPE_PREFIX,
-  isHardscapeSlug,
   isInsidePlane,
   movePlacement,
   type Placement,
@@ -17,7 +12,6 @@ import {
   PLACEMENT_SCALE_MIN,
   removePlacement,
   scalePlacement,
-  splitPlacements,
   upsertPlacement,
 } from '../placement';
 
@@ -117,34 +111,6 @@ describe('removePlacement', () => {
   });
   it('is a no-op for an absent slug', () => {
     expect(removePlacement([a, b], 'zzz')).toEqual([a, b]);
-  });
-});
-
-describe('hardscape namespacing', () => {
-  it('prefixes and round-trips an asset id', () => {
-    const slug = hardscapeSlug('rock');
-    expect(slug).toBe(`${HARDSCAPE_PREFIX}rock`);
-    expect(isHardscapeSlug(slug)).toBe(true);
-    expect(hardscapeAssetId(slug)).toBe('rock');
-  });
-  it('treats a bare plant slug as a plant', () => {
-    expect(isHardscapeSlug('fittonia')).toBe(false);
-    // a non-namespaced slug is returned unchanged
-    expect(hardscapeAssetId('fittonia')).toBe('fittonia');
-  });
-  it('hasHardscape is true only when a hardscape placement exists', () => {
-    const plant: Placement = { slug: 'moss', x: 0.5, y: 0.5, scale: 1 };
-    const rock: Placement = { slug: hardscapeSlug('rock'), x: 0.3, y: 0.7, scale: 1 };
-    expect(hasHardscape([plant])).toBe(false);
-    expect(hasHardscape([plant, rock])).toBe(true);
-  });
-  it('splitPlacements partitions plants from hardscape, order preserved', () => {
-    const moss: Placement = { slug: 'moss', x: 0.5, y: 0.5, scale: 1 };
-    const fern: Placement = { slug: 'fern', x: 0.6, y: 0.4, scale: 1 };
-    const rock: Placement = { slug: hardscapeSlug('rock'), x: 0.3, y: 0.7, scale: 1 };
-    const { plants, hardscape } = splitPlacements([moss, rock, fern]);
-    expect(plants).toEqual([moss, fern]);
-    expect(hardscape).toEqual([rock]);
   });
 });
 

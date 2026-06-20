@@ -1,8 +1,8 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 300" role="img" aria-label="Stylized placeholder for Bird&apos;s Nest Fern — not a reference photo">
-  <rect width="400" height="300" fill="#374049"/>
-  <rect x="8" y="8" width="384" height="284" rx="14" fill="none" stroke="#aebac6" stroke-width="1.5" opacity="0.55"/>
-  <text x="20" y="34" font-family="-apple-system, Segoe UI, Roboto, sans-serif" font-size="13" font-weight="600" letter-spacing="1.5" fill="#aebac6" opacity="0.85">PLANT</text>
+  <rect width="400" height="300" fill="#2f4a3a"/>
+  <rect x="8" y="8" width="384" height="284" rx="14" fill="none" stroke="#a7c7b0" stroke-width="1.5" opacity="0.55"/>
+  <text x="20" y="34" font-family="-apple-system, Segoe UI, Roboto, sans-serif" font-size="13" font-weight="600" letter-spacing="1.5" fill="#a7c7b0" opacity="0.85">FERN</text>
   <text x="200" text-anchor="middle" font-family="-apple-system, Segoe UI, Roboto, sans-serif" font-size="30" font-weight="700" fill="#f4f6f4"><tspan x="200" y="157">Bird&apos;s Nest Fern</tspan></text>
-  <text x="200" y="187" text-anchor="middle" font-family="Georgia, Times New Roman, serif" font-style="italic" font-size="17" fill="#aebac6">Asplenium nidus</text>
-  <text x="200" y="282" text-anchor="middle" font-family="-apple-system, Segoe UI, Roboto, sans-serif" font-size="12" font-weight="600" letter-spacing="0.5" fill="#aebac6" opacity="0.9">PLACEHOLDER — not a reference photo</text>
+  <text x="200" y="187" text-anchor="middle" font-family="Georgia, Times New Roman, serif" font-style="italic" font-size="17" fill="#a7c7b0">Asplenium nidus</text>
+  <text x="200" y="282" text-anchor="middle" font-family="-apple-system, Segoe UI, Roboto, sans-serif" font-size="12" font-weight="600" letter-spacing="0.5" fill="#a7c7b0" opacity="0.9">PLACEHOLDER — not a reference photo</text>
 </svg>

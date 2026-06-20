@@ -5,7 +5,7 @@
  * survival-critical conflict clamps the score to `SURVIVAL_SCORE_CEILING` (40),
  * forcing an "incompatible" verdict. The constants in `./constants` ARE the rules.
  *
- * **Primary/secondary (decision 15) — the only divergence.** Only `light` and
+ * **Primary/secondary — the only divergence from v1.** Only `light` and
  * `soilMoisture` carry a `{ primary, secondary? }`; pH is untouched. The graduated
  * tier scores the *best-matching* pair across the primary/secondary cross-product;
  * a best pair at distance 0 reached **only via a secondary** still deducts the
@@ -24,6 +24,7 @@ import {
   moistureValues,
 } from '../types';
 import {
+  CONTAINER_TYPE_OPEN_PENALTY,
   CONTAINER_TYPE_SURVIVAL_PENALTY,
   CROWDING_MAX_PLANTS_ERROR,
   CROWDING_MAX_PLANTS_WARNING,
@@ -48,6 +49,7 @@ import {
   TEMPERATURE_PENALTY,
   VERDICT_CAUTION_MIN,
   VERDICT_COMPATIBLE_MIN,
+  WORST_PAIR_FLOOR_BUFFER,
 } from './constants';
 import { deriveEnvelope } from './environment';
 
@@ -65,7 +67,7 @@ function verdict(score: number): Verdict {
 /**
  * Best (minimum) adjacency distance across the primary/secondary cross-product,
  * plus the primary-only distance. `viaSecondary` is true when a secondary value
- * produced a strictly closer match than the primaries alone (decision 15a). The
+ * produced a strictly closer match than the primaries alone. The
  * `*Values` helpers always return the primary at index 0.
  */
 function bestAdjacency<T extends string>(
@@ -157,10 +159,12 @@ export function checkPair(a: Plant, b: Plant): CompatibilityResult {
       // bestDist >= 2
       score -= LIGHT_INCOMPATIBLE_PENALTY;
       const involvesDirect = aLight === 'direct' || bLight === 'direct';
+      // "Lethal" is reserved for the survival branch above (direct + low/medium
+      // primaries). This graduated path only fires for direct + bright-indirect,
+      // a -30 caution-to-incompatible that the survival ceiling never clamps.
       const message = involvesDirect
         ? `${a.commonName} needs ${aLight} light; ${b.commonName} needs ${bLight} — ` +
-          'direct sunlight through glass creates a greenhouse effect and will cook ' +
-          'shade-adapted plants — lethal.'
+          'two steps apart, a significant mismatch.'
         : `${a.commonName} needs ${aLight} light but ${b.commonName} needs ${bLight} — ` +
           'requirements too far apart.';
       conflicts.push({
@@ -314,6 +318,26 @@ export function checkPair(a: Plant, b: Plant): CompatibilityResult {
 }
 
 /**
+ * Single source of truth for the container-type fit penalty against one plant.
+ * A closed/lidded container holding a plant that can't take it is survival-critical
+ * (35); a humid-loving plant in an open container is a mild caution (5). Used by
+ * `recommend()` and `plantFitScore()` so the catalog fit score and the group score
+ * agree on how bad a container mismatch is.
+ */
+export function candidateContainerPenalty(candidate: Plant, container: Container): number {
+  if (
+    (container.opening === 'sealed' || container.opening === 'lidded') &&
+    !candidate.closedTerrariumOk
+  ) {
+    return CONTAINER_TYPE_SURVIVAL_PENALTY;
+  }
+  if (container.opening === 'open' && !candidate.openTerrariumOk) {
+    return CONTAINER_TYPE_OPEN_PENALTY;
+  }
+  return 0;
+}
+
+/**
  * Group-score deduction for a container-fit conflict. Container-type
  * incompatibility is survival-critical (35); other incompatible issues deduct
  * 20; cautions deduct 5.
@@ -339,26 +363,27 @@ export function checkGroup(plants: Plant[], container: Container): GroupReport {
   }
 
   // --- Pairwise matrix ----------------------------------------------------
+  // checkPair is pure and symmetric, so only the upper triangle is computed;
+  // each result is mirrored into the lower triangle (O(N(N−1)/2) calls, not O(N²)).
   const pairMatrix: Record<string, Record<string, CompatibilityResult>> = {};
   const upperScores: number[] = [];
 
+  for (const p of plants) pairMatrix[p.slug] = {};
+
   for (let i = 0; i < plants.length; i++) {
     const a = plants[i];
-    pairMatrix[a.slug] = {};
-    for (let j = 0; j < plants.length; j++) {
+    pairMatrix[a.slug][a.slug] = {
+      score: 100,
+      verdict: 'compatible',
+      conflicts: [],
+      survivalCritical: false,
+    };
+    for (let j = i + 1; j < plants.length; j++) {
       const b = plants[j];
-      if (i === j) {
-        pairMatrix[a.slug][b.slug] = {
-          score: 100,
-          verdict: 'compatible',
-          conflicts: [],
-          survivalCritical: false,
-        };
-      } else {
-        const result = checkPair(a, b);
-        pairMatrix[a.slug][b.slug] = result;
-        if (i < j) upperScores.push(result.score);
-      }
+      const result = checkPair(a, b);
+      pairMatrix[a.slug][b.slug] = result;
+      pairMatrix[b.slug][a.slug] = result; // mirror
+      upperScores.push(result.score);
     }
   }
 
@@ -424,11 +449,49 @@ export function checkGroup(plants: Plant[], container: Container): GroupReport {
   // --- Environmental envelope --------------------------------------------
   const envEnvelope = deriveEnvelope(plants);
 
+  // Global collapse: pairwise overlap can hold for every pair while no single
+  // value satisfies all plants at once (an inverted intersection). Pairwise
+  // scoring can't see this, so surface it as a group-level survival conflict
+  // naming the two plants whose opposing limits make the group impossible.
+  if (envEnvelope.tempMin > envEnvelope.tempMax) {
+    const floor = plants.reduce((hi, p) => (p.tempCRange[0] > hi.tempCRange[0] ? p : hi));
+    const ceil = plants.reduce((lo, p) => (p.tempCRange[1] < lo.tempCRange[1] ? p : lo));
+    containerFitIssues.push({
+      factor: 'temperature',
+      severity: 'incompatible',
+      message:
+        `No shared temperature range — ${floor.commonName} needs at least ${floor.tempCRange[0]}°C ` +
+        `but ${ceil.commonName} tops out at ${ceil.tempCRange[1]}°C. Remove one to fix this group.`,
+      affectedPlants: [floor.slug, ceil.slug],
+    });
+  }
+
+  if (envEnvelope.humidityMin > envEnvelope.humidityMax) {
+    const floor = plants.reduce((hi, p) =>
+      p.humidityPctRange[0] > hi.humidityPctRange[0] ? p : hi,
+    );
+    const ceil = plants.reduce((lo, p) =>
+      p.humidityPctRange[1] < lo.humidityPctRange[1] ? p : lo,
+    );
+    containerFitIssues.push({
+      factor: 'humidity',
+      severity: 'incompatible',
+      message:
+        `No shared humidity range — ${floor.commonName} needs at least ${floor.humidityPctRange[0]}% ` +
+        `but ${ceil.commonName} caps at ${ceil.humidityPctRange[1]}%. Remove one to fix this group.`,
+      affectedPlants: [floor.slug, ceil.slug],
+    });
+  }
+
   // --- Overall score -----------------------------------------------------
-  const baseScore =
-    upperScores.length > 0
-      ? Math.trunc(upperScores.reduce((sum, s) => sum + s, 0) / upperScores.length)
-      : 100;
+  let baseScore = 100;
+  if (upperScores.length > 0) {
+    const averagePairScore = upperScores.reduce((sum, s) => sum + s, 0) / upperScores.length;
+    const worstPairScore = Math.min(...upperScores);
+    // Worst-pair floor: the group can sit at most WORST_PAIR_FLOOR_BUFFER above its
+    // weakest link, so one terrible pair can't average away into a false "Healthy".
+    baseScore = Math.trunc(Math.min(averagePairScore, worstPairScore + WORST_PAIR_FLOOR_BUFFER));
+  }
   const penalty = containerFitIssues.reduce((sum, c) => sum + containerPenalty(c), 0);
   let overallScore = Math.max(0, baseScore - penalty);
 
@@ -441,10 +504,10 @@ export function checkGroup(plants: Plant[], container: Container): GroupReport {
       }
     }
   }
+  // Any incompatible group-level issue is survival-critical: container-type
+  // mismatch, severe overcrowding, or an empty environmental envelope (collapse).
   const groupSurvival =
-    containerFitIssues.some(
-      (c) => c.factor === 'container_type' && c.severity === 'incompatible',
-    ) || pairSurvival;
+    containerFitIssues.some((c) => c.severity === 'incompatible') || pairSurvival;
   if (groupSurvival) overallScore = Math.min(overallScore, SURVIVAL_SCORE_CEILING);
 
   return { overallScore, pairMatrix, containerFitIssues, envEnvelope };

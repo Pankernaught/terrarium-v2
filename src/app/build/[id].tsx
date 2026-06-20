@@ -1,15 +1,15 @@
 /**
- * Build detail — the read-only build view (Premium §4.3). Replaces v1's 728-line
- * tabbed `pages/build_detail.py` with progressive disclosure:
+ * Build detail — the read-only build view. Replaces v1's 728-line tabbed
+ * `pages/build_detail.py` with progressive disclosure:
  *
  *   hero → glance header → verdict band → Tier-2 (container facts + plant chips)
  *        → Tier-3 pairwise matrix behind a deliberate tap.
  *
- * Read-only by default; "Edit" re-opens the planner (Phase 6). Scoring runs
- * through the same pure `scoreBuild` the dashboard uses, so a broken build shows a
- * real diagnostic in the verdict band, never v1's silent grey badge.
+ * Read-only by default; "Edit" re-opens the planner. Scoring runs through the
+ * same pure `scoreBuild` the dashboard uses, so a broken build shows a real
+ * diagnostic in the verdict band, never v1's silent grey badge.
  *
- * Persistence is the injected Phase-4 repos (`useRepos`) — no driver here, no
+ * Persistence is the injected repos (`useRepos`) — no driver here, no
  * re-implemented store.
  */
 import { Image } from 'expo-image';
@@ -31,6 +31,7 @@ import {
   Text,
   VerdictBand,
 } from '@/components/ui';
+import { PlantSheet } from '@/components/plant-sheet';
 import { MaxContentWidth, Radii, Spacing } from '@/constants/theme';
 import { loadContainers, loadPlants } from '@/data';
 import { useDbState, type Repos } from '@/db/provider';
@@ -68,6 +69,7 @@ function BuildDetail({ repos }: { repos: Repos }) {
 
   const [load, setLoad] = useState<LoadState>({ status: 'loading' });
   const [addSheetOpen, setAddSheetOpen] = useState(false);
+  const [sheetPlant, setSheetPlant] = useState<Plant | null>(null);
 
   // Pure fetch (no setState) — adding/changing photos can change the primary, so
   // we refresh the hero, the list, and the primary pointer together.
@@ -243,8 +245,7 @@ function BuildDetail({ repos }: { repos: Repos }) {
                     key={p.slug}
                     label={p.commonName}
                     tone="sage"
-                    // Cast: the typed-routes manifest regenerates for plant/[slug] on `expo start`.
-                    onPress={() => router.push(`/plant/${p.slug}` as Href)}
+                    onPress={() => setSheetPlant(p)}
                   />
                 ))}
               </View>
@@ -275,6 +276,12 @@ function BuildDetail({ repos }: { repos: Repos }) {
           { label: 'Take photo', onPress: () => addFrom('camera') },
           { label: 'Choose from library', onPress: () => addFrom('library') },
         ]}
+      />
+
+      <PlantSheet
+        plant={sheetPlant}
+        onClose={() => setSheetPlant(null)}
+        context="browse"
       />
     </Screen>
   );

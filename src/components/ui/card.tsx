@@ -1,7 +1,7 @@
 /**
- * A surface card at the §3.4 resting elevation (e0): one soft shadow + the
- * forest-tinted hairline border that keeps Android from looking flat. The base
- * container for build cards, plant cards, and the verdict band.
+ * A surface card at resting elevation (e0): one soft shadow + the forest-tinted
+ * hairline border that keeps Android from looking flat. The base container for
+ * build cards, plant cards, and the verdict band.
  */
 import { type ReactNode } from 'react';
 import { StyleSheet, View, type ViewStyle } from 'react-native';

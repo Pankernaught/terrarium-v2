@@ -1,22 +1,20 @@
 /**
- * Phase 3 seed gate. Two jobs:
+ * Seed gate. Two jobs:
  *   1. **Build-time validation** — every shipped plant/container/preset parses
  *      against the zod schemas (a malformed record fails CI, not the device).
  *   2. **Throwaway-DB load** — the validated rows insert into a real, in-memory
  *      SQLite database (Node's built-in `node:sqlite`) and the row counts are
- *      exactly 67 / 16, mirroring the on-device expo-sqlite seed (Phase 4) without
- *      pulling a native module into the Node test runner.
+ *      exactly 67 / 16, mirroring the on-device expo-sqlite seed without pulling
+ *      a native module into the Node test runner.
  *
- * Plus the decision-specific invariants: toxicity is partial and never a safety
- * claim (decision 8), the substrate vocabulary is frozen (decision 12), and the
- * presets reference only real plants/containers (decision 18).
+ * Plus invariants: toxicity is partial and never a safety claim, the substrate
+ * vocabulary is frozen, and the presets reference only real plants/containers.
  */
 import { DatabaseSync } from 'node:sqlite';
 
 import { describe, expect, it } from 'vitest';
 
 import {
-  HARDSCAPE_COMPONENT_IDS,
   loadContainers,
   loadPlants,
   loadPresets,
@@ -29,8 +27,8 @@ const containers = loadContainers();
 const presets = loadPresets();
 
 describe('seed counts', () => {
-  it('ships 67 plants and 16 containers', () => {
-    expect(plants).toHaveLength(67);
+  it('ships 95 plants and 16 containers', () => {
+    expect(plants).toHaveLength(95);
     expect(containers).toHaveLength(16);
   });
 
@@ -45,8 +43,8 @@ describe('seed counts', () => {
   });
 });
 
-describe('throwaway SQLite seed (decision 3 / Phase-3 exit)', () => {
-  it('loads every validated row into an in-memory DB with counts 67 / 16', () => {
+describe('throwaway SQLite seed', () => {
+  it('loads every validated row into an in-memory DB with counts 95 / 16', () => {
     const db = new DatabaseSync(':memory:');
     db.exec(`
       CREATE TABLE plants (slug TEXT PRIMARY KEY, common_name TEXT, image TEXT);
@@ -61,7 +59,7 @@ describe('throwaway SQLite seed (decision 3 / Phase-3 exit)', () => {
     const insPr = db.prepare('INSERT INTO presets VALUES (?, ?, ?)');
     for (const pr of presets) insPr.run(pr.slug, pr.containerSlug, JSON.stringify(pr.placements));
 
-    expect((db.prepare('SELECT count(*) c FROM plants').get() as { c: number }).c).toBe(67);
+    expect((db.prepare('SELECT count(*) c FROM plants').get() as { c: number }).c).toBe(95);
     expect((db.prepare('SELECT count(*) c FROM containers').get() as { c: number }).c).toBe(16);
     expect((db.prepare('SELECT count(*) c FROM presets').get() as { c: number }).c).toBe(presets.length);
     db.close();
@@ -70,12 +68,12 @@ describe('throwaway SQLite seed (decision 3 / Phase-3 exit)', () => {
   it('loadSeed() returns the bundle and passes referential integrity', () => {
     const seed = loadSeed();
     expect(seed.schemaVersion).toBe(1);
-    expect(seed.plants).toHaveLength(67);
+    expect(seed.plants).toHaveLength(95);
     expect(seed.containers).toHaveLength(16);
   });
 });
 
-describe('toxicity (decision 8: free text, blank != safe)', () => {
+describe('toxicity — free text, blank != safe', () => {
   it('is authored only where botanically real — present on some, absent on most', () => {
     const withTox = plants.filter((p) => p.toxicity);
     expect(withTox.length).toBeGreaterThan(0);
@@ -97,7 +95,7 @@ describe('toxicity (decision 8: free text, blank != safe)', () => {
   });
 });
 
-describe('substrate vocabulary is frozen (decision 12)', () => {
+describe('substrate vocabulary is frozen', () => {
   it('every substrateTag is a canonical component id', () => {
     for (const p of plants) {
       for (const tag of p.substrateTags) {
@@ -106,18 +104,9 @@ describe('substrate vocabulary is frozen (decision 12)', () => {
     }
   });
 
-  it('wood / rock live in hardscapeTags, never in substrateTags', () => {
-    for (const p of plants) {
-      expect(p.substrateTags).not.toContain('wood');
-      expect(p.substrateTags).not.toContain('rock');
-      for (const h of p.hardscapeTags ?? []) expect(HARDSCAPE_COMPONENT_IDS).toContain(h);
-    }
-    // The split actually happened for the mounted epiphytes.
-    expect(plants.some((p) => (p.hardscapeTags?.length ?? 0) > 0)).toBe(true);
-  });
 });
 
-describe('root-depth reference range (decision 12)', () => {
+describe('root-depth reference range', () => {
   it('is authored for every plant with min <= max', () => {
     for (const p of plants) {
       expect(typeof p.rootDepthMinCm).toBe('number');
@@ -128,7 +117,7 @@ describe('root-depth reference range (decision 12)', () => {
   });
 });
 
-describe('onboarding presets (decision 18)', () => {
+describe('onboarding presets', () => {
   it('references only real containers and plants', () => {
     const plantSlugs = new Set(plants.map((p) => p.slug));
     const containerSlugs = new Set(containers.map((c) => c.slug));

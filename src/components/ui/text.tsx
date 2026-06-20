@@ -1,8 +1,8 @@
 /**
- * Typed text on the §3.3 type scale. Screens pass a semantic `variant`
- * (display / headline / title / subhead / body / caption / overline) and an
- * optional colour `role`, never a raw fontSize — that is how the scale stays
- * consistent. `overline` is uppercased here by convention (stat labels).
+ * Typed text on the type scale. Screens pass a semantic `variant` (display /
+ * headline / title / subhead / body / caption / overline) and an optional colour
+ * `role`, never a raw fontSize — that is how the scale stays consistent.
+ * `overline` is uppercased here by convention (stat labels).
  */
 import { StyleSheet, Text as RNText, type TextProps } from 'react-native';
 

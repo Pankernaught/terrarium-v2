@@ -2,9 +2,9 @@
    are mutable by design; the React Compiler immutability rule doesn't model them.
    The mutations here are all inside worklets / the effect, exactly as intended. */
 /**
- * A velocity-aware bottom sheet (§4.5): slides up with motion.settle, tracks the
- * finger, and dismisses on a swipe-down — a flick dismisses even if it didn't
- * travel far. Reduce-motion collapses the spring to a 120ms fade (§3.1 / §2).
+ * A velocity-aware bottom sheet: slides up with motion.settle, tracks the finger,
+ * and dismisses on a swipe-down — a flick dismisses even if it didn't travel far.
+ * Reduce-motion collapses the spring to a 120ms fade.
  *
  * `ActionSheet` is the thin convenience over it for a ⋮ overflow menu (the
  * dashboard's Duplicate / Export / Delete). Gestures run on the UI thread via

@@ -1,7 +1,7 @@
 /**
- * A section label — the §3.3 overline (uppercase, letter-spaced, muted). Used as
- * the quiet heading above a group; macro-whitespace (not a rule or box) is the
- * real boundary (§2 / §3.2).
+ * A section label — overline style (uppercase, letter-spaced, muted). Used as the
+ * quiet heading above a group; macro-whitespace (not a rule or box) is the real
+ * visual boundary.
  */
 import { type StyleProp, type TextStyle } from 'react-native';
 

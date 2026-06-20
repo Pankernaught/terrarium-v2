@@ -1,7 +1,7 @@
 /**
  * Substrate mixer — the pure roll-up math + the soft character/recipe text, plus a
- * drift guard tying the authored matrix to the frozen component vocabulary. This is
- * the CI half of Phase 8 (the live Substrate-step render is device-verified).
+ * drift guard tying the authored matrix to the frozen component vocabulary. The
+ * live Substrate-step render is device-verified; this covers the pure logic.
  */
 import { describe, expect, it } from 'vitest';
 
@@ -21,7 +21,7 @@ import {
 } from '../substrate-matrix';
 
 describe('property matrix (authored, provisional)', () => {
-  it('covers exactly the 9 frozen substrate components — no drift', () => {
+  it('covers exactly the 13 frozen substrate components — no drift', () => {
     expect([...MATRIX_COMPONENT_IDS].sort()).toEqual([...SUBSTRATE_COMPONENT_IDS].sort());
   });
 

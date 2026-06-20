@@ -1,4 +1,4 @@
-/** Port of `tests/test_environment.py` (+ the decision-15 union ripple). */
+/** Port of `tests/test_environment.py`, plus the primary/secondary union cases. */
 import { describe, expect, it } from 'vitest';
 
 import { deriveEnvelope } from '../environment';
@@ -38,7 +38,7 @@ describe('deriveEnvelope', () => {
     expect(new Set(envelope.compatibleMoisture)).toEqual(new Set(['moist']));
   });
 
-  it('unions primary ∪ secondary into the display sets (decision 15)', () => {
+  it('unions primary ∪ secondary into the display sets', () => {
     const a = makePlant({ slug: 'a', light: { primary: 'low', secondary: 'medium' } });
     const b = makePlant({
       slug: 'b',

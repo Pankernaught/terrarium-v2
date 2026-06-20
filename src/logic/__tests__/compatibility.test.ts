@@ -1,6 +1,6 @@
 /**
- * Port of `tests/test_compatibility.py` (the 36 v1 cases) plus the two net-new
- * case families decision 15 introduces:
+ * Port of `tests/test_compatibility.py` (the 36 v1 cases) plus two net-new
+ * case families for the primary/secondary field shape:
  *   A) the distance-0 secondary cap (a secondary-only match is caution, not 100);
  *   B) primaries-only survival (a secondary never rescues — or manufactures — a
  *      lethal pairing).
@@ -298,6 +298,24 @@ describe('checkPair — survival tier', () => {
     expect(result.verdict).toBe('caution');
   });
 
+  it('does not call the bright-indirect + direct gap "lethal" (issue #4)', () => {
+    // "Lethal" is reserved for the survival branch (direct + low/medium primaries).
+    const graduated = checkPair(
+      makePlant({ slug: 'bright-plant', light: 'bright-indirect' }),
+      makePlant({ slug: 'direct-plant', light: 'direct' }),
+    );
+    const gLight = byFactor(graduated.conflicts, 'light');
+    expect(gLight[0].message).not.toMatch(/lethal/i);
+
+    // The genuine survival gap still reads as lethal.
+    const survival = checkPair(
+      makePlant({ slug: 'low-plant', light: 'low' }),
+      makePlant({ slug: 'direct-plant', light: 'direct' }),
+    );
+    const sLight = byFactor(survival.conflicts, 'light');
+    expect(sLight[0].message).toMatch(/lethal/i);
+  });
+
   it('treats dry + wet moisture as survival-critical', () => {
     const result = checkPair(
       makePlant({ slug: 'dry-plant', soilMoisture: 'dry' }),
@@ -349,6 +367,64 @@ describe('checkGroup — survival clamp', () => {
   });
 });
 
+// --- global environmental collapse (issue #2) -------------------------------
+describe('checkGroup — global envelope collapse', () => {
+  it('clamps and names the two extreme plants when no shared temperature exists', () => {
+    // A–B overlap and B–C overlap (each pair fine), but there is no single
+    // temperature all three survive at. Pairwise averaging alone scored this ~95
+    // ("Healthy"); the envelope clamp now drops it to "At risk".
+    const a = makePlant({ slug: 'cool', commonName: 'Cool Fern', tempCRange: [10, 20] });
+    const b = makePlant({ slug: 'mid', commonName: 'Mid Pothos', tempCRange: [18, 25] });
+    const c = makePlant({ slug: 'warm', commonName: 'Warm Cactus', tempCRange: [23, 35] });
+    const report = checkGroup([a, b, c], makeContainerSpec({ volumeL: 10 }));
+
+    const temp = byFactor(report.containerFitIssues, 'temperature');
+    expect(temp).toHaveLength(1);
+    expect(temp[0].severity).toBe('incompatible');
+    expect(temp[0].message).toContain('Warm Cactus'); // sets the floor (highest min)
+    expect(temp[0].message).toContain('Cool Fern'); // sets the ceiling (lowest max)
+    expect(temp[0].affectedPlants).toEqual(expect.arrayContaining(['warm', 'cool']));
+    expect(report.overallScore).toBeLessThanOrEqual(40);
+  });
+
+  it('clamps and names the two extreme plants when no shared humidity exists', () => {
+    const a = makePlant({ slug: 'dryish', commonName: 'Dry Plant', humidityPctRange: [10, 30] });
+    const b = makePlant({ slug: 'midh', commonName: 'Mid Plant', humidityPctRange: [25, 50] });
+    const c = makePlant({ slug: 'humid', commonName: 'Humid Plant', humidityPctRange: [45, 80] });
+    const report = checkGroup([a, b, c], makeContainerSpec({ volumeL: 10 }));
+
+    const hum = byFactor(report.containerFitIssues, 'humidity');
+    expect(hum).toHaveLength(1);
+    expect(hum[0].severity).toBe('incompatible');
+    expect(hum[0].message).toContain('Humid Plant'); // floor (highest min)
+    expect(hum[0].message).toContain('Dry Plant'); // ceiling (lowest max)
+    expect(report.overallScore).toBeLessThanOrEqual(40);
+  });
+
+  it('does not flag collapse when a shared range exists', () => {
+    const a = makePlant({ slug: 'a', tempCRange: [15, 25] });
+    const b = makePlant({ slug: 'b', tempCRange: [18, 28] });
+    const report = checkGroup([a, b], makeContainerSpec({ volumeL: 10 }));
+    expect(byFactor(report.containerFitIssues, 'temperature')).toHaveLength(0);
+    expect(byFactor(report.containerFitIssues, 'humidity')).toHaveLength(0);
+  });
+});
+
+// --- worst-pair floor (issue #3) --------------------------------------------
+describe('checkGroup — worst-pair floor', () => {
+  it('caps the group score at the weakest pair + 20 so one bad pair cannot average away', () => {
+    // Six identical low-light plants (mutually 100) plus one bright-indirect plant
+    // that scores 70 against each (a -30 two-step gap, non-survival). Plain average
+    // is ~91; the worst-pair floor caps it at worst(70) + 20 = 90.
+    const low = [0, 1, 2, 3, 4, 5].map((i) =>
+      makePlant({ slug: `low-${i}`, light: 'low' }),
+    );
+    const odd = makePlant({ slug: 'odd', light: 'bright-indirect' });
+    const report = checkGroup([...low, odd], makeContainerSpec({ volumeL: 10 }));
+    expect(report.overallScore).toBe(90);
+  });
+});
+
 // --- substrate pH -----------------------------------------------------------
 describe('checkPair — substrate pH', () => {
   it('produces no conflict for the same band', () => {
@@ -396,7 +472,7 @@ describe('checkPair — substrate pH', () => {
 });
 
 // ===========================================================================
-// NET-NEW family A — the distance-0 secondary cap (decision 15a)
+// NET-NEW family A — the distance-0 secondary cap
 // ===========================================================================
 describe('checkPair — secondary cap (net-new, 15a)', () => {
   it('a secondary-only exact light match is a -15 caution, never a free 100', () => {
@@ -411,7 +487,7 @@ describe('checkPair — secondary cap (net-new, 15a)', () => {
     // Mechanically 85 sits in the >= 80 band, exactly like any single v1 one-step
     // caution (test_check_pair_light_one_step also scores 85). The cap's guarantee
     // is "never a free 100" + a caution-severity conflict, not a forced verdict —
-    // the frozen -15 penalty and >= 80 band (decision 6) own the banding. A
+    // the frozen -15 penalty and >= 80 band own the banding. A
     // verdict hard-cap is a noted v2.1 question (see MIGRATION session log).
     expect(result.verdict).toBe('compatible');
   });
@@ -473,7 +549,7 @@ describe('checkPair — secondary cap (net-new, 15a)', () => {
 });
 
 // ===========================================================================
-// NET-NEW family B — primaries-only survival (decision 15b)
+// NET-NEW family B — primaries-only survival
 // ===========================================================================
 describe('checkPair — primaries-only survival (net-new, 15b)', () => {
   it('a secondary does NOT rescue a lethal light pairing (direct + low primaries)', () => {

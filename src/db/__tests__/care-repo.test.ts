@@ -1,5 +1,5 @@
 /**
- * Care-mark repository suite (Phase 7). DB isolation comes from a fresh
+ * Care-mark repository suite. DB isolation comes from a fresh
  * `makeTestDb()` per test (the analog of v1's autouse `isolated_db` fixture).
  *
  * Builds are inserted directly via Drizzle (no dependency on builds-repo) — the

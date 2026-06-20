@@ -5,10 +5,9 @@
  * from the ongoing care guide. Pure logic over `Plant` / `Container`; imports no
  * store.
  *
- * **Decision 15 ripple:** v1 read `p.light` and `p.soil_moisture` as scalars to
- * group plants, pick step text and decide watering/light copy. The primary is the
- * v1-scalar analog, so each of those reads becomes `.light.primary` /
- * `.soilMoisture.primary`. pH is untouched (and unused here).
+ * `light` and `soilMoisture` are `{ primary, secondary? }` objects rather than
+ * scalars. The primary is the v1-scalar analog, so each of those reads becomes
+ * `.light.primary` / `.soilMoisture.primary`. pH is untouched (and unused here).
  */
 import type { Container, Plant } from '../types';
 
@@ -20,12 +19,12 @@ export interface BuildStep {
 }
 
 /**
- * A custom substrate-mixer recipe for the guide's Substrate-Layer line (decision 10
- * / Phase 8). Pre-formatted by the caller (which owns component labels in
- * `src/data`) so this module stays import-pure: `recipe` is the human "N parts …"
+ * A custom substrate-mixer recipe for the guide's Substrate-Layer line.
+ * Pre-formatted by the caller (which owns component labels in `src/data`) so this
+ * module stays import-pure: `recipe` is the human "N parts …"
  * list and `character` is the soft `describeMix` phrase (e.g. "airy,
- * moisture-retentive"). When present, it replaces the default `substrateTags`
- * sentence; when absent, that sentence is unchanged.
+ * moisture-retentive"). When present, it names the concrete mix; when absent, the
+ * step falls back to "a standard well-draining terrarium mix".
  */
 export interface SubstrateMixGuide {
   recipe: string;
@@ -34,24 +33,28 @@ export interface SubstrateMixGuide {
 
 /** Optional overrides for {@link generateBuildGuide} (mirror of the v1 keyword args). */
 export interface BuildGuideOptions {
-  /** Override substrate depth ("3-5cm" | "6-8cm"). If omitted, computed from plant heights. */
-  substrateDepth?: string;
   /**
-   * Override drainage depth ("1cm" | "2-3cm" | "skip" to omit drainage + separation
-   * layers entirely). If omitted, computed from moisture preferences and volume.
+   * The build's actual substrate-layer depth, in cm. Rendered verbatim ("5 cm").
+   * If omitted/null, computed from plant heights as a preset range.
    */
-  drainageDepth?: string;
+  substrateDepth?: number | null;
+  /**
+   * The build's actual drainage-layer depth, in cm. `0` omits the drainage +
+   * separation layers entirely; `> 0` renders them with this depth. If omitted/null,
+   * computed from moisture preferences and volume.
+   */
+  drainageDepth?: number | null;
+  /**
+   * The build's actual charcoal-layer depth, in cm. `> 0` adds a charcoal step
+   * between the separation and substrate layers; `0`/omitted skips it.
+   */
+  charcoalDepth?: number | null;
   /** Material string for the drainage-layer instruction. Defaults to "pebbles or LECA". */
   drainageMaterial?: string;
   /**
-   * If `true`, always include the hardscape step; if `false`, always skip it; if
-   * omitted, include only when substrate tags contain "rock" or "wood".
-   */
-  includeHardscape?: boolean;
-  /**
-   * A custom substrate-mixer recipe (Phase 8). When present (non-empty `recipe`),
-   * the Substrate-Layer step describes the concrete mix + its character instead of
-   * the generic `substrateTags` sentence.
+   * A custom substrate-mixer recipe. When present (non-empty `recipe`), the
+   * Substrate-Layer step names the concrete mix + its character; when absent it
+   * falls back to a standard-mix sentence.
    */
   substrateMix?: SubstrateMixGuide;
 }
@@ -59,6 +62,11 @@ export interface BuildGuideOptions {
 /** "a"/"an" for a character phrase — only the vowel-initial "airy" takes "an". */
 function articleFor(phrase: string): string {
   return /^[aeiou]/i.test(phrase) ? 'an' : 'a';
+}
+
+/** Round a cm value to one decimal and stringify without a trailing `.0`. */
+function fmtCm(value: number): string {
+  return `${String(Number(value.toFixed(1)))} cm`;
 }
 
 /**
@@ -78,8 +86,8 @@ export function generateBuildGuide(
   const {
     substrateDepth,
     drainageDepth,
+    charcoalDepth,
     drainageMaterial = 'pebbles or LECA',
-    includeHardscape,
     substrateMix,
   } = opts;
 
@@ -93,18 +101,20 @@ export function generateBuildGuide(
       'Clean the container with warm water (no soap) and ensure it is fully dry before starting.',
   });
 
-  // 2 & 3. Drainage & Separation Layers
+  // 2 & 3. Drainage & Separation Layers. The build's real depth drives the line:
+  // `0` omits drainage entirely; `> 0` renders it; null/undefined falls back to a
+  // moisture- and volume-derived preset.
   let addDrainage = true;
-  if (drainageDepth === 'skip') {
-    addDrainage = false;
-  } else if (drainageDepth === undefined && container.volumeL < 1.0) {
+  if (drainageDepth != null) {
+    addDrainage = drainageDepth > 0;
+  } else if (container.volumeL < 1.0) {
     addDrainage = false;
   }
 
   if (addDrainage) {
     let actualDrainageDepth: string;
-    if (drainageDepth !== undefined && drainageDepth !== 'skip') {
-      actualDrainageDepth = drainageDepth;
+    if (drainageDepth != null && drainageDepth > 0) {
+      actualDrainageDepth = fmtCm(drainageDepth);
     } else {
       const hasWetMoist = plants.some(
         (p) => p.soilMoisture.primary === 'wet' || p.soilMoisture.primary === 'moist',
@@ -123,44 +133,34 @@ export function generateBuildGuide(
     });
   }
 
-  // 4. Substrate Layer
-  const allTags = new Set<string>();
-  for (const p of plants) {
-    for (const tag of p.substrateTags) allTags.add(tag);
+  // 3b. Charcoal Layer — its own line, only when the build includes one. Sits
+  // between the separation layer and the substrate.
+  if (charcoalDepth != null && charcoalDepth > 0) {
+    stepsData.push({
+      title: 'Charcoal Layer',
+      instruction: `Add ${fmtCm(charcoalDepth)} of horticultural charcoal over the separation layer to keep the build fresh.`,
+    });
   }
-  const tagsStr = allTags.size > 0 ? [...allTags].sort().join(', ') : 'standard terrarium mix';
 
+  // 4. Substrate Layer — describes the substrate built in the container: its real
+  // depth plus the concrete mix (or a standard mix when none was authored).
   let actualSubstrateDepth: string;
-  if (substrateDepth !== undefined) {
-    actualSubstrateDepth = substrateDepth;
+  if (substrateDepth != null) {
+    actualSubstrateDepth = fmtCm(substrateDepth);
   } else {
     const hasTallPlants = plants.some((p) => p.maxHeightCm > 15);
     actualSubstrateDepth = hasTallPlants ? '6-8cm' : '3-5cm';
   }
 
-  // A custom mixer recipe (decision 10) supersedes the generic substrate-tags
-  // sentence; with no recipe, the original tags line is unchanged (the fallback).
   const substrateInstruction =
     substrateMix && substrateMix.recipe
       ? `Add ${actualSubstrateDepth} of your custom mix: ${substrateMix.recipe} — ` +
         `${articleFor(substrateMix.character)} ${substrateMix.character} blend.`
-      : `Add ${actualSubstrateDepth} of substrate explicitly supporting: ${tagsStr}.`;
+      : `Add ${actualSubstrateDepth} of a standard well-draining terrarium mix.`;
 
   stepsData.push({ title: 'Substrate Layer', instruction: substrateInstruction });
 
-  // 5. Hardscape Placement
-  if (
-    includeHardscape === true ||
-    (includeHardscape === undefined && (allTags.has('rock') || allTags.has('wood')))
-  ) {
-    stepsData.push({
-      title: 'Hardscape Placement',
-      instruction:
-        'Place your rocks or wood pieces now, anchoring them firmly into the substrate before planting.',
-    });
-  }
-
-  // 6. Plant Placement
+  // 5. Plant Placement
   const sortedPlants = [...plants].sort((a, b) => b.maxHeightCm - a.maxHeightCm);
   const plantNames = sortedPlants.map((p) => p.commonName);
   const fastGrowers = plants.filter((p) => p.growthRate === 'fast').map((p) => p.commonName);
@@ -172,7 +172,7 @@ export function generateBuildGuide(
 
   stepsData.push({ title: 'Plant Placement', instruction: plantInstr });
 
-  // 7. Initial Watering
+  // 6. Initial Watering
   const moistures = new Set(plants.map((p) => p.soilMoisture.primary));
   let wateringMode: string;
   if (moistures.has('wet') || moistures.has('moist')) {
@@ -188,7 +188,7 @@ export function generateBuildGuide(
     instruction: `Based on these plants' needs, ${wateringMode} the terrarium.`,
   });
 
-  // 8. Sealing / Ventilation Setup
+  // 7. Sealing / Ventilation Setup
   let ventInstr: string;
   if (container.opening === 'sealed') {
     ventInstr =
@@ -202,7 +202,7 @@ export function generateBuildGuide(
 
   stepsData.push({ title: 'Sealing / Ventilation Setup', instruction: ventInstr });
 
-  // 9. Light Placement — conflict-aware
+  // 8. Light Placement — conflict-aware
   const lights = new Set(plants.map((p) => p.light.primary));
   let lightInstr: string;
   if (lights.size === 1) {

@@ -1,7 +1,7 @@
 /**
  * Container domain type + zod schema (port of the Pydantic `Container` in
- * `engine/models/containers.py`). This is the pure geometry/opening snapshot the
- * engine reads — the SQLAlchemy `ContainerModel` is DB-layer and lands in Phase 4.
+ * `engine/models/containers.py`). The pure geometry/opening snapshot the engine
+ * reads — the DB layer uses a separate persisted model.
  */
 import { z } from 'zod';
 

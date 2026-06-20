@@ -1,13 +1,12 @@
 /**
- * Browse filtering + sorting — the pure predicate behind the Browse screen
- * (port of the query in v1 `pages/browse.py::update_table`, reshaped to the
- * decision-1 mobile filter set: **type / biome / light / difficulty** + free-text
- * search). Pure over a `Plant[]`, so CI unit-tests it in the node runner (the
- * "CI tests pure logic only" split) — the screen is just the control surface.
+ * Browse filtering + sorting — the pure predicate behind the Browse screen (port
+ * of the query in v1 `pages/browse.py::update_table`). Filter set: **type / biome
+ * / light / difficulty** + free-text search. Pure over a `Plant[]`, so CI
+ * unit-tests it in the node runner — the screen is just the control surface.
  *
- * **Toxicity is deliberately NOT a criterion (decision 8).** It is display-only,
- * never a filter or facet: a "non-toxic" filter would imply a blank note means
- * "safe," and blank ≠ safe. So there is no toxicity field on `BrowseCriteria`.
+ * **Toxicity is deliberately NOT a criterion.** It is display-only, never a filter
+ * or facet: a "non-toxic" filter would imply a blank note means "safe," and blank
+ * ≠ safe. So there is no toxicity field on `BrowseCriteria`.
  *
  * Imports only `../types` (engine purity: nothing from `src/db` / `src/data`).
  */

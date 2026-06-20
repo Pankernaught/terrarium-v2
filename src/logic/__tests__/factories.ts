@@ -4,7 +4,7 @@
  *
  * To keep the ported cases readable, `light` and `soilMoisture` accept either a
  * bare level string (wrapped as `{ primary }`, mirroring the v1 scalar) OR a full
- * `{ primary, secondary }` object for the primary/secondary cases (decision 15).
+ * `{ primary, secondary }` object for the primary/secondary cases.
  *
  * `makeContainerSpec` is named to avoid colliding with `makeContainer` in
  * `../containers` — the latter is the pure geometry constructor that *computes*

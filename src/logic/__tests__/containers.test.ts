@@ -3,9 +3,8 @@
  * cross-section profile, recommendations, and build-container resolution (port of
  * v1's `tests/test_containers.py`).
  *
- * The 3 v1 `test_resolve_*` cases land here in Phase 4 (deferred from Phase 2 with
- * `resolveBuildContainer`). They pass the candidate containers explicitly — the v2
- * function is pure, so the v1 "from preset slug" case needs no DB.
+ * The 3 v1 `test_resolve_*` cases are here. They pass the candidate containers
+ * explicitly — the v2 function is pure, so the v1 "from preset slug" case needs no DB.
  */
 import { describe, expect, it } from 'vitest';
 
@@ -140,6 +139,21 @@ describe('containerProfile', () => {
     // planting surface at 7; plant top 19 > 15 => overflow of 4
     expect(prof.overflowCm).toBe(4);
   });
+
+  it('inserts the charcoal band between drainage and substrate', () => {
+    // drainage 2, charcoal 1.5, substrate 5 → tops at 2, 3.5, 8.5.
+    const prof = containerProfile('rectangular', { length: 20, width: 20, height: 30 }, 5, 2, 10, 1.5);
+    expect(prof.drainageTopCm).toBe(2);
+    expect(prof.charcoalTopCm).toBe(3.5);
+    expect(prof.substrateTopCm).toBe(8.5);
+    expect(prof.plantingSurfaceCm).toBe(8.5);
+  });
+
+  it('collapses the charcoal band to the drainage top when omitted', () => {
+    const prof = containerProfile('rectangular', { length: 20, width: 20, height: 30 }, 5, 2, 10);
+    expect(prof.charcoalTopCm).toBe(prof.drainageTopCm);
+    expect(prof.substrateTopCm).toBe(7);
+  });
 });
 
 // --- recommendContainerDimensions ------------------------------------------
@@ -174,7 +188,7 @@ describe('recommendContainerDimensions', () => {
   });
 });
 
-// --- resolveBuildContainer (deferred from Phase 2) -------------------------
+// --- resolveBuildContainer --------------------------------------------------
 
 describe('resolveBuildContainer', () => {
   it('resolves from the geometry snapshot, no candidates needed', () => {

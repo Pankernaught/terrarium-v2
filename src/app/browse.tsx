@@ -1,22 +1,25 @@
 /**
- * Browse — the filterable plant database (Premium §4.2 grid idiom, decision-1
- * mobile filter set). Port of v1 `pages/browse.py`, reshaped from a desktop table
- * + dropdown wall into search + tappable chip facets over the seed bundle.
+ * Browse — the filterable plant database. Port of v1 `pages/browse.py`, reshaped
+ * from a desktop table + dropdown wall into search + tappable chip facets over the
+ * seed bundle.
  *
  * Filters: **type / biome / light / difficulty** + free-text search — all run
- * through the pure, unit-tested `filterPlants`. **Toxicity is display-only
- * (decision 8):** a card carries a handling-note indicator only when a note exists
- * (icon + word, never colour alone), and a blank note is NEVER rendered as
- * "Non-toxic ✓" — absence means "no note," not "safe." "Suggest a plant" is
- * out-of-band (a mailto, decision 3) — no in-app community or backend.
+ * through the pure, unit-tested `filterPlants`. **Toxicity is display-only:** a
+ * card carries a handling-note indicator only when a note exists (icon + word, never
+ * colour alone), and a blank note is NEVER rendered as "Non-toxic ✓" — absence
+ * means "no note," not "safe." "Suggest a plant" opens a mailto — no in-app
+ * community or backend.
  *
- * Reads the seed bundle directly (decision 11) — no DB round-trip for the catalog.
+ * Plant detail is a shared PlantSheet (context='browse') — tapping a row opens the
+ * sheet in place rather than navigating to /plant/[slug].
+ *
+ * Reads the seed bundle directly (no DB round-trip for the catalog).
  */
-import { type Href, useRouter } from 'expo-router';
 import { useMemo, useState } from 'react';
 import { Linking, Pressable, ScrollView, StyleSheet, TextInput, View } from 'react-native';
 
 import { Card, Chip, GlanceHeader, Screen, SectionLabel, Text } from '@/components/ui';
+import { PlantSheet } from '@/components/plant-sheet';
 import { MaxContentWidth, Radii, Spacing } from '@/constants/theme';
 import { loadPlants } from '@/data';
 import { type BrowseSort, filterPlants } from '@/logic/browse-filter';
@@ -33,7 +36,6 @@ const SORTS: { value: BrowseSort; label: string }[] = [
 ];
 
 export default function BrowseScreen() {
-  const router = useRouter();
   const { c } = useTokens();
   const plants = useMemo(() => loadPlants(), []);
 
@@ -44,6 +46,7 @@ export default function BrowseScreen() {
   const [difficulties, setDifficulties] = useState<number[]>([]);
   const [sort, setSort] = useState<BrowseSort>('name');
   const [filtersOpen, setFiltersOpen] = useState(false);
+  const [sheetPlant, setSheetPlant] = useState<(typeof plants)[0] | null>(null);
 
   const results = useMemo(
     () => filterPlants(plants, { search, types, biomes, lights, difficulties, sort }),
@@ -153,12 +156,12 @@ export default function BrowseScreen() {
           ) : (
             <View style={styles.list}>
               {results.map((p) => (
-                <PlantRow key={p.slug} plant={p} onPress={() => router.push(`/plant/${p.slug}` as Href)} />
+                <PlantRow key={p.slug} plant={p} onPress={() => setSheetPlant(p)} />
               ))}
             </View>
           )}
 
-          {/* Suggest a plant — out-of-band (decision 3). */}
+          {/* Suggest a plant — opens a mailto. */}
           <Pressable onPress={suggestPlant} accessibilityRole="button" style={styles.suggest}>
             <Text variant="caption" role="primary">
               Missing a plant? Suggest one →
@@ -169,6 +172,12 @@ export default function BrowseScreen() {
           </Pressable>
         </View>
       </ScrollView>
+
+      <PlantSheet
+        plant={sheetPlant}
+        onClose={() => setSheetPlant(null)}
+        context="browse"
+      />
     </Screen>
   );
 }
@@ -211,7 +220,7 @@ function PlantRow({ plant, onPress }: { plant: Plant; onPress: () => void }) {
             </Text>
           </View>
           {/* Toxicity indicator — shown ONLY when a note exists; icon + word, never
-              colour alone; absence is never rendered as a "safe" claim (decision 8). */}
+              colour alone; absence is never rendered as a "safe" claim. */}
           {plant.toxicity ? (
             <View style={[styles.toxPill, { backgroundColor: c.surfaceSunken }]}>
               <View style={[styles.toxDot, { backgroundColor: c.accent }]} />

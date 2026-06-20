@@ -1,7 +1,7 @@
 /**
  * The Eco-balance chip for a build card: a coloured dot (the OKLab sweep colour)
  * + the score % + a short band word. Colour is *never* the only signal — the dot
- * is always paired with the number and the band label (never-color-alone, §2).
+ * is always paired with the number and the band label (never colour alone).
  *
  * When a build can't be scored, the chip falls back to a neutral "Needs review"
  * with a warning glyph — a real, legible state, not v1's silent grey "⚠".

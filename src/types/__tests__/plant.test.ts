@@ -2,13 +2,12 @@
  * Types port of `tests/test_models.py`.
  *
  * Only the 2 plant cases port directly; the other 5 cases in test_models.py
- * validated the social schemas, which are scrapped (decision: social dropped).
+ * validated the social schemas, which are scrapped (social sharing is cut).
  * They are replaced here by zod-validation cases that exercise the v2 controlled
  * vocabularies — the direct analog of the v1 Pydantic field_validators — plus the
- * primary/secondary reshape (decision 15). The ORM-coercion case
- * (flat columns -> tuple) is a v1 SQLAlchemy concern with no v2 equivalent: the
- * Plant arrives pre-shaped from JSON (Phase 3) / Drizzle (Phase 4); we instead
- * assert the range fields parse as tuples.
+ * primary/secondary reshape. The ORM-coercion case (flat columns -> tuple) is a
+ * v1 SQLAlchemy concern with no v2 equivalent: the Plant arrives pre-shaped from
+ * JSON / Drizzle; we instead assert the range fields parse as tuples.
  */
 import { describe, expect, it } from 'vitest';
 
@@ -49,7 +48,7 @@ describe('plantSchema', () => {
     expect(plant.substrateTags).toEqual([]);
   });
 
-  it('accepts a light/moisture secondary condition (decision 15)', () => {
+  it('accepts a light/moisture secondary condition', () => {
     const plant = makePlant({
       light: { primary: 'low', secondary: 'medium' },
       soilMoisture: { primary: 'moist', secondary: 'wet' },

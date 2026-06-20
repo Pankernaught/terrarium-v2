@@ -1,9 +1,9 @@
 /**
- * The app-edge database wiring (Phase 5). This is the *one* place the native
- * driver is constructed: `createExpoDb()` opens the device SQLite file, `seedStore`
- * idempotently loads the 67/16 + presets on first launch, and the repositories are
- * built once and handed down by context. Screens call `useRepos()` — they never
- * import a concrete driver or re-implement persistence (Phase 5 gotcha).
+ * The app-edge database wiring. This is the *one* place the native driver is
+ * constructed: `createExpoDb()` opens the device SQLite file, `seedStore`
+ * idempotently loads the plants/containers/presets on first launch, and the
+ * repositories are built once and handed down by context. Screens call `useRepos()`
+ * — they never import a concrete driver or re-implement persistence.
  *
  * Native-only: imports `client.expo`, so it must never be pulled into the node
  * Vitest runner (the repos are unit-tested there against `client.node` instead).

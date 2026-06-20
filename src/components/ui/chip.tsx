@@ -2,7 +2,7 @@
  * Chip / pill. A small rounded label, optionally with a leading dot/icon and a
  * press handler (filter chips, tags, the Eco chip). `tone` tints it; a `selected`
  * chip fills with its tone. Never encodes meaning in colour alone — callers pair
- * any semantic tone with text or an icon (never-color-alone, §2 / decision 8).
+ * any semantic tone with text or an icon (never encode meaning in colour alone).
  */
 import { type ReactNode } from 'react';
 import { Pressable, StyleSheet, View, type ViewStyle } from 'react-native';

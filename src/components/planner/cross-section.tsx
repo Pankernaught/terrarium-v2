@@ -25,7 +25,7 @@
  *
  * ## Interaction
  *
- * Horizontal drag (active step only) slides a plant/hardscape along its `x`; a guide
+ * Horizontal drag (active step only) slides a plant along its `x`; a guide
  * line tracks the finger and the placement commits on release. Overflowing plants
  * get a ⚠️ cap badge that taps to explain. SVG nodes aren't touch targets, so drag
  * handles and badges are thin RN overlays positioned over the canvas.
@@ -43,7 +43,6 @@ import Svg, {
   Circle,
   ClipPath,
   Defs,
-  Ellipse,
   G,
   Line,
   Path,
@@ -58,12 +57,7 @@ import {
   containerProfile,
   type Dimensions,
 } from '@/logic/containers';
-import {
-  clamp01,
-  hardscapeAssetId,
-  isHardscapeSlug,
-  type Placement,
-} from '@/logic/placement';
+import { clamp01, type Placement } from '@/logic/placement';
 import type { ContainerOpening, ContainerShape, Plant } from '@/types';
 
 import {
@@ -72,16 +66,20 @@ import {
   type Rect as GeomRect,
 } from './container-profiles';
 import {
+  AO_GRADIENT_ID,
+  MOISTURE_GRADIENT_ID,
   SOIL_BASE_FILL,
   SOIL_STIPPLE_PATTERN_ID,
+  SUBSTRATE_SHADOW_FILTER_ID,
   SubstratePatternDefs,
   getComponentMarks,
+  getComponentStyle,
+  type ComponentStyle,
   type Mark,
 } from './cross-section-patterns';
 import type { PlannerDraft } from './draft';
-import { hardscapeAsset } from './hardscape-assets';
 
-export type DraggableKind = 'plant' | 'hardscape' | null;
+export type DraggableKind = 'plant' | null;
 
 export interface TerrariumCrossSectionProps {
   draft: PlannerDraft;
@@ -118,15 +116,53 @@ function rand(seed: number): number {
 /** Stable integer seed derived from a component id string. */
 function idSeed(id: string): number {
   let h = 0;
-  for (let i = 0; i < id.length; i++) h = h * 31 + id.charCodeAt(i);
+  // Math.imul keeps multiplication within 32-bit int range, avoiding the
+  // float64 precision loss that makes (large_base + i*37) == large_base.
+  for (let i = 0; i < id.length; i++) h = (Math.imul(h, 31) + id.charCodeAt(i)) | 0;
   return Math.abs(h);
+}
+
+/** Max dart-throwing attempts before a mark is dropped to preserve spacing. */
+const SCATTER_MAX_ATTEMPTS = 12;
+
+/** Render one scattered mark in local space (centred on 0,0), placed by `transform`. */
+function renderScatteredMark(mark: Mark, key: string, transform: string, opacity: number): React.ReactNode {
+  if (mark.kind === 'circle') {
+    return <Circle key={key} cx={0} cy={0} r={mark.r} fill={mark.fill} opacity={opacity} transform={transform} />;
+  }
+  if (mark.kind === 'rect') {
+    return <Rect key={key} x={-mark.w / 2} y={-mark.h / 2} width={mark.w} height={mark.h} fill={mark.fill} rx={mark.rx} opacity={opacity} transform={transform} />;
+  }
+  if (mark.kind === 'path') {
+    return (
+      <Path
+        key={key}
+        d={mark.d}
+        fill={mark.fill ?? 'none'}
+        stroke={mark.stroke}
+        strokeWidth={mark.strokeWidth}
+        strokeLinecap="round"
+        opacity={opacity}
+        transform={transform}
+      />
+    );
+  }
+  const dx = mark.x2 - mark.x1;
+  const dy = mark.y2 - mark.y1;
+  return <Line key={key} x1={0} y1={0} x2={dx} y2={dy} stroke={mark.stroke} strokeWidth={mark.width} strokeLinecap="round" opacity={opacity} transform={transform} />;
 }
 
 /**
  * Scatter individual marks for one substrate component across the substrate band.
- * Density scales with band area; opacity is already controlled by the caller
- * (proportional to mix share). The mark shapes/colours are the same visual
- * conventions as before — white specks = perlite, dark circles = peat, etc.
+ *
+ * Density scales with band area × mix share × the tier's density multiplier. Each
+ * placement is found by **dart-throwing**: a seeded candidate is rejected if it lands
+ * within `style.minDist` of an already-placed mark, retried up to
+ * {@link SCATTER_MAX_ATTEMPTS} times, then dropped — so same-component marks spread
+ * out instead of clumping, without snapping to a grid (the seed keeps it stable).
+ * Each placed mark gets per-instance scale (and, for directional marks, rotation)
+ * jitter, so the field never reads as a stamped repeat. Chunky tiers are wrapped in a
+ * drop-shadow group to lift them off the dirt. Inter-component overlap is intentional.
  */
 function substrateComponentMarks(
   id: string,
@@ -134,30 +170,64 @@ function substrateComponentMarks(
   geom: GeomRect,
   surfaceY: number,
   bottomY: number,
-  opacity: number,
-): React.ReactNode[] {
+  style: ComponentStyle,
+  parts: number,
+): React.ReactNode {
   const bandH = bottomY - surfaceY;
-  if (bandH <= 2 || marks.length === 0) return [];
-  const count = Math.min(60, Math.max(4, Math.round((geom.width * bandH) / 80)));
-  const base = idSeed(id);
-  const nodes: React.ReactNode[] = [];
-  for (let i = 0; i < count; i++) {
-    const mark = marks[i % marks.length];
-    const s = base + i * 37;
-    const mx = geom.x + rand(s) * geom.width;
-    const my = surfaceY + rand(s + 11) * bandH;
-    const eff = (mark.opacity ?? 1) * opacity;
-    if (mark.kind === 'circle') {
-      nodes.push(<Circle key={`${id}-${i}`} cx={mx} cy={my} r={mark.r} fill={mark.fill} opacity={eff} />);
-    } else if (mark.kind === 'rect') {
-      nodes.push(<Rect key={`${id}-${i}`} x={mx - mark.w / 2} y={my - mark.h / 2} width={mark.w} height={mark.h} fill={mark.fill} rx={mark.rx} opacity={eff} />);
-    } else {
-      const dx = mark.x2 - mark.x1;
-      const dy = mark.y2 - mark.y1;
-      nodes.push(<Line key={`${id}-${i}`} x1={mx} y1={my} x2={mx + dx} y2={my + dy} stroke={mark.stroke} strokeWidth={mark.width} strokeLinecap="round" opacity={eff} />);
-    }
+  if (bandH <= 2) return null;
+
+  // Mud (and any future fine-blend tint) paints a flat band wash, not scattered marks.
+  if (style.tint) {
+    return <Rect key={`${id}-tint`} x={geom.x} y={surfaceY} width={geom.width} height={bandH} fill={style.tint} opacity={style.opacity} />;
   }
-  return nodes;
+  if (marks.length === 0) return null;
+
+  const baseCount = Math.min(40, Math.max(4, Math.round((geom.width * bandH) / 80)));
+  const count = Math.min(220, Math.round(baseCount * Math.max(1, parts) * style.density));
+  const base = idSeed(id);
+  const minDist2 = style.minDist * style.minDist;
+  const placed: { x: number; y: number }[] = [];
+  const nodes: React.ReactNode[] = [];
+
+  for (let i = 0; i < count; i++) {
+    let mx = 0;
+    let my = 0;
+    let ok = false;
+    for (let a = 0; a < SCATTER_MAX_ATTEMPTS; a++) {
+      const s = base + i * 97 + a * 1009;
+      const cx = geom.x + rand(s) * geom.width;
+      const cy = surfaceY + rand(s + 11) * bandH;
+      let collides = false;
+      for (let p = 0; p < placed.length; p++) {
+        const ddx = placed[p].x - cx;
+        const ddy = placed[p].y - cy;
+        if (ddx * ddx + ddy * ddy < minDist2) {
+          collides = true;
+          break;
+        }
+      }
+      if (!collides) {
+        mx = cx;
+        my = cy;
+        ok = true;
+        break;
+      }
+    }
+    if (!ok) continue; // dropped — keeps the field spaced rather than crammed
+    placed.push({ x: mx, y: my });
+
+    const mark = marks[i % marks.length];
+    const eff = (mark.opacity ?? 1) * style.opacity;
+    const sc = 0.8 + rand(base + i * 13 + 5) * 0.5; // 0.8–1.3
+    const rot = style.rotate ? Math.floor(rand(base + i * 7 + 3) * 360) : 0;
+    const transform = `translate(${mx}, ${my}) rotate(${rot}) scale(${sc})`;
+    nodes.push(renderScatteredMark(mark, `${id}-${i}`, transform, eff));
+  }
+
+  if (style.shadow) {
+    return <G key={`${id}-marks`} filter={`url(#${SUBSTRATE_SHADOW_FILTER_ID})`}>{nodes}</G>;
+  }
+  return <G key={`${id}-marks`}>{nodes}</G>;
 }
 
 // --- Resolved render models (pure, computed from the draft) -----------------
@@ -184,22 +254,12 @@ interface PlantModel {
   rootBottomY: number | null; // null = no root data
 }
 
-interface HardscapeModel {
-  slug: string;
-  emoji: string;
-  xPx: number;
-  surfaceY: number;
-  /** Where the drag chip floats — hardscape has no stem, so this is the surface. */
-  capY: number;
-}
-
 interface Scene {
   geom: GeomRect;
   profile: ContainerShapeProfile;
   opening: ContainerOpening | null;
   bands: LayerBands;
   plants: PlantModel[];
-  hardscape: HardscapeModel[];
   activeMixIds: string[];
   cmToPx: number;
   widthCm: number;
@@ -268,14 +328,8 @@ function buildScene(
   const margin = 0.06; // keep a plant's centre off the glass
 
   const plantModels: PlantModel[] = [];
-  const hardscapeModels: HardscapeModel[] = [];
   for (const p of draft.placements) {
     const xPx = cx0 + Math.min(1 - margin, Math.max(margin, clamp01(p.x))) * cw;
-    if (isHardscapeSlug(p.slug)) {
-      const asset = hardscapeAsset(hardscapeAssetId(p.slug));
-      hardscapeModels.push({ slug: p.slug, emoji: asset?.emoji ?? '🪨', xPx, surfaceY: bands.surfaceY, capY: bands.surfaceY });
-      continue;
-    }
     const plant = bySlug.get(p.slug);
     if (!plant) continue;
     const topCm = surfaceCm + plant.maxHeightCm;
@@ -299,7 +353,6 @@ function buildScene(
     opening: draft.containerOpening,
     bands,
     plants: plantModels,
-    hardscape: hardscapeModels,
     activeMixIds,
     cmToPx: scale,
     widthCm,
@@ -317,7 +370,6 @@ export function TerrariumCrossSection({
 }: TerrariumCrossSectionProps) {
   const { c } = useTokens();
   const [size, setSize] = useState<{ w: number; h: number }>({ w: 0, h: 0 });
-  const [draggingSlug, setDraggingSlug] = useState<string | null>(null);
   const [tooltipSlug, setTooltipSlug] = useState<string | null>(null);
 
   function onLayout(e: LayoutChangeEvent) {
@@ -348,7 +400,6 @@ export function TerrariumCrossSection({
               h={height}
               c={c}
               activeMix={draft.substrateMix}
-              draggingSlug={draggingSlug}
             />
           ) : (
             <PlaceholderSvg w={size.w} h={height} c={c} />
@@ -383,9 +434,7 @@ export function TerrariumCrossSection({
           : null}
 
         {scene && draggableKind
-          ? [...scene.plants, ...scene.hardscape]
-              .filter((it) => (draggableKind === 'hardscape' ? isHardscapeSlug(it.slug) : !isHardscapeSlug(it.slug)))
-              .map((it) => (
+          ? scene.plants.map((it) => (
                 <DragHandle
                   key={`drag-${it.slug}`}
                   slug={it.slug}
@@ -396,9 +445,7 @@ export function TerrariumCrossSection({
                   right={scene.geom.x + scene.geom.width}
                   planeH={height}
                   c={c}
-                  onStart={() => setDraggingSlug(it.slug)}
                   onEnd={(xPx) => {
-                    setDraggingSlug(null);
                     const nx = clamp01((xPx - scene.geom.x) / scene.geom.width);
                     const prev = draft.placements.find((q) => q.slug === it.slug);
                     onCommit({ slug: it.slug, x: nx, y: prev?.y ?? 0.6, scale: prev?.scale ?? 1 });
@@ -483,14 +530,12 @@ function SceneSvg({
   h,
   c,
   activeMix,
-  draggingSlug,
 }: {
   scene: Scene;
   w: number;
   h: number;
   c: ReturnType<typeof useTokens>['c'];
   activeMix: PlannerDraft['substrateMix'];
-  draggingSlug: string | null;
 }) {
   const { geom, profile, bands, opening } = scene;
   // Geometry-keyed clip id. react-native-svg caches a <ClipPath> by its id and does
@@ -504,13 +549,7 @@ function SceneSvg({
   const rimW = geom.width * profile.rimWidthFrac;
   const rimX0 = geom.x + (geom.width - rimW) / 2;
 
-  // Substrate mix → overlay opacity by share of total parts.
   const mix = activeMix ?? {};
-  const totalParts = scene.activeMixIds.reduce((s, id) => s + (mix[id] ?? 0), 0) || 1;
-
-  // The actively-dragged item's cap is carried by the floating RN drag chip, so the
-  // SVG hides only that one cap (everything else, draggable or not, draws normally).
-  const capInSvg = (slug: string) => draggingSlug !== slug;
 
   return (
     <Svg width={w} height={h}>
@@ -536,19 +575,30 @@ function SceneSvg({
           <Rect x={geom.x} y={bands.charcoalTopY} width={geom.width} height={bands.drainageTopY - bands.charcoalTopY} fill="#262320" />
         ) : null}
 
-        {/* Substrate — brown base → soil stipple → scattered mix marks. */}
+        {/* Substrate — brown base → soil stipple → scattered mix marks → moisture. */}
         {bands.hasSubstrate ? (
           <>
             <Rect x={geom.x} y={bands.surfaceY} width={geom.width} height={bands.charcoalTopY - bands.surfaceY} fill={SOIL_BASE_FILL} />
             <Rect x={geom.x} y={bands.surfaceY} width={geom.width} height={bands.charcoalTopY - bands.surfaceY} fill={`url(#${SOIL_STIPPLE_PATTERN_ID})`} />
-            {scene.activeMixIds.flatMap((id) => {
+            {scene.activeMixIds.map((id) => {
               const marks = getComponentMarks(id);
-              if (!marks) return [];
-              const opacity = Math.min(0.9, Math.max(0.25, (mix[id] ?? 0) / totalParts));
-              return substrateComponentMarks(id, marks, geom, bands.surfaceY, bands.charcoalTopY, opacity);
+              if (!marks) return null;
+              const parts = Math.max(1, mix[id] ?? 1);
+              return substrateComponentMarks(id, marks ?? [], geom, bands.surfaceY, bands.charcoalTopY, getComponentStyle(id), parts);
             })}
+            {/* Moisture grounding — soil reads damper toward the band's bottom. */}
+            <Rect
+              x={geom.x}
+              y={bands.surfaceY}
+              width={geom.width}
+              height={bands.charcoalTopY - bands.surfaceY}
+              fill={`url(#${MOISTURE_GRADIENT_ID})`}
+            />
           </>
         ) : null}
+
+        {/* Ambient occlusion — light loss where every layer meets the glass walls. */}
+        <Rect x={geom.x} y={geom.y} width={geom.width} height={geom.height} fill={`url(#${AO_GRADIENT_ID})`} />
 
         {/* Root-depth bands sit under the surface, inside the substrate/drainage. */}
         {scene.plants.map((p) =>
@@ -570,18 +620,6 @@ function SceneSvg({
           ) : null,
         )}
       </G>
-
-      {/* Hardscape — an embedded mound + emoji on the surface. */}
-      {scene.hardscape.map((hsItem) => (
-        <G key={`hs-${hsItem.slug}`}>
-          <Ellipse cx={hsItem.xPx} cy={hsItem.surfaceY} rx={16} ry={7} fill={SOIL_BASE_FILL} opacity={0.85} />
-          {capInSvg(hsItem.slug) ? (
-            <SvgText x={hsItem.xPx} y={hsItem.surfaceY - 4} fontSize={22} textAnchor="middle">
-              {hsItem.emoji}
-            </SvgText>
-          ) : null}
-        </G>
-      ))}
 
       {/* Plants — stem + overflow stub + upward name label beside the bar. */}
       {scene.plants.map((p) => {
@@ -649,7 +687,7 @@ function drainagePebbles(geom: GeomRect, bands: LayerBands) {
       const jy = (rand(seed + 100) - 0.5) * 6;
       const cx = geom.x + ((col + 0.5) / cols) * geom.width + jx;
       const cy = top + ((r + 0.5) / rows) * bandH + jy;
-      const rad = 2.2 + rand(seed + 200) * 1.8;
+      const rad = 4.4 + rand(seed + 200) * 3.6;
       nodes.push(<Circle key={`peb-${seed}`} cx={cx} cy={cy} r={rad} fill={tones[seed % tones.length]} />);
     }
   }
@@ -697,11 +735,11 @@ function OverflowBadge({ x, y, active, onPress }: { x: number; y: number; active
 }
 
 /**
- * Horizontal drag for one item. A static, transparent touch column at the item's
- * base x catches the gesture; while dragging, a **floating emoji chip** (the item
- * "in hand") and a guide line track the finger on the UI thread. The SVG hides that
- * item's cap meanwhile (so there's no double emoji) and redraws it at the new x on
- * release. SVG nodes can't take gestures, hence this RN overlay.
+ * Horizontal drag for one plant. A static, transparent touch column at the plant's
+ * base x catches the gesture; while dragging, a **floating emoji chip** (the plant
+ * "in hand") and a guide line track the finger on the UI thread. The plant's stem
+ * stays put and redraws at the new x on release. SVG nodes can't take gestures,
+ * hence this RN overlay.
  */
 function DragHandle({
   baseX,
@@ -711,7 +749,6 @@ function DragHandle({
   right,
   planeH,
   c,
-  onStart,
   onEnd,
 }: {
   slug: string;
@@ -722,7 +759,6 @@ function DragHandle({
   right: number;
   planeH: number;
   c: ReturnType<typeof useTokens>['c'];
-  onStart: () => void;
   onEnd: (xPx: number) => void;
 }) {
   const tx = useSharedValue(baseX);
@@ -732,7 +768,6 @@ function DragHandle({
     .onStart(() => {
       lifted.value = withSpring(1, Motion.snappy);
       tx.value = baseX;
-      runOnJS(onStart)();
     })
     .onChange((e) => {
       tx.value = Math.min(right, Math.max(left, baseX + e.translationX));

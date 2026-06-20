@@ -1,5 +1,5 @@
 /**
- * Care-reminder notifications — the device edge for Phase 7 (decision 16).
+ * Care-reminder notifications — the device edge for scheduling.
  *
  * **Device-only.** This module imports `expo-notifications`, which has no node
  * binding, so it must never be pulled into the Vitest runner. Everything *decidable*
@@ -7,27 +7,37 @@
  * in the pure `@/logic/careSchedule` (CI-tested); this file is the thin, untestable
  * native shell that calls the OS scheduler with that plan.
  *
- * **Model A (decision 16):** every enabled `(terrarium × task)` is **one native
- * *repeating* trigger** — a `TIME_INTERVAL { repeats: true }` that counts as one
- * permanent pending slot and fires even if the app is never opened (the dormant-user
- * case a care app most needs). iOS caps pending at 64; we keep a **~50-slot
- * soonest-due budget guard** (`planNotificationBudget`) and **refill on app-open +
- * on each mark-done**, disclosing any overflow in the Care tab — never a silent
- * 65th-drop. Android has no cap, so the guard simply never trips.
+ * Every enabled `(terrarium × task)` is **one native *repeating* trigger** — a
+ * `TIME_INTERVAL { repeats: true }` that counts as one permanent pending slot and
+ * fires even if the app is never opened (the dormant-user case a care app most
+ * needs). iOS caps pending at 64; we keep a **~50-slot soonest-due budget guard**
+ * (`planNotificationBudget`) and **refill on app-open + on each mark-done**,
+ * disclosing any overflow in the Care tab — never a silent 65th-drop. Android has
+ * no cap, so the guard simply never trips.
  *
- * **Known trade-off (documented):** a repeating `TIME_INTERVAL` fires one interval
- * from *scheduling*, so the "first fire one interval after creation" rule falls out
- * for free, but re-syncing on every app-open re-anchors the cadence. That is the
- * decision-16 design (refill-on-open); a per-occurrence DATE-trigger refinement is a
- * v2.1 escape hatch. The per-terrarium toggle remains the user's pressure valve.
+ * **Known trade-off:** a repeating `TIME_INTERVAL` fires one interval from
+ * *scheduling*, so the "first fire one interval after creation" rule falls out for
+ * free, but re-syncing on every app-open re-anchors the cadence. A per-occurrence
+ * DATE-trigger refinement is a v2.1 escape hatch. The per-terrarium toggle remains
+ * the user's pressure valve.
  */
-import * as Notifications from 'expo-notifications';
-
 import {
   type BudgetPlan,
   type PendingTask,
   planNotificationBudget,
 } from '@/logic/careSchedule';
+
+// Late-bound to tolerate Expo Go on Android (SDK 53 removed push support; the
+// module throws at evaluation time in that environment). Functions silently
+// no-op when N is undefined — the Care UI still renders, notifications just
+// don't fire until the user switches to a development build.
+let N: typeof import('expo-notifications') | undefined;
+try {
+  // eslint-disable-next-line @typescript-eslint/no-require-imports
+  N = require('expo-notifications');
+} catch {
+  // Expo Go / unsupported environment — notifications disabled gracefully.
+}
 
 const DAY_SECONDS = 86_400;
 
@@ -43,11 +53,12 @@ export interface CareNotificationMeta {
  * handler, a reminder that fires while the app is open is silently swallowed.
  */
 export function configureCareNotifications(): void {
-  Notifications.setNotificationHandler({
+  if (!N) return;
+  N.setNotificationHandler({
     handleNotification: async () => ({
       shouldShowBanner: true,
       shouldShowList: true,
-      shouldPlaySound: false, // §4.6 — the calmest screen: no sound.
+      shouldPlaySound: false, // no sound — the Care tab is deliberately calm.
       shouldSetBadge: false,
     }),
   });
@@ -55,14 +66,15 @@ export function configureCareNotifications(): void {
 
 /**
  * Ensure we may post local notifications, asking **only if not already decided**
- * (decision 13 — request after the first build, never on launch; the caller gates
- * this behind an explicit enable tap). Returns whether reminders are permitted.
+ * (request after the first build, never on launch; the caller gates this behind
+ * an explicit enable tap). Returns whether reminders are permitted.
  */
 export async function ensureCarePermission(): Promise<boolean> {
-  const current = await Notifications.getPermissionsAsync();
+  if (!N) return false;
+  const current = await N.getPermissionsAsync();
   if (current.granted) return true;
   if (!current.canAskAgain) return false;
-  const requested = await Notifications.requestPermissionsAsync();
+  const requested = await N.requestPermissionsAsync();
   return requested.granted;
 }
 
@@ -82,15 +94,16 @@ export async function syncCareNotifications(
   meta: (task: PendingTask) => CareNotificationMeta,
 ): Promise<BudgetPlan> {
   const plan = planNotificationBudget(pending);
+  if (!N) return plan;
 
-  await Notifications.cancelAllScheduledNotificationsAsync();
+  await N.cancelAllScheduledNotificationsAsync();
 
   for (const task of plan.scheduled) {
     const { title, body, intervalDays } = meta(task);
-    await Notifications.scheduleNotificationAsync({
+    await N.scheduleNotificationAsync({
       content: { title, body },
       trigger: {
-        type: Notifications.SchedulableTriggerInputTypes.TIME_INTERVAL,
+        type: N.SchedulableTriggerInputTypes.TIME_INTERVAL,
         seconds: Math.max(60, Math.round(intervalDays * DAY_SECONDS)),
         repeats: true,
       },
@@ -102,5 +115,6 @@ export async function syncCareNotifications(
 
 /** Cancel every pending care reminder (e.g. the user disabled their last terrarium). */
 export async function cancelAllCareNotifications(): Promise<void> {
-  await Notifications.cancelAllScheduledNotificationsAsync();
+  if (!N) return;
+  await N.cancelAllScheduledNotificationsAsync();
 }

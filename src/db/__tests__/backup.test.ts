@@ -8,7 +8,7 @@ import { createPhotoRepository, type PhotoRepository } from '../photos-repo';
 import { careMarks, type TerrariumDb } from '../schema';
 import { makeTestDb } from './helpers';
 
-/** Insert a care-mark directly (Phase 7 owns the repo; the backup carries the rows). */
+/** Insert a care-mark directly (the backup carries the rows; the repo isn't needed here). */
 async function addCareMark(db: TerrariumDb, buildId: string, kind: string, note?: string) {
   await db.insert(careMarks).values({
     id: newId(),

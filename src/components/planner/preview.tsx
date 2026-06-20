@@ -1,18 +1,26 @@
+/*
+ * KEPT FOR v2.1 3-D VIEW — do not delete.
+ *
+ * This sprite-plane renderer was the original planner preview. It was superseded by
+ * the 2-D cross-section viewer (`cross-section.tsx`) in Phase 6, but it is retained
+ * here as the foundation for the v2.1 top-down / 3-D display: placement data
+ * (`x`, `y`, `scale`) is already authored in this coordinate space, and this
+ * component's drag + pinch gestures carry forward unchanged. See ADR 0004.
+ */
 /* eslint-disable react-hooks/immutability -- Reanimated shared values (`.value`)
    are mutable by design; the React Compiler immutability rule doesn't model them.
    The mutations here are all inside worklets / an effect, exactly as intended. */
 /**
- * The persistent 2-D front-view preview (Premium §4.4) — the signature surface of
- * the planner. It renders every {@link Placement} as a sprite at its normalized
- * `(x, y, scale)` and, on the active step, makes that step's category draggable.
+ * The persistent 2-D front-view preview — the signature surface of the planner.
+ * It renders every {@link Placement} as a sprite at its normalized `(x, y, scale)`
+ * and, on the active step, makes that step's category draggable.
  *
- * **Drag-to-place (§4.4 / decision 14):** the gesture runs entirely on the UI
- * thread (Gesture Handler + Reanimated) — transform/opacity only, so it holds
- * 60fps. The sprite is glued to the finger; a drop inside the plane commits via
- * `upsertPlacement` (`impactAsync(Light)` snap), a drop outside springs back with
- * `motion.dragReturn`. Pinch scales the sprite within the 0.4–1.4 band. Placements
- * stay pure `(x,y,scale)` data, so the v2.1 3-D display reflects them unchanged —
- * and there is no in-3-D drag (decision 5).
+ * **Drag-to-place:** the gesture runs entirely on the UI thread (Gesture Handler +
+ * Reanimated) — transform/opacity only, so it holds 60fps. The sprite is glued to
+ * the finger; a drop inside the plane commits via `upsertPlacement`
+ * (`impactAsync(Light)` snap), a drop outside springs back with `motion.dragReturn`.
+ * Pinch scales the sprite within the 0.4–1.4 band. Placements stay pure
+ * `(x,y,scale)` data, so the v2.1 3-D display reflects them unchanged.
  */
 import { useEffect, useState } from 'react';
 import { LayoutChangeEvent, StyleSheet, View, Image } from 'react-native';
@@ -28,25 +36,17 @@ import Animated, {
 import { haptics, Text } from '@/components/ui';
 import { Motion, Radii, Spacing } from '@/constants/theme';
 import { useTokens } from '@/hooks/use-tokens';
-import {
-  clampScale,
-  hardscapeAssetId,
-  isHardscapeSlug,
-  isInsidePlane,
-  type Placement,
-} from '@/logic/placement';
+import { clampScale, isInsidePlane, type Placement } from '@/logic/placement';
 import type { Plant } from '@/types';
-
-import { hardscapeAsset } from './hardscape-assets';
 
 /** Base sprite footprint in px (before per-placement scale). */
 const SPRITE = 52;
 
-export type DraggableKind = 'plant' | 'hardscape' | null;
+export type DraggableKind = 'plant' | null;
 
 export interface PlannerPreviewProps {
   placements: readonly Placement[];
-  /** Resolved plant records, for sprite labels (decision 11 — passed in, no DB). */
+  /** Resolved plant records, for sprite labels (passed in, no DB round-trip). */
   plants: readonly Plant[];
   /** Which sprite category the active step may drag; `null` = read-only overview. */
   draggableKind: DraggableKind;
@@ -59,17 +59,13 @@ interface SpriteModel {
   placement: Placement;
   label: string;
   emoji: string;
-  kind: 'plant' | 'hardscape';
+  kind: 'plant';
 }
 
-/** Resolve each placement into a renderable sprite (label + emoji + category). */
+/** Resolve each placement into a renderable sprite (label + emoji). */
 function toSprites(placements: readonly Placement[], plants: readonly Plant[]): SpriteModel[] {
   const bySlug = new Map(plants.map((p) => [p.slug, p]));
   return placements.map((placement) => {
-    if (isHardscapeSlug(placement.slug)) {
-      const asset = hardscapeAsset(hardscapeAssetId(placement.slug));
-      return { placement, label: asset?.label ?? 'Hardscape', emoji: asset?.emoji ?? '🪨', kind: 'hardscape' };
-    }
     const plant = bySlug.get(placement.slug);
     return { placement, label: plant?.commonName ?? placement.slug, emoji: '🌿', kind: 'plant' };
   });
@@ -117,11 +113,9 @@ export function PlannerPreview({
         {sprites.length === 0 ? (
           <View style={styles.emptyHint} pointerEvents="none">
             <Text variant="caption" role="textMuted" style={styles.emptyText}>
-              {draggableKind === 'hardscape'
-                ? 'Add wood or rock below, then drag to arrange.'
-                : draggableKind === 'plant'
-                  ? 'Add plants below — each drops in here to drag into place.'
-                  : 'Your terrarium’s front view.'}
+              {draggableKind === 'plant'
+                ? 'Add plants below — each drops in here to drag into place.'
+                : 'Your terrarium’s front view.'}
             </Text>
           </View>
         ) : null}
@@ -205,7 +199,7 @@ function DraggableSprite({ sprite, w, h, draggable, onCommit }: DraggableSpriteP
       if (isInsidePlane(candidate)) {
         runOnJS(commit)(candidate); // parent clamps via upsertPlacement
       } else {
-        // Invalid drop — spring back to where the drag began (§4.4 dragReturn).
+        // Invalid drop — spring back to where the drag began (motion.dragReturn).
         px.value = withSpring(startX.value, Motion.dragReturn);
         py.value = withSpring(startY.value, Motion.dragReturn);
       }

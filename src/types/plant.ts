@@ -4,24 +4,22 @@
  * The required fields are the v1 core the compatibility/environment engines
  * read; everything else is optional metadata that can be backfilled over time.
  *
- * **Phase 2 divergence (decision 15 / plan §2.1):** `light` and `soilMoisture`
- * reshape from a single value into `{ primary, secondary? }`. The primary is the
- * happiest condition (the v1 scalar's analog); the optional secondary is a
- * tolerable, adjacent condition authored only where botanically real. **pH is
- * untouched** — it stays a single scalar with no secondary.
+ * `light` and `soilMoisture` use a `{ primary, secondary? }` shape rather than a
+ * single value. The primary is the happiest condition (the v1 scalar's analog);
+ * the optional secondary is a tolerable, adjacent condition authored only where
+ * botanically real. **pH is untouched** — it stays a single scalar with no
+ * secondary.
  *
- * **Phase 3 additions (decisions 8 / 11 / 12 / 18).** Several seed-authored fields
- * land here. They are all `nullish()`/optional in this *base* schema so the engine
- * test fixtures (`makePlant`) and the Phase-2 cases need not carry them. The seed
- * loader (`src/data`) validates every shipped plant against a stricter
- * `seedPlantSchema` that *requires* `image` + the root-depth range — so "every
- * plant has an image" is enforced at the data boundary, not by breaking fixtures.
- *   - `toxicity` — free text, toxic/irritant species only; **blank ≠ safe** (d.8).
+ * Several seed-authored fields are all `nullish()`/optional in this *base* schema
+ * so engine test fixtures (`makePlant`) need not carry them. The seed loader
+ * (`src/data`) validates every shipped plant against a stricter `seedPlantSchema`
+ * that *requires* `image` + the root-depth range — so "every plant has an image"
+ * is enforced at the data boundary, not by breaking fixtures.
+ *   - `toxicity` — free text, toxic/irritant species only; **blank ≠ safe**.
  *   - `rootDepthMinCm`/`rootDepthMaxCm` — **reference-only** range; NOT a depth
- *     driver (depth math stays `maxHeightCm`-based, preserving oracle parity) (d.12).
- *   - `hardscapeTags` — `wood`/`rock` split out of `substrateTags` (d.12 / d.10).
+ *     driver (depth math stays `maxHeightCm`-based, preserving oracle parity).
  *   - `image` + `imageCredit`/`imageLicense` — static seed asset; credit/license are
- *     **seed-only, never in the backup/export payload** (d.11 / d.18).
+ *     **seed-only, never in the backup/export payload**.
  *   - `nativeContext` — optional Tier-3 sentence; `nativeBiome` stays the scored one.
  */
 import { z } from 'zod';
@@ -47,6 +45,7 @@ export const PLANT_TYPES = [
   'carnivorous',
   'aroid',
   'begonia',
+  'bromeliad',
   'orchid',
   'vine',
   'ground-cover',
@@ -72,9 +71,9 @@ export const lightLevelSchema = z.enum(LIGHT_LEVELS);
 export const moistureLevelSchema = z.enum(MOISTURE_LEVELS);
 
 /**
- * A `{ primary, secondary? }` condition (decision 15). Only `light` and
- * `soilMoisture` use this shape; the secondary is a tolerable, adjacent fallback
- * that can rescue a graduated mismatch but never downgrades a lethal one.
+ * A `{ primary, secondary? }` condition for `light` and `soilMoisture`. The
+ * secondary is a tolerable, adjacent fallback that can rescue a graduated mismatch
+ * but never downgrades a lethal one.
  */
 export const lightRequirementSchema = z.object({
   primary: lightLevelSchema,
@@ -89,12 +88,25 @@ export type MoistureRequirement = z.infer<typeof moistureRequirementSchema>;
 
 const rangeSchema = z.tuple([z.number(), z.number()]);
 
+/**
+ * A reference/source link for a plant's care information. `url` is required;
+ * `label` is an optional human-readable title (the publication or page name) —
+ * when absent the UI falls back to the link's host. Like image attribution,
+ * sources are **seed-only display metadata and never enter the backup/export
+ * payload.**
+ */
+export const plantSourceSchema = z.object({
+  url: z.string().url(),
+  label: z.string().optional(),
+});
+export type PlantSource = z.infer<typeof plantSourceSchema>;
+
 export const plantSchema = z.object({
   slug: z.string(),
   commonName: z.string(),
   scientificName: z.string(),
 
-  // Reshaped to primary/secondary (decision 15). pH below stays scalar.
+  // Reshaped to primary/secondary — pH stays a scalar.
   light: lightRequirementSchema,
   soilMoisture: moistureRequirementSchema,
 
@@ -109,11 +121,11 @@ export const plantSchema = z.object({
   spreadMinCm: z.number().nullish(),
   spreadMaxCm: z.number().nullish(),
 
-  // Typical rooting depth — a sortable **reference-only** range (decision 12).
+  // Typical rooting depth — a sortable **reference-only** range.
   // Replaces v1's single `rootDepthCm` float. Authored for every seed plant but
   // deliberately NOT wired into the depth math: the substrate-depth seed stays
-  // `maxHeightCm`-driven, so this never diverges from the Phase-2 oracle. It is
-  // display data + a ready input for the v2.1 substrate mixer's depth refinement.
+  // `maxHeightCm`-driven, so this never diverges from the compatibility oracle.
+  // Display data + a ready input for the v2.1 substrate mixer's depth refinement.
   rootDepthMinCm: z.number().nullish(),
   rootDepthMaxCm: z.number().nullish(),
 
@@ -123,14 +135,11 @@ export const plantSchema = z.object({
   phPreference: z.enum(PH_PREFERENCES).nullish(),
 
   growthRate: z.enum(GROWTH_RATES),
-  // Frozen component vocabulary (decision 12). Stored as canonical ids; the
-  // `{ id, label }` source of truth + the seed-time vocab check live in
+  // Frozen component vocabulary. Stored as canonical ids; the `{ id, label }`
+  // source of truth + the seed-time vocab check live in
   // `src/data/substrate-components.ts`. Kept permissive here so engine fixtures
   // can use bare strings; the seed loader enforces the frozen set.
   substrateTags: z.array(z.string()).default([]),
-  // `wood`/`rock` split out of substrate as hardscape (decision 12 / decision 10:
-  // hardscape is placement-driven). Populated only for epiphytes that mount on it.
-  hardscapeTags: z.array(z.string()).nullish(),
 
   // Optional descriptive classifiers.
   growthHabit: z.enum(GROWTH_HABITS).nullish(),
@@ -138,11 +147,11 @@ export const plantSchema = z.object({
   nativeBiome: z.enum(NATIVE_BIOMES).nullish(),
   rarity: z.enum(RARITIES).nullish(),
 
-  // Free-text safety note, toxic/irritant species only (decision 8). Display-only;
+  // Free-text safety note, toxic/irritant species only. Display-only;
   // **blank/absent means "no note authored," NEVER "non-toxic" — never render it
   // as a safety claim.** Free text by design (no vocabulary to facet/filter).
   toxicity: z.string().nullish(),
-  // Optional short origin sentence for the Tier-3 plant view (plan §2.3).
+  // Optional short origin sentence for the Tier-3 plant view.
   nativeContext: z.string().nullish(),
 
   closedTerrariumOk: z.boolean(),
@@ -150,16 +159,21 @@ export const plantSchema = z.object({
   difficulty: z.number().int().min(1).max(5),
   notes: z.string().nullish(),
 
-  // Single static seed image (decision 11): both the selector thumbnail and the
-  // profile hero. `imageCredit`/`imageLicense` satisfy CC-BY[-SA] attribution and
-  // are **seed-only — they must never enter the backup/export payload** (decision
-  // 17/18). Optional here; required by `seedPlantSchema` in `src/data`.
+  // Single static seed image: the selector thumbnail and profile hero.
+  // `imageCredit`/`imageLicense` satisfy CC-BY[-SA] attribution and are
+  // **seed-only — they must never enter the backup/export payload**.
+  // Optional here; required by `seedPlantSchema` in `src/data`.
   image: z.string().nullish(),
   imageCredit: z.string().nullish(),
   imageLicense: z.string().nullish(),
 
   // Open key/value extension point for plant-specific care details.
   specialNotes: z.record(z.string(), z.string()).nullish(),
+
+  // Reference links for the plant's care information — supports multiple
+  // sources. Display-only **seed metadata, never in the backup/export payload**
+  // (same boundary as `imageCredit`/`imageLicense`).
+  sources: z.array(plantSourceSchema).nullish(),
 });
 
 export type Plant = z.infer<typeof plantSchema>;

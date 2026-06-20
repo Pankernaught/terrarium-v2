@@ -47,7 +47,7 @@ The image invariants test (`src/data/__tests__/images.test.ts`) enforces the
 machine-checkable half of these rules: slug-consistent paths, a placeholder for every
 plant, credit-required-with-CC-BY, and no `-NC`/`-ND` licenses.
 
-## Worklist (67 plants)
+## Worklist (95 plants)
 
 | Slug | Scientific name | Common name | Target asset | Status |
 | --- | --- | --- | --- | --- |
@@ -91,7 +91,7 @@ plant, credit-required-with-CC-BY, and no `-NC`/`-ND` licenses.
 | `pilea-glauca` | *Pilea glauca* | Silver Sparkle Pilea | `plants/pilea-glauca.png` | Pending |
 | `epipremnum-pinnatum-mini` | *Epipremnum pinnatum* | Miniature Pothos | `plants/epipremnum-pinnatum-mini.png` | Pending |
 | `ludwigia-repens` | *Ludwigia repens* | Creeping Primrose-Willow | `plants/ludwigia-repens.png` | Pending |
-| `vesicularia-dubyana` | *Vesicularia dubyana* | Christmas Moss | `plants/vesicularia-dubyana.png` | Pending |
+| `vesicularia-dubyana` | *Vesicularia dubyana* | Java Moss | `plants/vesicularia-dubyana.png` | Pending |
 | `soleirolia-soleirolii-minor` | *Soleirolia soleirolii 'Minor'* | Miniature Baby Tears | `plants/soleirolia-soleirolii-minor.png` | Pending |
 | `rhipsalis-baccifera` | *Rhipsalis baccifera* | Mistletoe Cactus | `plants/rhipsalis-baccifera.png` | Pending |
 | `drosera-capensis` | *Drosera capensis* | Cape Sundew | `plants/drosera-capensis.png` | Pending |
@@ -104,7 +104,7 @@ plant, credit-required-with-CC-BY, and no `-NC`/`-ND` licenses.
 | `hypnum-moss` | *Hypnum cupressiforme* | Sheet Moss | `plants/hypnum-moss.png` | Pending |
 | `dicranum-scoparium` | *Dicranum scoparium* | Mood Moss | `plants/dicranum-scoparium.png` | Pending |
 | `rhaphidophora-tetrasperma` | *Rhaphidophora tetrasperma* | Mini Monstera | `plants/rhaphidophora-tetrasperma.png` | Pending |
-| `anthurium-scandens` | *Anthurium scandens* | Climbing Anthurium | `plants/anthurium-scandens.png` | Pending |
+| `anthurium-scandens` | *Anthurium scandens* | Anthurium | `plants/anthurium-scandens.png` | Pending |
 | `spathiphyllum-wallisii` | *Spathiphyllum wallisii* | Peace Lily | `plants/spathiphyllum-wallisii.png` | Pending |
 | `begonia-pavonina` | *Begonia pavonina* | Peacock Begonia | `plants/begonia-pavonina.png` | Pending |
 | `begonia-maculata` | *Begonia maculata* | Polka Dot Begonia | `plants/begonia-maculata.png` | Pending |
@@ -118,3 +118,31 @@ plant, credit-required-with-CC-BY, and no `-NC`/`-ND` licenses.
 | `saxifraga-stolonifera` | *Saxifraga stolonifera* | Strawberry Begonia | `plants/saxifraga-stolonifera.png` | Pending |
 | `pilea-cadierei` | *Pilea cadierei* | Aluminum Plant | `plants/pilea-cadierei.png` | Pending |
 | `tradescantia-zebrina` | *Tradescantia zebrina* | Inch Plant | `plants/tradescantia-zebrina.png` | Pending |
+| `macodes-petola` | *Macodes petola* | Lightning Bolt Orchid | `plants/macodes-petola.png` | Pending |
+| `ludisia-discolor` | *Ludisia discolor* | Black Jewel Orchid | `plants/ludisia-discolor.png` | Pending |
+| `peperomia-prostrata` | *Peperomia prostrata* | String of Turtles | `plants/peperomia-prostrata.png` | Pending |
+| `scindapsus-pictus-argyraeus` | *Scindapsus pictus 'Argyraeus'* | Satin Pothos | `plants/scindapsus-pictus-argyraeus.png` | Pending |
+| `asparagus-setaceus` | *Asparagus setaceus* | Asparagus Fern | `plants/asparagus-setaceus.png` | Pending |
+| `pellaea-rotundifolia` | *Pellaea rotundifolia* | Button Fern | `plants/pellaea-rotundifolia.png` | Pending |
+| `chamaedorea-elegans` | *Chamaedorea elegans* | Parlor Palm | `plants/chamaedorea-elegans.png` | Pending |
+| `biophytum-sensitivum` | *Biophytum sensitivum* | Little Tree Plant | `plants/biophytum-sensitivum.png` | Pending |
+| `tillandsia-ionantha` | *Tillandsia ionantha* | Air Plant | `plants/tillandsia-ionantha.png` | Pending |
+| `neoregelia-hybrid-liliputiana` | *Neoregelia hybrid 'Liliputiana'* | Miniature Neoregelia | `plants/neoregelia-hybrid-liliputiana.png` | Pending |
+| `marcgravia-rectiflora` | *Marcgravia rectiflora* | Shingle Plant | `plants/marcgravia-rectiflora.png` | Pending |
+| `dischidia-ruscifolia` | *Dischidia ruscifolia* | Million Hearts Plant | `plants/dischidia-ruscifolia.png` | Pending |
+| `ficus-pumila-panama` | *Ficus pumila 'Panama'* | Panama Creeping Fig | `plants/ficus-pumila-panama.png` | Pending |
+| `rhaphidophora-hayi` | *Rhaphidophora hayi* | Shingle Vine | `plants/rhaphidophora-hayi.png` | Pending |
+| `hemionitis-arifolia` | *Hemionitis arifolia* | Heart Fern | `plants/hemionitis-arifolia.png` | Pending |
+| `microsorum-thailandicum` | *Microsorum thailandicum* | Blue Oil Fern | `plants/microsorum-thailandicum.png` | Pending |
+| `nephrolepis-exaltata-fluffy-ruffles` | *Nephrolepis exaltata 'Fluffy Ruffles'* | Fluffy Ruffles Fern | `plants/nephrolepis-exaltata-fluffy-ruffles.png` | Pending |
+| `peperomia-orba-pixie-lime` | *Peperomia orba 'Pixie Lime'* | Pixie Lime Peperomia | `plants/peperomia-orba-pixie-lime.png` | Pending |
+| `peperomia-albovittata-piccolo-banda` | *Peperomia albovittata 'Piccolo Banda'* | Piccolo Banda Peperomia | `plants/peperomia-albovittata-piccolo-banda.png` | Pending |
+| `begonia-amphioxus` | *Begonia amphioxus* | Butterfly Begonia | `plants/begonia-amphioxus.png` | Pending |
+| `begonia-schulzei` | *Begonia schulzei* | Oak Leaf Miniature Begonia | `plants/begonia-schulzei.png` | Pending |
+| `alocasia-reginula-black-velvet` | *Alocasia reginula 'Black Velvet'* | Black Velvet Alocasia | `plants/alocasia-reginula-black-velvet.png` | Pending |
+| `hyophila-involuta` | *Hyophila involuta* | Star Moss | `plants/hyophila-involuta.png` | Pending |
+| `selaginella-apoda` | *Selaginella apoda* | Meadow Spikemoss | `plants/selaginella-apoda.png` | Pending |
+| `portulacaria-afra` | *Portulacaria afra* | Elephant Bush | `plants/portulacaria-afra.png` | Pending |
+| `alocasia-baginda-silver-dragon` | *Alocasia baginda 'Silver Dragon'* | Silver Dragon Alocasia | `plants/alocasia-baginda-silver-dragon.png` | Pending |
+| `alocasia-amazonica-bambino` | *Alocasia × amazonica 'Bambino'* | Bambino Alocasia | `plants/alocasia-amazonica-bambino.png` | Pending |
+| `alocasia-maharani-grey-dragon` | *Alocasia maharani 'Grey Dragon'* | Grey Dragon Alocasia | `plants/alocasia-maharani-grey-dragon.png` | Pending |

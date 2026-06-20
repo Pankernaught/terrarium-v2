@@ -1,8 +1,8 @@
 /**
- * The glance header — the top "at a glance" block of a screen (§4.3): a big
- * title, an optional subtitle, and an optional trailing slot (e.g. an Eco chip or
- * a ⋮ overflow). The hero photo, where there is one, is rendered by the screen
- * above this so it can own the shared-element transition (Phase 9).
+ * The glance header — the top "at a glance" block of a screen: a big title, an
+ * optional subtitle, and an optional trailing slot (e.g. an Eco chip or a ⋮
+ * overflow). The hero photo, where there is one, is rendered by the screen above
+ * this so it can own the shared-element transition.
  */
 import { type ReactNode } from 'react';
 import { StyleSheet, View } from 'react-native';

@@ -1,18 +1,17 @@
 /**
- * Whole-app JSON backup/restore — the decision-7 / decision-17 envelope, pure of
- * any device IO so the round-trip is unit-tested in the node runner. The on-device
- * file-share + document-pick wrapper lives in `src/lib/backup-io.ts`.
+ * Whole-app JSON backup/restore — pure of any device IO so the round-trip is
+ * unit-tested in the node runner. The on-device file-share + document-pick wrapper
+ * lives in `src/lib/backup-io.ts`.
  *
- * **What rides in the payload (decision 7):** the user data that round-trips —
- * `builds` (with their `placements` riding *inside* each row) and `care_marks`.
- * **Photos are excluded** (binary; documented gap): a restored build keeps its
- * `primaryPhotoId`, but the photo rows are gone, so `getPrimary` falls back to its
- * placeholder hero (the graceful-degrade, never a crash). Seed/reference tables
+ * **What rides in the payload:** the user data that round-trips — `builds` (with
+ * their `placements` riding *inside* each row) and `care_marks`. **Photos are
+ * excluded** (binary; documented gap): a restored build keeps its `primaryPhotoId`,
+ * but the photo rows are gone, so `getPrimary` falls back to its placeholder hero
+ * (the graceful-degrade, never a crash). Seed/reference tables
  * (`plants`/`containers`/`presets`) are regenerable from the bundle and **never**
  * enter a backup.
  *
- * **Import pipeline (decision 17):** read `envelope.schemaVersion` →
- * `migratePayload()` (the Phase-4 ladder — NOT re-implemented here) up to
+ * **Import pipeline:** read `envelope.schemaVersion` → `migratePayload()` up to
  * `STORE_SCHEMA_VERSION` → **zod-validate the migrated payload against the current
  * schema** → **replace** (wipe the user tables, then insert). Because validation
  * runs to completion *before* the first write, any corrupt row rejects the **whole
@@ -63,7 +62,10 @@ const backupBuildSchema = z.object({
   placements: z.array(placementSchema).nullish(),
   substrateDepth: z.number().nullish(),
   drainageDepth: z.number().nullish(),
-  // The substrate-mixer recipe (Phase 8) — `componentId → parts`. Nullish: a v1
+  // The discrete charcoal-layer depth (cm). Nullish: a backup predating the
+  // charcoal layer lacks the key and carries through to `null` (additive field).
+  charcoalDepth: z.number().nullish(),
+  // The substrate-mixer recipe — `componentId → parts`. Nullish: a v1
   // backup (schema v1) simply lacks the key, which the v1→v2 identity migration
   // carries through to `null` here (additive field).
   substrateMix: z.record(z.string(), z.number()).nullish(),
@@ -74,7 +76,7 @@ const backupBuildSchema = z.object({
   updatedAt: z.coerce.date(),
 });
 
-/** A care-mark row as it travels in a backup (Phase 7 owns the live repo). */
+/** A care-mark row as it travels in a backup. */
 const backupCareMarkSchema = z.object({
   id: z.string(),
   buildId: z.string(),
@@ -189,6 +191,7 @@ export async function restoreBackup(
     placements: b.placements ?? null,
     substrateDepth: b.substrateDepth ?? null,
     drainageDepth: b.drainageDepth ?? null,
+    charcoalDepth: b.charcoalDepth ?? null,
     substrateMix: b.substrateMix ?? null,
     primaryPhotoId: b.primaryPhotoId ?? null,
     createdAt: b.createdAt,

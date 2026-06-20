@@ -1,13 +1,13 @@
 /**
- * Onboarding presets (decision 18) — 3–5 curated starter builds shipped as seed.
+ * Onboarding presets — 3–5 curated starter builds shipped as seed.
  *
  * They are the "<60s to first value" path, demo/screenshot material, and the
  * end-to-end planner test fixtures. Each is a container + a set of *compatible*
  * plants + their front-plane `placements`. Placements are plain `{ slug, x, y,
- * scale }` data (the build-schema `placements` field itself lands in Phase 4):
- *   - `x`, `y` are normalized [0,1] positions on the 2-D front view (decision 5 /
- *     Option A), clamped to the container; y runs 0 = top → 1 = bottom, so ground
- *     covers sit near the bottom and taller specimens higher up.
+ * scale }` data:
+ *   - `x`, `y` are normalized [0,1] positions on the 2-D front view, clamped to
+ *     the container; y runs 0 = top → 1 = bottom, so ground covers sit near the
+ *     bottom and taller specimens higher up.
  *   - `scale` is a relative size multiplier (~0.5–1.2).
  *
  * Referential integrity (every `containerSlug` / placement `slug` resolves, and

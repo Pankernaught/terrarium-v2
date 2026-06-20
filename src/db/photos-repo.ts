@@ -16,7 +16,7 @@
  * `getPrimary` mirrors v1's resilience: an unset, dangling, or foreign
  * `primaryPhotoId` falls back to the earliest photo for the build.
  *
- * Divergence from v1 (intentional, decision 17 + deterministic ordering):
+ * Divergence from v1 (intentional, for deterministic ordering):
  *  - Photo ids are generated **UUIDs** (`newId()`), not v1's integer
  *    autoincrement.
  *  - `sortOrder` is an explicit **append counter** assigned `max(existing) + 1`

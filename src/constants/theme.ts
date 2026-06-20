@@ -1,11 +1,10 @@
 /**
- * The token system — the engine of "premium" (Premium Design §3).
+ * The token system — the engine of "premium."
  *
  * Defined once, applied relentlessly: spacing / type / shadow / color / motion.
- * Never use an off-token value. This is the foundation the whole component
- * library (and every screen) pulls from — locked in Phase 5 before any screen.
+ * Never use an off-token value.
  *
- * Earth-modern palette designed in OKLCH, shipped as resolved hex (§3.5): RN's
+ * Earth-modern palette designed in OKLCH, shipped as resolved hex — RN's
  * StyleSheet does not parse `oklch()` at runtime. The one runtime OKLCH payoff —
  * interpolating the Eco-balance meter so it never goes muddy — lives in the pure,
  * tested `src/logic/eco.ts`, not here.
@@ -13,11 +12,11 @@
 import { Platform } from 'react-native';
 
 /**
- * Two resolved palettes off one lightness ladder (§3.5): shift lightness, hold
- * the mood. `light` and `dark` MUST share keys so `ThemeColor` stays sound.
+ * Two resolved palettes off one lightness ladder: shift lightness, hold the mood.
+ * `light` and `dark` MUST share keys so `ThemeColor` stays sound.
  *
  * Keys are the semantic *roles*. The trailing aliases (`backgroundElement`,
- * `backgroundSelected`, `textSecondary`) preserve the Phase-1 `themed-text` /
+ * `backgroundSelected`, `textSecondary`) preserve the `themed-text` /
  * `themed-view` contract so those generic components keep working unchanged.
  */
 export const Colors = {
@@ -31,8 +30,8 @@ export const Colors = {
     accent: '#A55A3A', // terracotta — one per screen
     text: '#232826',
     textMuted: '#6B7268',
-    border: 'rgba(46,93,58,0.12)', // hairline, forest-tinted (§3.4)
-    // --- back-compat aliases (Phase-1 themed-* components) ---
+    border: 'rgba(46,93,58,0.12)', // hairline, forest-tinted
+    // --- back-compat aliases (themed-* components) ---
     backgroundElement: '#FCFBF6',
     backgroundSelected: '#EFEDE2',
     textSecondary: '#6B7268',
@@ -60,7 +59,7 @@ export type ThemeColor = keyof typeof Colors.light & keyof typeof Colors.dark;
 export type Palette = { [K in keyof typeof Colors.light]: string };
 
 /**
- * Spacing scale (§3.2): 4 · 8 · 16 · 24 · 32 · 48 — never an off-scale value.
+ * Spacing scale: 4 · 8 · 16 · 24 · 32 · 48 — never an off-scale value.
  * Gaps within a group use xs–sm; between groups md–lg; section padding lg–xl;
  * screen-level breathing room xl–xxl.
  */
@@ -82,8 +81,8 @@ export const Radii = {
 } as const;
 
 /**
- * Type scale (§3.3): base 16, ratio 1.2 (minor third). Bold the value, never the
- * label; `overline` is uppercase + letter-spaced + muted by convention.
+ * Type scale: base 16, ratio 1.2 (minor third). Bold the value, never the label;
+ * `overline` is uppercase + letter-spaced + muted by convention.
  */
 export const Typography = {
   display: { fontSize: 33, fontWeight: '700', lineHeight: 38, letterSpacing: -0.5 },
@@ -98,7 +97,7 @@ export const Typography = {
 export type TypeVariant = keyof typeof Typography;
 
 /**
- * Motion tokens (§3.1) — Reanimated spring configs, all on the UI thread. Under
+ * Motion tokens — Reanimated spring configs, all on the UI thread. Under
  * reduce-motion, collapse every one of these to the 120ms opacity fade
  * (`microTiming`). The component library reads these; never hand-tune a spring.
  */
@@ -110,14 +109,14 @@ export const Motion = {
   micro: { duration: 120 }, // opacity fades, chip select
 } as const;
 
-/** Reduce-motion replacement for every spring (§3.1). */
+/** Reduce-motion replacement for every spring. */
 export const MICRO_FADE_MS = 120;
 
 /**
- * Shadow + border scale (§3.4). One soft shadow + a hairline border is the
- * cross-platform premium floor; the hairline is what keeps Android cards from
- * looking flat where it can't stack shadows. Pass the resolved palette so the
- * border picks up the theme's forest-tinted hairline.
+ * Shadow + border scale. One soft shadow + a hairline border is the cross-platform
+ * premium floor; the hairline is what keeps Android cards from looking flat where it
+ * can't stack shadows. Pass the resolved palette so the border picks up the theme's
+ * forest-tinted hairline.
  */
 export function elevation(level: 'e0' | 'e1' | 'e2', palette: Palette) {
   const hairline = { borderWidth: Platform.OS === 'android' ? 0.5 : undefined, borderColor: palette.border };
@@ -167,5 +166,5 @@ export const Fonts = Platform.select({
   },
 });
 
-/** Dashboard grid breathing room (§4.2): cards centered, capped, never edge-to-edge. */
+/** Dashboard grid breathing room: cards centered, capped, never edge-to-edge. */
 export const MaxContentWidth = 760;

@@ -16,9 +16,9 @@ export interface Conflict {
   message: string;
   affectedPlants: string[];
   /**
-   * decision 15: set on a light/moisture conflict whose best-matching pair was
-   * reached via a secondary condition — a UI annotation ("via secondary"), not an
-   * extra penalty. Suppressed when the factor is survival-critical (15b).
+   * Set on a light/moisture conflict whose best-matching pair was reached via a
+   * secondary condition — a UI annotation ("via secondary"), not an extra penalty.
+   * Suppressed when the factor is survival-critical.
    */
   viaSecondary?: boolean;
 }

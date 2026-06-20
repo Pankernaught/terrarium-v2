@@ -1,24 +1,48 @@
+/* eslint-disable react-hooks/immutability -- Reanimated shared values (`.value`)
+   are mutable by design; the React Compiler immutability rule doesn't model them.
+   The `scrollY.value = 0` resets here are deliberate (focus reset, step change). */
 /**
- * Planner — the 5-step build flow. A shared {@link PlannerDraft} threads through
- * Container · Substrate · Hardscape · Plants · Final, each step a
- * `(draft) → patch` body, with the persistent 2-D preview pane reading the single
- * draft.
+ * Planner — the 4-step build flow. A shared {@link PlannerDraft} threads through
+ * Container · Substrate · Plants · Final, each step a `(draft) → patch` body, with
+ * a persistent 2-D cross-section reading the single draft.
  *
  * `?build=<id>` hydrates the draft from that build (edit); no param starts empty
  * (new). Editing waits on the store; a new build needs no DB until the Final save.
+ *
+ * ## Scroll model
+ *
+ * One full-height {@link Animated.ScrollView} is the *only* scroll surface. A
+ * floating header is laid absolutely over it and shrinks **purely as a function of
+ * `scrollY`** on the UI thread — no JS state, no thresholds, no hysteresis, so it
+ * can never snap or oscillate. Over the first `range` px of scroll the chrome
+ * (title + step dots) collapses and the cross-section shrinks from a hero to a
+ * docked glance, their heights summing to a 1:1 shrink so the content stays glued
+ * to the header's bottom edge the whole way. The viewer is `pointerEvents="none"`,
+ * so a drag is the same scroll wherever the finger lands.
+ *
+ * Arranging plants is pulled out of the scroll entirely: once the build has
+ * plants, an **Arrange** button opens a full-screen {@link ArrangeOverlay} where
+ * dragging happens with nothing scrolling underneath.
  */
 import { type Href, useFocusEffect, useLocalSearchParams, useRouter } from 'expo-router';
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import {
   ActivityIndicator,
   Alert,
-  type NativeScrollEvent,
-  type NativeSyntheticEvent,
   Pressable,
-  ScrollView,
+  type ScrollView,
   StyleSheet,
+  useWindowDimensions,
   View,
 } from 'react-native';
+import Animated, {
+  Extrapolation,
+  interpolate,
+  useAnimatedScrollHandler,
+  useAnimatedStyle,
+  useSharedValue,
+} from 'react-native-reanimated';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { ContainerStep } from '@/components/planner/container-step';
 import {
@@ -28,14 +52,12 @@ import {
   draftToUpdatePatch,
   emptyDraft,
 } from '@/components/planner/draft';
-import type { DraggableKind } from '@/components/planner/cross-section';
 import { FinalStep } from '@/components/planner/final-step';
-import { HardscapeStep } from '@/components/planner/hardscape-step';
 import { PlantsStep } from '@/components/planner/plants-step';
-import { PlannerPreviewPane } from '@/components/planner/preview-pane';
+import { ArrangeOverlay, DockedPreview } from '@/components/planner/preview-pane';
 import type { StepProps } from '@/components/planner/step';
 import { SubstrateStep } from '@/components/planner/substrate-step';
-import { Card, Collapse, GlanceHeader, haptics, Screen, SectionLabel, Text } from '@/components/ui';
+import { Card, haptics, Screen, SectionLabel, Text } from '@/components/ui';
 import { MaxContentWidth, Radii, Spacing } from '@/constants/theme';
 import { loadPlants } from '@/data';
 import { useDbState } from '@/db/provider';
@@ -51,33 +73,48 @@ interface Step {
 const STEPS: Step[] = [
   { key: 'container', label: 'Container', blurb: 'Pick a shape, size, and opening — sealed, lidded, or open.' },
   { key: 'substrate', label: 'Substrate', blurb: 'Layer drainage and substrate depths for the volume.' },
-  { key: 'hardscape', label: 'Hardscape', blurb: 'Place wood and rock to frame the scene.' },
   { key: 'plants', label: 'Plants', blurb: 'Add plants and watch the Eco-balance settle, live.' },
   { key: 'final', label: 'Final', blurb: 'Name it, review the verdict, and save.' },
 ];
 
-/** Which item category the persistent cross-section lets you slide on each step. */
-const DRAG_KIND: Record<string, DraggableKind> = { hardscape: 'hardscape', plants: 'plant' };
+// --- Header geometry --------------------------------------------------------
+// All scroll-driven sizing derives from these. The hero viewer is a fraction of
+// the screen so the first slice of step content still peeks below it; the chrome
+// and viewer shrink over the same `range`, summing to a 1:1 collapse.
+const VIEWER_FULL_FRAC = 0.42;
+const VIEWER_FULL_MIN = 220;
+const VIEWER_FULL_MAX = 380;
+const VIEWER_DOCKED = 200;
+const CHROME_FULL_H = 96; // title + step dots
+const CHROME_DOCKED_H = 24; // slim "Step X of N · Label" line
+// Fixed header parts — kept in step with the styles so the content spacer matches
+// the header's resting height. A few px of drift is invisible (the header's
+// background covers content either way; no divider shows at rest).
+const CANCEL_BLOCK = 32;
+const CHROME_VIEWER_GAP = Spacing.md;
+const ARRANGE_BLOCK = 36; // arrange button row (only when the build has plants)
+const HEADER_PAD_BOTTOM = Spacing.md;
 
 export default function PlannerScreen() {
   const { build } = useLocalSearchParams<{ build?: string }>();
   const router = useRouter();
   const { c } = useTokens();
   const db = useDbState();
+  const insets = useSafeAreaInsets();
+  const { height: winH } = useWindowDimensions();
 
   const isEdit = typeof build === 'string' && build.length > 0;
   const [active, setActive] = useState(0);
-  // When the preview is expanded, the header chrome (title, step counter, dots)
-  // collapses so the preview slides up to the top.
-  const [previewExpanded, setPreviewExpanded] = useState(false);
-  // The chrome also collapses once the step body scrolls down, keeping just the
-  // preview pinned. A ref guards the setState call so it only fires when the
-  // boolean actually flips — prevents layout-shift feedback loops where the
-  // collapsing header triggers a corrective scroll event that re-crosses the
-  // threshold. Dead zone: collapse past 60px, restore under 4px.
-  const [scrolledDown, setScrolledDown] = useState(false);
-  const scrolledDownRef = useRef(false);
+  // The full-screen arrange takeover (drag plants); separate from the scroll.
+  const [arranging, setArranging] = useState(false);
   const scrollRef = useRef<ScrollView>(null);
+  // The single source of truth for the collapsing header — page scroll offset,
+  // read on the UI thread. Nothing else drives the chrome.
+  const scrollY = useSharedValue(0);
+  const onScroll = useAnimatedScrollHandler((e) => {
+    scrollY.value = e.contentOffset.y;
+  });
+
   // The draft is null until hydrated (immediately for a new build; after the
   // store loads the row for an edit).
   const [draft, setDraft] = useState<PlannerDraft | null>(isEdit ? null : emptyDraft());
@@ -90,10 +127,11 @@ export default function PlannerScreen() {
     useCallback(() => {
       if (isEdit) return;
       setActive(0);
-      setPreviewExpanded(false);
-      setScrolledDown(false);
-      scrolledDownRef.current = false;
+      setArranging(false);
+      scrollY.value = 0;
       setDraft(emptyDraft());
+      // scrollY is a stable shared-value ref — mutated here, never a dependency.
+      // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [isEdit]),
   );
 
@@ -122,29 +160,51 @@ export default function PlannerScreen() {
     return draft.plantSlugs.map((s) => bySlug.get(s)).filter((p): p is NonNullable<typeof p> => !!p);
   }, [draft]);
 
+  // --- Scroll-driven header sizing (UI-thread interpolations over `scrollY`) ---
+  const availH = winH - insets.top - insets.bottom;
+  const viewerFull = Math.round(Math.min(VIEWER_FULL_MAX, Math.max(VIEWER_FULL_MIN, availH * VIEWER_FULL_FRAC)));
+  const hasPlants = plants.length > 0;
+  // Total scroll over which everything collapses; the chrome and viewer deltas
+  // sum to this, making the header shrink exactly 1:1 with scroll.
+  const range = CHROME_FULL_H - CHROME_DOCKED_H + (viewerFull - VIEWER_DOCKED);
+  const headerFullH =
+    CANCEL_BLOCK + CHROME_FULL_H + CHROME_VIEWER_GAP + viewerFull + (hasPlants ? ARRANGE_BLOCK : 0) + HEADER_PAD_BOTTOM;
+
+  const chromeStyle = useAnimatedStyle(() => ({
+    height: interpolate(scrollY.value, [0, range], [CHROME_FULL_H, CHROME_DOCKED_H], Extrapolation.CLAMP),
+  }));
+  const heroChromeStyle = useAnimatedStyle(() => ({
+    opacity: interpolate(scrollY.value, [0, range * 0.5], [1, 0], Extrapolation.CLAMP),
+  }));
+  const glanceChromeStyle = useAnimatedStyle(() => ({
+    opacity: interpolate(scrollY.value, [range * 0.5, range], [0, 1], Extrapolation.CLAMP),
+  }));
+  // No seam at rest; a hairline + soft shadow fade in as content tucks behind.
+  const dividerStyle = useAnimatedStyle(() => ({
+    opacity: interpolate(scrollY.value, [0, range], [0, 1], Extrapolation.CLAMP),
+  }));
+  // Explicit height (not auto) so the header's background and seam track the
+  // shrink exactly — the chrome + viewer deltas sum to this, so children fit with
+  // no gap or overflow. shadow/elevation fade in over the same range.
+  const headerStyle = useAnimatedStyle(() => ({
+    height: interpolate(scrollY.value, [0, range], [headerFullH, headerFullH - range], Extrapolation.CLAMP),
+    shadowOpacity: interpolate(scrollY.value, [0, range], [0, 0.16], Extrapolation.CLAMP),
+    elevation: interpolate(scrollY.value, [0, range], [0, 8], Extrapolation.CLAMP),
+  }));
+
   function go(next: number) {
     haptics.select();
     setActive(Math.max(0, Math.min(STEPS.length - 1, next)));
-    // Start the new step fresh at the top with the chrome restored.
+    // Start the new step fresh at the top with the header restored.
     scrollRef.current?.scrollTo({ y: 0, animated: false });
-    scrolledDownRef.current = false;
-    setScrolledDown(false);
-  }
-
-  function onBodyScroll(e: NativeSyntheticEvent<NativeScrollEvent>) {
-    const y = e.nativeEvent.contentOffset.y;
-    const next = scrolledDownRef.current ? y > 4 : y > 60;
-    if (next !== scrolledDownRef.current) {
-      scrolledDownRef.current = next;
-      setScrolledDown(next);
-    }
+    scrollY.value = 0;
   }
 
   function update(patch: Partial<PlannerDraft>) {
     setDraft((d) => (d ? { ...d, ...patch } : d));
   }
 
-  // Commit a dragged/scaled placement from the preview back into the draft.
+  // Commit a dragged placement from the arrange overlay back into the draft.
   function commitPlacement(next: Placement) {
     setDraft((d) => (d ? { ...d, placements: upsertPlacement(d.placements, next) } : d));
   }
@@ -175,6 +235,7 @@ export default function PlannerScreen() {
 
   const step = STEPS[active];
   const isFinal = active === STEPS.length - 1;
+  const stepLabel = `Step ${active + 1} of ${STEPS.length} · ${step.label}`;
 
   // Edit-load gates.
   if (loadError) {
@@ -211,108 +272,147 @@ export default function PlannerScreen() {
 
   return (
     <Screen edges={{ bottom: true }}>
-      {/* Fixed header — Cancel and the live preview stay docked so a change made
-          deep in a long step is visible the instant it's made; only the step body
-          below scrolls, tucking behind the header's bottom divider. Expanding the
-          preview collapses the title/step chrome so it slides up to the top. */}
-      <View style={[styles.header, { backgroundColor: c.background, borderBottomColor: c.border }]}>
-        <View style={styles.inner}>
-          <Pressable onPress={() => router.back()} accessibilityRole="button" hitSlop={8} style={styles.back}>
-            <Text variant="caption" role="primary">
-              ‹ Cancel
-            </Text>
-          </Pressable>
-
-          {/* Title, step counter and step dots — collapse away when the preview is
-              expanded so it can take the top. */}
-          <Collapse open={!previewExpanded && !scrolledDown}>
-            <View style={styles.chrome}>
-              <GlanceHeader
-                title={isEdit ? 'Edit terrarium' : 'New terrarium'}
-                subtitle={`Step ${active + 1} of ${STEPS.length} · ${step.label}`}
-              />
-
-              {/* Step indicator — tappable dots (navigation chrome, not a build action). */}
-              <View style={styles.steps}>
-                {STEPS.map((s, i) => {
-                  const state = i === active ? 'active' : i < active ? 'done' : 'todo';
-                  const dot =
-                    state === 'active' ? c.primary : state === 'done' ? c.sage : c.surfaceSunken;
-                  return (
-                    <Pressable
-                      key={s.key}
-                      onPress={() => go(i)}
-                      accessibilityRole="button"
-                      accessibilityState={{ selected: i === active }}
-                      style={styles.stepItem}>
-                      <View style={[styles.stepDot, { backgroundColor: dot, borderColor: c.border }]}>
-                        <Text variant="caption" style={{ color: state === 'todo' ? c.textMuted : c.onPrimary }}>
-                          {i + 1}
-                        </Text>
-                      </View>
-                      <Text variant="overline" role={i === active ? 'primary' : 'textMuted'}>
-                        {s.label}
-                      </Text>
-                    </Pressable>
-                  );
-                })}
-              </View>
+      <View style={styles.stage}>
+        {/* The single scroll surface — full height, behind the header. Bounce is
+            off so the viewer can never shrink-then-spring on a short step. */}
+        <Animated.ScrollView
+          ref={scrollRef}
+          style={styles.scrollFill}
+          contentContainerStyle={[styles.scroll, { paddingTop: headerFullH }]}
+          onScroll={onScroll}
+          scrollEventThrottle={16}
+          bounces={false}
+          overScrollMode="never"
+          showsVerticalScrollIndicator={false}>
+          <View style={styles.inner}>
+            <View style={styles.section}>
+              <SectionLabel>{step.label}</SectionLabel>
+              <StepBody stepKey={step.key} blurb={step.blurb} {...stepProps} />
             </View>
-          </Collapse>
+          </View>
+        </Animated.ScrollView>
 
-          {/* Persistent cross-section viewer — docked, framed, live. Tap to expand
-              to the working size; the active step decides which items can be slid
-              horizontally (hardscape vs plants) once expanded. */}
-          <PlannerPreviewPane
-            draft={draft}
-            plants={plants}
-            draggableKind={DRAG_KIND[step.key] ?? null}
-            onCommit={commitPlacement}
-            expanded={previewExpanded}
-            onExpandedChange={setPreviewExpanded}
+        {/* Floating header — laid over the scroll, shrinks with `scrollY`. Its
+            background covers content as it tucks under; only Cancel, the dots, and
+            Arrange are touch targets, so scrolling is uniform everywhere else. */}
+        <Animated.View
+          pointerEvents="box-none"
+          style={[styles.header, { backgroundColor: c.background }, headerStyle]}>
+          <View style={styles.inner}>
+            <Pressable
+              onPress={() => router.back()}
+              accessibilityRole="button"
+              hitSlop={8}
+              style={styles.cancel}>
+              <Text variant="caption" role="primary">
+                ‹ Cancel
+              </Text>
+            </Pressable>
+
+            {/* Chrome — full (title + dots) crossfades to a slim step line. */}
+            <Animated.View pointerEvents="box-none" style={[styles.chrome, chromeStyle]}>
+              <Animated.View pointerEvents="box-none" style={[styles.chromeLayer, heroChromeStyle]}>
+                <Text variant="headline">{isEdit ? 'Edit terrarium' : 'New terrarium'}</Text>
+                <View style={styles.steps}>
+                  {STEPS.map((s, i) => {
+                    const state = i === active ? 'active' : i < active ? 'done' : 'todo';
+                    const dot = state === 'active' ? c.primary : state === 'done' ? c.sage : c.surfaceSunken;
+                    return (
+                      <Pressable
+                        key={s.key}
+                        onPress={() => go(i)}
+                        accessibilityRole="button"
+                        accessibilityState={{ selected: i === active }}
+                        style={styles.stepItem}>
+                        <View style={[styles.stepDot, { backgroundColor: dot, borderColor: c.border }]}>
+                          <Text variant="caption" style={{ color: state === 'todo' ? c.textMuted : c.onPrimary }}>
+                            {i + 1}
+                          </Text>
+                        </View>
+                        <Text variant="overline" role={i === active ? 'primary' : 'textMuted'}>
+                          {s.label}
+                        </Text>
+                      </Pressable>
+                    );
+                  })}
+                </View>
+              </Animated.View>
+              <Animated.View pointerEvents="none" style={[styles.chromeLayer, glanceChromeStyle]}>
+                <Text variant="caption" role="textMuted">
+                  {stepLabel}
+                </Text>
+              </Animated.View>
+            </Animated.View>
+
+            {/* View-only cross-section — shrinks with scroll, never grabs a touch. */}
+            <View pointerEvents="none" style={styles.viewer}>
+              <DockedPreview
+                draft={draft}
+                plants={plants}
+                scrollY={scrollY}
+                fullHeight={viewerFull}
+                dockedHeight={VIEWER_DOCKED}
+                range={range}
+              />
+            </View>
+
+            {/* Arrange — appears once there are plants to position. */}
+            {hasPlants ? (
+              <View pointerEvents="box-none" style={styles.arrangeRow}>
+                <Pressable
+                  onPress={() => {
+                    haptics.select();
+                    setArranging(true);
+                  }}
+                  accessibilityRole="button"
+                  hitSlop={8}
+                  style={[styles.arrangeBtn, { backgroundColor: c.surface, borderColor: c.border }]}>
+                  <Text variant="caption" role="primary">
+                    ⤢ Arrange plants
+                  </Text>
+                </Pressable>
+              </View>
+            ) : null}
+          </View>
+
+          {/* Hairline seam — invisible at rest, fades in as content tucks under. */}
+          <Animated.View
+            pointerEvents="none"
+            style={[styles.divider, { backgroundColor: c.border }, dividerStyle]}
+          />
+        </Animated.View>
+
+        {/* Back / Next chrome. The final step's primary action saves the build. */}
+        <View style={[styles.nav, { borderTopColor: c.border, backgroundColor: c.background }]}>
+          <NavButton label="Back" disabled={active === 0 || saving} onPress={() => go(active - 1)} />
+          <NavButton
+            label={isFinal ? (saving ? 'Saving…' : 'Save') : 'Next'}
+            primary
+            disabled={saving}
+            onPress={() => (isFinal ? handleSave() : go(active + 1))}
           />
         </View>
       </View>
 
-      {/* Current step body — the only scrolling region. */}
-      <ScrollView
-        ref={scrollRef}
-        style={styles.scrollFill}
-        contentContainerStyle={styles.scroll}
-        onScroll={onBodyScroll}
-        scrollEventThrottle={16}
-        showsVerticalScrollIndicator={false}>
-        <View style={styles.inner}>
-          <View style={styles.section}>
-            <SectionLabel>{step.label}</SectionLabel>
-            <StepBody stepKey={step.key} blurb={step.blurb} {...stepProps} />
-          </View>
-        </View>
-      </ScrollView>
-
-      {/* Back / Next chrome. The final step's primary action saves the build. */}
-      <View style={[styles.nav, { borderTopColor: c.border, backgroundColor: c.background }]}>
-        <NavButton label="Back" disabled={active === 0 || saving} onPress={() => go(active - 1)} />
-        <NavButton
-          label={isFinal ? (saving ? 'Saving…' : 'Save') : 'Next'}
-          primary
-          disabled={saving}
-          onPress={() => (isFinal ? handleSave() : go(active + 1))}
+      {arranging ? (
+        <ArrangeOverlay
+          draft={draft}
+          plants={plants}
+          onCommit={commitPlacement}
+          onClose={() => setArranging(false)}
         />
-      </View>
+      ) : null}
     </Screen>
   );
 }
 
-/** Route the active step to its body; chat-2 steps render the placeholder card. */
+/** Route the active step to its body. */
 function StepBody({ stepKey, blurb, ...props }: StepProps & { stepKey: string; blurb: string }) {
   switch (stepKey) {
     case 'container':
       return <ContainerStep {...props} />;
     case 'substrate':
       return <SubstrateStep {...props} />;
-    case 'hardscape':
-      return <HardscapeStep {...props} />;
     case 'plants':
       return <PlantsStep {...props} />;
     case 'final':
@@ -359,28 +459,41 @@ function NavButton({
 }
 
 const styles = StyleSheet.create({
-  // The fixed header floats above the scroll: a hairline divider plus a soft
-  // downward shadow so the step body visibly disappears behind it as it scrolls.
+  // The scroll and the floating header share this stage's top origin, so the 1:1
+  // shrink keeps content glued to the header's bottom edge.
+  stage: { flex: 1, position: 'relative' },
+  scrollFill: { flex: 1 },
+  scroll: { alignItems: 'center', paddingBottom: Spacing.xxl },
+  inner: { width: '100%', maxWidth: MaxContentWidth, alignSelf: 'center' },
+
   header: {
-    alignItems: 'center',
-    paddingBottom: Spacing.md,
-    borderBottomWidth: 1,
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    right: 0,
     zIndex: 10,
+    paddingBottom: HEADER_PAD_BOTTOM,
     shadowColor: '#000',
-    shadowOpacity: 0.18,
     shadowRadius: 8,
     shadowOffset: { width: 0, height: 4 },
-    elevation: 8,
   },
-  scrollFill: { flex: 1 },
-  scroll: { alignItems: 'center', paddingTop: Spacing.lg, paddingBottom: Spacing.xxl },
-  inner: { width: '100%', maxWidth: MaxContentWidth, alignSelf: 'center', paddingTop: Spacing.sm },
-  // Collapsing chrome content — its own spacing so it animates away cleanly with
-  // the collapse (no residual gap left behind in the header).
-  chrome: { gap: Spacing.lg, paddingBottom: Spacing.lg },
-  centerFill: { flex: 1, alignItems: 'center', justifyContent: 'center', gap: Spacing.md },
-  centerText: { textAlign: 'center' },
-  back: { alignSelf: 'flex-start', marginBottom: Spacing.md },
+  cancel: { alignSelf: 'flex-start', height: 24, justifyContent: 'center', marginBottom: Spacing.sm },
+  chrome: { overflow: 'hidden' },
+  // The two chrome states stack at the top of the clip so the height shrink keeps
+  // them top-aligned through the crossfade.
+  chromeLayer: { position: 'absolute', top: 0, left: 0, right: 0, gap: Spacing.sm },
+  viewer: { marginTop: CHROME_VIEWER_GAP },
+  arrangeRow: { marginTop: Spacing.sm, alignItems: 'flex-end' },
+  arrangeBtn: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    paddingHorizontal: Spacing.md,
+    paddingVertical: Spacing.xs,
+    borderRadius: Radii.pill,
+    borderWidth: 1,
+  },
+  divider: { position: 'absolute', left: 0, right: 0, bottom: 0, height: StyleSheet.hairlineWidth },
+
   steps: { flexDirection: 'row', justifyContent: 'space-between' },
   stepItem: { alignItems: 'center', gap: Spacing.xs, flex: 1 },
   stepDot: {
@@ -391,6 +504,9 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
+
+  centerFill: { flex: 1, alignItems: 'center', justifyContent: 'center', gap: Spacing.md },
+  centerText: { textAlign: 'center' },
   section: { gap: Spacing.sm },
   stepCard: { padding: Spacing.lg, gap: Spacing.sm },
   nav: {

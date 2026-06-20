@@ -1,9 +1,8 @@
 /**
- * The safe-area screen frame. Every screen wraps in this from screen one —
- * forgetting safe-area insets is the instant "web-wrapper" tell (Phase 5 risk
- * note). Applies the themed background, the top/side insets, and the §3.2
- * screen-level breathing room; the bottom inset is left to the tab bar / scroll
- * content so lists can run under it.
+ * The safe-area screen frame. Every screen wraps in this — forgetting safe-area
+ * insets is the instant "web-wrapper" tell. Applies the themed background, the
+ * top/side insets, and the screen-level breathing room; the bottom inset is left
+ * to the tab bar / scroll content so lists can run under it.
  */
 import { type ReactNode } from 'react';
 import { StyleSheet, View, type ViewStyle } from 'react-native';
@@ -17,7 +16,7 @@ export interface ScreenProps {
   /** Apply the bottom inset too (screens without a scroll list under the tab bar). */
   edges?: { bottom?: boolean };
   style?: ViewStyle;
-  /** Pad the horizontal edges with the §3.2 screen gutter (default true). */
+  /** Pad the horizontal edges with the screen gutter (default true). */
   gutter?: boolean;
 }
 

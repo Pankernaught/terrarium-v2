@@ -3,8 +3,8 @@
  * the animated, OKLCH-filling Eco variant builds on this. `value` is 0–1.
  *
  * Animates width via a Reanimated worklet only when `animated` is set; the fill
- * uses transform-free width here because the bar is static on read-mostly screens
- * (the live, transform-based fill is the planner's job in Phase 6).
+ * uses transform-free width because the bar is static on read-mostly screens.
+ * The planner's live preview uses a transform-based fill to stay on the UI thread.
  */
 import { StyleSheet, View } from 'react-native';
 

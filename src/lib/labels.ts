@@ -14,7 +14,7 @@ export function humanize(value: string): string {
     .join(' ');
 }
 
-/** Primary condition, with the tolerable secondary noted in parentheses (decision 15). */
+/** Primary condition, with the tolerable secondary noted in parentheses. */
 export function lightLabel(req: LightRequirement): string {
   return req.secondary
     ? `${humanize(req.primary)} (tolerates ${humanize(req.secondary)})`

@@ -1,23 +1,21 @@
 /**
  * Placement geometry — the pure, deterministic core of the planner's
- * drag-to-place interaction (Phase 6, decision 5 / Option A).
+ * drag-to-place interaction.
  *
- * A **placement** is a plant or hardscape asset positioned on the **2-D front
- * plane** of the container as `{ slug, x, y, scale }` (the same shape the Phase-3
- * presets and the Phase-4 `builds.placements` column already use):
+ * A **placement** is a plant positioned on the **2-D front plane** of the
+ * container as `{ slug, x, y, scale }`:
  *   - `x`, `y` are **normalized to [0, 1]** across the front view, so a placement
  *     is resolution-independent and renders identically on the dashboard, in the
  *     planner preview, and (v2.1) in the 3-D display. `y` runs **0 = top → 1 =
  *     bottom**, so ground covers sit near 1 and taller specimens higher up.
  *   - `scale` is a relative size multiplier, clamped to a sane band so a sprite is
- *     never larger than the vessel (Sequence "Phase 6": *clamped to the container,
- *     never larger than the vessel*).
+ *     never larger than the vessel.
  *
  * **Pure + DB-free by design** (mirrors `containers.ts`): this module defines its
  * own structural `Placement` type and imports nothing from `src/db` / `src/data`,
- * so `src/logic` stays the engine's clean room. The drag handler (Phase 6 chat 2)
- * runs these functions on the UI thread; because they are deterministic math they
- * are trivially unit-testable and trivially 60fps.
+ * so `src/logic` stays the engine's clean room. The drag handler runs these
+ * functions on the UI thread; because they are deterministic math they are
+ * trivially unit-testable and trivially 60fps.
  */
 
 /** Structural placement — kept local so `src/logic` imports no DB/data layer. */
@@ -106,54 +104,13 @@ export function removePlacement(placements: readonly Placement[], slug: string):
   return placements.filter((p) => p.slug !== slug);
 }
 
-// --- Hardscape vs plant namespacing -----------------------------------------
-// A placement's `slug` is the only thing distinguishing a hardscape asset from a
-// plant on the shared front plane. Plant placements use the plant slug verbatim;
-// hardscape placements carry a reserved `hardscape:` prefix so the two never
-// collide and either set can be split out (the build-guide hardscape line is
-// *derived* from whether any hardscape placement exists — decision 10).
-
-/** Reserved slug prefix marking a placement as a hardscape asset (not a plant). */
-export const HARDSCAPE_PREFIX = 'hardscape:';
-
-/** Namespace a hardscape asset id into a placement slug (`rock` → `hardscape:rock`). */
-export function hardscapeSlug(assetId: string): string {
-  return `${HARDSCAPE_PREFIX}${assetId}`;
-}
-
-/** True when a slug is a hardscape placement (vs. a plant slug). */
-export function isHardscapeSlug(slug: string): boolean {
-  return slug.startsWith(HARDSCAPE_PREFIX);
-}
-
-/** Strip the namespace back to the bare hardscape asset id. */
-export function hardscapeAssetId(slug: string): string {
-  return isHardscapeSlug(slug) ? slug.slice(HARDSCAPE_PREFIX.length) : slug;
-}
-
-/** Decision 10: the guide's hardscape line is derived from whether anything is placed. */
-export function hasHardscape(placements: readonly Placement[]): boolean {
-  return placements.some((p) => isHardscapeSlug(p.slug));
-}
-
-/** Partition placements into plant + hardscape sets (for rendering / the guide). */
-export function splitPlacements(placements: readonly Placement[]): {
-  plants: Placement[];
-  hardscape: Placement[];
-} {
-  const plants: Placement[] = [];
-  const hardscape: Placement[] = [];
-  for (const p of placements) (isHardscapeSlug(p.slug) ? hardscape : plants).push(p);
-  return { plants, hardscape };
-}
-
 /** Golden-ratio low-discrepancy constant — successive adds spread, never stack. */
 const GOLDEN = 0.618033988749895;
 /** Three y-rows a fresh placement cycles through (lower-third bias — ground level). */
 const SEED_ROWS = [0.62, 0.5, 0.74];
 
 /**
- * A deterministic starting placement for a newly added plant/hardscape asset.
+ * A deterministic starting placement for a newly added plant.
  * `index` (its position in the add order) drives a golden-ratio x sweep + a
  * 3-row y cycle so several quick adds fan out across the plane instead of
  * landing on top of each other. Inset by an 8% margin so the seed sits clear of

@@ -1,9 +1,8 @@
 /**
- * Care scheduler suite (net-new, Phase 7). Covers the provisional cadence table,
- * the "first due one interval after creation" + "next due one interval after
- * mark-done" math, and the soonest-due slot-budget guard (decision 16) — all pure,
- * so this is the CI safety net for the parts `expo-notifications` can't exercise in
- * the node runner.
+ * Care scheduler suite. Covers the provisional cadence table, the "first due one
+ * interval after creation" + "next due one interval after mark-done" math, and the
+ * soonest-due slot-budget guard — all pure, so this is the CI safety net for the
+ * parts `expo-notifications` can't exercise in the node runner.
  */
 import { describe, expect, it } from 'vitest';
 
@@ -136,7 +135,7 @@ describe('nextDueAfter', () => {
   });
 });
 
-describe('planNotificationBudget — the slot-budget guard (decision 16)', () => {
+describe('planNotificationBudget — the slot-budget guard', () => {
   const task = (buildId: string, type: CareTaskType, dueAt: number): PendingTask => ({ buildId, type, dueAt });
 
   it('schedules everything when under budget', () => {

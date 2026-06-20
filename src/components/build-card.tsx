@@ -2,11 +2,11 @@
  * The dashboard build card — the deliberate collapse of v1's 7-button card
  * (`components/build_card.py`: Open / Build Guide / Post to Forum / Duplicate /
  * TXT / PDF / Delete) down to: hero photo + name + Eco-balance chip + a single ⋮
- * overflow, tap-to-open. "Post to Forum" is gone with social (decision 3).
+ * overflow, tap-to-open. Social sharing is cut.
  *
  * The Eco chip surfaces a scoring failure as a real "Needs review" state, never
- * v1's silent grey "⚠" (Phase 5 DoD). Colour is paired with the number + band
- * word, never colour alone (§2).
+ * v1's silent grey "⚠". Colour is always paired with the number + band word —
+ * never colour alone (accessibility rule: never encode meaning in colour only).
  */
 import { Image } from 'expo-image';
 import { Pressable, StyleSheet, View } from 'react-native';

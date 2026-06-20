@@ -1,7 +1,7 @@
 /**
  * First-launch seed load — mirrors v1 `db/loader.py::load_seed_data`.
  *
- * The bundle (`src/data`, decision 3/11) is the source of truth; this syncs it
+ * The bundle (`src/data`) is the source of truth; this syncs it
  * into the store's **reference tables** (`plants` / `containers` / `presets`) so
  * the rows are queryable alongside user data. On every call each record is
  * **upserted by slug** and any reference row whose slug no longer ships is
@@ -10,8 +10,8 @@
  *
  * User data (`builds` / `build_photos` / `care_marks`) is never touched here; a
  * build that references a removed slug simply points at a missing plant/container.
- * Reference data is regenerable from the bundle and never enters a backup
- * (decision 17), which is why it is not modelled as the engine's read path — the
+ * Reference data is regenerable from the bundle and never enters a backup, which
+ * is why it is not modelled as the engine's read path — the
  * engine reads the bundle directly (`loadPlants()` etc.).
  */
 import { notInArray, sql } from 'drizzle-orm';
@@ -54,7 +54,7 @@ export interface SeedCounts {
  * Load (or refresh) the bundled seed into the store's reference tables. Idempotent
  * — call it once on first launch and harmlessly on every launch thereafter.
  * Returns the row counts actually shipped (the validated bundle), so the caller /
- * tests can assert the 67 / 16 / presets gate.
+ * tests can assert the 92 / 16 / presets gate.
  */
 export async function seedStore(db: TerrariumDb, seed = loadSeed()): Promise<SeedCounts> {
   await syncBySlug(db, plants, seed.plants);

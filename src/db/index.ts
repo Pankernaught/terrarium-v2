@@ -1,5 +1,5 @@
 /**
- * Local-store public API (Phase 4) — the **driver-agnostic** surface.
+ * Local-store public API — the **driver-agnostic** surface.
  *
  * Re-exports the schema, repositories, seed loader, and migrate ladder. It does
  * **not** re-export a concrete driver (`client.node` pulls in `node:sqlite`;

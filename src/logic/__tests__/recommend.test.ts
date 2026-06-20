@@ -1,8 +1,8 @@
 /**
  * Net-new coverage for the decoupled recommender. v1 had no `test_recommend.py`
- * (it reached into the DB), so these guard the Phase 2 refactor: candidates are
- * passed in, selected plants are excluded, ranking/threshold hold, and nothing
- * here touches a store.
+ * (it reached into the DB), so these guard the refactor: candidates are passed in,
+ * selected plants are excluded, ranking/threshold hold, and nothing here touches
+ * a store.
  */
 import { describe, expect, it } from 'vitest';
 
@@ -47,5 +47,17 @@ describe('recommend', () => {
     const candidate = makePlant({ slug: 'cand', light: 'medium' });
     const recs = recommend(selected, sealed(), [candidate]);
     expect(recs[0].reasons).toContain('Matches light requirement (medium)');
+  });
+
+  it('suppresses the light reason when the only overlap is a via-secondary caution (issue #5)', () => {
+    // Candidate's secondary meets the selected primary, but that scores a -15
+    // via-secondary caution — a real light conflict. Reasons now derive from the
+    // engine's conflicts, so the positive reason is correctly withheld and the
+    // caution surfaces instead (no more reason/score contradiction).
+    const selected = [makePlant({ slug: 'sel', light: 'medium' })];
+    const candidate = makePlant({ slug: 'cand', light: { primary: 'low', secondary: 'medium' } });
+    const recs = recommend(selected, sealed(), [candidate]);
+    expect(recs[0].reasons).not.toContain('Matches light requirement (low)');
+    expect(recs[0].cautions.some((c) => c.factor === 'light')).toBe(true);
   });
 });

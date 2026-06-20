@@ -3,7 +3,7 @@
  *
  * The score→band thresholds are a faithful port of v1's compatibility badge
  * (`components/build_card.py`: ≥80 success, ≥50 warning, else danger). The colour
- * sweep is the one runtime OKLCH payoff the design calls out (Premium §3.5):
+ * sweep interpolates
  * interpolate green → amber → red through **OKLab** at roughly constant lightness
  * so the midpoint stays a vivid amber instead of the muddy brown a naïve sRGB lerp
  * passes through. Pure + dependency-free (no `culori` on device) so it unit-tests
@@ -12,7 +12,16 @@
  * Imports nothing from `src/db` / `src/data` (engine-purity invariant).
  */
 
+import { VERDICT_CAUTION_MIN, VERDICT_COMPATIBLE_MIN } from './constants';
+
 export type EcoBand = 'healthy' | 'caution' | 'critical';
+
+/**
+ * Where the colour sweep pivots to amber — the centre of the caution band, derived
+ * from the verdict thresholds so the colour midpoint can't drift away from the band
+ * boundaries if those thresholds are ever retuned. Currently (50 + 80) / 2 = 65.
+ */
+const AMBER_ANCHOR = (VERDICT_CAUTION_MIN + VERDICT_COMPATIBLE_MIN) / 2;
 
 /** Score band — v1 badge thresholds (≥80 / ≥50 / else). */
 export function ecoBand(score: number): EcoBand {
@@ -95,7 +104,7 @@ function mixOklab(a: Lab, b: Lab, t: number): Lab {
   return [a[0] + (b[0] - a[0]) * t, a[1] + (b[1] - a[1]) * t, a[2] + (b[2] - a[2]) * t];
 }
 
-/** Stops resolved per scheme — dark raises lightness so the sweep stays vivid (§3.5). */
+/** Stops resolved per scheme — dark raises lightness so the sweep stays vivid. */
 const LIGHT_STOPS = { critical: '#C0492F', caution: '#D2992B', healthy: '#3FA45B' } as const;
 const DARK_STOPS = { critical: '#D96A4F', caution: '#E3B24B', healthy: '#5FC07C' } as const;
 
@@ -111,12 +120,12 @@ export function ecoColor(score: number, scheme: 'light' | 'dark' = 'light'): str
   const caution = rgbToOklab(hexToRgb(stops.caution));
   const healthy = rgbToOklab(hexToRgb(stops.healthy));
 
-  // Anchor the amber stop at 65 (centre of the 50–80 caution band).
+  // Anchor the amber stop at the centre of the caution band (see AMBER_ANCHOR).
   let lab: Lab;
-  if (s <= 65) {
-    lab = mixOklab(critical, caution, s / 65);
+  if (s <= AMBER_ANCHOR) {
+    lab = mixOklab(critical, caution, s / AMBER_ANCHOR);
   } else {
-    lab = mixOklab(caution, healthy, (s - 65) / 35);
+    lab = mixOklab(caution, healthy, (s - AMBER_ANCHOR) / (100 - AMBER_ANCHOR));
   }
   return rgbToHex(oklabToRgb(lab));
 }

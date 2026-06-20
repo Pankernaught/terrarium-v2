@@ -2,39 +2,42 @@ import 'react-native-gesture-handler';
 
 import { Ionicons } from '@expo/vector-icons';
 import { DarkTheme, DefaultTheme, Tabs, ThemeProvider } from 'expo-router';
-import { useColorScheme } from 'react-native';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 
-import { Colors } from '@/constants/theme';
 import { DbProvider } from '@/db/provider';
+import { PreferencesProvider } from '@/hooks/use-preferences';
+import { useTokens } from '@/hooks/use-tokens';
 
 /**
- * Root layout for the v2.0 skeleton.
- *
- * The four bottom-tab destinations are the ones locked in the migration plan
- * (§5.1 / decision 1): Terrariums · Browse · Care · Settings. Desktop is cut, so
- * there is no left rail. GestureHandlerRootView is established here now so the
- * Phase 6 drag-to-place interaction has its provider in place from the start.
- *
- * The premium native tab bar (human-drawn icons, §5.1 / Phase 9) replaces these
- * Ionicons placeholders later; this is intentionally the plain, stable classic
- * `Tabs` navigator for the skeleton.
+ * Root layout — four bottom-tab destinations: Terrariums · Browse · Care ·
+ * Settings. iOS + Android only (no left rail). GestureHandlerRootView wraps the
+ * whole tree so the drag-to-place interaction in the planner has its provider in
+ * place from the start. PreferencesProvider sits above RootLayoutInner so that
+ * useTokens (which reads preferences) is available throughout.
  */
 export default function RootLayout() {
-  const isDark = useColorScheme() === 'dark';
-  const c = Colors[isDark ? 'dark' : 'light'];
-
   return (
     <GestureHandlerRootView style={{ flex: 1 }}>
-      <ThemeProvider value={isDark ? DarkTheme : DefaultTheme}>
-        <DbProvider>
-          <Tabs
-            screenOptions={{
-              headerShown: false,
-              tabBarActiveTintColor: c.primary,
-              tabBarInactiveTintColor: c.textMuted,
-              tabBarStyle: { backgroundColor: c.surface, borderTopColor: c.border },
-            }}>
+      <PreferencesProvider>
+        <RootLayoutInner />
+      </PreferencesProvider>
+    </GestureHandlerRootView>
+  );
+}
+
+function RootLayoutInner() {
+  const { c, isDark } = useTokens();
+
+  return (
+    <ThemeProvider value={isDark ? DarkTheme : DefaultTheme}>
+      <DbProvider>
+        <Tabs
+          screenOptions={{
+            headerShown: false,
+            tabBarActiveTintColor: c.primary,
+            tabBarInactiveTintColor: c.textMuted,
+            tabBarStyle: { backgroundColor: c.surface, borderTopColor: c.border },
+          }}>
           <Tabs.Screen
             name="index"
             options={{
@@ -66,10 +69,11 @@ export default function RootLayout() {
           {/* Non-tab routes: navigable, but hidden from the bar. */}
           <Tabs.Screen name="build/[id]" options={{ href: null }} />
           <Tabs.Screen name="plant/[slug]" options={{ href: null }} />
-          <Tabs.Screen name="planner" options={{ href: null }} />
-          </Tabs>
-        </DbProvider>
-      </ThemeProvider>
-    </GestureHandlerRootView>
+          {/* Planner is a focused full-screen flow — hide the tab bar entirely
+              while it's open (its own Back/Next bar handles navigation). */}
+          <Tabs.Screen name="planner" options={{ href: null, tabBarStyle: { display: 'none' } }} />
+        </Tabs>
+      </DbProvider>
+    </ThemeProvider>
   );
 }

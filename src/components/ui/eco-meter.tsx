@@ -1,7 +1,7 @@
 /**
- * The Eco-balance meter: a `Meter` whose fill colour comes from the OKLab sweep
- * (`ecoColor`) so the bar reads green → amber → red without a muddy midpoint
- * (Premium §3.5). Display-only here; the live overshoot fill is Phase 6.
+ * The Eco-balance meter: a `Meter` whose fill colour comes from the OKLCH sweep
+ * (`ecoColor`) so the bar reads green → amber → red without a muddy midpoint.
+ * Display-only here; the planner's live preview uses an animated overshoot fill.
  */
 import { View } from 'react-native';
 

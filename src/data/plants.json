@@ -34,7 +34,28 @@
       "difficulty": 2,
       "image": "plants/fittonia-albivenis.png",
       "nativeContext": "Native to the rainforest understorey of Peru and neighbouring South America, carpeting damp, shaded forest floors.",
-      "notes": "Classic beginner closed-terrarium plant. Wilts dramatically when dry but recovers quickly with water. Avoid direct light."
+      "notes": "The Nerve Plant is a great starting point for closed builds. It wilts dramatically when dry but bounces back quickly with water, so don't panic when it droops. Keep it out of direct light.",
+      "sources": [
+        {
+          "url": "https://en.wikipedia.org/wiki/Fittonia_albivenis",
+          "label": "Wikipedia"
+        },
+        {
+          "url": "https://powo.science.kew.org/results?q=Fittonia%20albivenis",
+          "label": "POWO"
+        },
+        {
+          "url": "https://plants.ces.ncsu.edu/plants/fittonia-albivenis/",
+          "label": "NCSU Extension"
+        },
+        {
+          "url": "https://www.rhs.org.uk/plants/details?plantid=6745",
+          "label": "RHS — Fittonia albivenis"
+        }
+      ],
+      "plantType": "foliage",
+      "rarity": "common",
+      "nativeBiome": "tropical"
     },
     {
       "slug": "selaginella-uncinata",
@@ -69,7 +90,24 @@
       "difficulty": 2,
       "image": "plants/selaginella-uncinata.png",
       "nativeContext": "A spikemoss from the humid subtropical forests of southern China.",
-      "notes": "Iridescent blue-green foliage. Needs consistently high humidity; thrives in sealed containers. Spreads as a low ground cover."
+      "notes": "Rainbow Moss has iridescent blue-green foliage that needs consistently high humidity to stay vibrant. It thrives in sealed containers and spreads as a low ground cover.",
+      "sources": [
+        {
+          "url": "https://en.wikipedia.org/wiki/Selaginella_uncinata",
+          "label": "Wikipedia"
+        },
+        {
+          "url": "https://powo.science.kew.org/results?q=Selaginella%20uncinata",
+          "label": "POWO"
+        },
+        {
+          "url": "https://plants.ces.ncsu.edu/plants/selaginella-uncinata/",
+          "label": "NCSU Extension"
+        }
+      ],
+      "plantType": "fern-ally",
+      "rarity": "common",
+      "nativeBiome": "subtropical"
     },
     {
       "slug": "taxiphyllum-barbieri",
@@ -102,7 +140,25 @@
       "openTerrariumOk": false,
       "difficulty": 1,
       "image": "plants/taxiphyllum-barbieri.png",
-      "notes": "Extremely forgiving. Attach to wood or rocks or use as ground cover. Tolerates a wide temperature range."
+      "notes": "Java moss is a very forgiving plant. Can be fixed to wood or rocks, or let it spread as ground cover — it adapts well either way and handles a wide temperature range without complaint.",
+      "sources": [
+        {
+          "url": "https://en.wikipedia.org/wiki/Taxiphyllum_barbieri",
+          "label": "Wikipedia"
+        },
+        {
+          "url": "https://powo.science.kew.org/results?q=Taxiphyllum%20barbieri",
+          "label": "POWO"
+        },
+        {
+          "url": "https://plants.ces.ncsu.edu/plants/taxiphyllum-barbieri/",
+          "label": "NCSU Extension"
+        }
+      ],
+      "plantType": "moss",
+      "rarity": "common",
+      "nativeBiome": "tropical",
+      "nativeContext": "From fast-flowing streams and riverbanks of Southeast Asia, anchored to submerged rocks and wood."
     },
     {
       "slug": "soleirolia-soleirolii",
@@ -137,7 +193,24 @@
       "difficulty": 2,
       "image": "plants/soleirolia-soleirolii.png",
       "nativeContext": "Native to shaded, damp rocks on islands of the western Mediterranean.",
-      "notes": "Tiny-leaved creeping ground cover. Can spread aggressively; trim regularly. Prefers cooler temps than most tropical species."
+      "notes": "Baby Tears is a tiny-leaved creeping ground cover that can spread aggressively, so trim it regularly. It prefers cooler temperatures than most tropical species.",
+      "sources": [
+        {
+          "url": "https://en.wikipedia.org/wiki/Soleirolia_soleirolii",
+          "label": "Wikipedia"
+        },
+        {
+          "url": "https://powo.science.kew.org/results?q=Soleirolia%20soleirolii",
+          "label": "POWO"
+        },
+        {
+          "url": "https://plants.ces.ncsu.edu/plants/soleirolia-soleirolii/",
+          "label": "NCSU Extension"
+        }
+      ],
+      "plantType": "ground-cover",
+      "rarity": "common",
+      "nativeBiome": "mediterranean"
     },
     {
       "slug": "pellionia-repens",
@@ -171,7 +244,25 @@
       "openTerrariumOk": false,
       "difficulty": 2,
       "image": "plants/pellionia-repens.png",
-      "notes": "Attractive silvery-green patterned leaves. Trails nicely over substrate or rocks. Not a true begonia despite the common name."
+      "notes": "Trailing Watermelon Begonia has attractive silvery-green patterned leaves and trails nicely over substrate or rocks. Despite the common name, it's not a true begonia.",
+      "sources": [
+        {
+          "url": "https://en.wikipedia.org/wiki/Pellionia_repens",
+          "label": "Wikipedia"
+        },
+        {
+          "url": "https://powo.science.kew.org/results?q=Pellionia%20repens",
+          "label": "POWO"
+        },
+        {
+          "url": "https://plants.ces.ncsu.edu/plants/pellionia-repens/",
+          "label": "NCSU Extension"
+        }
+      ],
+      "plantType": "vine",
+      "rarity": "uncommon",
+      "nativeBiome": "tropical",
+      "nativeContext": "Native to the shaded, humid forests of Vietnam and neighbouring Southeast Asia, trailing across damp forest floors."
     },
     {
       "slug": "maranta-leuconeura",
@@ -206,7 +297,24 @@
       "difficulty": 3,
       "image": "plants/maranta-leuconeura.png",
       "nativeContext": "Native to the humid tropical rainforests of Brazil, on the shaded forest floor.",
-      "notes": "Leaves fold upward at night. Sensitive to fluoride in tap water; use rainwater or distilled. Watch for spider mites."
+      "notes": "Expect the leaves on the Prayer Plant to fold up at night — that's normal, not a sign something's wrong. Very sensitive to minerals like fluoride in its water. Keep an eye out for spider mites, especially if conditions run dry.",
+      "sources": [
+        {
+          "url": "https://en.wikipedia.org/wiki/Maranta_leuconeura",
+          "label": "Wikipedia"
+        },
+        {
+          "url": "https://powo.science.kew.org/results?q=Maranta%20leuconeura",
+          "label": "POWO"
+        },
+        {
+          "url": "https://plants.ces.ncsu.edu/plants/maranta-leuconeura/",
+          "label": "NCSU Extension"
+        }
+      ],
+      "plantType": "foliage",
+      "rarity": "common",
+      "nativeBiome": "tropical"
     },
     {
       "slug": "calathea-ornata",
@@ -241,7 +349,24 @@
       "difficulty": 4,
       "image": "plants/calathea-ornata.png",
       "nativeContext": "From the warm, humid rainforests of Colombia and Ecuador, in deep shade beneath the canopy.",
-      "notes": "Striking pink-striped foliage. Highly sensitive to drafts, cold, and mineral-heavy water. Rewarding in a stable sealed environment."
+      "notes": "The Pinstripe Calathea has striking pink-striped leaves that are sensitive to drafts, cold, and mineral-heavy water. It does best in a stable sealed environment where conditions don't fluctuate.",
+      "sources": [
+        {
+          "url": "https://en.wikipedia.org/wiki/Calathea_ornata",
+          "label": "Wikipedia"
+        },
+        {
+          "url": "https://powo.science.kew.org/results?q=Calathea%20ornata",
+          "label": "POWO"
+        },
+        {
+          "url": "https://plants.ces.ncsu.edu/plants/calathea-ornata/",
+          "label": "NCSU Extension"
+        }
+      ],
+      "plantType": "foliage",
+      "rarity": "common",
+      "nativeBiome": "tropical"
     },
     {
       "slug": "hypoestes-phyllostachya",
@@ -274,7 +399,25 @@
       "openTerrariumOk": false,
       "difficulty": 3,
       "image": "plants/hypoestes-phyllostachya.png",
-      "notes": "Fast grower — pinch tips regularly to stay compact. Leggy growth in low light. Loses colour intensity without adequate indirect light."
+      "notes": "Polka Dot Plant is a fast grower that needs regular tip pinching to stay compact. Growth becomes leggy in low light, and colour intensity fades without adequate indirect light.",
+      "sources": [
+        {
+          "url": "https://en.wikipedia.org/wiki/Hypoestes_phyllostachya",
+          "label": "Wikipedia"
+        },
+        {
+          "url": "https://powo.science.kew.org/results?q=Hypoestes%20phyllostachya",
+          "label": "POWO"
+        },
+        {
+          "url": "https://plants.ces.ncsu.edu/plants/hypoestes-phyllostachya/",
+          "label": "NCSU Extension"
+        }
+      ],
+      "plantType": "foliage",
+      "rarity": "common",
+      "nativeBiome": "tropical",
+      "nativeContext": "Native to the humid forests of Madagascar, its vivid leaf patterning standing out in the shaded understorey."
     },
     {
       "slug": "adiantum-raddianum",
@@ -309,7 +452,24 @@
       "difficulty": 4,
       "image": "plants/adiantum-raddianum.png",
       "nativeContext": "From humid, shaded ravines and waterfall splash zones in tropical South America.",
-      "notes": "Delicate fan-shaped leaflets. Drops fronds immediately if humidity drops. One of the most demanding ferns; excels in sealed vivariums."
+      "notes": "The Maidenhair Fern has fan-shaped fronds that are beautiful but unforgiving. If humidity goes down it will drop them without warning. It's one of the more demanding ferns, but it genuinely thrives in a sealed build where conditions stay stable.",
+      "sources": [
+        {
+          "url": "https://en.wikipedia.org/wiki/Adiantum_raddianum",
+          "label": "Wikipedia"
+        },
+        {
+          "url": "https://powo.science.kew.org/results?q=Adiantum%20raddianum",
+          "label": "POWO"
+        },
+        {
+          "url": "https://plants.ces.ncsu.edu/plants/adiantum-raddianum/",
+          "label": "NCSU Extension"
+        }
+      ],
+      "plantType": "fern",
+      "rarity": "common",
+      "nativeBiome": "tropical"
     },
     {
       "slug": "asplenium-nidus",
@@ -331,6 +491,8 @@
         27
       ],
       "maxHeightCm": 60,
+      "spreadMinCm": 30,
+      "spreadMaxCm": 90,
       "rootDepthMinCm": 9,
       "rootDepthMaxCm": 20,
       "phPreference": "acidic",
@@ -343,8 +505,25 @@
       "openTerrariumOk": false,
       "difficulty": 2,
       "image": "plants/asplenium-nidus.png",
-      "nativeContext": "An epiphytic fern of tropical Asian and Pacific rainforests, perched in the forks of canopy trees.",
-      "notes": "Bold, glossy strap-shaped fronds. More tolerant than delicate ferns. Avoid water sitting in the crown. Gets large — best in bigger builds."
+      "plantType": "fern",
+      "nativeBiome": "tropical",
+      "rarity": "common",
+      "nativeContext": "An epiphytic fern of tropical African, Asian ,and Pacific rainforests, perched in the forks of canopy trees.",
+      "notes": "Bird's Nest Fern has bold, glossy strap-shaped fronds and is more tolerant than most delicate ferns. Avoid letting water sit in the crown. It regularly grows large -- and can grow very large, so it's best suited to bigger builds.",
+      "sources": [
+        {
+          "url": "https://en.wikipedia.org/wiki/Asplenium_nidus",
+          "label": "Wikipedia"
+        },
+        {
+          "url": "https://powo.science.kew.org/results?q=Asplenium%20nidus",
+          "label": "POWO"
+        },
+        {
+          "url": "https://plants.ces.ncsu.edu/plants/asplenium-nidus/",
+          "label": "NCSU Extension"
+        }
+      ]
     },
     {
       "slug": "pilea-involucrata",
@@ -378,7 +557,25 @@
       "openTerrariumOk": false,
       "difficulty": 2,
       "image": "plants/pilea-involucrata.png",
-      "notes": "Deeply textured, bronze-green leaves. Easy to propagate from cuttings. Good mid-layer plant for closed builds."
+      "notes": "Friendship Plant has deeply textured, bronze-green leaves and is easy to propagate from cuttings. It works well as a mid-layer plant in closed builds.",
+      "sources": [
+        {
+          "url": "https://en.wikipedia.org/wiki/Pilea_involucrata",
+          "label": "Wikipedia"
+        },
+        {
+          "url": "https://powo.science.kew.org/results?q=Pilea%20involucrata",
+          "label": "POWO"
+        },
+        {
+          "url": "https://plants.ces.ncsu.edu/plants/pilea-involucrata/",
+          "label": "NCSU Extension"
+        }
+      ],
+      "plantType": "foliage",
+      "rarity": "uncommon",
+      "nativeBiome": "tropical",
+      "nativeContext": "Native to the tropical rainforests of Central and South America, creeping across damp, shaded forest floors."
     },
     {
       "slug": "microsorum-pteropus",
@@ -413,7 +610,24 @@
       "difficulty": 2,
       "image": "plants/microsorum-pteropus.png",
       "nativeContext": "An aquatic fern from the streams and riverbanks of Southeast Asia, attached to rocks and wood.",
-      "notes": "Attach rhizome to wood or rock — do not bury it in substrate. Propagates via plantlets that form on older fronds."
+      "notes": "Java Fern's rhizome needs to be attached to wood or rock rather than buried in substrate. It propagates on its own via plantlets that form on older fronds.",
+      "sources": [
+        {
+          "url": "https://en.wikipedia.org/wiki/Microsorum_pteropus",
+          "label": "Wikipedia"
+        },
+        {
+          "url": "https://powo.science.kew.org/results?q=Microsorum%20pteropus",
+          "label": "POWO"
+        },
+        {
+          "url": "https://plants.ces.ncsu.edu/plants/microsorum-pteropus/",
+          "label": "NCSU Extension"
+        }
+      ],
+      "plantType": "fern",
+      "rarity": "common",
+      "nativeBiome": "tropical"
     },
     {
       "slug": "episcia-cupreata",
@@ -446,7 +660,25 @@
       "openTerrariumOk": false,
       "difficulty": 3,
       "image": "plants/episcia-cupreata.png",
-      "notes": "Metallic copper-green foliage with orange-red flowers. Needs warmth; cold drafts cause leaf drop. Spreads via stolons."
+      "notes": "Flame Violet has metallic copper-green foliage with orange-red flowers. It needs warmth, as cold drafts cause leaf drop. Spreads via stolons.",
+      "sources": [
+        {
+          "url": "https://en.wikipedia.org/wiki/Episcia_cupreata",
+          "label": "Wikipedia"
+        },
+        {
+          "url": "https://powo.science.kew.org/results?q=Episcia%20cupreata",
+          "label": "POWO"
+        },
+        {
+          "url": "https://plants.ces.ncsu.edu/plants/episcia-cupreata/",
+          "label": "NCSU Extension"
+        }
+      ],
+      "plantType": "foliage",
+      "rarity": "uncommon",
+      "nativeBiome": "tropical",
+      "nativeContext": "From the shaded, humid rainforest floors of Colombia and Central America, forming creeping mats of velvety patterned leaves."
     },
     {
       "slug": "philodendron-hederaceum-mini",
@@ -482,7 +714,25 @@
       "difficulty": 2,
       "image": "plants/philodendron-hederaceum-mini.png",
       "toxicity": "Contains insoluble calcium oxalate crystals — chewing or ingesting causes intense mouth and throat irritation, drooling, and vomiting in pets and people. Keep away from curious pets and children.",
-      "notes": "Trailing or climbing habit. Trim regularly to keep scale manageable in enclosed builds. Very adaptable and forgiving."
+      "notes": "Heartleaf Philodendron has a trailing or climbing habit that needs regular trimming to stay at a manageable scale in enclosed builds. Very adaptable and forgiving overall.",
+      "sources": [
+        {
+          "url": "https://en.wikipedia.org/wiki/Philodendron_hederaceum",
+          "label": "Wikipedia"
+        },
+        {
+          "url": "https://powo.science.kew.org/results?q=Philodendron%20hederaceum",
+          "label": "POWO"
+        },
+        {
+          "url": "https://plants.ces.ncsu.edu/plants/philodendron-hederaceum/",
+          "label": "NCSU Extension"
+        }
+      ],
+      "plantType": "aroid",
+      "rarity": "common",
+      "nativeBiome": "tropical",
+      "nativeContext": "Native to the humid forests of Central America and the Caribbean, climbing trees and trailing across the shaded forest floor."
     },
     {
       "slug": "miniature-orchid",
@@ -516,7 +766,25 @@
       "openTerrariumOk": false,
       "difficulty": 4,
       "image": "plants/miniature-orchid.png",
-      "notes": "Miniature-growing pleurothallid orchid. Prefers good airflow even in high humidity. Mount on cork bark or fine sphagnum for best results."
+      "notes": "Miniature Orchid is a pleurothallid type that prefers good airflow even in high humidity, so don't let air go stagnant around it. Can be mounted on cork bark or fine sphagnum rather than planted in substrate.",
+      "sources": [
+        {
+          "url": "https://en.wikipedia.org/wiki/Lepanthes_telipogoniflora",
+          "label": "Wikipedia"
+        },
+        {
+          "url": "https://powo.science.kew.org/results?q=Lepanthes%20telipogoniflora",
+          "label": "POWO"
+        },
+        {
+          "url": "https://plants.ces.ncsu.edu/plants/lepanthes-telipogoniflora/",
+          "label": "NCSU Extension"
+        }
+      ],
+      "plantType": "orchid",
+      "rarity": "rare",
+      "nativeBiome": "montane",
+      "nativeContext": "From the cool, misty cloud forests of the Colombian and Ecuadorean Andes, growing as a tiny epiphyte on mossy tree bark."
     },
     {
       "slug": "peperomia-caperata",
@@ -551,7 +819,25 @@
       "openTerrariumOk": true,
       "difficulty": 2,
       "image": "plants/peperomia-caperata.png",
-      "notes": "Textured rippled leaves. Semi-succulent stems store some water; allow top of substrate to dry slightly between watering."
+      "notes": "Emerald Ripple Peperomia has textured, rippled leaves and semi-succulent stems that store some water. Allow the top of the substrate to dry slightly between waterings.",
+      "sources": [
+        {
+          "url": "https://en.wikipedia.org/wiki/Peperomia_caperata",
+          "label": "Wikipedia"
+        },
+        {
+          "url": "https://powo.science.kew.org/results?q=Peperomia%20caperata",
+          "label": "POWO"
+        },
+        {
+          "url": "https://plants.ces.ncsu.edu/plants/peperomia-caperata/",
+          "label": "NCSU Extension"
+        }
+      ],
+      "plantType": "foliage",
+      "rarity": "common",
+      "nativeBiome": "tropical",
+      "nativeContext": "From the humid tropical forests of Brazil, growing as a compact groundcover in deep shade on the forest floor."
     },
     {
       "slug": "peperomia-rotundifolia",
@@ -585,7 +871,25 @@
       "openTerrariumOk": true,
       "difficulty": 2,
       "image": "plants/peperomia-rotundifolia.png",
-      "notes": "Delicate trailing stems with small round leaves. Excellent for cascading over edges of backgrounds or wood."
+      "notes": "Trailing Jade has delicate stems with small round leaves that cascade nicely over edges of backgrounds or wood.",
+      "sources": [
+        {
+          "url": "https://en.wikipedia.org/wiki/Peperomia_rotundifolia",
+          "label": "Wikipedia"
+        },
+        {
+          "url": "https://powo.science.kew.org/results?q=Peperomia%20rotundifolia",
+          "label": "POWO"
+        },
+        {
+          "url": "https://plants.ces.ncsu.edu/plants/peperomia-rotundifolia/",
+          "label": "NCSU Extension"
+        }
+      ],
+      "plantType": "vine",
+      "rarity": "common",
+      "nativeBiome": "tropical",
+      "nativeContext": "From the humid forests of tropical Central and South America, trailing over mossy rocks and tree branches in dappled light."
     },
     {
       "slug": "cryptanthus-bivittatus",
@@ -621,7 +925,24 @@
       "difficulty": 2,
       "image": "plants/cryptanthus-bivittatus.png",
       "nativeContext": "A terrestrial bromeliad from the shaded forest floors of eastern Brazil.",
-      "notes": "Star-shaped rosette bromeliad. Holds water in its central cup; do not let cup go dry. Pups freely after flowering."
+      "notes": "Earth Star Bromeliad is a star-shaped rosette that holds water in its central cup. Don't let the cup go dry, and expect it to pup freely after flowering.",
+      "sources": [
+        {
+          "url": "https://en.wikipedia.org/wiki/Cryptanthus_bivittatus",
+          "label": "Wikipedia"
+        },
+        {
+          "url": "https://powo.science.kew.org/results?q=Cryptanthus%20bivittatus",
+          "label": "POWO"
+        },
+        {
+          "url": "https://plants.ces.ncsu.edu/plants/cryptanthus-bivittatus/",
+          "label": "NCSU Extension"
+        }
+      ],
+      "plantType": "bromeliad",
+      "rarity": "uncommon",
+      "nativeBiome": "tropical"
     },
     {
       "slug": "ophiopogon-japonicus-mini",
@@ -655,7 +976,25 @@
       "openTerrariumOk": true,
       "difficulty": 1,
       "image": "plants/ophiopogon-japonicus-mini.png",
-      "notes": "Grass-like tufts; stays very compact. Excellent as a ground-cover accent. Very cold-tolerant — one of the few options for cool builds."
+      "notes": "Dwarf Mondo Grass forms compact, grass-like tufts and is very cold-tolerant, making it one of the few viable options for cool builds. Works well as a ground-cover accent.",
+      "sources": [
+        {
+          "url": "https://en.wikipedia.org/wiki/Ophiopogon_japonicus",
+          "label": "Wikipedia"
+        },
+        {
+          "url": "https://powo.science.kew.org/results?q=Ophiopogon%20japonicus",
+          "label": "POWO"
+        },
+        {
+          "url": "https://plants.ces.ncsu.edu/plants/ophiopogon-japonicus/",
+          "label": "NCSU Extension"
+        }
+      ],
+      "plantType": "foliage",
+      "rarity": "common",
+      "nativeBiome": "subtropical",
+      "nativeContext": "From the forest floors of China, Japan, and Vietnam, forming low grass-like mats in shaded, moist conditions."
     },
     {
       "slug": "syngonium-podophyllum-mini",
@@ -682,15 +1021,33 @@
       "phPreference": "acidic",
       "growthRate": "moderate",
       "substrateTags": [
-        "peat",
-        "perlite"
+        "perlite",
+        "peat"
       ],
       "closedTerrariumOk": true,
       "openTerrariumOk": false,
       "difficulty": 2,
       "image": "plants/syngonium-podophyllum-mini.png",
-      "toxicity": "Foliage and sap carry calcium oxalate crystals; ingestion irritates the mouth and digestive tract and the sap can irritate skin. Toxic to cats and dogs.",
-      "notes": "Arrow-shaped leaves on compact juvenile growth. Trim frequently; mature climbing growth is not suitable for enclosed builds."
+      "plantType": "aroid",
+      "nativeBiome": "tropical",
+      "rarity": "common",
+      "toxicity": "Foliage and sap carry calcium oxalate crystals; ingestion irritates the mouth and digestive tract and the sap can irritate skin. Toxic to cats and dogs. See more information on the NCSU page.",
+      "nativeContext": "From the humid tropical forests of Latin America, climbing and trailing in dappled light beneath the canopy.",
+      "notes": "Arrowhead Plant has compact juvenile growth with arrow-shaped leaves, but mature climbing growth can get large for enclosed builds, so monitor its size frequently.",
+      "sources": [
+        {
+          "url": "https://en.wikipedia.org/wiki/Syngonium_podophyllum",
+          "label": "Wikipedia"
+        },
+        {
+          "url": "https://powo.science.kew.org/results?q=Syngonium%20podophyllum",
+          "label": "POWO"
+        },
+        {
+          "url": "https://plants.ces.ncsu.edu/plants/syngonium-podophyllum/",
+          "label": "NCSU Extension"
+        }
+      ]
     },
     {
       "slug": "pilea-nummulariifolia",
@@ -716,15 +1073,34 @@
       "phPreference": "neutral",
       "growthRate": "moderate",
       "substrateTags": [
-        "peat",
         "perlite",
+        "peat",
         "coco-coir"
       ],
       "closedTerrariumOk": true,
       "openTerrariumOk": true,
       "difficulty": 1,
       "image": "plants/pilea-nummulariifolia.png",
-      "notes": "Fast-spreading carpet plant with tiny round leaves. Easy to control with trimming. Good filler for open midground areas."
+      "growthHabit": "trailing",
+      "notes": "Creeping Charlie is a fast-spreading carpet plant with tiny round leaves. Easy to control with trimming and works well as a filler for open midground areas.",
+      "sources": [
+        {
+          "url": "https://en.wikipedia.org/wiki/Pilea_nummulariifolia",
+          "label": "Wikipedia"
+        },
+        {
+          "url": "https://powo.science.kew.org/results?q=Pilea%20nummulariifolia",
+          "label": "POWO"
+        },
+        {
+          "url": "https://plants.ces.ncsu.edu/plants/pilea-nummulariifolia/",
+          "label": "NCSU Extension"
+        }
+      ],
+      "plantType": "ground-cover",
+      "rarity": "common",
+      "nativeBiome": "tropical",
+      "nativeContext": "From the humid lowland forests of Central and South America, carpeting the shaded forest floor."
     },
     {
       "slug": "begonia-rex",
@@ -758,7 +1134,25 @@
       "difficulty": 3,
       "image": "plants/begonia-rex.png",
       "toxicity": "Begonias contain soluble calcium oxalates, most concentrated in the tubers; ingestion can cause mouth irritation, drooling, and vomiting in cats and dogs.",
-      "notes": "Spectacular metallic, patterned foliage. High humidity is essential but avoid water on leaves — promotes botrytis. Needs bright indirect light."
+      "notes": "Rex Begonia is grown for its metallic, patterned foliage and needs bright indirect light to stay looking that way. High humidity is essential, but water sitting on the leaves causes botrytis, so keep the leaves dry.",
+      "sources": [
+        {
+          "url": "https://en.wikipedia.org/wiki/Begonia_rex-cultorum",
+          "label": "Wikipedia"
+        },
+        {
+          "url": "https://powo.science.kew.org/results?q=Begonia%20rex-cultorum",
+          "label": "POWO"
+        },
+        {
+          "url": "https://plants.ces.ncsu.edu/plants/begonia-rex-cultorum/",
+          "label": "NCSU Extension"
+        }
+      ],
+      "plantType": "begonia",
+      "rarity": "common",
+      "nativeBiome": "tropical",
+      "nativeContext": "Originally from the humid forests of Assam, India; the modern Rex Begonia is a complex hybrid group grown for its spectacular patterned foliage."
     },
     {
       "slug": "haworthia-attenuata",
@@ -794,7 +1188,24 @@
       "difficulty": 1,
       "image": "plants/haworthia-attenuata.png",
       "nativeContext": "From shaded, rocky ground in the Eastern Cape of South Africa, often sheltered under shrubs.",
-      "notes": "Tolerates low light better than most succulents. White warty stripes on leaves. Prefers bright indirect rather than direct sun — windows without afternoon sun are ideal."
+      "notes": "Zebra Haworthia tolerates low light better than most succulents and has distinctive white warty stripes on its leaves. It prefers bright indirect light over direct sun, so windows without afternoon sun are ideal.",
+      "sources": [
+        {
+          "url": "https://en.wikipedia.org/wiki/Haworthia_attenuata",
+          "label": "Wikipedia"
+        },
+        {
+          "url": "https://powo.science.kew.org/results?q=Haworthia%20attenuata",
+          "label": "POWO"
+        },
+        {
+          "url": "https://plants.ces.ncsu.edu/plants/haworthia-attenuata/",
+          "label": "NCSU Extension"
+        }
+      ],
+      "plantType": "succulent",
+      "rarity": "common",
+      "nativeBiome": "subtropical"
     },
     {
       "slug": "echeveria-elegans",
@@ -830,7 +1241,24 @@
       "difficulty": 1,
       "image": "plants/echeveria-elegans.png",
       "nativeContext": "From semi-arid rocky outcrops in the highlands of Mexico, in bright sun and fast-draining ground.",
-      "notes": "Classic rosette succulent. Needs bright direct sun to maintain compact form; etiolates quickly in shade. Pups prolifically."
+      "notes": "Mexican Snowball is a classic rosette succulent that needs bright direct sun to maintain its compact form. It etiolates quickly in shade and pups prolifically.",
+      "sources": [
+        {
+          "url": "https://en.wikipedia.org/wiki/Echeveria_elegans",
+          "label": "Wikipedia"
+        },
+        {
+          "url": "https://powo.science.kew.org/results?q=Echeveria%20elegans",
+          "label": "POWO"
+        },
+        {
+          "url": "https://plants.ces.ncsu.edu/plants/echeveria-elegans/",
+          "label": "NCSU Extension"
+        }
+      ],
+      "plantType": "succulent",
+      "rarity": "common",
+      "nativeBiome": "arid"
     },
     {
       "slug": "sedum-rubrotinctum",
@@ -865,7 +1293,25 @@
       "openTerrariumOk": true,
       "difficulty": 1,
       "image": "plants/sedum-rubrotinctum.png",
-      "notes": "Bean-shaped leaves turn red at tips with sun stress. Stems are brittle — handle carefully. Leaves propagate easily."
+      "notes": "Jelly Bean Plant has bean-shaped leaves that turn red at the tips with sun stress. The stems are brittle, so handle it carefully. Leaves propagate easily.",
+      "sources": [
+        {
+          "url": "https://en.wikipedia.org/wiki/Sedum_rubrotinctum",
+          "label": "Wikipedia"
+        },
+        {
+          "url": "https://powo.science.kew.org/results?q=Sedum%20rubrotinctum",
+          "label": "POWO"
+        },
+        {
+          "url": "https://plants.ces.ncsu.edu/plants/sedum-rubrotinctum/",
+          "label": "NCSU Extension"
+        }
+      ],
+      "plantType": "succulent",
+      "rarity": "common",
+      "nativeBiome": "subtropical",
+      "nativeContext": "Native to rocky hillsides in Mexico, where its plump, coloured leaves store water through dry seasons."
     },
     {
       "slug": "crassula-ovata-mini",
@@ -900,7 +1346,25 @@
       "difficulty": 1,
       "image": "plants/crassula-ovata-mini.png",
       "toxicity": "Jade is toxic to cats and dogs; ingestion can cause vomiting, lethargy, and incoordination. Keep away from pets.",
-      "notes": "Dwarf jade stays compact for years. Water only when completely dry. Good for rock-garden style open terrariums."
+      "notes": "Mini Jade Plant is a dwarf jade that stays compact for years. Water only when completely dry. A good choice for rock-garden style open terrariums.",
+      "sources": [
+        {
+          "url": "https://en.wikipedia.org/wiki/Crassula_ovata",
+          "label": "Wikipedia"
+        },
+        {
+          "url": "https://powo.science.kew.org/results?q=Crassula%20ovata",
+          "label": "POWO"
+        },
+        {
+          "url": "https://plants.ces.ncsu.edu/plants/crassula-ovata/",
+          "label": "NCSU Extension"
+        }
+      ],
+      "plantType": "succulent",
+      "rarity": "common",
+      "nativeBiome": "subtropical",
+      "nativeContext": "From the rocky hillsides and dry scrublands of the Eastern Cape and KwaZulu-Natal, South Africa."
     },
     {
       "slug": "pilea-peperomioides",
@@ -927,16 +1391,33 @@
       "phPreference": "neutral",
       "growthRate": "moderate",
       "substrateTags": [
-        "peat",
         "perlite",
+        "peat",
         "sand"
       ],
       "closedTerrariumOk": false,
       "openTerrariumOk": true,
       "difficulty": 2,
       "image": "plants/pilea-peperomioides.png",
+      "plantType": "foliage",
+      "nativeBiome": "temperate",
+      "rarity": "common",
       "nativeContext": "Native to the forested foothills of the Himalayas in Yunnan, China.",
-      "notes": "Round pancake-shaped leaves. Rotate regularly for even growth. Pups freely at the base. Prefers cooler temperatures than tropical species."
+      "notes": "Chinese Money Plant has distinctive round, pancake-shaped leaves and prefers cooler temperatures than most tropical species. Rotate it regularly for even growth, and expect it to pup freely at the base.",
+      "sources": [
+        {
+          "url": "https://en.wikipedia.org/wiki/Pilea_peperomioides",
+          "label": "Wikipedia"
+        },
+        {
+          "url": "https://powo.science.kew.org/results?q=Pilea%20peperomioides",
+          "label": "POWO"
+        },
+        {
+          "url": "https://plants.ces.ncsu.edu/plants/pilea-peperomioides/",
+          "label": "NCSU Extension"
+        }
+      ]
     },
     {
       "slug": "tradescantia-fluminensis",
@@ -970,7 +1451,25 @@
       "difficulty": 1,
       "image": "plants/tradescantia-fluminensis.png",
       "toxicity": "The sap causes contact dermatitis in pets and can irritate sensitive skin in people; ingestion may cause mild digestive upset. Listed toxic to cats and dogs.",
-      "notes": "Very fast-growing trailing plant. Can overwhelm smaller companions; trim frequently. Purple-leaf varieties need brighter light for colour retention."
+      "notes": "Wandering Dude is a very fast-growing trailing plant that can overwhelm smaller companions, so trim it frequently. Purple-leaf varieties need brighter light to retain their colour.",
+      "sources": [
+        {
+          "url": "https://en.wikipedia.org/wiki/Tradescantia_fluminensis",
+          "label": "Wikipedia"
+        },
+        {
+          "url": "https://powo.science.kew.org/results?q=Tradescantia%20fluminensis",
+          "label": "POWO"
+        },
+        {
+          "url": "https://plants.ces.ncsu.edu/plants/tradescantia-fluminensis/",
+          "label": "NCSU Extension"
+        }
+      ],
+      "plantType": "vine",
+      "rarity": "common",
+      "nativeBiome": "subtropical",
+      "nativeContext": "Native to the subtropical forests of southeastern South America, carpeting the ground in damp, shaded conditions."
     },
     {
       "slug": "leucobryum-glaucum",
@@ -996,15 +1495,33 @@
       "phPreference": "acidic",
       "growthRate": "slow",
       "substrateTags": [
+        "peat",
         "sphagnum",
-        "coco-coir",
-        "peat"
+        "coco-coir"
       ],
       "closedTerrariumOk": true,
       "openTerrariumOk": false,
       "difficulty": 1,
       "image": "plants/leucobryum-glaucum.png",
-      "notes": "Forms dense, velvety light-green clumps. Perfect for micro containers and jars as a primary ground cover."
+      "plantType": "moss",
+      "nativeBiome": "temperate",
+      "rarity": "common",
+      "nativeContext": "Found throughout temperate forests of the Northern Hemisphere, forming dense cushions on acidic, shaded soil and tree bases.",
+      "notes": "Cushion Moss forms dense, velvety light-green clumps and works well as a primary ground cover in micro containers and jars. Can absorb minerals from water similar to charcoal.",
+      "sources": [
+        {
+          "url": "https://en.wikipedia.org/wiki/Leucobryum_glaucum",
+          "label": "Wikipedia"
+        },
+        {
+          "url": "https://powo.science.kew.org/results?q=Leucobryum%20glaucum",
+          "label": "POWO"
+        },
+        {
+          "url": "https://ohiomosslichen.org/moss-leucobryum-glaucum/",
+          "label": "Ohio Moss and Lichen"
+        }
+      ]
     },
     {
       "slug": "fissidens-fontanus",
@@ -1036,11 +1553,25 @@
       "openTerrariumOk": false,
       "difficulty": 2,
       "image": "plants/fissidens-fontanus.png",
-      "hardscapeTags": [
-        "rock",
-        "wood"
+      "notes": "Pocket Moss is a feathery aquatic moss that grows well on damp wood or rocks. A good choice for miniature sealed setups.",
+      "sources": [
+        {
+          "url": "https://en.wikipedia.org/wiki/Fissidens_fontanus",
+          "label": "Wikipedia"
+        },
+        {
+          "url": "https://powo.science.kew.org/results?q=Fissidens%20fontanus",
+          "label": "POWO"
+        },
+        {
+          "url": "https://plants.ces.ncsu.edu/plants/fissidens-fontanus/",
+          "label": "NCSU Extension"
+        }
       ],
-      "notes": "Feathery aquatic moss that grows beautifully on damp wood or rocks. Excellent choice for miniature sealed setups."
+      "plantType": "moss",
+      "rarity": "common",
+      "nativeBiome": "temperate",
+      "nativeContext": "A submerged aquatic moss from the clear, cool streams of temperate and subtropical regions worldwide."
     },
     {
       "slug": "davallia-fejeensis",
@@ -1075,7 +1606,25 @@
       "openTerrariumOk": true,
       "difficulty": 2,
       "image": "plants/davallia-fejeensis.png",
-      "notes": "Features furry surface rhizomes that resemble animal feet. Thrives in both closed or well-ventilated open terrariums."
+      "notes": "Rabbit's Foot Fern has furry surface rhizomes that resemble animal feet. It thrives in both closed and well-ventilated open terrariums.",
+      "sources": [
+        {
+          "url": "https://en.wikipedia.org/wiki/Davallia_fejeensis",
+          "label": "Wikipedia"
+        },
+        {
+          "url": "https://powo.science.kew.org/results?q=Davallia%20fejeensis",
+          "label": "POWO"
+        },
+        {
+          "url": "https://plants.ces.ncsu.edu/plants/davallia-fejeensis/",
+          "label": "NCSU Extension"
+        }
+      ],
+      "plantType": "fern",
+      "rarity": "uncommon",
+      "nativeBiome": "tropical",
+      "nativeContext": "From the humid tropical forests of Fiji and surrounding Pacific islands, its furry rhizomes creeping over rocks and tree bark."
     },
     {
       "slug": "asplenium-bulbiferum",
@@ -1109,7 +1658,25 @@
       "openTerrariumOk": false,
       "difficulty": 3,
       "image": "plants/asplenium-bulbiferum.png",
-      "notes": "Graceful fern that grows miniature plantlets directly on its fronds. Prefers stable, highly humid closed systems."
+      "notes": "Mother Spleenwort is a graceful fern that grows miniature plantlets directly on its fronds. It prefers stable, highly humid closed systems.",
+      "sources": [
+        {
+          "url": "https://en.wikipedia.org/wiki/Asplenium_bulbiferum",
+          "label": "Wikipedia"
+        },
+        {
+          "url": "https://powo.science.kew.org/results?q=Asplenium%20bulbiferum",
+          "label": "POWO"
+        },
+        {
+          "url": "https://plants.ces.ncsu.edu/plants/asplenium-bulbiferum/",
+          "label": "NCSU Extension"
+        }
+      ],
+      "plantType": "fern",
+      "rarity": "uncommon",
+      "nativeBiome": "temperate",
+      "nativeContext": "From the cool, moist forest gullies and shaded cliff faces of New Zealand and southeastern Australia."
     },
     {
       "slug": "peperomia-argyreia",
@@ -1143,7 +1710,25 @@
       "openTerrariumOk": true,
       "difficulty": 2,
       "image": "plants/peperomia-argyreia.png",
-      "notes": "Stunning leaves patterned exactly like watermelon rinds. Semi-succulent stems make it sensitive to overwatering in closed glass."
+      "notes": "Watermelon Peperomia has leaves patterned like watermelon rinds. Its semi-succulent stems make it sensitive to overwatering in closed glass.",
+      "sources": [
+        {
+          "url": "https://en.wikipedia.org/wiki/Peperomia_argyreia",
+          "label": "Wikipedia"
+        },
+        {
+          "url": "https://powo.science.kew.org/results?q=Peperomia%20argyreia",
+          "label": "POWO"
+        },
+        {
+          "url": "https://plants.ces.ncsu.edu/plants/peperomia-argyreia/",
+          "label": "NCSU Extension"
+        }
+      ],
+      "plantType": "foliage",
+      "rarity": "common",
+      "nativeBiome": "tropical",
+      "nativeContext": "From the humid rainforest floors of Bolivia and western South America, growing in deep shade beneath the forest canopy."
     },
     {
       "slug": "peperomia-obtusifolia",
@@ -1171,15 +1756,34 @@
       "phPreference": "neutral",
       "growthRate": "moderate",
       "substrateTags": [
-        "peat",
         "perlite",
+        "peat",
         "sand"
       ],
       "closedTerrariumOk": true,
       "openTerrariumOk": true,
       "difficulty": 1,
       "image": "plants/peperomia-obtusifolia.png",
-      "notes": "Thick, glossy leaves that store moisture. Highly durable choice for larger open terrariums or monitored closed ones."
+      "growthHabit": "upright",
+      "plantType": "foliage",
+      "nativeBiome": "tropical",
+      "rarity": "common",
+      "nativeContext": "Native to the tropical forests of Central America and the Caribbean, growing in shaded, moist understorey.",
+      "notes": "Baby Rubber Plant has thick, glossy leaves that store moisture. Likes some airflow, and is a durable choice for larger open terrariums. Closed terrariums with the Baby Rubber Plant should be opened regularly.",
+      "sources": [
+        {
+          "url": "https://en.wikipedia.org/wiki/Peperomia_obtusifolia",
+          "label": "Wikipedia"
+        },
+        {
+          "url": "https://powo.science.kew.org/results?q=Peperomia%20obtusifolia",
+          "label": "POWO"
+        },
+        {
+          "url": "https://plants.ces.ncsu.edu/plants/peperomia-obtusifolia/",
+          "label": "NCSU Extension"
+        }
+      ]
     },
     {
       "slug": "bucephalandra-sp-mini",
@@ -1212,11 +1816,25 @@
       "openTerrariumOk": false,
       "difficulty": 3,
       "image": "plants/bucephalandra-sp-mini.png",
-      "hardscapeTags": [
-        "rock",
-        "wood"
+      "notes": "Mini Bucephalandra is an elegant, slow-growing plant with dark metallic hues. It needs to be attached to rock or wood rather than buried, and is well suited to micro sealed jars.",
+      "sources": [
+        {
+          "url": "https://en.wikipedia.org/wiki/Bucephalandra",
+          "label": "Wikipedia"
+        },
+        {
+          "url": "https://powo.science.kew.org/results?q=Bucephalandra",
+          "label": "POWO"
+        },
+        {
+          "url": "https://plants.ces.ncsu.edu/plants/bucephalandra/",
+          "label": "NCSU Extension"
+        }
       ],
-      "notes": "An elegant slow grower with dark metallic hues. Must be attached to rock or wood rather than buried; ideal for micro sealed jars."
+      "plantType": "aroid",
+      "rarity": "rare",
+      "nativeBiome": "tropical",
+      "nativeContext": "Endemic to the fast-moving streams and rivers of Sarawak, Borneo, anchored to rocks in clear, cool, shaded water."
     },
     {
       "slug": "anubias-nana-petite",
@@ -1249,11 +1867,25 @@
       "openTerrariumOk": false,
       "difficulty": 1,
       "image": "plants/anubias-nana-petite.png",
-      "hardscapeTags": [
-        "rock",
-        "wood"
-      ],
-      "notes": "Extremely robust miniature aquatic plant. Thrives perfectly in waterlogged, hyper-humid conditions on wood or hardscape inside tiny jars."
+      "plantType": "aroid",
+      "nativeBiome": "tropical",
+      "rarity": "uncommon",
+      "nativeContext": "A slow-growing aquatic aroid from the shaded streams and rivers of West and Central Africa, anchored to rocks and submerged wood.",
+      "notes": "Anubias Petite is an extremely robust miniature aquatic plant that thrives in waterlogged, hyper-humid conditions -- especially on wood or hardscape inside tiny jars. Covering the rhizome will cause rot.",
+      "sources": [
+        {
+          "url": "https://en.wikipedia.org/wiki/Anubias_barteri_var._nana",
+          "label": "Wikipedia"
+        },
+        {
+          "url": "https://powo.science.kew.org/results?q=Anubias%20barteri",
+          "label": "POWO"
+        },
+        {
+          "url": "https://tropica.com/en/plants/plantdetails/Anubiasbarteri'Petite'(101HCLP)/30576",
+          "label": "Tropica"
+        }
+      ]
     },
     {
       "slug": "hydrocotyle-tripartita",
@@ -1287,7 +1919,25 @@
       "openTerrariumOk": false,
       "difficulty": 2,
       "image": "plants/hydrocotyle-tripartita.png",
-      "notes": "Produces small clover-like leaves on fast-growing creeping runners. Forms a dense green carpet if trimmed regularly."
+      "notes": "Dwarf Pennywort produces small clover-like leaves on fast-growing creeping runners. It forms a dense green carpet if trimmed regularly.",
+      "sources": [
+        {
+          "url": "https://en.wikipedia.org/wiki/Hydrocotyle_tripartita",
+          "label": "Wikipedia"
+        },
+        {
+          "url": "https://powo.science.kew.org/results?q=Hydrocotyle%20tripartita",
+          "label": "POWO"
+        },
+        {
+          "url": "https://plants.ces.ncsu.edu/plants/hydrocotyle-tripartita/",
+          "label": "NCSU Extension"
+        }
+      ],
+      "plantType": "ground-cover",
+      "rarity": "uncommon",
+      "nativeBiome": "tropical",
+      "nativeContext": "A creeping aquatic plant from the shallow streams and wetland margins of Southeast Asia and northern Australia."
     },
     {
       "slug": "pilea-glauca",
@@ -1321,7 +1971,25 @@
       "openTerrariumOk": true,
       "difficulty": 2,
       "image": "plants/pilea-glauca.png",
-      "notes": "A beautiful trailing plant with red stems and tiny metallic blue-silver leaves. Spreads quickly and looks magnificent cascading down."
+      "notes": "Silver Sparkle Pilea is a trailing plant with red stems and tiny metallic blue-silver leaves. It spreads quickly and looks best cascading downward.",
+      "sources": [
+        {
+          "url": "https://en.wikipedia.org/wiki/Pilea_glauca",
+          "label": "Wikipedia"
+        },
+        {
+          "url": "https://powo.science.kew.org/results?q=Pilea%20glauca",
+          "label": "POWO"
+        },
+        {
+          "url": "https://plants.ces.ncsu.edu/plants/pilea-glauca/",
+          "label": "NCSU Extension"
+        }
+      ],
+      "plantType": "ground-cover",
+      "rarity": "uncommon",
+      "nativeBiome": "tropical",
+      "nativeContext": "From the shaded tropical forests of Central America, spreading as a low, delicate groundcover in moist conditions."
     },
     {
       "slug": "epipremnum-pinnatum-mini",
@@ -1357,7 +2025,25 @@
       "difficulty": 1,
       "image": "plants/epipremnum-pinnatum-mini.png",
       "toxicity": "Pothos contains insoluble calcium oxalates; ingestion causes oral irritation, drooling, and vomiting. Toxic to cats and dogs.",
-      "notes": "A scaled-down cultivar of the incredibly tough pothos vine. Highly adaptable, handles trailing or climbing with ease."
+      "notes": "Miniature Pothos is a scaled-down cultivar of the standard pothos vine. Highly adaptable, it handles trailing or climbing equally well.",
+      "sources": [
+        {
+          "url": "https://en.wikipedia.org/wiki/Epipremnum_pinnatum",
+          "label": "Wikipedia"
+        },
+        {
+          "url": "https://powo.science.kew.org/results?q=Epipremnum%20pinnatum",
+          "label": "POWO"
+        },
+        {
+          "url": "https://plants.ces.ncsu.edu/plants/epipremnum-pinnatum/",
+          "label": "NCSU Extension"
+        }
+      ],
+      "plantType": "aroid",
+      "rarity": "common",
+      "nativeBiome": "tropical",
+      "nativeContext": "Native to the humid tropical forests of Southeast Asia, climbing tree trunks and spreading across the forest floor."
     },
     {
       "slug": "ludwigia-repens",
@@ -1391,11 +2077,29 @@
       "openTerrariumOk": false,
       "difficulty": 2,
       "image": "plants/ludwigia-repens.png",
-      "notes": "An amphibious species whose leaves flush attractive reddish colors under bright light. Excels in swampy closed layouts."
+      "notes": "Creeping Primrose-Willow is an amphibious species whose leaves develop attractive reddish tones under bright light. It does particularly well in swampy closed layouts.",
+      "sources": [
+        {
+          "url": "https://en.wikipedia.org/wiki/Ludwigia_repens",
+          "label": "Wikipedia"
+        },
+        {
+          "url": "https://powo.science.kew.org/results?q=Ludwigia%20repens",
+          "label": "POWO"
+        },
+        {
+          "url": "https://plants.ces.ncsu.edu/plants/ludwigia-repens/",
+          "label": "NCSU Extension"
+        }
+      ],
+      "plantType": "foliage",
+      "rarity": "uncommon",
+      "nativeBiome": "subtropical",
+      "nativeContext": "A semi-aquatic plant native to the margins of streams and ponds from the southern USA to Argentina."
     },
     {
       "slug": "vesicularia-dubyana",
-      "commonName": "Christmas Moss",
+      "commonName": "Java Moss",
       "scientificName": "Vesicularia dubyana",
       "light": {
         "primary": "low"
@@ -1423,11 +2127,17 @@
       "openTerrariumOk": false,
       "difficulty": 1,
       "image": "plants/vesicularia-dubyana.png",
-      "hardscapeTags": [
-        "rock",
-        "wood"
+      "notes": "This Java Moss grows in triangular, fern-like branch structures resembling a pine tree. It's highly forgiving and well suited to miniature setups.",
+      "sources": [
+        {
+          "url": "https://en.wikipedia.org/wiki/Vesicularia_dubyana",
+          "label": "Wikipedia"
+        }
       ],
-      "notes": "Grows in triangular, fern-like branch structures resembling a pine tree. Highly forgiving and spectacular for miniature setups."
+      "plantType": "moss",
+      "rarity": "common",
+      "nativeBiome": "tropical",
+      "nativeContext": "From streams and wetlands of Java and Singapore, growing submerged or emergent on rocks and wood in gentle current."
     },
     {
       "slug": "soleirolia-soleirolii-minor",
@@ -1461,7 +2171,25 @@
       "openTerrariumOk": false,
       "difficulty": 2,
       "image": "plants/soleirolia-soleirolii-minor.png",
-      "notes": "Even smaller and more compact than standard Baby Tears. Forms an ultra-dense microscopic bright green carpet."
+      "notes": "Miniature Baby Tears is even smaller and more compact than standard Baby Tears. It forms an ultra-dense, bright green carpet.",
+      "sources": [
+        {
+          "url": "https://en.wikipedia.org/wiki/Soleirolia_soleirolii",
+          "label": "Wikipedia"
+        },
+        {
+          "url": "https://powo.science.kew.org/results?q=Soleirolia%20soleirolii",
+          "label": "POWO"
+        },
+        {
+          "url": "https://plants.ces.ncsu.edu/plants/soleirolia-soleirolii/",
+          "label": "NCSU Extension"
+        }
+      ],
+      "plantType": "ground-cover",
+      "rarity": "common",
+      "nativeBiome": "mediterranean",
+      "nativeContext": "A miniature cultivar of a Mediterranean island endemic, native to shaded, damp rocky slopes of Corsica, Sardinia, and nearby islands."
     },
     {
       "slug": "rhipsalis-baccifera",
@@ -1497,7 +2225,24 @@
       "difficulty": 2,
       "image": "plants/rhipsalis-baccifera.png",
       "nativeContext": "An epiphytic jungle cactus of tropical American rainforests, dangling from tree branches.",
-      "notes": "An epiphytic jungle cactus that prefers indirect light. Tolerates well-monitored closed terrariums surprisingly well."
+      "notes": "Mistletoe Cactus is an epiphytic jungle cactus that prefers indirect light rather than direct sun. It tolerates well-monitored closed terrariums better than most cacti.",
+      "sources": [
+        {
+          "url": "https://en.wikipedia.org/wiki/Rhipsalis_baccifera",
+          "label": "Wikipedia"
+        },
+        {
+          "url": "https://powo.science.kew.org/results?q=Rhipsalis%20baccifera",
+          "label": "POWO"
+        },
+        {
+          "url": "https://plants.ces.ncsu.edu/plants/rhipsalis-baccifera/",
+          "label": "NCSU Extension"
+        }
+      ],
+      "plantType": "succulent",
+      "rarity": "uncommon",
+      "nativeBiome": "tropical"
     },
     {
       "slug": "drosera-capensis",
@@ -1524,9 +2269,9 @@
       "phPreference": "acidic",
       "growthRate": "moderate",
       "substrateTags": [
+        "peat",
         "sphagnum",
-        "sand",
-        "peat"
+        "sand"
       ],
       "closedTerrariumOk": false,
       "openTerrariumOk": true,
@@ -1536,7 +2281,22 @@
       "plantType": "carnivorous",
       "nativeBiome": "subtropical",
       "nativeContext": "From the winter-rainfall fynbos of South Africa's Western Cape, in permanently damp, nutrient-poor seeps.",
-      "notes": "Forgiving beginner carnivore. Use only rain/distilled water — minerals are lethal. Wants bright light and airflow; dews drop in stale air."
+      "notes": "Cape Sundew is a forgiving beginner carnivore, but it must only receive rain or distilled water as minerals are lethal to it. It wants bright light and airflow, as the sticky dew drops in stale air.",
+      "sources": [
+        {
+          "url": "https://en.wikipedia.org/wiki/Drosera_capensis",
+          "label": "Wikipedia"
+        },
+        {
+          "url": "https://powo.science.kew.org/results?q=Drosera%20capensis",
+          "label": "POWO"
+        },
+        {
+          "url": "https://plants.ces.ncsu.edu/plants/drosera/",
+          "label": "NCSU Extension"
+        }
+      ],
+      "rarity": "common"
     },
     {
       "slug": "nepenthes-ventricosa",
@@ -1574,7 +2334,22 @@
       "plantType": "carnivorous",
       "nativeBiome": "tropical",
       "nativeContext": "A highland pitcher plant endemic to the Philippines, on mossy mountain slopes in cool, humid cloud forest.",
-      "notes": "A tolerant highland Nepenthes that pitchers well in humid enclosures. Never let the airy, chunky mix stay soggy. Distilled water only."
+      "notes": "Tropical Pitcher Plant is a tolerant highland Nepenthes that pitchers well in humid enclosures. Never let its airy, chunky mix stay soggy, and use distilled water only.",
+      "sources": [
+        {
+          "url": "https://en.wikipedia.org/wiki/Nepenthes_ventricosa",
+          "label": "Wikipedia"
+        },
+        {
+          "url": "https://powo.science.kew.org/results?q=Nepenthes%20ventricosa",
+          "label": "POWO"
+        },
+        {
+          "url": "https://plants.ces.ncsu.edu/plants/nepenthes-ventricosa/",
+          "label": "NCSU Extension"
+        }
+      ],
+      "rarity": "uncommon"
     },
     {
       "slug": "pinguicula-moranensis",
@@ -1612,7 +2387,22 @@
       "plantType": "carnivorous",
       "nativeBiome": "montane",
       "nativeContext": "Native to rocky, seasonally dry slopes in the mountains of Mexico and Central America.",
-      "notes": "Sticky-leaved gnat catcher with a mineral, near-neutral mix (unusual for a carnivore). Has a drier winter succulent phase — ease off water then."
+      "notes": "Mexican Butterwort uses its sticky leaves to catch gnats and prefers a mineral, near-neutral mix, which is unusual for a carnivore. It has a drier winter succulent phase, so ease off watering during that time.",
+      "sources": [
+        {
+          "url": "https://en.wikipedia.org/wiki/Pinguicula_moranensis",
+          "label": "Wikipedia"
+        },
+        {
+          "url": "https://powo.science.kew.org/results?q=Pinguicula%20moranensis",
+          "label": "POWO"
+        },
+        {
+          "url": "https://plants.ces.ncsu.edu/plants/pinguicula-moranensis/",
+          "label": "NCSU Extension"
+        }
+      ],
+      "rarity": "uncommon"
     },
     {
       "slug": "nephrolepis-duffii",
@@ -1651,7 +2441,23 @@
       "growthHabit": "upright",
       "plantType": "fern",
       "nativeBiome": "tropical",
-      "notes": "Compact, lemon-scented button fronds. One of the easiest ferns for both open and closed setups; keep evenly moist."
+      "notes": "Lemon Button Fern has compact, lemon-scented button fronds and is one of the easiest ferns for both open and closed setups. Keep it evenly moist.",
+      "sources": [
+        {
+          "url": "https://en.wikipedia.org/wiki/Nephrolepis_cordifolia",
+          "label": "Wikipedia"
+        },
+        {
+          "url": "https://powo.science.kew.org/results?q=Nephrolepis%20cordifolia",
+          "label": "POWO"
+        },
+        {
+          "url": "https://plants.ces.ncsu.edu/plants/nephrolepis-cordifolia/",
+          "label": "NCSU Extension"
+        }
+      ],
+      "rarity": "common",
+      "nativeContext": "From the humid tropical forests of Asia and the Pacific, growing as a compact fern in shaded, moist conditions."
     },
     {
       "slug": "pteris-cretica",
@@ -1687,7 +2493,23 @@
       "growthHabit": "upright",
       "plantType": "fern",
       "nativeBiome": "subtropical",
-      "notes": "Variegated cretan brake fern. Tolerates a touch of lime, so a neutral mix is fine. Airy fronds suit medium-sized planted terraria."
+      "notes": "Silver Lace Fern is a variegated cretan brake fern that tolerates a touch of lime, so a neutral mix works fine. Its airy fronds suit medium-sized planted terraria.",
+      "sources": [
+        {
+          "url": "https://en.wikipedia.org/wiki/Pteris_cretica",
+          "label": "Wikipedia"
+        },
+        {
+          "url": "https://powo.science.kew.org/results?q=Pteris%20cretica",
+          "label": "POWO"
+        },
+        {
+          "url": "https://plants.ces.ncsu.edu/plants/pteris-cretica/",
+          "label": "NCSU Extension"
+        }
+      ],
+      "rarity": "common",
+      "nativeContext": "Widely distributed from the Mediterranean through Asia and Africa, growing in shaded rocky slopes, walls, and forest edges."
     },
     {
       "slug": "microsorum-musifolium",
@@ -1725,7 +2547,23 @@
       "growthHabit": "upright",
       "plantType": "fern",
       "nativeBiome": "tropical",
-      "notes": "Puckered, crocodile-skin fronds. An epiphyte at heart — loves humidity and a chunky, never-waterlogged root run."
+      "notes": "Crocodile Fern has distinctive puckered, crocodile-skin fronds. It's an epiphyte at heart and loves humidity, but the roots should never sit in waterlogged substrate.",
+      "sources": [
+        {
+          "url": "https://en.wikipedia.org/wiki/Microsorum_musifolium",
+          "label": "Wikipedia"
+        },
+        {
+          "url": "https://powo.science.kew.org/results?q=Microsorum%20musifolium",
+          "label": "POWO"
+        },
+        {
+          "url": "https://plants.ces.ncsu.edu/plants/microsorum-musifolium/",
+          "label": "NCSU Extension"
+        }
+      ],
+      "rarity": "uncommon",
+      "nativeContext": "From the humid tropical forests of Southeast Asia and northern Australia, its distinctive scaly fronds emerging as a large epiphyte on tree trunks."
     },
     {
       "slug": "selaginella-kraussiana",
@@ -1762,7 +2600,23 @@
       "growthHabit": "creeping",
       "plantType": "fern-ally",
       "nativeBiome": "tropical",
-      "notes": "Chartreuse carpeting spikemoss. Needs constant humidity — crisps fast in open air. Excellent foreground groundcover in sealed jars."
+      "notes": "Golden Clubmoss is a chartreuse carpeting spikemoss that needs constant humidity and crisps quickly in open air. It works well as a foreground ground cover in sealed jars.",
+      "sources": [
+        {
+          "url": "https://en.wikipedia.org/wiki/Selaginella_kraussiana",
+          "label": "Wikipedia"
+        },
+        {
+          "url": "https://powo.science.kew.org/results?q=Selaginella%20kraussiana",
+          "label": "POWO"
+        },
+        {
+          "url": "https://plants.ces.ncsu.edu/plants/selaginella-kraussiana/",
+          "label": "NCSU Extension"
+        }
+      ],
+      "rarity": "common",
+      "nativeContext": "From the moist, shaded forests and stream margins of tropical and southern Africa, carpeting the ground in humid conditions."
     },
     {
       "slug": "hypnum-moss",
@@ -1798,7 +2652,23 @@
       "growthHabit": "creeping",
       "plantType": "moss",
       "nativeBiome": "temperate",
-      "notes": "Flat carpeting moss that knits into a lawn over substrate and hardscape. Mist to establish; thrives on the high humidity of a closed lid."
+      "notes": "Sheet Moss is a flat carpeting moss that knits into a lawn over substrate and hardscape. Mist to establish it, and it thrives on the high humidity of a closed lid.",
+      "sources": [
+        {
+          "url": "https://en.wikipedia.org/wiki/Hypnum_cupressiforme",
+          "label": "Wikipedia"
+        },
+        {
+          "url": "https://powo.science.kew.org/results?q=Hypnum%20cupressiforme",
+          "label": "POWO"
+        },
+        {
+          "url": "https://plants.ces.ncsu.edu/plants/hypnum-cupressiforme/",
+          "label": "NCSU Extension"
+        }
+      ],
+      "rarity": "common",
+      "nativeContext": "A widespread temperate forest moss, forming flat green sheets over soil, rocks, and fallen wood in moist, shaded woodlands."
     },
     {
       "slug": "dicranum-scoparium",
@@ -1834,7 +2704,27 @@
       "growthHabit": "mounding",
       "plantType": "moss",
       "nativeBiome": "temperate",
-      "notes": "Forms plush cushions (\"mood\" = it flexes with humidity). Wants shade and a sealed, humid microclimate; dislikes being buried or sat in water."
+      "notes": "Mood Moss forms plush cushions that flex visibly with humidity changes. It wants shade and a sealed, humid microclimate, and dislikes being buried or sitting in standing water.",
+      "sources": [
+        {
+          "url": "https://en.wikipedia.org/wiki/Dicranum_scoparium",
+          "label": "Wikipedia"
+        },
+        {
+          "url": "https://powo.science.kew.org/results?q=Dicranum%20scoparium",
+          "label": "POWO"
+        },
+        {
+          "url": "https://plants.ces.ncsu.edu/plants/dicranum-scoparium/",
+          "label": "NCSU Extension"
+        },
+        {
+          "url": "https://ohiomosslichen.org/moss-dicranum-scoparium/",
+          "label": "Ohio Moss and Lichen"
+        }
+      ],
+      "rarity": "common",
+      "nativeContext": "Found throughout cool temperate forests of the Northern Hemisphere, forming arching cushions on acidic, shaded soil."
     },
     {
       "slug": "rhaphidophora-tetrasperma",
@@ -1873,11 +2763,26 @@
       "nativeBiome": "tropical",
       "toxicity": "An aroid containing calcium oxalate crystals; ingestion irritates the mouth and digestive tract. Toxic to cats and dogs.",
       "nativeContext": "From the rainforests of southern Thailand and Malaysia, climbing tree trunks toward the light.",
-      "notes": "Fast fenestrated climber for larger open terraria — give it a moss pole or it sprawls. Too vigorous for small sealed jars."
+      "notes": "Mini Monstera is a fast-growing fenestrated climber that needs a moss pole in larger open terraria, or it will sprawl. Too vigorous for small sealed jars.",
+      "sources": [
+        {
+          "url": "https://en.wikipedia.org/wiki/Rhaphidophora_tetrasperma",
+          "label": "Wikipedia"
+        },
+        {
+          "url": "https://powo.science.kew.org/results?q=Rhaphidophora%20tetrasperma",
+          "label": "POWO"
+        },
+        {
+          "url": "https://plants.ces.ncsu.edu/plants/rhaphidophora-tetrasperma/",
+          "label": "NCSU Extension"
+        }
+      ],
+      "rarity": "uncommon"
     },
     {
       "slug": "anthurium-scandens",
-      "commonName": "Climbing Anthurium",
+      "commonName": "Anthurium",
       "scientificName": "Anthurium scandens",
       "light": {
         "primary": "bright-indirect"
@@ -1893,26 +2798,43 @@
         18,
         29
       ],
-      "maxHeightCm": 25,
+      "maxHeightCm": 60,
       "rootDepthMinCm": 4,
       "rootDepthMaxCm": 10,
+      "soilPhMin": 5,
+      "soilPhMax": 7,
       "phPreference": "acidic",
       "growthRate": "moderate",
       "substrateTags": [
+        "perlite",
         "sphagnum",
-        "orchid-bark",
-        "perlite"
+        "orchid-bark"
       ],
       "closedTerrariumOk": true,
       "openTerrariumOk": false,
-      "difficulty": 3,
+      "difficulty": 2,
       "image": "plants/anthurium-scandens.png",
       "growthHabit": "climbing",
       "plantType": "aroid",
       "nativeBiome": "tropical",
+      "rarity": "uncommon",
       "toxicity": "An aroid containing calcium oxalate crystals; sap can irritate skin and ingestion irritates the mouth and gut. Toxic to cats and dogs.",
       "nativeContext": "A small epiphytic aroid of Central and South American rainforests, perched on branches and trunks.",
-      "notes": "A small epiphytic anthurium with pearly berries. Wants an airy, bark-rich mix and high humidity — ideal climbing a background in a closed tank."
+      "notes": "Anthurium scandens is a small epiphytic anthurium that produces pearly berries. It needs an airy, bark-rich mix and high humidity, and does well climbing a background in a closed tank. Can grow to around 60cm without supports, and up to 180 with something to climb.",
+      "sources": [
+        {
+          "url": "https://en.wikipedia.org/wiki/Anthurium_scandens",
+          "label": "Wikipedia"
+        },
+        {
+          "url": "https://powo.science.kew.org/results?q=Anthurium%20scandens",
+          "label": "POWO"
+        },
+        {
+          "url": "https://plants.ces.ncsu.edu/plants/anthurium/",
+          "label": "NCSU Extension"
+        }
+      ]
     },
     {
       "slug": "spathiphyllum-wallisii",
@@ -1952,7 +2874,22 @@
       "nativeBiome": "tropical",
       "toxicity": "Peace lily contains insoluble calcium oxalate crystals; ingestion irritates the mouth and throat and causes drooling and vomiting. Toxic to cats and dogs.",
       "nativeContext": "Native to the humid rainforest floor of Central and South America.",
-      "notes": "Low-light tolerant and a useful humidity gauge (it droops when dry). A compact specimen suits medium terraria; remove once it outgrows."
+      "notes": "Peace Lily is low-light tolerant and acts as a useful humidity gauge, drooping visibly when conditions run dry. A compact specimen suits medium terraria but should be removed once it outgrows the space.",
+      "sources": [
+        {
+          "url": "https://en.wikipedia.org/wiki/Spathiphyllum_wallisii",
+          "label": "Wikipedia"
+        },
+        {
+          "url": "https://powo.science.kew.org/results?q=Spathiphyllum%20wallisii",
+          "label": "POWO"
+        },
+        {
+          "url": "https://plants.ces.ncsu.edu/plants/spathiphyllum-wallisii/",
+          "label": "NCSU Extension"
+        }
+      ],
+      "rarity": "common"
     },
     {
       "slug": "begonia-pavonina",
@@ -1991,7 +2928,22 @@
       "nativeBiome": "montane",
       "toxicity": "Begonias contain soluble calcium oxalates, most concentrated in the tubers; ingestion can cause mouth irritation, drooling, and vomiting in cats and dogs.",
       "nativeContext": "From the dim understorey of Malaysian montane rainforest, where its leaves shimmer blue in low light.",
-      "notes": "Iridescent blue leaves (structural colour in low light). A true terrarium begonia — needs sealed humidity and shade to keep the shimmer."
+      "notes": "Peacock Begonia has iridescent blue leaves caused by structural colour that only develops in low light. It needs sealed humidity and shade to maintain the shimmer.",
+      "sources": [
+        {
+          "url": "https://en.wikipedia.org/wiki/Begonia_pavonina",
+          "label": "Wikipedia"
+        },
+        {
+          "url": "https://powo.science.kew.org/results?q=Begonia%20pavonina",
+          "label": "POWO"
+        },
+        {
+          "url": "https://plants.ces.ncsu.edu/plants/begonia-pavonina/",
+          "label": "NCSU Extension"
+        }
+      ],
+      "rarity": "rare"
     },
     {
       "slug": "begonia-maculata",
@@ -2028,7 +2980,23 @@
       "plantType": "begonia",
       "nativeBiome": "tropical",
       "toxicity": "Begonias contain soluble calcium oxalates, most concentrated in the tubers; ingestion can cause mouth irritation, drooling, and vomiting in cats and dogs.",
-      "notes": "Silver-spotted angel-wing begonia. Prefers airflow over a sealed lid to avoid mildew; best as a centrepiece in an open terrarium."
+      "notes": "Polka Dot Begonia has silver-spotted angel-wing leaves that prefer airflow over a fully sealed lid, as poor ventilation promotes mildew. It works best as a centrepiece in an open terrarium.",
+      "sources": [
+        {
+          "url": "https://en.wikipedia.org/wiki/Begonia_maculata",
+          "label": "Wikipedia"
+        },
+        {
+          "url": "https://powo.science.kew.org/results?q=Begonia%20maculata",
+          "label": "POWO"
+        },
+        {
+          "url": "https://plants.ces.ncsu.edu/plants/begonia-maculata/",
+          "label": "NCSU Extension"
+        }
+      ],
+      "rarity": "common",
+      "nativeContext": "Native to the Atlantic Forest of southeastern Brazil, growing in the humid, shaded understorey."
     },
     {
       "slug": "aeschynanthus-radicans",
@@ -2065,7 +3033,23 @@
       "growthHabit": "trailing",
       "plantType": "foliage",
       "nativeBiome": "tropical",
-      "notes": "Epiphytic trailer with tubular red blooms. Let it cascade from the rim of an open container; an airy epiphyte mix keeps the roots happy."
+      "notes": "Lipstick Plant is an epiphytic trailer with tubular red blooms. It works best cascading from the rim of an open container in an airy epiphyte mix.",
+      "sources": [
+        {
+          "url": "https://en.wikipedia.org/wiki/Aeschynanthus_radicans",
+          "label": "Wikipedia"
+        },
+        {
+          "url": "https://powo.science.kew.org/results?q=Aeschynanthus%20radicans",
+          "label": "POWO"
+        },
+        {
+          "url": "https://plants.ces.ncsu.edu/plants/aeschynanthus-radicans/",
+          "label": "NCSU Extension"
+        }
+      ],
+      "rarity": "uncommon",
+      "nativeContext": "An epiphytic gesneriad from the humid rainforests of Southeast Asia, perched on tree branches in dappled canopy light."
     },
     {
       "slug": "streptocarpus-hybrid",
@@ -2091,8 +3075,8 @@
       "phPreference": "neutral",
       "growthRate": "moderate",
       "substrateTags": [
-        "peat",
-        "perlite"
+        "perlite",
+        "peat"
       ],
       "closedTerrariumOk": false,
       "openTerrariumOk": true,
@@ -2101,7 +3085,23 @@
       "growthHabit": "rosette",
       "plantType": "foliage",
       "nativeBiome": "subtropical",
-      "notes": "Long-blooming gesneriad for open, airy terraria. Water the substrate, not the crown, and let the top dry slightly between waterings."
+      "notes": "Cape Primrose is a long-blooming gesneriad suited to open, airy terraria. Water the substrate rather than the crown, and let the top dry slightly between waterings.",
+      "sources": [
+        {
+          "url": "https://en.wikipedia.org/wiki/Streptocarpus",
+          "label": "Wikipedia"
+        },
+        {
+          "url": "https://powo.science.kew.org/results?q=Streptocarpus%20hybridus",
+          "label": "POWO"
+        },
+        {
+          "url": "https://plants.ces.ncsu.edu/plants/streptocarpus/",
+          "label": "NCSU Extension"
+        }
+      ],
+      "rarity": "uncommon",
+      "nativeContext": "From the moist, shaded cliffs and forest margins of southern Africa's Cape region."
     },
     {
       "slug": "senecio-rowleyanus",
@@ -2140,7 +3140,22 @@
       "nativeBiome": "arid",
       "toxicity": "String of pearls is toxic if ingested — causing drooling, vomiting, and lethargy in pets — and the sap can irritate skin. Mildly toxic to people.",
       "nativeContext": "Native to the dry scrublands of south-western Africa, trailing over rock in the shade of larger plants.",
-      "notes": "Bead-like trailing succulent for the edge of an open dish. Hates humidity and wet feet — strictly open, gritty, and dry between soaks."
+      "notes": "String of Pearls is a bead-like trailing succulent for the edge of an open dish. It cannot handle humidity or wet feet, so keep it in an open container with gritty substrate that dries between soaks.",
+      "sources": [
+        {
+          "url": "https://en.wikipedia.org/wiki/Curio_rowleyanus",
+          "label": "Wikipedia"
+        },
+        {
+          "url": "https://powo.science.kew.org/results?q=Curio%20rowleyanus",
+          "label": "POWO"
+        },
+        {
+          "url": "https://plants.ces.ncsu.edu/plants/curio-rowleyanus/",
+          "label": "NCSU Extension"
+        }
+      ],
+      "rarity": "common"
     },
     {
       "slug": "lithops-sp",
@@ -2178,7 +3193,22 @@
       "plantType": "succulent",
       "nativeBiome": "arid",
       "nativeContext": "From the arid gravel plains of southern Africa, mimicking surrounding stones to escape grazing.",
-      "notes": "Mimicry succulents that look like pebbles. Need direct sun, a mineral alkaline grit, and near-zero water in winter. Open containers only."
+      "notes": "Living Stones are mimicry succulents that look like pebbles. They need direct sun, a mineral alkaline grit mix, and near-zero water in winter. Open containers only.",
+      "sources": [
+        {
+          "url": "https://en.wikipedia.org/wiki/Lithops",
+          "label": "Wikipedia"
+        },
+        {
+          "url": "https://powo.science.kew.org/results?q=Lithops",
+          "label": "POWO"
+        },
+        {
+          "url": "https://plants.ces.ncsu.edu/plants/lithops/",
+          "label": "NCSU Extension"
+        }
+      ],
+      "rarity": "common"
     },
     {
       "slug": "mammillaria-gracilis",
@@ -2216,7 +3246,22 @@
       "plantType": "succulent",
       "nativeBiome": "arid",
       "nativeContext": "Native to arid limestone hills in central Mexico.",
-      "notes": "Clustering thimble cactus whose offsets drop and root easily. Bright sun and a sharp, lime-tolerant mix; never enclose — rot is certain."
+      "notes": "Thimble Cactus is a clustering cactus whose offsets detach and root easily. It needs bright sun and a sharp, lime-tolerant mix. Never enclose it, as rot is certain in humid conditions.",
+      "sources": [
+        {
+          "url": "https://en.wikipedia.org/wiki/Mammillaria_gracilis",
+          "label": "Wikipedia"
+        },
+        {
+          "url": "https://powo.science.kew.org/results?q=Mammillaria%20gracilis",
+          "label": "POWO"
+        },
+        {
+          "url": "https://plants.ces.ncsu.edu/plants/mammillaria-gracilis/",
+          "label": "NCSU Extension"
+        }
+      ],
+      "rarity": "common"
     },
     {
       "slug": "sedum-morganianum",
@@ -2254,7 +3299,22 @@
       "plantType": "succulent",
       "nativeBiome": "arid",
       "nativeContext": "From shaded cliffs in southern Mexico, where its stems trail down rock faces.",
-      "notes": "Trailing rope of plump blue-green leaves that shed at a touch — site it where it won't be brushed. Open, dry, and bright."
+      "notes": "Burro's Tail trails long ropes of plump blue-green leaves that shed at a touch, so place it where it won't be brushed. Needs an open container, dry substrate, and plenty of light.",
+      "sources": [
+        {
+          "url": "https://en.wikipedia.org/wiki/Sedum_morganianum",
+          "label": "Wikipedia"
+        },
+        {
+          "url": "https://powo.science.kew.org/results?q=Sedum%20morganianum",
+          "label": "POWO"
+        },
+        {
+          "url": "https://plants.ces.ncsu.edu/plants/sedum-morganianum/",
+          "label": "NCSU Extension"
+        }
+      ],
+      "rarity": "common"
     },
     {
       "slug": "ficus-pumila",
@@ -2295,7 +3355,22 @@
       "nativeBiome": "subtropical",
       "toxicity": "Ficus sap (a milky latex) can irritate skin and the mouth; ingestion may cause mild digestive upset. Toxic to cats and dogs.",
       "nativeContext": "From the forests and rocky slopes of East Asia, climbing tree trunks and walls.",
-      "notes": "Tiny-leaved self-clinging vine that carpets backgrounds and hardscape. Vigorous — pinch often or it blankets everything in a closed tank."
+      "notes": "Creeping Fig is a tiny-leaved, self-clinging vine that carpets backgrounds and hardscape. It's vigorous and needs regular pinching in a closed tank to prevent it from blanketing everything.",
+      "sources": [
+        {
+          "url": "https://en.wikipedia.org/wiki/Ficus_pumila",
+          "label": "Wikipedia"
+        },
+        {
+          "url": "https://powo.science.kew.org/results?q=Ficus%20pumila",
+          "label": "POWO"
+        },
+        {
+          "url": "https://plants.ces.ncsu.edu/plants/ficus-pumila/",
+          "label": "NCSU Extension"
+        }
+      ],
+      "rarity": "common"
     },
     {
       "slug": "saxifraga-stolonifera",
@@ -2332,7 +3407,23 @@
       "growthHabit": "creeping",
       "plantType": "ground-cover",
       "nativeBiome": "temperate",
-      "notes": "Neither strawberry nor begonia — a hardy rosette that throws plantlets on runners. Cooler-growing; happy in open or lidded setups."
+      "notes": "Strawberry Begonia is neither strawberry nor begonia, but a hardy rosette that throws plantlets on runners. It's cooler-growing and happy in both open and lidded setups.",
+      "sources": [
+        {
+          "url": "https://en.wikipedia.org/wiki/Saxifraga_stolonifera",
+          "label": "Wikipedia"
+        },
+        {
+          "url": "https://powo.science.kew.org/results?q=Saxifraga%20stolonifera",
+          "label": "POWO"
+        },
+        {
+          "url": "https://plants.ces.ncsu.edu/plants/saxifraga-stolonifera/",
+          "label": "NCSU Extension"
+        }
+      ],
+      "rarity": "common",
+      "nativeContext": "From the cool, shaded forest floors of China and Japan, sending out long runners across mossy ground."
     },
     {
       "slug": "pilea-cadierei",
@@ -2358,8 +3449,8 @@
       "phPreference": "neutral",
       "growthRate": "moderate",
       "substrateTags": [
-        "peat",
-        "perlite"
+        "perlite",
+        "peat"
       ],
       "closedTerrariumOk": false,
       "openTerrariumOk": true,
@@ -2368,7 +3459,23 @@
       "growthHabit": "upright",
       "plantType": "foliage",
       "nativeBiome": "tropical",
-      "notes": "Silver-splashed quilted leaves on an easy, bushy grower. Pinch tips to keep it dense; prefers airflow to a fully sealed lid."
+      "rarity": "common",
+      "nativeContext": "Native to the southern Chinese provinces of Guizhou and Yunnan, as well as Vietnam.",
+      "notes": "Aluminum Plant has silver-splashed, quilted leaves and is an easy, bushy grower. Pinch the tips to keep it dense, and give it airflow rather than a fully sealed lid.",
+      "sources": [
+        {
+          "url": "https://en.wikipedia.org/wiki/Pilea_cadierei",
+          "label": "Wikipedia"
+        },
+        {
+          "url": "https://powo.science.kew.org/results?q=Pilea%20cadierei",
+          "label": "POWO"
+        },
+        {
+          "url": "https://plants.ces.ncsu.edu/plants/pilea-cadierei/",
+          "label": "NCSU Extension"
+        }
+      ]
     },
     {
       "slug": "tradescantia-zebrina",
@@ -2395,8 +3502,8 @@
       "phPreference": "neutral",
       "growthRate": "fast",
       "substrateTags": [
-        "peat",
-        "perlite"
+        "perlite",
+        "peat"
       ],
       "closedTerrariumOk": false,
       "openTerrariumOk": true,
@@ -2405,8 +3512,1515 @@
       "growthHabit": "trailing",
       "plantType": "vine",
       "nativeBiome": "tropical",
+      "rarity": "common",
       "toxicity": "The sap causes contact dermatitis in pets and can irritate sensitive skin in people; ingestion may cause mild digestive upset. Listed toxic to cats and dogs.",
-      "notes": "Fast purple-striped trailer — nearly unkillable and great for quick coverage in open terraria. Cut back hard whenever it gets leggy."
+      "nativeContext": "Native to the humid tropical forests of Mexico and Central America, trailing across the shaded forest floor.",
+      "notes": "Inch Plant is a fast purple-striped trailer that provides quick coverage in open terraria. Cut it back hard whenever it gets leggy.",
+      "sources": [
+        {
+          "url": "https://en.wikipedia.org/wiki/Tradescantia_zebrina",
+          "label": "Wikipedia"
+        },
+        {
+          "url": "https://powo.science.kew.org/results?q=Tradescantia%20zebrina",
+          "label": "POWO"
+        },
+        {
+          "url": "https://plants.ces.ncsu.edu/plants/tradescantia-zebrina/",
+          "label": "NCSU Extension"
+        }
+      ]
+    },
+    {
+      "slug": "macodes-petola",
+      "commonName": "Lightning Bolt Orchid",
+      "scientificName": "Macodes petola",
+      "light": {
+        "primary": "low",
+        "secondary": "medium"
+      },
+      "soilMoisture": {
+        "primary": "moist"
+      },
+      "humidityPctRange": [
+        70,
+        90
+      ],
+      "tempCRange": [
+        18,
+        28
+      ],
+      "maxHeightCm": 15,
+      "rootDepthMinCm": 1,
+      "rootDepthMaxCm": 3,
+      "phPreference": "acidic",
+      "growthRate": "slow",
+      "substrateTags": [
+        "sphagnum",
+        "orchid-bark",
+        "perlite"
+      ],
+      "growthHabit": "creeping",
+      "plantType": "orchid",
+      "nativeBiome": "tropical",
+      "rarity": "uncommon",
+      "closedTerrariumOk": true,
+      "openTerrariumOk": false,
+      "difficulty": 4,
+      "image": "plants/macodes-petola.png",
+      "nativeContext": "From the deeply shaded, mossy rainforest floors of Borneo, Malaysia, and the Philippines, growing in moist leaf litter under dense canopy.",
+      "notes": "Lightning Bolt Orchid is one of the most striking jewel orchids, grown for its dark, velvety leaves threaded with shimmering electric-gold venation. Plant shallowly in damp sphagnum, and avoid soggy roots and any direct light.",
+      "sources": [
+        {
+          "url": "https://en.wikipedia.org/wiki/Macodes_petola",
+          "label": "Wikipedia"
+        },
+        {
+          "url": "https://powo.science.kew.org/results?q=Macodes%20petola",
+          "label": "POWO"
+        }
+      ]
+    },
+    {
+      "slug": "ludisia-discolor",
+      "commonName": "Black Jewel Orchid",
+      "scientificName": "Ludisia discolor",
+      "light": {
+        "primary": "low",
+        "secondary": "medium"
+      },
+      "soilMoisture": {
+        "primary": "moist"
+      },
+      "humidityPctRange": [
+        60,
+        85
+      ],
+      "tempCRange": [
+        18,
+        28
+      ],
+      "maxHeightCm": 20,
+      "rootDepthMinCm": 2,
+      "rootDepthMaxCm": 5,
+      "phPreference": "acidic",
+      "growthRate": "slow",
+      "substrateTags": [
+        "perlite",
+        "sphagnum",
+        "orchid-bark"
+      ],
+      "closedTerrariumOk": true,
+      "openTerrariumOk": false,
+      "difficulty": 3,
+      "image": "plants/ludisia-discolor.png",
+      "growthHabit": "creeping",
+      "plantType": "orchid",
+      "nativeBiome": "tropical",
+      "rarity": "common",
+      "nativeContext": "From the dark, humid forest floors of Southeast Asia — Myanmar, southern China, and Indonesia — commonly found on the forest floor.",
+      "notes": "Black Jewel Orchid is the most forgiving of the jewel orchids, with deep maroon-black leaves marked with parallel red-gold pin-stripe venation. Creeping stems root readily at each node, so plant shallowly.",
+      "sources": [
+        {
+          "url": "https://en.wikipedia.org/wiki/Ludisia_discolor",
+          "label": "Wikipedia"
+        },
+        {
+          "url": "https://powo.science.kew.org/results?q=Ludisia%20discolor",
+          "label": "POWO"
+        },
+        {
+          "url": "https://plants.ces.ncsu.edu/plants/ludisia-discolor/",
+          "label": "NCSU Extension"
+        }
+      ]
+    },
+    {
+      "slug": "peperomia-prostrata",
+      "commonName": "String of Turtles",
+      "scientificName": "Peperomia prostrata",
+      "light": {
+        "primary": "medium",
+        "secondary": "bright-indirect"
+      },
+      "soilMoisture": {
+        "primary": "moderate"
+      },
+      "humidityPctRange": [
+        50,
+        80
+      ],
+      "tempCRange": [
+        18,
+        26
+      ],
+      "maxHeightCm": 5,
+      "rootDepthMinCm": 2,
+      "rootDepthMaxCm": 5,
+      "phPreference": "neutral",
+      "growthRate": "slow",
+      "substrateTags": [
+        "perlite",
+        "coco-coir",
+        "orchid-bark"
+      ],
+      "growthHabit": "trailing",
+      "plantType": "foliage",
+      "nativeBiome": "tropical",
+      "rarity": "uncommon",
+      "closedTerrariumOk": true,
+      "openTerrariumOk": true,
+      "difficulty": 3,
+      "image": "plants/peperomia-prostrata.png",
+      "nativeContext": "Native to the tropical rainforests of South America, trailing from mossy banks and ledges in humid shade.",
+      "notes": "String of Turtles has tiny fleshy circular leaves patterned like turtle shells on a trailing vine. It's more susceptible to rot than other peperomias, so let the top layer of substrate dry slightly between waterings.",
+      "sources": [
+        {
+          "url": "https://en.wikipedia.org/wiki/Peperomia_prostrata",
+          "label": "Wikipedia"
+        },
+        {
+          "url": "https://powo.science.kew.org/results?q=Peperomia%20prostrata",
+          "label": "POWO"
+        }
+      ]
+    },
+    {
+      "slug": "scindapsus-pictus-argyraeus",
+      "commonName": "Satin Pothos",
+      "scientificName": "Scindapsus pictus 'Argyraeus'",
+      "light": {
+        "primary": "medium",
+        "secondary": "bright-indirect"
+      },
+      "soilMoisture": {
+        "primary": "moderate"
+      },
+      "humidityPctRange": [
+        50,
+        80
+      ],
+      "tempCRange": [
+        18,
+        29
+      ],
+      "maxHeightCm": 30,
+      "rootDepthMinCm": 3,
+      "rootDepthMaxCm": 8,
+      "phPreference": "neutral",
+      "growthRate": "moderate",
+      "substrateTags": [
+        "perlite",
+        "peat",
+        "coco-coir"
+      ],
+      "growthHabit": "climbing",
+      "plantType": "vine",
+      "nativeBiome": "tropical",
+      "rarity": "common",
+      "closedTerrariumOk": false,
+      "openTerrariumOk": true,
+      "difficulty": 2,
+      "toxicity": "Contains calcium oxalate crystals; causes oral irritation and digestive upset if ingested. Toxic to cats and dogs.",
+      "image": "plants/scindapsus-pictus-argyraeus.png",
+      "nativeContext": "Native to the tropical rainforests of Southeast Asia from Thailand to Borneo, where juvenile plants shingle up tree trunks in the understorey.",
+      "notes": "Satin Pothos has matte-green heart-shaped leaves covered in reflective silver splotches. Juvenile growth stays small and manageable, but it needs good airflow, so a tall, vented enclosure suits it best.",
+      "sources": [
+        {
+          "url": "https://en.wikipedia.org/wiki/Scindapsus_pictus",
+          "label": "Wikipedia"
+        },
+        {
+          "url": "https://powo.science.kew.org/results?q=Scindapsus%20pictus",
+          "label": "POWO"
+        },
+        {
+          "url": "https://plants.ces.ncsu.edu/plants/scindapsus-pictus/",
+          "label": "NCSU Extension"
+        }
+      ]
+    },
+    {
+      "slug": "asparagus-setaceus",
+      "commonName": "Asparagus Fern",
+      "scientificName": "Asparagus setaceus",
+      "light": {
+        "primary": "bright-indirect",
+        "secondary": "medium"
+      },
+      "soilMoisture": {
+        "primary": "moderate"
+      },
+      "humidityPctRange": [
+        50,
+        80
+      ],
+      "tempCRange": [
+        15,
+        28
+      ],
+      "maxHeightCm": 60,
+      "heightMinCm": 20,
+      "rootDepthMinCm": 5,
+      "rootDepthMaxCm": 15,
+      "phPreference": "neutral",
+      "growthRate": "moderate",
+      "substrateTags": [
+        "perlite",
+        "peat",
+        "potting-soil"
+      ],
+      "closedTerrariumOk": true,
+      "openTerrariumOk": true,
+      "difficulty": 2,
+      "image": "plants/asparagus-setaceus.png",
+      "growthHabit": "upright",
+      "plantType": "foliage",
+      "nativeBiome": "subtropical",
+      "rarity": "common",
+      "toxicity": "Berries are toxic to pets if ingested; repeated contact with fine foliage can cause skin irritation. Toxic to cats and dogs.",
+      "nativeContext": "Native to the coastal scrub and forest margins of southern Africa, scrambling through shrubs with hook-like branchlets.",
+      "notes": "Asparagus Fern is not a true fern but a lily-family member with feathery, cloud-like horizontal fronds that create an illusion of scale in large enclosed vessels. Grows vigorously and will usually outgrow small or closed spaces long-term.",
+      "sources": [
+        {
+          "url": "https://en.wikipedia.org/wiki/Asparagus_setaceus",
+          "label": "Wikipedia"
+        },
+        {
+          "url": "https://powo.science.kew.org/results?q=Asparagus%20setaceus",
+          "label": "POWO"
+        },
+        {
+          "url": "https://plants.ces.ncsu.edu/plants/asparagus-setaceus/",
+          "label": "NCSU Extension"
+        }
+      ]
+    },
+    {
+      "slug": "pellaea-rotundifolia",
+      "commonName": "Button Fern",
+      "scientificName": "Pellaea rotundifolia",
+      "light": {
+        "primary": "bright-indirect",
+        "secondary": "medium"
+      },
+      "soilMoisture": {
+        "primary": "moderate"
+      },
+      "humidityPctRange": [
+        40,
+        70
+      ],
+      "tempCRange": [
+        10,
+        24
+      ],
+      "maxHeightCm": 25,
+      "rootDepthMinCm": 4,
+      "rootDepthMaxCm": 8,
+      "phPreference": "neutral",
+      "growthRate": "slow",
+      "substrateTags": [
+        "perlite",
+        "peat",
+        "sand"
+      ],
+      "growthHabit": "upright",
+      "plantType": "fern",
+      "nativeBiome": "temperate",
+      "rarity": "common",
+      "closedTerrariumOk": false,
+      "openTerrariumOk": true,
+      "difficulty": 2,
+      "image": "plants/pellaea-rotundifolia.png",
+      "nativeContext": "From rocky open hillsides and coastal scrubland in New Zealand and subtropical southern Africa — far more drought-tolerant than typical ferns.",
+      "notes": "Button Fern has leathery round leaflets on arching dark-burgundy stems. Unlike most ferns, it tolerates lower humidity and brief dry spells, making it a good beginner fern for open terrariums.",
+      "sources": [
+        {
+          "url": "https://en.wikipedia.org/wiki/Pellaea_rotundifolia",
+          "label": "Wikipedia"
+        },
+        {
+          "url": "https://powo.science.kew.org/results?q=Pellaea%20rotundifolia",
+          "label": "POWO"
+        },
+        {
+          "url": "https://plants.ces.ncsu.edu/plants/pellaea-rotundifolia/",
+          "label": "NCSU Extension"
+        }
+      ]
+    },
+    {
+      "slug": "chamaedorea-elegans",
+      "commonName": "Parlor Palm",
+      "scientificName": "Chamaedorea elegans",
+      "light": {
+        "primary": "low",
+        "secondary": "medium"
+      },
+      "soilMoisture": {
+        "primary": "moderate"
+      },
+      "humidityPctRange": [
+        40,
+        70
+      ],
+      "tempCRange": [
+        16,
+        27
+      ],
+      "maxHeightCm": 40,
+      "heightMinCm": 10,
+      "rootDepthMinCm": 8,
+      "rootDepthMaxCm": 20,
+      "phPreference": "neutral",
+      "growthRate": "slow",
+      "substrateTags": [
+        "potting-soil",
+        "perlite",
+        "sand"
+      ],
+      "growthHabit": "upright",
+      "plantType": "foliage",
+      "nativeBiome": "tropical",
+      "rarity": "common",
+      "closedTerrariumOk": false,
+      "openTerrariumOk": true,
+      "difficulty": 2,
+      "image": "plants/chamaedorea-elegans.png",
+      "nativeContext": "From the humid, deeply shaded understorey of montane rainforests in southern Mexico and Guatemala.",
+      "notes": "Parlor Palm grows as multi-stem seedlings that look exactly like a miniature palm grove. It grows very slowly, giving years of use before outgrowing a tall, open container. Sensitive to fluoride in tap water.",
+      "sources": [
+        {
+          "url": "https://en.wikipedia.org/wiki/Chamaedorea_elegans",
+          "label": "Wikipedia"
+        },
+        {
+          "url": "https://powo.science.kew.org/results?q=Chamaedorea%20elegans",
+          "label": "POWO"
+        },
+        {
+          "url": "https://plants.ces.ncsu.edu/plants/chamaedorea-elegans/",
+          "label": "NCSU Extension"
+        }
+      ]
+    },
+    {
+      "slug": "biophytum-sensitivum",
+      "commonName": "Little Tree Plant",
+      "scientificName": "Biophytum sensitivum",
+      "light": {
+        "primary": "bright-indirect",
+        "secondary": "medium"
+      },
+      "soilMoisture": {
+        "primary": "moist"
+      },
+      "humidityPctRange": [
+        70,
+        90
+      ],
+      "tempCRange": [
+        20,
+        30
+      ],
+      "maxHeightCm": 10,
+      "rootDepthMinCm": 2,
+      "rootDepthMaxCm": 5,
+      "phPreference": "acidic",
+      "growthRate": "moderate",
+      "substrateTags": [
+        "peat",
+        "coco-coir",
+        "sphagnum"
+      ],
+      "growthHabit": "upright",
+      "plantType": "foliage",
+      "nativeBiome": "tropical",
+      "rarity": "uncommon",
+      "closedTerrariumOk": true,
+      "openTerrariumOk": false,
+      "difficulty": 3,
+      "image": "plants/biophytum-sensitivum.png",
+      "nativeContext": "A cosmopolitan tropical plant of humid forest floors and moist grasslands across Asia and West Africa, thriving where temperatures stay above 20 °C.",
+      "notes": "Little Tree Plant is a single-stemmed accent that resembles a tiny palm tree, with leaflets that fold shut when touched or at dusk. Best treated as a short-lived perennial in a closed container and allowed to set seed.",
+      "sources": [
+        {
+          "url": "https://en.wikipedia.org/wiki/Biophytum_sensitivum",
+          "label": "Wikipedia"
+        },
+        {
+          "url": "https://powo.science.kew.org/results?q=Biophytum%20sensitivum",
+          "label": "POWO"
+        }
+      ]
+    },
+    {
+      "slug": "tillandsia-ionantha",
+      "commonName": "Air Plant",
+      "scientificName": "Tillandsia ionantha",
+      "light": {
+        "primary": "bright-indirect",
+        "secondary": "direct"
+      },
+      "soilMoisture": {
+        "primary": "dry"
+      },
+      "humidityPctRange": [
+        40,
+        70
+      ],
+      "tempCRange": [
+        10,
+        32
+      ],
+      "maxHeightCm": 12,
+      "heightMinCm": 2,
+      "rootDepthMinCm": 1,
+      "rootDepthMaxCm": 2,
+      "phPreference": "neutral",
+      "growthRate": "slow",
+      "closedTerrariumOk": false,
+      "openTerrariumOk": true,
+      "difficulty": 2,
+      "image": "plants/tillandsia-ionantha.png",
+      "growthHabit": "rosette",
+      "nativeBiome": "tropical",
+      "rarity": "common",
+      "nativeContext": "A xeric epiphyte native to the seasonally dry forests and scrublands of Mexico, Guatemala, and Honduras, clinging to tree branches and rock faces with no soil contact.",
+      "notes": "Air Plant needs no substrate and can be wedged into cork bark or tucked into stone crevices. Mist it 2-3 times per week and allow it to dry completely as standing water rots the base.",
+      "sources": [
+        {
+          "url": "https://en.wikipedia.org/wiki/Tillandsia_ionantha",
+          "label": "Wikipedia"
+        },
+        {
+          "url": "https://powo.science.kew.org/results?q=Tillandsia%20ionantha",
+          "label": "POWO"
+        },
+        {
+          "url": "https://plants.ces.ncsu.edu/plants/tillandsia-ionantha/",
+          "label": "NCSU"
+        }
+      ]
+    },
+    {
+      "slug": "neoregelia-hybrid-liliputiana",
+      "commonName": "Miniature Neoregelia",
+      "scientificName": "Neoregelia hybrid 'Liliputiana'",
+      "light": {
+        "primary": "medium",
+        "secondary": "bright-indirect"
+      },
+      "soilMoisture": {
+        "primary": "moist"
+      },
+      "humidityPctRange": [
+        60,
+        90
+      ],
+      "tempCRange": [
+        18,
+        28
+      ],
+      "maxHeightCm": 12,
+      "rootDepthMinCm": 1,
+      "rootDepthMaxCm": 4,
+      "phPreference": "neutral",
+      "growthRate": "slow",
+      "substrateTags": [
+        "orchid-bark",
+        "sphagnum"
+      ],
+      "growthHabit": "rosette",
+      "plantType": "bromeliad",
+      "nativeBiome": "tropical",
+      "rarity": "uncommon",
+      "closedTerrariumOk": true,
+      "openTerrariumOk": true,
+      "difficulty": 3,
+      "image": "plants/neoregelia-hybrid-liliputiana.png",
+      "nativeContext": "Bred from Neoregelia species native to the Atlantic rainforest of Brazil; miniature cultivars developed specifically for use in enclosed vivariums.",
+      "notes": "Miniature Neoregelia is a vivarium staple that looks best mounted on driftwood to show off its blushing, water-filled central cup. Keep the cup topped up with water and flush and refill it weekly. It pups freely after flowering.",
+      "sources": [
+        {
+          "url": "https://en.wikipedia.org/wiki/Neoregelia",
+          "label": "Wikipedia"
+        },
+        {
+          "url": "https://powo.science.kew.org/results?q=Neoregelia",
+          "label": "POWO"
+        }
+      ]
+    },
+    {
+      "slug": "marcgravia-rectiflora",
+      "commonName": "Shingle Plant",
+      "scientificName": "Marcgravia rectiflora",
+      "light": {
+        "primary": "medium"
+      },
+      "soilMoisture": {
+        "primary": "moist"
+      },
+      "humidityPctRange": [
+        80,
+        100
+      ],
+      "tempCRange": [
+        18,
+        28
+      ],
+      "maxHeightCm": 40,
+      "rootDepthMinCm": 2,
+      "rootDepthMaxCm": 6,
+      "phPreference": "acidic",
+      "growthRate": "slow",
+      "substrateTags": [
+        "peat",
+        "sphagnum",
+        "orchid-bark"
+      ],
+      "growthHabit": "climbing",
+      "plantType": "vine",
+      "nativeBiome": "tropical",
+      "rarity": "rare",
+      "closedTerrariumOk": true,
+      "openTerrariumOk": false,
+      "difficulty": 4,
+      "image": "plants/marcgravia-rectiflora.png",
+      "nativeContext": "A neotropical liana from the humid rainforests of Central and South America, clinging and climbing tree trunks in deep understorey shade.",
+      "notes": "Shingle Plant is the premier terrarium shingler, pressing rounded juvenile leaves flat against cork, glass, or wood as it climbs toward the light. The shingling habit only develops when the stem is pressed flush against a vertical surface.",
+      "sources": [
+        {
+          "url": "https://en.wikipedia.org/wiki/Marcgravia",
+          "label": "Wikipedia"
+        },
+        {
+          "url": "https://powo.science.kew.org/results?q=Marcgravia%20rectiflora",
+          "label": "POWO"
+        }
+      ]
+    },
+    {
+      "slug": "dischidia-ruscifolia",
+      "commonName": "Million Hearts Plant",
+      "scientificName": "Dischidia ruscifolia",
+      "light": {
+        "primary": "bright-indirect",
+        "secondary": "medium"
+      },
+      "soilMoisture": {
+        "primary": "moderate"
+      },
+      "humidityPctRange": [
+        60,
+        90
+      ],
+      "tempCRange": [
+        18,
+        28
+      ],
+      "maxHeightCm": 30,
+      "rootDepthMinCm": 1,
+      "rootDepthMaxCm": 3,
+      "phPreference": "neutral",
+      "growthRate": "slow",
+      "substrateTags": [
+        "orchid-bark",
+        "perlite",
+        "sphagnum"
+      ],
+      "growthHabit": "trailing",
+      "plantType": "vine",
+      "nativeBiome": "tropical",
+      "rarity": "uncommon",
+      "closedTerrariumOk": true,
+      "openTerrariumOk": true,
+      "difficulty": 3,
+      "image": "plants/dischidia-ruscifolia.png",
+      "nativeContext": "A Southeast Asian epiphyte native to the Philippines and surrounding islands, clinging to tree branches in humid tropical forest canopies.",
+      "notes": "Million Hearts Plant is an epiphytic vine with tiny, stiff, heart-shaped semi-succulent leaves. Mount it on branches or cork bark in a high-humidity build. Its thickened leaves store moisture and forgive brief dry spells.",
+      "sources": [
+        {
+          "url": "https://en.wikipedia.org/wiki/Dischidia_ruscifolia",
+          "label": "Wikipedia"
+        },
+        {
+          "url": "https://powo.science.kew.org/results?q=Dischidia%20ruscifolia",
+          "label": "POWO"
+        }
+      ]
+    },
+    {
+      "slug": "ficus-pumila-panama",
+      "commonName": "Panama Creeping Fig",
+      "scientificName": "Ficus pumila 'Panama'",
+      "light": {
+        "primary": "medium",
+        "secondary": "bright-indirect"
+      },
+      "soilMoisture": {
+        "primary": "moist"
+      },
+      "humidityPctRange": [
+        65,
+        90
+      ],
+      "tempCRange": [
+        15,
+        27
+      ],
+      "maxHeightCm": 20,
+      "rootDepthMinCm": 2,
+      "rootDepthMaxCm": 5,
+      "phPreference": "neutral",
+      "growthRate": "moderate",
+      "substrateTags": [
+        "peat",
+        "coco-coir",
+        "perlite"
+      ],
+      "growthHabit": "creeping",
+      "plantType": "vine",
+      "nativeBiome": "subtropical",
+      "rarity": "uncommon",
+      "closedTerrariumOk": true,
+      "openTerrariumOk": false,
+      "difficulty": 2,
+      "image": "plants/ficus-pumila-panama.png",
+      "toxicity": "Ficus sap (a milky latex) can irritate skin and the mouth; ingestion may cause mild digestive upset. Toxic to cats and dogs.",
+      "nativeContext": "A dwarf cultivar of a species native to East Asia, selected for smaller leaf scale and less aggressive growth than the standard creeping fig.",
+      "notes": "Panama Creeping Fig is a micro-leaved cultivar that forms a dense, delicate mat over backgrounds and substrate. It's far less likely to blanket a small build than standard Ficus pumila.",
+      "sources": [
+        {
+          "url": "https://en.wikipedia.org/wiki/Ficus_pumila",
+          "label": "Wikipedia"
+        },
+        {
+          "url": "https://powo.science.kew.org/results?q=Ficus%20pumila",
+          "label": "POWO"
+        }
+      ]
+    },
+    {
+      "slug": "rhaphidophora-hayi",
+      "commonName": "Shingle Vine",
+      "scientificName": "Rhaphidophora hayi",
+      "light": {
+        "primary": "medium"
+      },
+      "soilMoisture": {
+        "primary": "moist"
+      },
+      "humidityPctRange": [
+        70,
+        90
+      ],
+      "tempCRange": [
+        18,
+        28
+      ],
+      "maxHeightCm": 50,
+      "rootDepthMinCm": 3,
+      "rootDepthMaxCm": 8,
+      "phPreference": "neutral",
+      "growthRate": "moderate",
+      "substrateTags": [
+        "peat",
+        "orchid-bark",
+        "perlite",
+        "coco-coir"
+      ],
+      "growthHabit": "climbing",
+      "plantType": "aroid",
+      "nativeBiome": "tropical",
+      "rarity": "rare",
+      "closedTerrariumOk": true,
+      "openTerrariumOk": false,
+      "difficulty": 3,
+      "image": "plants/rhaphidophora-hayi.png",
+      "toxicity": "An aroid containing insoluble calcium oxalate crystals; ingestion causes oral irritation, drooling, and vomiting. Toxic to cats and dogs.",
+      "nativeContext": "A rare aroid from the rainforests of Papua New Guinea and Queensland, Australia, where it presses its leaves flat against tree trunks in humid understorey.",
+      "notes": "Shingle Vine presses flat, alternating oval leaves tight against hardscape as it climbs toward the light source. The shingling habit only develops when the stem contacts a vertical textured surface such as cork bark.",
+      "sources": [
+        {
+          "url": "https://en.wikipedia.org/wiki/Rhaphidophora_hayi",
+          "label": "Wikipedia"
+        },
+        {
+          "url": "https://powo.science.kew.org/results?q=Rhaphidophora%20hayi",
+          "label": "POWO"
+        }
+      ]
+    },
+    {
+      "slug": "hemionitis-arifolia",
+      "commonName": "Heart Fern",
+      "scientificName": "Hemionitis arifolia",
+      "light": {
+        "primary": "low",
+        "secondary": "medium"
+      },
+      "soilMoisture": {
+        "primary": "moist"
+      },
+      "humidityPctRange": [
+        80,
+        100
+      ],
+      "tempCRange": [
+        18,
+        27
+      ],
+      "maxHeightCm": 15,
+      "rootDepthMinCm": 2,
+      "rootDepthMaxCm": 5,
+      "phPreference": "acidic",
+      "growthRate": "slow",
+      "substrateTags": [
+        "peat",
+        "coco-coir",
+        "sphagnum"
+      ],
+      "growthHabit": "rosette",
+      "plantType": "fern",
+      "nativeBiome": "tropical",
+      "rarity": "uncommon",
+      "closedTerrariumOk": true,
+      "openTerrariumOk": false,
+      "difficulty": 3,
+      "image": "plants/hemionitis-arifolia.png",
+      "nativeContext": "Native to the humid tropical forests of Southeast Asia, from Sri Lanka to Japan, growing on shaded forest floors and among mossy rocks.",
+      "notes": "Heart Fern is an unusual dwarf fern with thick, glossy, heart-shaped fronds. It's highly sensitive to dry air and strictly requires the constant humidity of a sealed enclosure. A compact and reliable centrepiece plant.",
+      "sources": [
+        {
+          "url": "https://en.wikipedia.org/wiki/Hemionitis_arifolia",
+          "label": "Wikipedia"
+        },
+        {
+          "url": "https://powo.science.kew.org/results?q=Hemionitis%20arifolia",
+          "label": "POWO"
+        }
+      ]
+    },
+    {
+      "slug": "microsorum-thailandicum",
+      "commonName": "Blue Oil Fern",
+      "scientificName": "Microsorum thailandicum",
+      "light": {
+        "primary": "low"
+      },
+      "soilMoisture": {
+        "primary": "moist"
+      },
+      "humidityPctRange": [
+        75,
+        95
+      ],
+      "tempCRange": [
+        18,
+        28
+      ],
+      "maxHeightCm": 20,
+      "rootDepthMinCm": 2,
+      "rootDepthMaxCm": 6,
+      "phPreference": "acidic",
+      "growthRate": "slow",
+      "substrateTags": [
+        "peat",
+        "orchid-bark",
+        "sphagnum",
+        "coco-coir"
+      ],
+      "growthHabit": "upright",
+      "plantType": "fern",
+      "nativeBiome": "tropical",
+      "rarity": "rare",
+      "closedTerrariumOk": true,
+      "openTerrariumOk": false,
+      "difficulty": 4,
+      "image": "plants/microsorum-thailandicum.png",
+      "nativeContext": "From the humid rainforests of Thailand and Southeast Asia, growing as an epiphyte on shaded tree trunks and mossy forest floors.",
+      "notes": "Blue Oil Fern develops a stunning metallic blue-teal iridescence under low light in high humidity. The blue sheen fades in too much light or insufficient moisture, so keep it dim and consistently wet. A prized collector's fern.",
+      "sources": [
+        {
+          "url": "https://en.wikipedia.org/wiki/Microsorum",
+          "label": "Wikipedia"
+        },
+        {
+          "url": "https://powo.science.kew.org/results?q=Microsorum%20thailandicum",
+          "label": "POWO"
+        }
+      ]
+    },
+    {
+      "slug": "nephrolepis-exaltata-fluffy-ruffles",
+      "commonName": "Fluffy Ruffles Fern",
+      "scientificName": "Nephrolepis exaltata 'Fluffy Ruffles'",
+      "light": {
+        "primary": "medium"
+      },
+      "soilMoisture": {
+        "primary": "moist"
+      },
+      "humidityPctRange": [
+        60,
+        85
+      ],
+      "tempCRange": [
+        15,
+        27
+      ],
+      "maxHeightCm": 30,
+      "rootDepthMinCm": 4,
+      "rootDepthMaxCm": 10,
+      "phPreference": "acidic",
+      "growthRate": "moderate",
+      "substrateTags": [
+        "peat",
+        "perlite",
+        "coco-coir"
+      ],
+      "growthHabit": "upright",
+      "plantType": "fern",
+      "nativeBiome": "tropical",
+      "rarity": "uncommon",
+      "closedTerrariumOk": true,
+      "openTerrariumOk": true,
+      "difficulty": 2,
+      "image": "plants/nephrolepis-exaltata-fluffy-ruffles.png",
+      "nativeContext": "A cultivar of the Boston fern, originating from the humid tropical forests of the Americas; selected for heavily divided, feathered fronds.",
+      "notes": "Fluffy Ruffles Fern is a heavily feathered, dwarf sword fern cultivar that grows in tight, upright rosettes. It stays compact without outgrowing small containers and is one of the easier sword ferns for humid builds.",
+      "sources": [
+        {
+          "url": "https://en.wikipedia.org/wiki/Nephrolepis_exaltata",
+          "label": "Wikipedia"
+        },
+        {
+          "url": "https://powo.science.kew.org/results?q=Nephrolepis%20exaltata",
+          "label": "POWO"
+        },
+        {
+          "url": "https://plants.ces.ncsu.edu/plants/nephrolepis-exaltata/",
+          "label": "NCSU Extension"
+        }
+      ]
+    },
+    {
+      "slug": "peperomia-orba-pixie-lime",
+      "commonName": "Pixie Lime Peperomia",
+      "scientificName": "Peperomia orba 'Pixie Lime'",
+      "light": {
+        "primary": "medium"
+      },
+      "soilMoisture": {
+        "primary": "moderate"
+      },
+      "humidityPctRange": [
+        50,
+        80
+      ],
+      "tempCRange": [
+        15,
+        27
+      ],
+      "maxHeightCm": 10,
+      "rootDepthMinCm": 2,
+      "rootDepthMaxCm": 5,
+      "phPreference": "neutral",
+      "growthRate": "slow",
+      "substrateTags": [
+        "peat",
+        "perlite",
+        "coco-coir"
+      ],
+      "growthHabit": "mounding",
+      "plantType": "foliage",
+      "nativeBiome": "tropical",
+      "rarity": "uncommon",
+      "closedTerrariumOk": true,
+      "openTerrariumOk": true,
+      "difficulty": 1,
+      "image": "plants/peperomia-orba-pixie-lime.png",
+      "nativeContext": "A compact cultivar bred from a species native to the tropical Americas, selected for miniature size and chartreuse colouration.",
+      "notes": "Pixie Lime Peperomia is a dwarf peperomia with light chartreuse leaves that stays under 10 cm. It's one of the most humidity-tolerant peperomias and handles closed-terrarium moisture without the rot risk of many others.",
+      "sources": [
+        {
+          "url": "https://en.wikipedia.org/wiki/Peperomia_orba",
+          "label": "Wikipedia"
+        },
+        {
+          "url": "https://powo.science.kew.org/results?q=Peperomia%20orba",
+          "label": "POWO"
+        }
+      ]
+    },
+    {
+      "slug": "peperomia-albovittata-piccolo-banda",
+      "commonName": "Piccolo Banda Peperomia",
+      "scientificName": "Peperomia albovittata 'Piccolo Banda'",
+      "light": {
+        "primary": "medium"
+      },
+      "soilMoisture": {
+        "primary": "moderate"
+      },
+      "humidityPctRange": [
+        50,
+        80
+      ],
+      "tempCRange": [
+        15,
+        27
+      ],
+      "maxHeightCm": 20,
+      "rootDepthMinCm": 2,
+      "rootDepthMaxCm": 6,
+      "phPreference": "neutral",
+      "growthRate": "slow",
+      "substrateTags": [
+        "peat",
+        "perlite",
+        "coco-coir"
+      ],
+      "growthHabit": "upright",
+      "plantType": "foliage",
+      "nativeBiome": "tropical",
+      "rarity": "uncommon",
+      "closedTerrariumOk": true,
+      "openTerrariumOk": true,
+      "difficulty": 2,
+      "image": "plants/peperomia-albovittata-piccolo-banda.png",
+      "nativeContext": "A cultivar of a species native to the humid lowland forests of Ecuador and Peru, selected for striking silver-and-crimson variegation.",
+      "notes": "Piccolo Banda Peperomia has thick, slightly succulent, metallic silvery-green leaves with deep purple-crimson veining. The contrast between the silver and dark veins is the key feature, but avoid overwatering as its succulent leaves rot fast in soggy substrate.",
+      "sources": [
+        {
+          "url": "https://powo.science.kew.org/results?q=Peperomia%20albovittata",
+          "label": "POWO"
+        }
+      ]
+    },
+    {
+      "slug": "begonia-amphioxus",
+      "commonName": "Butterfly Begonia",
+      "scientificName": "Begonia amphioxus",
+      "light": {
+        "primary": "medium",
+        "secondary": "low"
+      },
+      "soilMoisture": {
+        "primary": "moist"
+      },
+      "humidityPctRange": [
+        80,
+        100
+      ],
+      "tempCRange": [
+        18,
+        27
+      ],
+      "maxHeightCm": 25,
+      "rootDepthMinCm": 3,
+      "rootDepthMaxCm": 8,
+      "phPreference": "acidic",
+      "growthRate": "moderate",
+      "substrateTags": [
+        "peat",
+        "sphagnum",
+        "perlite",
+        "coco-coir"
+      ],
+      "growthHabit": "upright",
+      "plantType": "begonia",
+      "nativeBiome": "tropical",
+      "rarity": "rare",
+      "closedTerrariumOk": true,
+      "openTerrariumOk": false,
+      "difficulty": 4,
+      "image": "plants/begonia-amphioxus.png",
+      "nativeContext": "A rare species from the humid rainforests of Borneo, growing in near-constant high humidity deep in forest understories.",
+      "notes": "Butterfly Begonia has narrow, translucent green leaves covered in vivid crimson spots, making it one of the most visually striking begonias. It strictly requires the stable humidity of a sealed glass enclosure and will decline quickly in open air.",
+      "sources": [
+        {
+          "url": "https://en.wikipedia.org/wiki/Begonia_amphioxus",
+          "label": "Wikipedia"
+        },
+        {
+          "url": "https://powo.science.kew.org/results?q=Begonia%20amphioxus",
+          "label": "POWO"
+        }
+      ]
+    },
+    {
+      "slug": "begonia-schulzei",
+      "commonName": "Oak Leaf Miniature Begonia",
+      "scientificName": "Begonia schulzei",
+      "light": {
+        "primary": "low",
+        "secondary": "medium"
+      },
+      "soilMoisture": {
+        "primary": "moist"
+      },
+      "humidityPctRange": [
+        75,
+        95
+      ],
+      "tempCRange": [
+        18,
+        27
+      ],
+      "maxHeightCm": 20,
+      "rootDepthMinCm": 2,
+      "rootDepthMaxCm": 6,
+      "phPreference": "acidic",
+      "growthRate": "slow",
+      "substrateTags": [
+        "peat",
+        "sphagnum",
+        "coco-coir"
+      ],
+      "growthHabit": "climbing",
+      "plantType": "begonia",
+      "nativeBiome": "tropical",
+      "rarity": "rare",
+      "closedTerrariumOk": true,
+      "openTerrariumOk": false,
+      "difficulty": 3,
+      "image": "plants/begonia-schulzei.png",
+      "nativeContext": "A species from the humid tropical rainforests of Southeast Asia, naturally trailing over mossy tree trunks and forest floor debris.",
+      "notes": "Oak Leaf Miniature Begonia is a microscopic trailing begonia with tiny oak-shaped leaves that climbs mossy wood and branches. Small pink flowers appear readily under high humidity. Best anchored to textured hardscape in a sealed build.",
+      "sources": [
+        {
+          "url": "https://powo.science.kew.org/results?q=Begonia%20schulzei",
+          "label": "POWO"
+        }
+      ]
+    },
+    {
+      "slug": "alocasia-reginula-black-velvet",
+      "commonName": "Black Velvet Alocasia",
+      "scientificName": "Alocasia reginula 'Black Velvet'",
+      "light": {
+        "primary": "medium",
+        "secondary": "low"
+      },
+      "soilMoisture": {
+        "primary": "moderate",
+        "secondary": "moist"
+      },
+      "humidityPctRange": [
+        60,
+        85
+      ],
+      "tempCRange": [
+        18,
+        27
+      ],
+      "maxHeightCm": 25,
+      "rootDepthMinCm": 4,
+      "rootDepthMaxCm": 10,
+      "phPreference": "neutral",
+      "growthRate": "slow",
+      "substrateTags": [
+        "peat",
+        "perlite",
+        "orchid-bark",
+        "coco-coir"
+      ],
+      "growthHabit": "upright",
+      "plantType": "aroid",
+      "nativeBiome": "tropical",
+      "rarity": "uncommon",
+      "closedTerrariumOk": true,
+      "openTerrariumOk": false,
+      "difficulty": 3,
+      "image": "plants/alocasia-reginula-black-velvet.png",
+      "toxicity": "An aroid containing insoluble calcium oxalate crystals. All parts are toxic if ingested, causing oral irritation, drooling, and vomiting. Toxic to cats and dogs.",
+      "nativeContext": "A compact 'Jewel Alocasia' from the deep shade of rainforest floors in Borneo, where it grows in consistently high humidity.",
+      "notes": "Black Velvet Alocasia has near-black velvety leaves with stark white veins. It grows more slowly than most aroids, making it suitable for medium-to-large closed builds without rapid outgrowth. Allow the substrate surface to approach dry before watering as it rots in soggy conditions.",
+      "sources": [
+        {
+          "url": "https://en.wikipedia.org/wiki/Alocasia_reginula",
+          "label": "Wikipedia"
+        },
+        {
+          "url": "https://powo.science.kew.org/results?q=Alocasia%20reginula",
+          "label": "POWO"
+        }
+      ]
+    },
+    {
+      "slug": "hyophila-involuta",
+      "commonName": "Star Moss",
+      "scientificName": "Hyophila involuta",
+      "light": {
+        "primary": "low"
+      },
+      "soilMoisture": {
+        "primary": "moist"
+      },
+      "humidityPctRange": [
+        70,
+        95
+      ],
+      "tempCRange": [
+        12,
+        25
+      ],
+      "maxHeightCm": 3,
+      "rootDepthMinCm": 1,
+      "rootDepthMaxCm": 2,
+      "phPreference": "neutral",
+      "growthRate": "slow",
+      "substrateTags": [
+        "peat",
+        "sphagnum",
+        "coco-coir"
+      ],
+      "growthHabit": "mounding",
+      "plantType": "moss",
+      "nativeBiome": "tropical",
+      "rarity": "uncommon",
+      "closedTerrariumOk": true,
+      "openTerrariumOk": false,
+      "difficulty": 2,
+      "image": "plants/hyophila-involuta.png",
+      "nativeContext": "A cosmopolitan terrestrial moss found on bare soil, rock, and disturbed ground across tropical and subtropical regions worldwide.",
+      "notes": "Star Moss forms short, dense clumps that radiate outward like tiny bright green stars when viewed from above. Good for foreground accents and filling gaps between rocks and hardscape elements.",
+      "sources": [
+        {
+          "url": "https://en.wikipedia.org/wiki/Hyophila_involuta",
+          "label": "Wikipedia"
+        },
+        {
+          "url": "https://powo.science.kew.org/results?q=Hyophila%20involuta",
+          "label": "POWO"
+        },
+        {
+          "url": "https://ohiomosslichen.org/moss-hyophila-involuta/",
+          "label": "Ohio Moss and Lichen"
+        }
+      ]
+    },
+    {
+      "slug": "selaginella-apoda",
+      "commonName": "Meadow Spikemoss",
+      "scientificName": "Selaginella apoda",
+      "light": {
+        "primary": "low"
+      },
+      "soilMoisture": {
+        "primary": "moist",
+        "secondary": "wet"
+      },
+      "humidityPctRange": [
+        75,
+        95
+      ],
+      "tempCRange": [
+        10,
+        25
+      ],
+      "maxHeightCm": 5,
+      "rootDepthMinCm": 1,
+      "rootDepthMaxCm": 3,
+      "phPreference": "acidic",
+      "growthRate": "moderate",
+      "substrateTags": [
+        "peat",
+        "sphagnum",
+        "coco-coir"
+      ],
+      "growthHabit": "creeping",
+      "plantType": "fern-ally",
+      "nativeBiome": "temperate",
+      "rarity": "uncommon",
+      "closedTerrariumOk": true,
+      "openTerrariumOk": false,
+      "difficulty": 2,
+      "image": "plants/selaginella-apoda.png",
+      "nativeContext": "A native North American spikemoss found in moist meadows, marshes, and forest edges from Eastern Canada to the Gulf Coast.",
+      "notes": "Meadow Spikemoss is a low, flat-growing spikemoss that forms a lush, light-green turf layer. It loves constant dampness and shade, and works well as an easy ground-cover alternative to mosses in bog and closed tropical builds.",
+      "sources": [
+        {
+          "url": "https://en.wikipedia.org/wiki/Selaginella_apoda",
+          "label": "Wikipedia"
+        },
+        {
+          "url": "https://powo.science.kew.org/results?q=Selaginella%20apoda",
+          "label": "POWO"
+        },
+        {
+          "url": "https://plants.ces.ncsu.edu/plants/selaginella-apoda/",
+          "label": "NCSU Extension"
+        }
+      ]
+    },
+    {
+      "slug": "portulacaria-afra",
+      "commonName": "Elephant Bush",
+      "scientificName": "Portulacaria afra",
+      "light": {
+        "primary": "bright-indirect",
+        "secondary": "direct"
+      },
+      "soilMoisture": {
+        "primary": "dry"
+      },
+      "humidityPctRange": [
+        30,
+        50
+      ],
+      "tempCRange": [
+        10,
+        35
+      ],
+      "maxHeightCm": 30,
+      "rootDepthMinCm": 5,
+      "rootDepthMaxCm": 12,
+      "phPreference": "neutral",
+      "growthRate": "moderate",
+      "substrateTags": [
+        "sand",
+        "grit",
+        "perlite",
+        "pumice"
+      ],
+      "growthHabit": "upright",
+      "plantType": "succulent",
+      "nativeBiome": "arid",
+      "rarity": "common",
+      "closedTerrariumOk": false,
+      "openTerrariumOk": true,
+      "difficulty": 1,
+      "image": "plants/portulacaria-afra.png",
+      "nativeContext": "A semi-arid dwarf shrub native to the Eastern Cape of South Africa, where it forms dense thickets on rocky slopes and is browsed extensively by elephants.",
+      "notes": "Elephant Bush is a woody-stemmed succulent used as a structural mini-tree in desert and arid landscape builds. It responds well to pinching and shaping and is very forgiving of neglect. Needs a fast-draining mineral mix and full sun.",
+      "sources": [
+        {
+          "url": "https://en.wikipedia.org/wiki/Portulacaria_afra",
+          "label": "Wikipedia"
+        },
+        {
+          "url": "https://powo.science.kew.org/results?q=Portulacaria%20afra",
+          "label": "POWO"
+        },
+        {
+          "url": "https://plants.ces.ncsu.edu/plants/portulacaria-afra/",
+          "label": "NCSU Extension"
+        }
+      ]
+    },
+    {
+      "slug": "alocasia-baginda-silver-dragon",
+      "commonName": "Silver Dragon Alocasia",
+      "scientificName": "Alocasia baginda 'Silver Dragon'",
+      "light": {
+        "primary": "bright-indirect",
+        "secondary": "medium"
+      },
+      "soilMoisture": {
+        "primary": "moderate"
+      },
+      "humidityPctRange": [
+        70,
+        90
+      ],
+      "tempCRange": [
+        18,
+        28
+      ],
+      "maxHeightCm": 40,
+      "heightMinCm": 15,
+      "rootDepthMinCm": 5,
+      "rootDepthMaxCm": 15,
+      "phPreference": "acidic",
+      "growthRate": "slow",
+      "substrateTags": [
+        "orchid-bark",
+        "potting-soil",
+        "perlite"
+      ],
+      "growthHabit": "upright",
+      "plantType": "aroid",
+      "nativeBiome": "tropical",
+      "rarity": "uncommon",
+      "closedTerrariumOk": false,
+      "openTerrariumOk": true,
+      "difficulty": 3,
+      "toxicity": "Contains calcium oxalate crystals; causes mouth and throat irritation if ingested. Toxic to cats and dogs.",
+      "image": "plants/alocasia-baginda-silver-dragon.png",
+      "nativeContext": "From the humid tropical rainforests of Borneo (Kalimantan), Indonesia, growing on shaded forest floors in deep leaf litter.",
+      "notes": "Striking textured silver-grey leaves with dark raised venation. Demands high humidity and an extremely well-draining mix; the corm base is prone to rot if kept sitting in moisture.",
+      "sources": [
+        {
+          "url": "https://en.wikipedia.org/wiki/Alocasia_baginda",
+          "label": "Wikipedia"
+        },
+        {
+          "url": "https://powo.science.kew.org/results?q=Alocasia%20baginda",
+          "label": "POWO"
+        }
+      ]
+    },
+    {
+      "slug": "alocasia-amazonica-bambino",
+      "commonName": "Bambino Alocasia",
+      "scientificName": "Alocasia × amazonica 'Bambino'",
+      "light": {
+        "primary": "bright-indirect",
+        "secondary": "medium"
+      },
+      "soilMoisture": {
+        "primary": "moderate"
+      },
+      "humidityPctRange": [
+        70,
+        90
+      ],
+      "tempCRange": [
+        18,
+        29
+      ],
+      "maxHeightCm": 35,
+      "heightMinCm": 10,
+      "rootDepthMinCm": 5,
+      "rootDepthMaxCm": 12,
+      "phPreference": "acidic",
+      "growthRate": "slow",
+      "substrateTags": [
+        "orchid-bark",
+        "potting-soil",
+        "perlite"
+      ],
+      "growthHabit": "upright",
+      "plantType": "aroid",
+      "nativeBiome": "tropical",
+      "rarity": "uncommon",
+      "closedTerrariumOk": false,
+      "openTerrariumOk": true,
+      "difficulty": 3,
+      "toxicity": "Contains calcium oxalate crystals; causes mouth and throat irritation if ingested. Toxic to cats and dogs.",
+      "image": "plants/alocasia-amazonica-bambino.png",
+      "nativeContext": "Alocasia × amazonica is a nursery hybrid of uncertain Southeast Asian parentage; 'Bambino' is a dwarf selection bred for compact indoor display.",
+      "notes": "Arrow-shaped dark green leaves with bold contrasting silver-white veins. Dwarf form stays manageable; needs excellent drainage and airflow to prevent crown rot at the soil line.",
+      "sources": [
+        {
+          "url": "https://en.wikipedia.org/wiki/Alocasia_%C3%97_amazonica",
+          "label": "Wikipedia"
+        },
+        {
+          "url": "https://powo.science.kew.org/results?q=Alocasia%20amazonica",
+          "label": "POWO"
+        }
+      ]
+    },
+    {
+      "slug": "alocasia-maharani-grey-dragon",
+      "commonName": "Grey Dragon Alocasia",
+      "scientificName": "Alocasia maharani 'Grey Dragon'",
+      "light": {
+        "primary": "bright-indirect",
+        "secondary": "medium"
+      },
+      "soilMoisture": {
+        "primary": "moderate"
+      },
+      "humidityPctRange": [
+        60,
+        80
+      ],
+      "tempCRange": [
+        18,
+        28
+      ],
+      "maxHeightCm": 30,
+      "heightMinCm": 10,
+      "rootDepthMinCm": 5,
+      "rootDepthMaxCm": 12,
+      "phPreference": "neutral",
+      "growthRate": "slow",
+      "substrateTags": [
+        "orchid-bark",
+        "potting-soil",
+        "perlite"
+      ],
+      "growthHabit": "upright",
+      "plantType": "aroid",
+      "nativeBiome": "tropical",
+      "rarity": "rare",
+      "closedTerrariumOk": false,
+      "openTerrariumOk": true,
+      "difficulty": 3,
+      "toxicity": "Contains calcium oxalate crystals; causes mouth and throat irritation if ingested. Toxic to cats and dogs.",
+      "image": "plants/alocasia-maharani-grey-dragon.png",
+      "nativeContext": "Native to the tropical forests of Thailand and peninsular Malaysia; the thick, heavily textured 'maharani' form was selected for its exceptional dragon-scale leaf surface.",
+      "notes": "Ultra-thick, rigid leaves with pronounced dragon-scale ridge texture and metallic grey-green colouration. More tolerant of lower humidity than other jewel alocasias but still demands excellent drainage.",
+      "sources": [
+        {
+          "url": "https://en.wikipedia.org/wiki/Alocasia",
+          "label": "Wikipedia"
+        },
+        {
+          "url": "https://powo.science.kew.org/results?q=Alocasia%20maharani",
+          "label": "POWO"
+        }
+      ]
+    },
+    {
+      "slug": "thuidium-delicatulum",
+      "commonName": "Fern Moss",
+      "scientificName": "Thuidium delicatulum",
+      "light": {
+        "primary": "low"
+      },
+      "soilMoisture": {
+        "primary": "moist"
+      },
+      "humidityPctRange": [
+        70,
+        100
+      ],
+      "tempCRange": [
+        5,
+        22
+      ],
+      "maxHeightCm": 4,
+      "rootDepthMinCm": 1,
+      "rootDepthMaxCm": 3,
+      "phPreference": "acidic",
+      "growthRate": "slow",
+      "substrateTags": [
+        "sphagnum",
+        "peat",
+        "coco-coir"
+      ],
+      "closedTerrariumOk": true,
+      "openTerrariumOk": false,
+      "difficulty": 1,
+      "image": "plants/thuidium-delicatulum.png",
+      "growthHabit": "creeping",
+      "plantType": "moss",
+      "nativeBiome": "temperate",
+      "rarity": "common",
+      "nativeContext": "Common and abundant in moist, shaded forest floors across eastern North America, carpeting soil, logs, and stumps.",
+      "notes": "Fern Moss spreads in flat, lacy sheets with distinctive thrice-pinnate branching that mimics tiny fern fronds. One of the most popular terrarium mosses for naturalistic forest builds — it knits quickly over substrate and hardscape and tolerates the high humidity of a sealed lid with ease.",
+      "sources": [
+        {
+          "url": "https://en.wikipedia.org/wiki/Thuidium_delicatulum",
+          "label": "Wikipedia"
+        },
+        {
+          "url": "https://powo.science.kew.org/results?q=Thuidium%20delicatulum",
+          "label": "POWO"
+        },
+        {
+          "url": "https://ohiomosslichen.org/moss-thuidium-delicatulum/",
+          "label": "Ohio Moss and Lichen"
+        }
+      ]
     }
   ]
 }

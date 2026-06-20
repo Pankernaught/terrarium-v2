@@ -1,0 +1,682 @@
+<!doctype html>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>🌿 Plant Admin</title>
+<style>
+  :root {
+    --bg: #11160f; --panel: #19211603; --panel-solid: #1b2418; --line: #2c3a2a;
+    --ink: #e8efe4; --muted: #93a58c; --accent: #7cc47a; --accent-ink: #0e1a0d;
+    --danger: #e07a6a; --danger-bg: #3a201c; --field: #131a11; --warn: #d9b45a;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0; background: var(--bg); color: var(--ink);
+    font: 14px/1.5 ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+    height: 100vh; overflow: hidden; display: flex; flex-direction: column;
+  }
+  header {
+    display: flex; align-items: baseline; gap: 12px; padding: 14px 20px;
+    border-bottom: 1px solid var(--line); position: sticky; top: 0; background: var(--bg); z-index: 5;
+  }
+  header h1 { font-size: 17px; margin: 0; font-weight: 650; }
+  header .count { color: var(--muted); font-size: 13px; }
+  header .save-note { margin-left: auto; color: var(--muted); font-size: 12px; }
+  .layout { display: grid; grid-template-columns: 320px 1fr 210px; flex: 1; min-height: 0; }
+  /* --- list --- */
+  .list { border-right: 1px solid var(--line); display: flex; flex-direction: column; min-width: 0; min-height: 0; }
+  .list .controls { padding: 12px; display: flex; flex-direction: column; gap: 8px; border-bottom: 1px solid var(--line); }
+  .list .rows { overflow: auto; flex: 1; }
+  .row {
+    padding: 10px 12px; border-bottom: 1px solid var(--line); cursor: pointer; min-width: 0;
+    display: flex; align-items: center; gap: 10px;
+  }
+  .row-info { flex: 1; min-width: 0; }
+  .row:hover { background: #1a221700; }
+  .row.active { background: #20301c; box-shadow: inset 3px 0 0 var(--accent); }
+  .row .cn { font-weight: 600; }
+  .row .sn { color: var(--muted); font-style: italic; font-size: 12.5px; }
+  .row .slug { color: #6f8268; font-size: 11px; font-family: ui-monospace, monospace; }
+  .verify-check { flex-shrink: 0; display: flex; align-items: center; padding: 2px 4px; }
+  .verify-check input { width: 15px; height: 15px; accent-color: var(--accent); cursor: pointer; }
+  .row.verified .cn { color: var(--accent); }
+  /* --- form --- */
+  .form { padding: 18px 22px 0; overflow: auto; max-width: 860px; min-height: 0; }
+  .empty { color: var(--muted); padding: 40px; text-align: center; }
+  .group { margin-bottom: 26px; }
+  .group h2 {
+    font-size: 12px; text-transform: uppercase; letter-spacing: .07em; color: var(--accent);
+    margin: 0 0 12px; padding-bottom: 6px; border-bottom: 1px solid var(--line);
+  }
+  .grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px 18px; }
+  .field.col-2 { grid-column: 1 / -1; }
+  label.fl { display: block; font-weight: 600; margin-bottom: 4px; font-size: 13px; }
+  label.fl .req { color: var(--accent); }
+  .help { color: var(--muted); font-size: 11.5px; margin-top: 3px; }
+  input[type=text], input[type=number], textarea, select {
+    width: 100%; background: var(--field); color: var(--ink); border: 1px solid var(--line);
+    border-radius: 7px; padding: 8px 9px; font: inherit;
+  }
+  textarea { min-height: 60px; resize: vertical; }
+  input:focus, textarea:focus, select:focus { outline: none; border-color: var(--accent); }
+  .field.invalid input, .field.invalid textarea, .field.invalid select,
+  .field.invalid .multi, .field.invalid .req-row { border-color: var(--danger); }
+  .err { color: var(--danger); font-size: 11.5px; margin-top: 3px; min-height: 0; }
+  .req-row, .range-row { display: flex; gap: 8px; align-items: flex-end; }
+  .req-col { display: flex; flex-direction: column; gap: 4px; flex: 1; }
+  .req-sublabel { font-size: 11.5px; font-weight: 600; color: var(--muted); }
+  .range-row span { color: var(--muted); }
+  .multi { display: flex; flex-wrap: wrap; gap: 6px 14px; border: 1px solid transparent; border-radius: 7px; }
+  .multi label { display: flex; align-items: center; gap: 6px; font-weight: 400; cursor: pointer; }
+  .bool { display: flex; gap: 6px; }
+  .bool label { display: flex; align-items: center; gap: 6px; font-weight: 400; cursor: pointer; padding: 6px 12px; border: 1px solid var(--line); border-radius: 7px; }
+  .bool input[type=radio] { width: 15px; height: 15px; accent-color: var(--accent); }
+  .bool label:has(input:checked) { border-color: var(--accent); background: #1d2e1a; }
+  .kv-row { display: flex; gap: 8px; margin-bottom: 6px; }
+  .kv-row input { flex: 1; }
+  .kv-row .kv-k { flex: 0 0 32%; }
+  .link-row { display: flex; gap: 8px; margin-bottom: 6px; }
+  .link-row input { flex: 1; }
+  .link-row .link-label { flex: 0 0 32%; }
+  /* --- buttons --- */
+  button {
+    font: inherit; border: 1px solid var(--line); background: var(--panel-solid); color: var(--ink);
+    border-radius: 7px; padding: 8px 14px; cursor: pointer;
+  }
+  button:hover { border-color: var(--accent); }
+  button.primary { background: var(--accent); color: var(--accent-ink); border-color: var(--accent); font-weight: 650; }
+  button.ghost { background: transparent; }
+  button.danger { color: var(--danger); border-color: var(--danger); background: transparent; }
+  button.danger:hover { background: var(--danger-bg); }
+  button.mini { padding: 5px 9px; font-size: 12px; }
+  .form-bottom { padding: 8px 0 40px; display: flex; gap: 10px; align-items: center; }
+  .form-heading { display: flex; align-items: baseline; gap: 10px; margin-bottom: 12px; }
+  .form-heading h2 { margin: 0; }
+  /* --- image --- */
+  .img-box { display: flex; gap: 14px; align-items: flex-start; }
+  .img-prev {
+    width: 96px; height: 72px; border: 1px dashed var(--line); border-radius: 7px; object-fit: cover;
+    background: var(--field) center/contain no-repeat; display: flex; align-items: center; justify-content: center;
+    color: var(--muted); font-size: 11px; text-align: center;
+  }
+  /* --- toast --- */
+  #toast {
+    position: fixed; bottom: 18px; left: 50%; transform: translateX(-50%) translateY(20px);
+    background: var(--panel-solid); border: 1px solid var(--line); border-radius: 9px;
+    padding: 11px 18px; opacity: 0; transition: .2s; pointer-events: none; max-width: 70vw;
+  }
+  #toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+  #toast.ok { border-color: var(--accent); }
+  #toast.bad { border-color: var(--danger); }
+  .autosave-status { font-size: 12px; color: var(--muted); transition: color .15s; }
+  .autosave-status.ok { color: var(--accent); }
+  .autosave-status.bad { color: var(--danger); }
+  /* --- modal --- */
+  #modal {
+    position: fixed; inset: 0; background: #000a; display: none; align-items: center; justify-content: center; z-index: 20;
+  }
+  #modal.show { display: flex; }
+  .dialog { background: var(--panel-solid); border: 1px solid var(--line); border-radius: 12px; padding: 22px; max-width: 420px; }
+  .dialog h3 { margin: 0 0 10px; }
+  .dialog p { color: var(--muted); }
+  .dialog .row-btns { display: flex; gap: 10px; justify-content: flex-end; margin-top: 18px; }
+  .badge { font-size: 11px; color: var(--warn); }
+  /* --- verify panel --- */
+  .verify-panel {
+    border-left: 1px solid var(--line); display: flex; flex-direction: column; overflow: auto; min-height: 0;
+  }
+  .vp-header {
+    display: flex; align-items: baseline; gap: 8px; padding: 12px 14px 10px;
+    border-bottom: 1px solid var(--line); position: sticky; top: 0; background: var(--bg); z-index: 2;
+  }
+  .vp-title { font-size: 12px; font-weight: 650; color: var(--muted); text-transform: uppercase; letter-spacing: .06em; flex: 1; }
+  .vp-count { font-size: 12px; color: var(--accent); font-variant-numeric: tabular-nums; }
+  .vp-empty { color: var(--muted); font-size: 13px; padding: 28px 14px; text-align: center; }
+  .vf-group { padding: 10px 14px 4px; }
+  .vf-group-title {
+    font-size: 10.5px; text-transform: uppercase; letter-spacing: .07em; color: var(--accent);
+    margin: 0 0 6px; padding-bottom: 5px; border-bottom: 1px solid var(--line);
+  }
+  .vf-item { display: flex; align-items: center; gap: 7px; padding: 2px 0; cursor: pointer; }
+  .vf-item input { width: 13px; height: 13px; accent-color: var(--accent); flex-shrink: 0; cursor: pointer; }
+  .vf-item span { font-size: 12px; color: var(--muted); line-height: 1.3; }
+  .vf-item.checked span { color: var(--ink); }
+</style>
+
+<header>
+  <h1>🌿 Plant Admin</h1>
+  <span class="count" id="count"></span>
+  <span class="save-note">Autosaves to <code>src/data/plants.json</code> · restart Expo to apply</span>
+</header>
+
+<div class="layout">
+  <aside class="list">
+    <div class="controls">
+      <button class="primary" id="addBtn">+ Add plant</button>
+      <input type="text" id="search" placeholder="Search name or slug…" />
+      <select id="typeFilter"><option value="">All plant types</option></select>
+    </div>
+    <div class="rows" id="rows"></div>
+  </aside>
+  <main class="form" id="form">
+    <div class="empty">Select a plant to edit, or click <strong>+ Add plant</strong>.</div>
+  </main>
+  <aside class="verify-panel" id="verifyPanel">
+    <div class="vp-empty">Select a plant to see field checks.</div>
+  </aside>
+</div>
+
+<div id="toast"></div>
+<div id="modal">
+  <div class="dialog">
+    <h3 id="mTitle"></h3>
+    <p id="mBody"></p>
+    <div class="row-btns">
+      <button class="ghost" id="mCancel">Cancel</button>
+      <button class="danger" id="mOk">Delete</button>
+    </div>
+  </div>
+</div>
+
+<script>
+/*__FIELD_SPEC__*/
+window.SPEC = SPEC;
+</script>
+
+<script>
+(function () {
+  const SPEC = window.SPEC;
+  const $ = (s, r = document) => r.querySelector(s);
+
+  const state = {
+    plants: [],
+    mode: null,        // 'add' | 'edit'
+    originalSlug: null,
+    imageDataUrl: null,
+    touched: new Set(),
+    slugDirty: false,
+    search: '',
+    typeFilter: '',
+    verified: new Set(JSON.parse(localStorage.getItem('plant-verified') || '[]')),
+    fieldVerified: JSON.parse(localStorage.getItem('plant-field-verified') || '{}'),
+  };
+
+  // ---- API ----
+  async function api(method, path, body) {
+    const res = await fetch(path, {
+      method,
+      headers: body ? { 'Content-Type': 'application/json' } : undefined,
+      body: body ? JSON.stringify(body) : undefined,
+    });
+    const data = await res.json().catch(() => ({}));
+    if (!res.ok) { const e = new Error(data.error || res.statusText); e.data = data; throw e; }
+    return data;
+  }
+
+  function toast(msg, kind) {
+    const t = $('#toast');
+    t.textContent = msg;
+    t.className = 'show ' + (kind || '');
+    setTimeout(() => (t.className = ''), 3600);
+  }
+
+  // ---- list ----
+  function matchesFilter(p) {
+    const q = state.search.trim().toLowerCase();
+    if (q && ![p.commonName, p.scientificName, p.slug].some((s) => (s || '').toLowerCase().includes(q))) return false;
+    if (state.typeFilter && p.plantType !== state.typeFilter) return false;
+    return true;
+  }
+
+  function renderList() {
+    $('#count').textContent = `${state.plants.length} plants`;
+    const rows = $('#rows');
+    const shown = state.plants.filter(matchesFilter)
+      .sort((a, b) => a.commonName.localeCompare(b.commonName));
+    rows.innerHTML = shown.map((p) => {
+      const isActive = state.mode === 'edit' && state.originalSlug === p.slug;
+      const isVerified = state.verified.has(p.slug);
+      return `<div class="row${isActive ? ' active' : ''}${isVerified ? ' verified' : ''}" data-slug="${esc(p.slug)}">
+        <div class="row-info">
+          <div class="cn">${esc(p.commonName)}</div>
+          <div class="sn">${esc(p.scientificName)}</div>
+          <div class="slug">${esc(p.slug)}</div>
+        </div>
+        <label class="verify-check" title="Mark as verified">
+          <input type="checkbox" data-verify="${esc(p.slug)}" ${isVerified ? 'checked' : ''} />
+        </label>
+      </div>`;
+    }).join('') || `<div class="empty">No matches.</div>`;
+  }
+
+  // ---- form rendering ----
+  function esc(s) {
+    return String(s == null ? '' : s).replace(/[&<>"']/g, (c) =>
+      ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+  }
+
+  function controlHtml(f, v) {
+    const dk = `data-key="${f.key}"`;
+    switch (f.kind) {
+      case 'textarea':
+        return `<textarea ${dk}>${esc(v || '')}</textarea>`;
+      case 'number':
+        return `<input type="number" ${dk} value="${v == null ? '' : esc(v)}" ${f.min != null ? `min="${f.min}"` : ''} ${f.max != null ? `max="${f.max}"` : ''} step="${f.int ? 1 : 'any'}" />`;
+      case 'enum': {
+        const opts = ['<option value="">—</option>']
+          .concat(f.options.map((o) => `<option ${o === v ? 'selected' : ''}>${esc(o)}</option>`));
+        return `<select ${dk}>${opts.join('')}</select>`;
+      }
+      case 'bool': {
+        const uid = f.key + '-' + Math.random().toString(36).slice(2);
+        return `<div class="bool">
+          <label><input type="radio" name="${uid}" ${dk} value="yes" ${v ? 'checked' : ''} /> Yes</label>
+          <label><input type="radio" name="${uid}" ${dk} value="no" ${!v ? 'checked' : ''} /> No</label>
+        </div>`;
+      }
+      case 'requirement': {
+        const pri = (v && v.primary) || '';
+        const sec = (v && v.secondary) || '';
+        const opt = (sel, blank) => `<option value="">${esc(blank)}</option>` + f.options.map((o) => `<option ${o === sel ? 'selected' : ''}>${esc(o)}</option>`).join('');
+        return `<div class="req-row">
+          <div class="req-col">
+            <span class="req-sublabel">Primary</span>
+            <select ${dk} data-part="primary">${opt(pri, '— choose —')}</select>
+          </div>
+          <div class="req-col">
+            <span class="req-sublabel">Secondary <span style="font-weight:400;color:var(--muted)">(optional)</span></span>
+            <select ${dk} data-part="secondary">${opt(sec, '— none —')}</select>
+          </div>
+        </div>`;
+      }
+      case 'range': {
+        const a = v && v[0] != null ? v[0] : '';
+        const b = v && v[1] != null ? v[1] : '';
+        const at = `${f.min != null ? `min="${f.min}"` : ''} ${f.max != null ? `max="${f.max}"` : ''} step="${f.int ? 1 : 'any'}"`;
+        return `<div class="range-row">
+          <input type="number" ${dk} data-idx="0" value="${a === '' ? '' : esc(a)}" ${at} placeholder="min" />
+          <span>–</span>
+          <input type="number" ${dk} data-idx="1" value="${b === '' ? '' : esc(b)}" ${at} placeholder="max" />
+        </div>`;
+      }
+      case 'multi': {
+        const set = new Set(v || []);
+        return `<div class="multi" ${dk}>` + f.options.map((o) =>
+          `<label><input type="checkbox" value="${esc(o.id)}" ${set.has(o.id) ? 'checked' : ''} /> ${esc(o.label)}</label>`).join('') + `</div>`;
+      }
+      case 'kv': {
+        const entries = v ? Object.entries(v) : [];
+        const row = (k, val) => `<div class="kv-row">
+          <input type="text" class="kv-k" placeholder="key" value="${esc(k)}" />
+          <input type="text" class="kv-v" placeholder="value" value="${esc(val)}" />
+          <button type="button" class="mini ghost kv-del">✕</button></div>`;
+        return `<div class="kv" ${dk}>${entries.map(([k, val]) => row(k, val)).join('')}
+          <button type="button" class="mini ghost kv-add">+ Add note</button></div>`;
+      }
+      case 'links': {
+        const items = Array.isArray(v) ? v : [];
+        const row = (url, label) => `<div class="link-row">
+          <input type="text" class="link-url" placeholder="https://…" value="${esc(url)}" />
+          <input type="text" class="link-label" placeholder="label (optional)" value="${esc(label)}" />
+          <button type="button" class="mini ghost link-open" title="Open link">↗</button>
+          <button type="button" class="mini ghost link-del">✕</button></div>`;
+        return `<div class="links" ${dk}>${items.map((it) => row(it.url || '', it.label || '')).join('')}
+          <button type="button" class="mini ghost link-add">+ Add link</button></div>`;
+      }
+      default: // text
+        return `<input type="text" ${dk} value="${esc(v || '')}" />`;
+    }
+  }
+
+  function fieldHtml(f, rec) {
+    const wide = f.kind === 'textarea' || f.kind === 'multi' || f.kind === 'kv' || f.kind === 'links' || f.kind === 'requirement';
+    return `<div class="field ${wide ? 'col-2' : ''}" data-field="${f.key}">
+      <label class="fl">${esc(f.label)}${f.required ? ' <span class="req">*</span>' : ''}</label>
+      ${controlHtml(f, rec[f.key])}
+      ${f.help ? `<div class="help">${esc(f.help)}</div>` : ''}
+      <div class="err"></div>
+    </div>`;
+  }
+
+  function imageGroupHtml(rec) {
+    const slug = rec.slug || '<slug>';
+    const prev = state.imageDataUrl
+      ? `<img class="img-prev" src="${state.imageDataUrl}" />`
+      : `<div class="img-prev">no upload<br>(uses placeholder)</div>`;
+    return `<div class="group"><h2>Photo</h2>
+      <div class="img-box">
+        ${prev}
+        <div>
+          <input type="file" id="imgFile" accept="image/png" />
+          <div class="help">Optional. Saved to <code>assets/plants/${esc(slug)}.png</code> on save. PNG only.
+          Leave empty to keep the stylized placeholder. <span class="badge">Real photos must be CC-licensed — fill credit/license above.</span></div>
+        </div>
+      </div></div>`;
+  }
+
+  function renderForm(rec) {
+    const form = $('#form');
+    const heading = state.mode === 'add' ? 'New plant' : `Editing: ${rec.commonName || rec.slug}`;
+    const statusOrBtn = state.mode === 'add'
+      ? '' : `<span id="autosaveStatus" class="autosave-status"></span>`;
+    form.innerHTML =
+      `<div class="group"><div class="form-heading"><h2>${esc(heading)}</h2>${statusOrBtn}</div></div>` +
+      SPEC.GROUPS.map((g) =>
+        `<div class="group"><h2>${esc(g.title)}</h2><div class="grid">${g.fields.map((f) => fieldHtml(f, rec)).join('')}</div></div>`
+      ).join('') +
+      imageGroupHtml(rec) +
+      `<div class="form-bottom">
+        ${state.mode === 'add' ? '<button class="primary" id="saveBtn">Add plant</button>' : ''}
+        ${state.mode === 'edit' ? '<button class="danger" id="delBtn">Delete…</button>' : ''}
+      </div>`;
+    wireForm();
+    showErrors(false);
+  }
+
+  // ---- read DOM → record ----
+  function num(el) { const s = el.value.trim(); if (s === '') return undefined; const n = Number(s); return Number.isNaN(n) ? undefined : n; }
+
+  function collect() {
+    const form = $('#form');
+    const rec = {};
+    for (const f of SPEC.ALL_FIELDS) {
+      if (f.kind === 'requirement') {
+        const pri = form.querySelector(`[data-key="${f.key}"][data-part="primary"]`).value;
+        const sec = form.querySelector(`[data-key="${f.key}"][data-part="secondary"]`).value;
+        if (pri) { rec[f.key] = sec ? { primary: pri, secondary: sec } : { primary: pri }; }
+      } else if (f.kind === 'range') {
+        const a = num(form.querySelector(`[data-key="${f.key}"][data-idx="0"]`));
+        const b = num(form.querySelector(`[data-key="${f.key}"][data-idx="1"]`));
+        if (a != null || b != null) rec[f.key] = [a == null ? NaN : a, b == null ? NaN : b];
+      } else if (f.kind === 'multi') {
+        const ids = [...form.querySelectorAll(`[data-key="${f.key}"] input:checked`)].map((c) => c.value);
+        if (ids.length) rec[f.key] = ids;
+      } else if (f.kind === 'kv') {
+        const obj = {};
+        form.querySelectorAll(`[data-key="${f.key}"] .kv-row`).forEach((r) => {
+          const k = r.querySelector('.kv-k').value.trim();
+          const val = r.querySelector('.kv-v').value;
+          if (k) obj[k] = val;
+        });
+        if (Object.keys(obj).length) rec[f.key] = obj;
+      } else if (f.kind === 'links') {
+        const arr = [];
+        form.querySelectorAll(`[data-key="${f.key}"] .link-row`).forEach((r) => {
+          const url = r.querySelector('.link-url').value.trim();
+          const label = r.querySelector('.link-label').value.trim();
+          if (url) arr.push(label ? { url, label } : { url });
+        });
+        if (arr.length) rec[f.key] = arr;
+      } else if (f.kind === 'bool') {
+        const checked = form.querySelector(`[data-key="${f.key}"]:checked`);
+        rec[f.key] = checked ? checked.value === 'yes' : false;
+      } else if (f.kind === 'number') {
+        const n = num(form.querySelector(`[data-key="${f.key}"]`));
+        if (n != null) rec[f.key] = n;
+      } else {
+        const v = form.querySelector(`[data-key="${f.key}"]`).value.trim();
+        if (v) rec[f.key] = v;
+      }
+    }
+    return rec;
+  }
+
+  function otherSlugs() {
+    return new Set(state.plants.map((p) => p.slug).filter((s) => s !== state.originalSlug));
+  }
+
+  function showErrors(all) {
+    const rec = collect();
+    const errors = SPEC.validatePlant(rec, otherSlugs());
+    for (const f of SPEC.ALL_FIELDS) {
+      const wrap = document.querySelector(`.field[data-field="${f.key}"]`);
+      if (!wrap) continue;
+      const show = (all || state.touched.has(f.key)) && errors[f.key];
+      wrap.classList.toggle('invalid', !!show);
+      wrap.querySelector('.err').textContent = show ? errors[f.key] : '';
+    }
+    return errors;
+  }
+
+  // ---- wiring ----
+  function wireForm() {
+    const form = $('#form');
+
+    // auto-slug from scientific name
+    const sciEl = form.querySelector('[data-key="scientificName"]');
+    const slugEl = form.querySelector('[data-key="slug"]');
+    if (sciEl && slugEl) {
+      sciEl.addEventListener('input', () => {
+        if (!state.slugDirty) slugEl.value = SPEC.slugify(sciEl.value);
+      });
+      slugEl.addEventListener('input', () => { state.slugDirty = true; });
+    }
+
+    // on-blur validation: mark touched + revalidate
+    form.addEventListener('blur', (e) => {
+      const ctrl = e.target.closest('[data-key]');
+      if (!ctrl) return;
+      const key = ctrl.getAttribute('data-key');
+      state.touched.add(key);
+      showErrors(false);
+    }, true);
+
+
+    // image upload
+    const file = form.querySelector('#imgFile');
+    if (file) file.addEventListener('change', () => {
+      const f = file.files[0];
+      if (!f) { state.imageDataUrl = null; return; }
+      if (f.type !== 'image/png') { toast('PNG only', 'bad'); file.value = ''; return; }
+      const reader = new FileReader();
+      reader.onload = () => {
+        state.imageDataUrl = reader.result;
+        const box = form.querySelector('.img-prev');
+        box.outerHTML = `<img class="img-prev" src="${state.imageDataUrl}" />`;
+      };
+      reader.readAsDataURL(f);
+    });
+
+    const saveBtn = $('#saveBtn');
+    if (saveBtn) saveBtn.addEventListener('click', save);
+    const del = $('#delBtn');
+    if (del) del.addEventListener('click', confirmDelete);
+
+    // autosave: debounce any input/change in the form when editing
+    form.addEventListener('input', scheduleAutoSave);
+    form.addEventListener('change', scheduleAutoSave);
+  }
+
+  // ---- verify panel ----
+  function renderVerifyPanel() {
+    const panel = document.getElementById('verifyPanel');
+    if (!panel) return;
+    if (state.mode !== 'edit' || !state.originalSlug) {
+      panel.innerHTML = '<div class="vp-empty">Select a plant to see field checks.</div>';
+      return;
+    }
+    const slug = state.originalSlug;
+    const checked = new Set(state.fieldVerified[slug] || []);
+    const total = SPEC.ALL_FIELDS.length;
+    const done = SPEC.ALL_FIELDS.filter((f) => checked.has(f.key)).length;
+    panel.innerHTML =
+      `<div class="vp-header"><span class="vp-title">Verified</span><span class="vp-count">${done} / ${total}</span></div>` +
+      SPEC.GROUPS.map((g) =>
+        `<div class="vf-group"><div class="vf-group-title">${esc(g.title)}</div>` +
+        g.fields.map((f) => {
+          const on = checked.has(f.key);
+          return `<label class="vf-item${on ? ' checked' : ''}"><input type="checkbox" data-fv="${esc(f.key)}" ${on ? 'checked' : ''} /><span>${esc(f.label)}</span></label>`;
+        }).join('') +
+        `</div>`
+      ).join('');
+  }
+
+  document.getElementById('verifyPanel').addEventListener('change', (e) => {
+    const cb = e.target.closest('[data-fv]');
+    if (!cb || state.mode !== 'edit') return;
+    const key = cb.getAttribute('data-fv');
+    const slug = state.originalSlug;
+    const set = new Set(state.fieldVerified[slug] || []);
+    if (e.target.checked) set.add(key); else set.delete(key);
+    state.fieldVerified[slug] = [...set];
+    localStorage.setItem('plant-field-verified', JSON.stringify(state.fieldVerified));
+    cb.closest('.vf-item').classList.toggle('checked', e.target.checked);
+    const total = SPEC.ALL_FIELDS.length;
+    const done = set.size;
+    const countEl = document.querySelector('.vp-count');
+    if (countEl) countEl.textContent = `${done} / ${total}`;
+  });
+
+  // ---- autosave ----
+  let autoSaveTimer = null;
+
+  function scheduleAutoSave() {
+    if (state.mode !== 'edit') return;
+    clearTimeout(autoSaveTimer);
+    autoSaveTimer = setTimeout(autoSave, 800);
+  }
+
+  function setAutoSaveStatus(text, cls) {
+    const el = document.getElementById('autosaveStatus');
+    if (el) { el.textContent = text; el.className = 'autosave-status ' + (cls || ''); }
+  }
+
+  async function autoSave() {
+    const rec = collect();
+    const errors = SPEC.validatePlant(rec, otherSlugs());
+    const hasRequiredErrors = SPEC.ALL_FIELDS.some((f) => f.required && errors[f.key]);
+    if (hasRequiredErrors) { setAutoSaveStatus('Waiting for required fields…', ''); return; }
+    setAutoSaveStatus('Saving…', '');
+    try {
+      const body = { record: rec, imageDataUrl: state.imageDataUrl || undefined };
+      const data = await api('PUT', `/api/plants/${encodeURIComponent(state.originalSlug)}`, body);
+      state.plants = data.plants;
+      if (rec.slug !== state.originalSlug) { state.originalSlug = rec.slug; }
+      setAutoSaveStatus('Saved', 'ok');
+      setTimeout(() => setAutoSaveStatus('', ''), 2000);
+      renderList();
+    } catch (e) {
+      setAutoSaveStatus('Save failed', 'bad');
+      toast(e.message || 'Save failed', 'bad');
+    }
+  }
+
+  async function save() {
+    const errors = showErrors(true);
+    if (Object.keys(errors).length) { toast('Fix the highlighted fields', 'bad'); return; }
+    const record = collect();
+    try {
+      const body = { record, imageDataUrl: state.imageDataUrl || undefined };
+      const data = state.mode === 'add'
+        ? await api('POST', '/api/plants', body)
+        : await api('PUT', `/api/plants/${encodeURIComponent(state.originalSlug)}`, body);
+      state.plants = data.plants;
+      const ph = data.placeholders && !data.placeholders.ok ? ' (⚠ placeholder regen failed — run build-placeholders.mjs)' : '';
+      toast(`Saved "${record.commonName}" · ${data.count} plants${ph}`, ph ? 'bad' : 'ok');
+      // re-open in edit mode at the (possibly new) slug
+      openEdit(record.slug);
+    } catch (e) {
+      if (e.data && e.data.errors) {
+        Object.assign({}, e.data.errors);
+        for (const k of Object.keys(e.data.errors)) state.touched.add(k);
+        showErrors(true);
+      }
+      toast(e.message || 'Save failed', 'bad');
+    }
+  }
+
+  function confirmDelete() {
+    $('#mTitle').textContent = `Delete "${state.originalSlug}"?`;
+    $('#mBody').innerHTML = `This removes the plant from the catalog. Any saved build that used it will point at a missing plant until you re-add it, and its photo/placeholder files are left on disk. This can't be undone from here (use git to recover).`;
+    const modal = $('#modal');
+    modal.classList.add('show');
+    const ok = $('#mOk'), cancel = $('#mCancel');
+    const close = () => { modal.classList.remove('show'); ok.onclick = cancel.onclick = null; };
+    cancel.onclick = close;
+    ok.onclick = async () => {
+      close();
+      try {
+        const data = await api('DELETE', `/api/plants/${encodeURIComponent(state.originalSlug)}`);
+        state.plants = data.plants;
+        toast(`Deleted · ${data.count} plants`, 'ok');
+        closeForm();
+      } catch (e) { toast(e.message || 'Delete failed', 'bad'); }
+    };
+  }
+
+  // ---- open / close ----
+  function resetFormState() { clearTimeout(autoSaveTimer); state.touched = new Set(); state.slugDirty = false; state.imageDataUrl = null; }
+
+  function openAdd() {
+    state.mode = 'add'; state.originalSlug = null; resetFormState();
+    renderForm({ substrateTags: [], closedTerrariumOk: false, openTerrariumOk: false });
+    renderVerifyPanel();
+    renderList();
+  }
+
+  function openEdit(slug) {
+    const p = state.plants.find((x) => x.slug === slug);
+    if (!p) return;
+    state.mode = 'edit'; state.originalSlug = slug; resetFormState(); state.slugDirty = true;
+    renderForm(JSON.parse(JSON.stringify(p)));
+    renderVerifyPanel();
+    renderList();
+  }
+
+  function closeForm() {
+    state.mode = null; state.originalSlug = null; resetFormState();
+    $('#form').innerHTML = `<div class="empty">Select a plant to edit, or click <strong>+ Add plant</strong>.</div>`;
+    renderVerifyPanel();
+    renderList();
+  }
+
+  // ---- boot ----
+  function initTypeFilter() {
+    const sel = $('#typeFilter');
+    SPEC.PLANT_TYPES.forEach((t) => { const o = document.createElement('option'); o.value = o.textContent = t; sel.appendChild(o); });
+    sel.addEventListener('change', () => { state.typeFilter = sel.value; renderList(); });
+  }
+
+  // Single delegated handler for dynamic add/del rows — registered once so it doesn't multiply on re-renders.
+  $('#form').addEventListener('click', (e) => {
+    if (e.target.classList.contains('kv-add')) {
+      const box = e.target.closest('.kv');
+      const r = document.createElement('div');
+      r.className = 'kv-row';
+      r.innerHTML = `<input type="text" class="kv-k" placeholder="key" /><input type="text" class="kv-v" placeholder="value" /><button type="button" class="mini ghost kv-del">✕</button>`;
+      box.insertBefore(r, e.target);
+    } else if (e.target.classList.contains('kv-del')) {
+      e.target.closest('.kv-row').remove();
+    } else if (e.target.classList.contains('link-add')) {
+      const box = e.target.closest('.links');
+      const r = document.createElement('div');
+      r.className = 'link-row';
+      r.innerHTML = `<input type="text" class="link-url" placeholder="https://…" /><input type="text" class="link-label" placeholder="label (optional)" /><button type="button" class="mini ghost link-open" title="Open link">↗</button><button type="button" class="mini ghost link-del">✕</button>`;
+      box.insertBefore(r, e.target);
+    } else if (e.target.classList.contains('link-open')) {
+      const url = e.target.closest('.link-row').querySelector('.link-url').value.trim();
+      if (url) window.open(url, '_blank', 'noopener');
+    } else if (e.target.classList.contains('link-del')) {
+      e.target.closest('.link-row').remove();
+    }
+  });
+
+  $('#addBtn').addEventListener('click', openAdd);
+  $('#search').addEventListener('input', (e) => { state.search = e.target.value; renderList(); });
+  $('#rows').addEventListener('click', (e) => {
+    if (e.target.closest('.verify-check')) return;
+    const row = e.target.closest('.row'); if (row) openEdit(row.getAttribute('data-slug'));
+  });
+  $('#rows').addEventListener('change', (e) => {
+    const cb = e.target.closest('[data-verify]');
+    if (!cb) return;
+    const slug = cb.getAttribute('data-verify');
+    if (e.target.checked) state.verified.add(slug); else state.verified.delete(slug);
+    localStorage.setItem('plant-verified', JSON.stringify([...state.verified]));
+    cb.closest('.row').classList.toggle('verified', e.target.checked);
+  });
+  initTypeFilter();
+
+  api('GET', '/api/plants').then((d) => { state.plants = d.plants; renderList(); })
+    .catch((e) => toast('Load failed: ' + e.message, 'bad'));
+})();
+</script>

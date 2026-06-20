@@ -12,7 +12,7 @@
  *    and no photos.
  *
  * Divergences from v1:
- *  - UUID string primary keys (`newId()`), not integer autoincrement (decision 17).
+ *  - UUID string primary keys (`newId()`), not integer autoincrement.
  *  - `containerSlug` is simply nullable — v2 drops v1's `"custom"` sentinel that
  *    only existed for a legacy NOT NULL column.
  *  - New columns `placements` / `substrateDepth` / `drainageDepth` are carried
@@ -40,6 +40,7 @@ export interface SaveBuildInput {
   placements?: Build['placements'];
   substrateDepth?: Build['substrateDepth'];
   drainageDepth?: Build['drainageDepth'];
+  charcoalDepth?: Build['charcoalDepth'];
   substrateMix?: Build['substrateMix'];
 }
 
@@ -60,6 +61,7 @@ export interface UpdateBuildPatch {
   placements?: Build['placements'];
   substrateDepth?: Build['substrateDepth'];
   drainageDepth?: Build['drainageDepth'];
+  charcoalDepth?: Build['charcoalDepth'];
   substrateMix?: Build['substrateMix'];
 }
 
@@ -101,6 +103,7 @@ export function createBuildRepository(db: TerrariumDb): BuildRepository {
         placements: input.placements ?? null,
         substrateDepth: input.substrateDepth ?? null,
         drainageDepth: input.drainageDepth ?? null,
+        charcoalDepth: input.charcoalDepth ?? null,
         substrateMix: input.substrateMix ?? null,
         primaryPhotoId: null,
         createdAt: now,
@@ -138,6 +141,7 @@ export function createBuildRepository(db: TerrariumDb): BuildRepository {
       if (patch.placements !== undefined) set.placements = patch.placements;
       if (patch.substrateDepth !== undefined) set.substrateDepth = patch.substrateDepth;
       if (patch.drainageDepth !== undefined) set.drainageDepth = patch.drainageDepth;
+      if (patch.charcoalDepth !== undefined) set.charcoalDepth = patch.charcoalDepth;
       if (patch.substrateMix !== undefined) set.substrateMix = patch.substrateMix;
 
       await db.update(builds).set(set).where(eq(builds.id, id));
@@ -169,6 +173,7 @@ export function createBuildRepository(db: TerrariumDb): BuildRepository {
         placements: original.placements,
         substrateDepth: original.substrateDepth,
         drainageDepth: original.drainageDepth,
+        charcoalDepth: original.charcoalDepth,
         substrateMix: original.substrateMix,
         // A duplicate carries no photos yet.
         primaryPhotoId: null,

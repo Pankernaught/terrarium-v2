@@ -1,12 +1,12 @@
 /**
- * Care-reminder scheduling (net-new engine, Phase 7).
+ * Care-reminder scheduling.
  *
  * `care.ts` (`generateCareGuide`) emits *static tip text* — it has no notion of
  * *when* to do anything. This module adds the missing cadence: it decides **which**
  * recurring care tasks a build needs and **how often**, then reuses the guide's
- * prose as each reminder's body (decision 13).
+ * prose as each reminder's body.
  *
- * **Three task types only (decision 13), all build-level:**
+ * **Three task types only, all build-level:**
  *   - **watering-inspection** — "look, don't pour." A reminder to *inspect* moisture
  *     and decide, **never a fixed watering timer** (a fixed timer overwaters and
  *     kills terrariums — the load-bearing call). Always present.
@@ -20,7 +20,7 @@
  * exist nowhere in v1, so they are treated like the scoring constants: provisional
  * and easy to retune. **First occurrence is due one interval after build creation**
  * (don't nag on save) — and because the device schedules these as native repeating
- * triggers, that "first fire one interval out" falls out for free (decision 16).
+ * triggers, that "first fire one interval out" falls out for free.
  *
  * Pure: this module imports only `src/types` + the sibling `care.ts`. It reaches
  * **no** driver, `src/db`, or `src/data` — the budget guard below operates on plain
@@ -48,10 +48,7 @@ export const CARE_TASK_LABEL: Record<CareTaskType, string> = {
   trimming: 'Trim & tidy',
 };
 
-/**
- * The `generateCareGuide` category each task reuses as its notification body
- * (decision 13 — "reuse generate_care_guide text as the notification body").
- */
+/** The `generateCareGuide` category each task reuses as its notification body. */
 const BODY_CATEGORY: Record<CareTaskType, string> = {
   'watering-inspection': 'Watering',
   'lid-opening': 'Humidity',
@@ -121,7 +118,7 @@ export interface CareTask {
   /** The coarse bucket that selected the interval (transparency + tests). */
   bucket: string;
   intervalDays: number;
-  /** Notification body — reused verbatim from `generateCareGuide` (decision 13). */
+  /** Notification body — reused verbatim from `generateCareGuide`. */
   body: string;
   /** First fire: one interval after build creation (don't nag on save). */
   firstDueAt: number;
@@ -184,14 +181,13 @@ export function buildCareSchedule(
 
 /**
  * Next due time after a task is marked done: one interval from the mark-done
- * timestamp (decision 16 — "reschedule one interval from the mark-done timestamp,"
- * which also handles early completion). Returns epoch ms.
+ * timestamp (which also handles early completion). Returns epoch ms.
  */
 export function nextDueAfter(completedAt: Date, intervalDays: number): number {
   return completedAt.getTime() + intervalDays * DAY_MS;
 }
 
-// --- Slot-budget guard (decision 16) -----------------------------------------
+// --- Slot-budget guard --------------------------------------------------------
 
 /**
  * iOS caps an app at **64 pending local notifications**; the 65th is silently
@@ -230,7 +226,7 @@ const distinctBuilds = (tasks: PendingTask[]): number =>
  * (terrarium, task)**: schedule up to `budget`, defer the rest. Stable on ties
  * (input order preserved) so the selection is deterministic. The caller refills on
  * app-open + on each fire and discloses the overflow in the Care tab — never a
- * silent 65th-drop (decision 16).
+ * silent 65th-drop.
  */
 export function planNotificationBudget(
   pending: PendingTask[],

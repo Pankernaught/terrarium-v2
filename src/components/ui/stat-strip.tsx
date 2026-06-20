@@ -1,7 +1,7 @@
 /**
- * A stat strip: a row of compact stats, each an overline label over a bold
- * caption value (§3.3 — bold the value, never the label). Negative space, not
- * dividers, separates them. Wraps gracefully on a narrow screen.
+ * A stat strip: a row of compact stats, each an overline label over a bold caption
+ * value (bold the value, never the label). Negative space, not dividers, separates
+ * them. Wraps gracefully on a narrow screen.
  */
 import { StyleSheet, View } from 'react-native';
 

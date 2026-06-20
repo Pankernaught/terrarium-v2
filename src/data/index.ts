@@ -1,17 +1,17 @@
 /**
- * Seed data loader (Phase 3) — the single validated entry point to the bundled
- * plants / containers / presets. Every shipped record is re-validated against the
- * Phase-2 zod schemas here, so a malformed row fails the build/CI, not the device.
+ * Seed data loader — the single validated entry point to the bundled plants /
+ * containers / presets. Every shipped record is re-validated against the zod
+ * schemas here, so a malformed row fails the build/CI, not the device.
  *
- * **Base schema vs. seed schema.** `plantSchema` (in `src/types`) keeps the Phase-3
- * additions optional so engine fixtures need not carry them. `seedPlantSchema`
- * tightens the rules that every *shipped* plant must satisfy (decisions 11/12):
+ * **Base schema vs. seed schema.** `plantSchema` (in `src/types`) keeps some
+ * fields optional so engine fixtures need not carry them. `seedPlantSchema`
+ * tightens the rules that every *shipped* plant must satisfy:
  *   - `image` is required and non-empty — "every plant has an image."
  *   - the root-depth reference range is authored for all.
- *   - `substrateTags` / `hardscapeTags` are restricted to the frozen vocabulary.
+ *   - `substrateTags` are restricted to the frozen vocabulary.
  *
- * `imageCredit` / `imageLicense` ride here in the seed only — they must never enter
- * the backup/export payload (decision 17/18).
+ * `imageCredit` / `imageLicense` ride here in the seed only — they must never
+ * enter the backup/export payload.
  */
 import { z } from 'zod';
 
@@ -19,10 +19,7 @@ import { containerSchema, plantSchema, type Container, type Plant } from '../typ
 import containersJson from './containers.json';
 import plantsJson from './plants.json';
 import { PRESETS, presetSchema, type Preset } from './presets';
-import {
-  isHardscapeComponentId,
-  isSubstrateComponentId,
-} from './substrate-components';
+import { isSubstrateComponentId } from './substrate-components';
 
 export const SEED_SCHEMA_VERSION = 1;
 
@@ -32,11 +29,8 @@ export const seedPlantSchema = plantSchema.extend({
   rootDepthMinCm: z.number(),
   rootDepthMaxCm: z.number(),
   substrateTags: z
-    .array(z.string().refine(isSubstrateComponentId, 'substrate vocab is frozen (decision 12)'))
+    .array(z.string().refine(isSubstrateComponentId, 'substrate vocab is frozen'))
     .default([]),
-  hardscapeTags: z
-    .array(z.string().refine(isHardscapeComponentId, 'hardscape vocab is frozen (decision 12)'))
-    .optional(),
 });
 
 function versioned<T>(raw: unknown, key: 'plants' | 'containers'): T[] {
@@ -49,7 +43,7 @@ function versioned<T>(raw: unknown, key: 'plants' | 'containers'): T[] {
   return obj[key] as T[];
 }
 
-/** All 67 seed plants, validated. Throws (fails CI) on any malformed record. */
+/** All 92 seed plants, validated. Throws (fails CI) on any malformed record. */
 export function loadPlants(): Plant[] {
   return z.array(seedPlantSchema).parse(versioned(plantsJson, 'plants'));
 }

@@ -1,20 +1,19 @@
 /**
- * Backup-payload schema versioning + the migrate ladder (decision 17).
+ * Backup-payload schema versioning + the migrate ladder.
  *
- * This is the **scaffold** the Phase-5 backup/restore reuses (decision 17). Shipping
- * an *unversioned* backup is the one unfixable mistake (files in the wild would carry
- * no version, so a later app couldn't tell what it's reading). So:
+ * Shipping an *unversioned* backup is the one unfixable mistake (files in the wild
+ * would carry no version, so a later app couldn't tell what it's reading). So:
  *   - the backup envelope is **versioned** — `schemaVersion` is now **2**;
- *   - the `vN → vN+1` chain has its first real entry at **v1 → v2** (Phase 8): the
- *     substrate-mixer `substrateMix` field. It is an **additive nullish column**, so
- *     the step is the **identity** transform — a v1 build simply lacks the key, which
- *     resolves to `null` at insert. Bumping the stamp (rather than leaving it at 1)
- *     exercises the ladder + the refuse-newer guard for real, and is correct if the
- *     mixer ships in an update *after* base v2.0;
+ *   - the `vN → vN+1` chain has its first real entry at **v1 → v2**: the
+ *     substrate-mixer `substrateMix` field. It is an **additive nullish column**,
+ *     so the step is the **identity** transform — a v1 build simply lacks the key,
+ *     which resolves to `null` at insert. Bumping the stamp exercises the ladder +
+ *     the refuse-newer guard for real, and is correct if the mixer ships in an
+ *     update *after* base v2.0;
  *   - a payload **newer** than this build is **refused** with a clear message — a
  *     foundation never best-effort-guesses a future schema.
  *
- * Phase 5's import path is: read `envelope.schemaVersion` → `migratePayload(...)`
+ * The restore import path is: read `envelope.schemaVersion` → `migratePayload(...)`
  * up to `STORE_SCHEMA_VERSION` → validate against the current zod schemas → insert
  * in one transaction (restore = replace). The on-device store and the importer
  * share **this** ladder so they can never drift.
@@ -24,12 +23,11 @@
 export const STORE_SCHEMA_VERSION = 2;
 
 /**
- * The decision-17 backup envelope. `data` holds only user data that round-trips:
- * builds (with their `placements` riding inside each build) and care-marks. Photos
- * are **excluded** (decision 7 — the payload carries references, not binaries), and
- * seed/reference data never enters a backup (decision 17). Loosely typed here; the
- * Phase-5 export/restore pins the concrete row shapes against the zod schemas
- * *after* migration.
+ * The backup envelope. `data` holds only user data that round-trips: builds (with
+ * their `placements` riding inside each build) and care-marks. Photos are
+ * **excluded** (the payload carries references, not binaries), and seed/reference
+ * data never enters a backup. Loosely typed here; the export/restore layer pins the
+ * concrete row shapes against the zod schemas *after* migration.
  */
 export interface BackupData {
   builds: unknown[];
@@ -49,10 +47,10 @@ export type Migration = (data: any) => any;
 /**
  * The migration ladder, keyed by **source** version (`N` migrates `N → N+1`).
  *
- * `1` (v1 → v2, Phase 8): the substrate-mixer `substrateMix` field. Additive +
- * nullish — a v1 build just omits the key, and the importer resolves a missing
- * `substrateMix` to `null` — so no payload transform is needed (**identity**). The
- * step still exists so the ladder is walked for real (and so a future v2 → v3 has a
+ * `1` (v1 → v2): the substrate-mixer `substrateMix` field. Additive + nullish —
+ * a v1 build just omits the key, and the importer resolves a missing `substrateMix`
+ * to `null` — so no payload transform is needed (**identity**). The step still
+ * exists so the ladder is walked for real (and so a future v2 → v3 has a
  * registered predecessor).
  */
 export const MIGRATIONS: Readonly<Record<number, Migration>> = {

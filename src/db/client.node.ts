@@ -5,9 +5,9 @@
  * is `node`, no RN transform), so the on-device path (`client.expo.ts`) uses
  * expo-sqlite and this path mirrors v1's isolated-DB fixture (`conftest.py`).
  *
- * `node:sqlite` is the flag-free built-in DB the Phase-3 seed gate already used in
- * Node 22. This module is imported **only** by tests/node tooling — never by app
- * or repository code — so the device bundle never references `node:sqlite`.
+ * `node:sqlite` is the flag-free built-in DB available in Node 22. This module is
+ * imported **only** by tests/node tooling — never by app or repository code — so
+ * the device bundle never references `node:sqlite`.
  */
 import type { DatabaseSync } from 'node:sqlite';
 

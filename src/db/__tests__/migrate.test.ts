@@ -1,9 +1,8 @@
 /**
- * Migrate-ladder scaffold tests (decision 17). The real ladder is empty at v1
- * (no-op migrate), so the mechanism is exercised both against the real
- * `migratePayload` (identity + refuse-newer) and against `migrateWith` with a
- * *fake* ladder (chain application + missing-step guard) so the wiring is proven
- * before v2.1 registers a real step.
+ * Migrate-ladder scaffold tests. The real ladder is empty at v1 (no-op migrate),
+ * so the mechanism is exercised both against the real `migratePayload` (identity +
+ * refuse-newer) and against `migrateWith` with a *fake* ladder (chain application +
+ * missing-step guard) so the wiring is proven before v2.1 registers a real step.
  */
 import { describe, expect, it } from 'vitest';
 
@@ -15,7 +14,7 @@ import {
 } from '../migrate';
 
 describe('store schema version', () => {
-  it('is at 2 (substrate-mix additive field, Phase 8)', () => {
+  it('is at 2 (substrate-mix additive field)', () => {
     expect(STORE_SCHEMA_VERSION).toBe(2);
   });
 });

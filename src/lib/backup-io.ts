@@ -14,7 +14,7 @@ import * as Sharing from 'expo-sharing';
 import { exportBackup, type RestoreResult, restoreBackup } from '@/db/backup';
 import type { TerrariumDb } from '@/db/schema';
 
-/** Stamped into the envelope as provenance (decision 17 `appVersion`). */
+/** Stamped into the envelope as provenance (`appVersion`). */
 const APP_VERSION = '1.0.0';
 
 function backupFileName(): string {

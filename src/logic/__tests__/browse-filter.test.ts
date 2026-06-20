@@ -57,7 +57,7 @@ describe('filterPlants', () => {
     expect(filterPlants(all, { biomes: ['arid'] }).map((p) => p.slug)).toEqual(['jade']);
   });
 
-  it('matches a light filter on primary OR secondary (decision 15)', () => {
+  it('matches a light filter on primary OR secondary', () => {
     // 'low' is the fern's *secondary* and the moss's primary — both match.
     expect(filterPlants(all, { lights: ['low'] }).map((p) => p.slug)).toEqual([
       'cushion-moss',
@@ -92,7 +92,7 @@ describe('filterPlants', () => {
     ]);
   });
 
-  it('has no toxicity facet — toxicity is display-only, never a filter (decision 8)', () => {
+  it('has no toxicity facet — toxicity is display-only, never a filter', () => {
     // A regression guard: blank ≠ safe, so there is no way to filter by it.
     // @ts-expect-error toxicity is intentionally absent from BrowseCriteria.
     const crit: import('../browse-filter').BrowseCriteria = { toxicity: 'non-toxic' };

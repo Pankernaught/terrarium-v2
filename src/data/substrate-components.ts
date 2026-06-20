@@ -1,20 +1,13 @@
 /**
- * Frozen substrate-component vocabulary (decision 12).
+ * Frozen substrate-component vocabulary.
  *
- * v2.0 does **two** pieces of substrate hygiene and nothing more:
- *   1. Freeze the ~9 real substrate materials as a canonical `{ id, label }` list
- *      (stable id for data + filtering; label for display).
- *   2. Split `wood` / `rock` out as **hardscape**, not substrate — they only ever
- *      fed the v1 build guide's hardscape grep, and decision 10 makes hardscape
- *      placement-driven (Phase 6), so they are no longer substrate tags.
+ * v2.0 freezes the canonical substrate materials as a `{ id, label }` list (stable
+ * id for data + filtering; label for display). `wood` / `rock` are deliberately
+ * excluded — they are decor, not a growing medium, so they are not substrate tags.
  *
- * The per-component **property matrix** (aeration / water-retention / nutrient /
- * buffering / particle-size) is **deferred to v2.1**, co-located with the substrate
- * mixer that is its only consumer (decision 12). Do not author it here.
- *
- * Seed plants reference these `id`s in `substrateTags` / `hardscapeTags`; the seed
- * loader (`src/data/index.ts`) rejects any tag outside this frozen set, so a typo
- * or a new material fails CI rather than silently shipping.
+ * Seed plants reference these `id`s in `substrateTags`; the seed loader
+ * (`src/data/index.ts`) rejects any tag outside this frozen set, so a typo or a new
+ * material fails CI rather than silently shipping.
  */
 
 export interface Component {
@@ -22,7 +15,16 @@ export interface Component {
   label: string;
 }
 
-/** The 9 canonical substrate materials (decision 12). `mud` is the outlier. */
+/**
+ * The 13 canonical substrate materials. `mud` is the outlier — kept for
+ * bog/paludarium use.
+ *
+ * Note: **charcoal is deliberately NOT here.** Horticultural charcoal is used as a
+ * thin discrete filtration *layer* between drainage and substrate, not blended into
+ * the growing medium — it is modelled as its own layer (`builds.charcoalDepth`), not
+ * a mix component (see ADR 0003). Leaf litter is likewise absent: it is a care-tab
+ * surface item, not a substrate.
+ */
 export const SUBSTRATE_COMPONENTS = [
   { id: 'perlite', label: 'Perlite' },
   { id: 'peat', label: 'Peat' },
@@ -33,36 +35,27 @@ export const SUBSTRATE_COMPONENTS = [
   { id: 'orchid-bark', label: 'Orchid bark' },
   { id: 'pumice', label: 'Pumice' },
   { id: 'mud', label: 'Mud' },
-] as const satisfies readonly Component[];
-
-/** `wood` / `rock` — hardscape, split out of substrate (decision 12 / decision 10). */
-export const HARDSCAPE_COMPONENTS = [
-  { id: 'wood', label: 'Wood' },
-  { id: 'rock', label: 'Rock' },
+  { id: 'potting-soil', label: 'Potting soil' },
+  { id: 'worm-castings', label: 'Worm castings' },
+  { id: 'vermiculite', label: 'Vermiculite' },
+  { id: 'leca', label: 'LECA' },
 ] as const satisfies readonly Component[];
 
 export type SubstrateComponentId = (typeof SUBSTRATE_COMPONENTS)[number]['id'];
-export type HardscapeComponentId = (typeof HARDSCAPE_COMPONENTS)[number]['id'];
 
 export const SUBSTRATE_COMPONENT_IDS: readonly string[] = SUBSTRATE_COMPONENTS.map(
   (c) => c.id,
 );
-export const HARDSCAPE_COMPONENT_IDS: readonly string[] = HARDSCAPE_COMPONENTS.map(
-  (c) => c.id,
-);
 
 const LABELS: Record<string, string> = Object.fromEntries(
-  [...SUBSTRATE_COMPONENTS, ...HARDSCAPE_COMPONENTS].map((c) => [c.id, c.label]),
+  SUBSTRATE_COMPONENTS.map((c) => [c.id, c.label]),
 );
 
-/** Display label for a substrate/hardscape id (falls back to the raw id). */
+/** Display label for a substrate id (falls back to the raw id). */
 export function componentLabel(id: string): string {
   return LABELS[id] ?? id;
 }
 
 export function isSubstrateComponentId(id: string): id is SubstrateComponentId {
   return SUBSTRATE_COMPONENT_IDS.includes(id);
-}
-export function isHardscapeComponentId(id: string): id is HardscapeComponentId {
-  return HARDSCAPE_COMPONENT_IDS.includes(id);
 }

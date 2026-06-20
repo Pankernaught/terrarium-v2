@@ -1,11 +1,10 @@
 /**
- * Phase-4 DoD: a build round-trips **save → reload with placements intact**.
+ * A build round-trips **save → reload with placements intact**.
  *
- * Exercises the forward-looking columns that no screen reads until Phases 6–7 —
- * `placements` (the front-plane plant/hardscape layout) and the persisted
- * Substrate-step overrides `substrateDepth` / `drainageDepth` (decision 10) —
- * through the repository (not just the driver), proving they survive a real
- * save/reload via JSON storage with their structure preserved.
+ * Exercises `placements` (the front-plane plant layout) and the persisted
+ * Substrate-step overrides `substrateDepth` / `drainageDepth` through the
+ * repository (not just the driver), proving they survive a real save/reload via
+ * JSON storage with their structure preserved.
  */
 import { beforeEach, describe, expect, it } from 'vitest';
 

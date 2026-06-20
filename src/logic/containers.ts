@@ -3,11 +3,11 @@
  * (port of the pure functions in `engine/containers.py`).
  *
  * **DB-free by design.** v1's `resolve_build_container` was DB-coupled (it imported
- * `db.loader` / `ContainerModel` / a SQLAlchemy `Session`), so it was deferred from
- * Phase 2. It is ported here in Phase 4 as a **pure** function that takes the
- * candidate containers as an argument (the same dependency-inversion `recommend()`
- * uses) — so this module still imports nothing from `src/db`/`src/data`. The repo
- * / UI layer passes the bundled seed containers (`loadContainers()`).
+ * `db.loader` / `ContainerModel` / a SQLAlchemy `Session`). It is a **pure**
+ * function here that takes the candidate containers as an argument (the same
+ * dependency-inversion `recommend()` uses) — so this module still imports nothing
+ * from `src/db`/`src/data`. The repo / UI layer passes the bundled seed containers
+ * (`loadContainers()`).
  *
  * **Dimension dicts (preserved exactly from v1):** rectangular shapes carry
  * `length`/`width`/`height`; cylindrical shapes carry `diameter`/`height`.
@@ -158,8 +158,7 @@ export interface BuildContainerSnapshot {
 
 /**
  * Resolve the `Container` for a build, from its geometry snapshot or its preset
- * slug (port of v1 `engine/containers.resolve_build_container`, deferred from
- * Phase 2).
+ * slug (port of v1 `engine/containers.resolve_build_container`).
  *
  * - A full snapshot (`shape` + `dimensions` + `opening`) is **authoritative** —
  *   it rebuilds the container with the pure constructor, no lookup needed.
@@ -213,11 +212,20 @@ export function defaultLayerDepths(plants: Plant[], volumeL: number): [number, n
   return [substrateCm, drainageCm];
 }
 
-/** Cross-section band boundaries for the container visualizer (no DB). */
+/**
+ * Cross-section band boundaries for the container visualizer (no DB).
+ *
+ * Each `*TopCm` is the y-height (cm, measured from the interior base) of the **top**
+ * of that layer. Layers stack bottom→top: drainage → charcoal → substrate, so
+ * `drainageTopCm ≤ charcoalTopCm ≤ substrateTopCm`. The planting surface is the
+ * substrate top; plants and root bands are measured from there.
+ */
 export interface ContainerProfile {
   interiorHeightCm: number;
   widthCm: number;
   drainageTopCm: number;
+  /** Top of the charcoal layer (= `drainageTopCm` when there is no charcoal layer). */
+  charcoalTopCm: number;
   substrateTopCm: number;
   plantingSurfaceCm: number;
   plantTopCm: number;
@@ -229,8 +237,11 @@ export interface ContainerProfile {
  * Compute cross-section band boundaries for the container visualizer (no DB).
  *
  * Returns y-boundaries (cm, measured from the base) for each layer plus the
- * headroom above the planting surface and any plant overflow above the rim. All
- * values are clamped to the container's interior height.
+ * headroom above the planting surface and any plant overflow above the rim. The
+ * layer order is drainage → charcoal → substrate; `charcoalCm` defaults to 0 so an
+ * older caller (and any build with no charcoal layer) collapses the charcoal band to
+ * zero height and gets the exact pre-charcoal boundaries. All values are clamped to
+ * the container's interior height.
  */
 export function containerProfile(
   shape: string,
@@ -238,12 +249,14 @@ export function containerProfile(
   substrateCm = 0.0,
   drainageCm = 0.0,
   tallestPlantCm = 0.0,
+  charcoalCm = 0.0,
 ): ContainerProfile {
   const interiorH = Number(dimensions.height);
   const widthCm = Number(shape === 'cylindrical' ? dimensions.diameter : dimensions.length);
 
   const drainageTop = Math.min(drainageCm, interiorH);
-  const substrateTop = Math.min(drainageTop + substrateCm, interiorH);
+  const charcoalTop = Math.min(drainageTop + charcoalCm, interiorH);
+  const substrateTop = Math.min(charcoalTop + substrateCm, interiorH);
   const plantingSurface = substrateTop;
   const headroomCm = Math.max(0.0, interiorH - plantingSurface);
   const plantTop = plantingSurface + tallestPlantCm;
@@ -253,6 +266,7 @@ export function containerProfile(
     interiorHeightCm: interiorH,
     widthCm,
     drainageTopCm: drainageTop,
+    charcoalTopCm: charcoalTop,
     substrateTopCm: substrateTop,
     plantingSurfaceCm: plantingSurface,
     plantTopCm: plantTop,

@@ -1,9 +1,8 @@
 /**
  * Scoring constants — ported verbatim from `engine/compatibility.py`. **These
- * are the rules.** Per decision 6/9 they are frozen for the faithful initial
- * port (no ad-hoc changes); the only sanctioned divergence is the
- * primary/secondary mechanic in `compatibility.ts` (decision 15), which reuses
- * the same ladder values below.
+ * are the rules.** They are frozen for the faithful port (no ad-hoc changes); the
+ * only divergence is the primary/secondary mechanic in `compatibility.ts`, which
+ * reuses the same ladder values below.
  */
 import type { LightLevel, MoistureLevel, PhPreference } from '../types';
 
@@ -35,6 +34,11 @@ export const HUMIDITY_PENALTY = 25; // no humidity-range overlap
 export const TEMPERATURE_PENALTY = 15; // no temperature-range overlap
 export const PH_CAUTION_PENALTY = 7; // one pH band apart
 
+// --- Group scoring --------------------------------------------------------
+// A group score may sit at most this many points above its weakest pair, so a
+// single terrible pairing cannot be averaged away into a misleading "Healthy".
+export const WORST_PAIR_FLOOR_BUFFER = 20;
+
 // --- Small-container safety thresholds ------------------------------------
 export const CROWDING_VOLUME_THRESHOLD_L = 2.0;
 export const CROWDING_MAX_PLANTS_WARNING = 2; // > this count triggers caution
@@ -50,6 +54,7 @@ export const MOISTURE_SURVIVAL_GAP = 3; // dry <-> wet
 export const PH_SURVIVAL_PENALTY = 35;
 export const PH_SURVIVAL_GAP = 2; // acidic <-> alkaline (the two extremes)
 export const CONTAINER_TYPE_SURVIVAL_PENALTY = 35;
+export const CONTAINER_TYPE_OPEN_PENALTY = 5; // humid-loving plant in an open container (caution)
 export const SURVIVAL_SCORE_CEILING = 40; // survival => incompatible verdict
 
 export const SHADE_LIGHTS: ReadonlySet<LightLevel> = new Set(['low', 'medium']);

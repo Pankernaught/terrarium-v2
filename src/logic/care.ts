@@ -140,29 +140,8 @@ export function generateCareGuide(plants: Plant[], container: Container): CareTi
 
   careGuide.push({ category: 'Light', tip: lightTip });
 
-  // ==========================================================================
-  // 4. Substrate Requirements
-  // ==========================================================================
-  const allTags = new Set<string>();
-  for (const p of plants) {
-    for (const tag of p.substrateTags) allTags.add(tag);
-  }
-
-  let substrateTip: string;
-  if (allTags.size > 0) {
-    // `sorted()` in v1 is lexicographic; mirror it for a stable tag order.
-    const sortedTags = [...allTags].sort();
-    substrateTip =
-      `Utilize a specialized, highly porous, well-draining potting matrix. Based on the ` +
-      `selected plant profiles, ensure the substrate layer incorporates structural elements ` +
-      `that explicitly support: ${sortedTags.join(', ')}.`;
-  } else {
-    substrateTip =
-      'Use a standard, high-quality, well-draining tropical or terrarium-grade substrate mix ' +
-      'to maximize essential root zone aeration.';
-  }
-
-  careGuide.push({ category: 'Substrate', tip: substrateTip });
+  // Substrate is built once and not "maintained", so the care guide intentionally
+  // says nothing about it — the build guide owns the substrate description.
 
   // ==========================================================================
   // 5. Trimming Schedule (Conditional on mixed growth rates)
