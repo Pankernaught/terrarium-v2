@@ -9,7 +9,16 @@
  */
 import { type Href, useFocusEffect, useLocalSearchParams, useRouter } from 'expo-router';
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
-import { ActivityIndicator, Alert, Pressable, ScrollView, StyleSheet, View } from 'react-native';
+import {
+  ActivityIndicator,
+  Alert,
+  type NativeScrollEvent,
+  type NativeSyntheticEvent,
+  Pressable,
+  ScrollView,
+  StyleSheet,
+  View,
+} from 'react-native';
 
 import { ContainerStep } from '@/components/planner/container-step';
 import {
@@ -61,6 +70,11 @@ export default function PlannerScreen() {
   // When the preview is expanded, the header chrome (title, step counter, dots)
   // collapses so the preview slides up to the top.
   const [previewExpanded, setPreviewExpanded] = useState(false);
+  // The chrome also collapses once the step body scrolls down, keeping just the
+  // preview pinned. Hysteresis (collapse past 36px, restore under 8px) avoids
+  // flicker around the threshold.
+  const [scrolledDown, setScrolledDown] = useState(false);
+  const scrollRef = useRef<ScrollView>(null);
   // The draft is null until hydrated (immediately for a new build; after the
   // store loads the row for an edit).
   const [draft, setDraft] = useState<PlannerDraft | null>(isEdit ? null : emptyDraft());
@@ -74,6 +88,7 @@ export default function PlannerScreen() {
       if (isEdit) return;
       setActive(0);
       setPreviewExpanded(false);
+      setScrolledDown(false);
       setDraft(emptyDraft());
     }, [isEdit]),
   );
@@ -106,6 +121,14 @@ export default function PlannerScreen() {
   function go(next: number) {
     haptics.select();
     setActive(Math.max(0, Math.min(STEPS.length - 1, next)));
+    // Start the new step fresh at the top with the chrome restored.
+    scrollRef.current?.scrollTo({ y: 0, animated: false });
+    setScrolledDown(false);
+  }
+
+  function onBodyScroll(e: NativeSyntheticEvent<NativeScrollEvent>) {
+    const y = e.nativeEvent.contentOffset.y;
+    setScrolledDown((prev) => (prev ? y > 8 : y > 36));
   }
 
   function update(patch: Partial<PlannerDraft>) {
@@ -193,7 +216,7 @@ export default function PlannerScreen() {
 
           {/* Title, step counter and step dots — collapse away when the preview is
               expanded so it can take the top. */}
-          <Collapse open={!previewExpanded}>
+          <Collapse open={!previewExpanded && !scrolledDown}>
             <View style={styles.chrome}>
               <GlanceHeader
                 title={isEdit ? 'Edit terrarium' : 'New terrarium'}
@@ -244,8 +267,11 @@ export default function PlannerScreen() {
 
       {/* Current step body — the only scrolling region. */}
       <ScrollView
+        ref={scrollRef}
         style={styles.scrollFill}
         contentContainerStyle={styles.scroll}
+        onScroll={onBodyScroll}
+        scrollEventThrottle={16}
         showsVerticalScrollIndicator={false}>
         <View style={styles.inner}>
           <View style={styles.section}>
