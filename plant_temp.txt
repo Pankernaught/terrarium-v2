@@ -1,0 +1,1212 @@
+Nerve Plant — Fittonia albivenis  [fittonia-albivenis]
+tempCRange: 18, 27
+
+---
+
+Rainbow Moss — Selaginella uncinata  [selaginella-uncinata]
+tempCRange: 15, 25
+
+---
+
+Java Moss — Taxiphyllum barbieri  [taxiphyllum-barbieri]
+tempCRange: 15, 28
+
+---
+
+Baby Tears — Soleirolia soleirolii  [soleirolia-soleirolii]
+tempCRange: 10, 24
+
+---
+
+Trailing Watermelon Begonia — Pellionia repens  [pellionia-repens]
+tempCRange: 18, 26
+
+---
+
+Prayer Plant — Maranta leuconeura  [maranta-leuconeura]
+tempCRange: 18, 27
+
+---
+
+Pinstripe Calathea — Calathea ornata  [calathea-ornata]
+tempCRange: 18, 27
+
+---
+
+Polka Dot Plant — Hypoestes phyllostachya  [hypoestes-phyllostachya]
+tempCRange: 18, 27
+
+---
+
+Maidenhair Fern — Adiantum raddianum  [adiantum-raddianum]
+tempCRange: 18, 24
+
+---
+
+Bird's Nest Fern — Asplenium nidus  [asplenium-nidus]
+tempCRange: 18, 27
+
+---
+
+Friendship Plant — Pilea involucrata  [pilea-involucrata]
+tempCRange: 18, 26
+
+---
+
+Java Fern — Microsorum pteropus  [microsorum-pteropus]
+tempCRange: 18, 28
+
+---
+
+Flame Violet — Episcia cupreata  [episcia-cupreata]
+tempCRange: 20, 28
+
+---
+
+Heartleaf Philodendron (mini) — Philodendron hederaceum  [philodendron-hederaceum-mini]
+tempCRange: 18, 28
+
+---
+
+Miniature Orchid — Lepanthes telipogoniflora  [miniature-orchid]
+tempCRange: 18, 25
+
+---
+
+Emerald Ripple Peperomia — Peperomia caperata  [peperomia-caperata]
+tempCRange: 18, 26
+
+---
+
+Trailing Jade — Peperomia rotundifolia  [peperomia-rotundifolia]
+tempCRange: 18, 26
+
+---
+
+Earth Star Bromeliad — Cryptanthus bivittatus  [cryptanthus-bivittatus]
+tempCRange: 18, 27
+
+---
+
+Dwarf Mondo Grass — Ophiopogon japonicus 'Nana'  [ophiopogon-japonicus-mini]
+tempCRange: 10, 28
+
+---
+
+Arrowhead Plant (mini) — Syngonium podophyllum  [syngonium-podophyllum-mini]
+tempCRange: 18, 27
+
+---
+
+Creeping Charlie — Pilea nummulariifolia  [pilea-nummulariifolia]
+tempCRange: 18, 27
+
+---
+
+Rex Begonia — Begonia rex-cultorum  [begonia-rex]
+tempCRange: 18, 24
+
+---
+
+Zebra Haworthia — Haworthia attenuata  [haworthia-attenuata]
+tempCRange: 10, 32
+
+---
+
+Mexican Snowball — Echeveria elegans  [echeveria-elegans]
+tempCRange: 5, 35
+
+---
+
+Jelly Bean Plant — Sedum rubrotinctum  [sedum-rubrotinctum]
+tempCRange: 7, 32
+
+---
+
+Mini Jade Plant — Crassula ovata (dwarf cultivar)  [crassula-ovata-mini]
+tempCRange: 10, 30
+
+---
+
+Chinese Money Plant — Pilea peperomioides  [pilea-peperomioides]
+tempCRange: 13, 27
+
+---
+
+Wandering Dude — Tradescantia fluminensis  [tradescantia-fluminensis]
+tempCRange: 15, 27
+
+---
+
+Cushion Moss — Leucobryum glaucum  [leucobryum-glaucum]
+tempCRange: 10, 25
+
+---
+
+Pocket Moss — Fissidens fontanus  [fissidens-fontanus]
+tempCRange: 15, 26
+
+---
+
+Rabbit's Foot Fern — Davallia fejeensis  [davallia-fejeensis]
+tempCRange: 15, 27
+
+---
+
+Mother Spleenwort — Asplenium bulbiferum  [asplenium-bulbiferum]
+tempCRange: 12, 24
+
+---
+
+Watermelon Peperomia — Peperomia argyreia  [peperomia-argyreia]
+tempCRange: 18, 26
+
+---
+
+Baby Rubber Plant — Peperomia obtusifolia  [peperomia-obtusifolia]
+tempCRange: 15, 30
+
+---
+
+Mini Bucephalandra — Bucephalandra sp.  [bucephalandra-sp-mini]
+tempCRange: 18, 28
+
+---
+
+Anubias Petite — Anubias barteri var. nana 'Petite'  [anubias-nana-petite]
+tempCRange: 15, 28
+
+---
+
+Dwarf Pennywort — Hydrocotyle tripartita  [hydrocotyle-tripartita]
+tempCRange: 15, 26
+
+---
+
+Silver Sparkle Pilea — Pilea glauca  [pilea-glauca]
+tempCRange: 15, 26
+
+---
+
+Miniature Pothos — Epipremnum pinnatum  [epipremnum-pinnatum-mini]
+tempCRange: 18, 28
+
+---
+
+Creeping Primrose-Willow — Ludwigia repens  [ludwigia-repens]
+tempCRange: 15, 26
+
+---
+
+Java Moss — Vesicularia dubyana  [vesicularia-dubyana]
+tempCRange: 15, 28
+
+---
+
+Miniature Baby Tears — Soleirolia soleirolii 'Minor'  [soleirolia-soleirolii-minor]
+tempCRange: 10, 24
+
+---
+
+Mistletoe Cactus — Rhipsalis baccifera  [rhipsalis-baccifera]
+tempCRange: 15, 27
+
+---
+
+Cape Sundew — Drosera capensis  [drosera-capensis]
+tempCRange: 5, 30
+
+---
+
+Tropical Pitcher Plant — Nepenthes ventricosa  [nepenthes-ventricosa]
+tempCRange: 15, 29
+
+---
+
+Mexican Butterwort — Pinguicula moranensis  [pinguicula-moranensis]
+tempCRange: 10, 30
+
+---
+
+Lemon Button Fern — Nephrolepis cordifolia 'Duffii'  [nephrolepis-duffii]
+tempCRange: 15, 27
+
+---
+
+Silver Lace Fern — Pteris cretica  [pteris-cretica]
+tempCRange: 15, 26
+
+---
+
+Crocodile Fern — Microsorum musifolium  [microsorum-musifolium]
+tempCRange: 16, 27
+
+---
+
+Golden Clubmoss — Selaginella kraussiana 'Aurea'  [selaginella-kraussiana]
+tempCRange: 15, 25
+
+---
+
+Sheet Moss — Hypnum cupressiforme  [hypnum-moss]
+tempCRange: 5, 25
+
+---
+
+Mood Moss — Dicranum scoparium  [dicranum-scoparium]
+tempCRange: 5, 24
+
+---
+
+Mini Monstera — Rhaphidophora tetrasperma  [rhaphidophora-tetrasperma]
+tempCRange: 18, 29
+
+---
+
+Anthurium — Anthurium scandens  [anthurium-scandens]
+tempCRange: 18, 29
+
+---
+
+Peace Lily — Spathiphyllum wallisii  [spathiphyllum-wallisii]
+tempCRange: 18, 27
+
+---
+
+Peacock Begonia — Begonia pavonina  [begonia-pavonina]
+tempCRange: 18, 26
+
+---
+
+Polka Dot Begonia — Begonia maculata  [begonia-maculata]
+tempCRange: 18, 27
+
+---
+
+Lipstick Plant — Aeschynanthus radicans  [aeschynanthus-radicans]
+tempCRange: 18, 27
+
+---
+
+Cape Primrose — Streptocarpus hybridus  [streptocarpus-hybrid]
+tempCRange: 15, 25
+
+---
+
+String of Pearls — Curio rowleyanus  [senecio-rowleyanus]
+tempCRange: 18, 27
+
+---
+
+Living Stones — Lithops sp.  [lithops-sp]
+tempCRange: 15, 32
+
+---
+
+Thimble Cactus — Mammillaria gracilis  [mammillaria-gracilis]
+tempCRange: 12, 32
+
+---
+
+Burro's Tail — Sedum morganianum  [sedum-morganianum]
+tempCRange: 15, 29
+
+---
+
+Creeping Fig — Ficus pumila  [ficus-pumila]
+tempCRange: 15, 27
+
+---
+
+Strawberry Begonia — Saxifraga stolonifera  [saxifraga-stolonifera]
+tempCRange: 10, 24
+
+---
+
+Aluminum Plant — Pilea cadierei  [pilea-cadierei]
+tempCRange: 16, 27
+
+---
+
+Inch Plant — Tradescantia zebrina  [tradescantia-zebrina]
+tempCRange: 15, 27
+
+---
+
+Lightning Bolt Orchid — Macodes petola  [macodes-petola]
+tempCRange: 18, 28
+
+---
+
+Black Jewel Orchid — Ludisia discolor  [ludisia-discolor]
+tempCRange: 18, 28
+
+---
+
+String of Turtles — Peperomia prostrata  [peperomia-prostrata]
+tempCRange: 18, 26
+
+---
+
+Satin Pothos — Scindapsus pictus 'Argyraeus'  [scindapsus-pictus-argyraeus]
+tempCRange: 18, 29
+
+---
+
+Asparagus Fern — Asparagus setaceus  [asparagus-setaceus]
+tempCRange: 15, 28
+
+---
+
+Button Fern — Pellaea rotundifolia  [pellaea-rotundifolia]
+tempCRange: 10, 24
+
+---
+
+Parlor Palm — Chamaedorea elegans  [chamaedorea-elegans]
+tempCRange: 16, 27
+
+---
+
+Little Tree Plant — Biophytum sensitivum  [biophytum-sensitivum]
+tempCRange: 20, 30
+
+---
+
+Air Plant — Tillandsia ionantha  [tillandsia-ionantha]
+tempCRange: 10, 32
+
+---
+
+Miniature Neoregelia — Neoregelia hybrid 'Liliputiana'  [neoregelia-hybrid-liliputiana]
+tempCRange: 18, 28
+
+---
+
+Shingle Plant — Marcgravia rectiflora  [marcgravia-rectiflora]
+tempCRange: 18, 28
+
+---
+
+Million Hearts Plant — Dischidia ruscifolia  [dischidia-ruscifolia]
+tempCRange: 18, 28
+
+---
+
+Panama Creeping Fig — Ficus pumila 'Panama'  [ficus-pumila-panama]
+tempCRange: 15, 27
+
+---
+
+Shingle Vine — Rhaphidophora hayi  [rhaphidophora-hayi]
+tempCRange: 18, 28
+
+---
+
+Heart Fern — Hemionitis arifolia  [hemionitis-arifolia]
+tempCRange: 18, 27
+
+---
+
+Blue Oil Fern — Microsorum thailandicum  [microsorum-thailandicum]
+tempCRange: 18, 28
+
+---
+
+Fluffy Ruffles Fern — Nephrolepis exaltata 'Fluffy Ruffles'  [nephrolepis-exaltata-fluffy-ruffles]
+tempCRange: 15, 27
+
+---
+
+Pixie Lime Peperomia — Peperomia orba 'Pixie Lime'  [peperomia-orba-pixie-lime]
+tempCRange: 15, 27
+
+---
+
+Piccolo Banda Peperomia — Peperomia albovittata 'Piccolo Banda'  [peperomia-albovittata-piccolo-banda]
+tempCRange: 15, 27
+
+---
+
+Butterfly Begonia — Begonia amphioxus  [begonia-amphioxus]
+tempCRange: 18, 27
+
+---
+
+Oak Leaf Miniature Begonia — Begonia schulzei  [begonia-schulzei]
+tempCRange: 18, 27
+
+---
+
+Black Velvet Alocasia — Alocasia reginula 'Black Velvet'  [alocasia-reginula-black-velvet]
+tempCRange: 18, 27
+
+---
+
+Star Moss — Hyophila involuta  [hyophila-involuta]
+tempCRange: 12, 25
+
+---
+
+Meadow Spikemoss — Selaginella apoda  [selaginella-apoda]
+tempCRange: 10, 25
+
+---
+
+Elephant Bush — Portulacaria afra  [portulacaria-afra]
+tempCRange: 10, 35
+
+---
+
+Silver Dragon Alocasia — Alocasia baginda 'Silver Dragon'  [alocasia-baginda-silver-dragon]
+tempCRange: 18, 28
+
+---
+
+Bambino Alocasia — Alocasia × amazonica 'Bambino'  [alocasia-amazonica-bambino]
+tempCRange: 18, 29
+
+---
+
+Grey Dragon Alocasia — Alocasia maharani 'Grey Dragon'  [alocasia-maharani-grey-dragon]
+tempCRange: 18, 28
+
+---
+
+Fern Moss — Thuidium delicatulum  [thuidium-delicatulum]
+tempCRange: 5, 22
+
+---
+
+Chacosekisho Sweet Flag — Acorus gramineus 'Chacosekisho'  [acorus-chacosekisho]
+tempCRange: 10, 25
+
+---
+
+Purple Waffle Plant — Hemigraphis alternata  [hemigraphis-alternata]
+tempCRange: 18, 30
+
+---
+
+Hygrophila Pinnatifida — Hygrophila pinnatifida  [hygrophila-pinnatifida]
+tempCRange: 20, 30
+
+---
+
+Monkey Plant — Ruellia makoyana  [ruellia-makoyana]
+tempCRange: 18, 28
+
+---
+
+Persian Shield — Strobilanthes dyerianus  [strobilanthes-dyerianus]
+tempCRange: 18, 30
+
+---
+
+String of Hearts — Ceropegia woodii  [ceropegia-woodii]
+tempCRange: 15, 30
+
+---
+
+String of Spades — Ceropegia woodii (String of Spades form)  [ceropegia-woodii-string-of-spades]
+tempCRange: 15, 30
+
+---
+
+Dragon Scale Alocasia — Alocasia baginda 'Dragon Scale'  [alocasia-dragon-scale]
+tempCRange: 18, 30
+
+---
+
+Hastifolia Anubias — Anubias hastifolia  [anubias-hastifolia]
+tempCRange: 22, 30
+
+---
+
+Global Green Pothos — Epipremnum aureum 'Global Green'  [epipremnum-aureum-global-green]
+tempCRange: 18, 30
+
+---
+
+Burle Marx Fantasy Philodendron — Philodendron 'Burle Marx Fantasy'  [philodendron-burle-marx-fantasy]
+tempCRange: 18, 30
+
+---
+
+Velvet Leaf Philodendron — Philodendron verrucosum  [philodendron-verrucosum]
+tempCRange: 18, 28
+
+---
+
+Mini Velvet Leaf Philodendron — Philodendron verrucosum 'Mini'  [philodendron-verrucosum-mini]
+tempCRange: 18, 28
+
+---
+
+Wend-Imbe Philodendron — Philodendron 'Wend-Imbe'  [philodendron-wend-imbe]
+tempCRange: 18, 30
+
+---
+
+Shingle Plant — Rhaphidophora cryptantha  [rhaphidophora-cryptantha]
+tempCRange: 20, 30
+
+---
+
+Albo Variegated Arrowhead Plant — Syngonium podophyllum 'Albo'  [syngonium-albo]
+tempCRange: 18, 30
+
+---
+
+Silver Goosefoot Plant — Syngonium rayii  [syngonium-rayii]
+tempCRange: 18, 28
+
+---
+
+Begonia baik — Begonia baik  [begonia-baik]
+tempCRange: 18, 28
+
+---
+
+Fern-leaf Begonia — Begonia bipinnatifida  [begonia-bipinnatifida]
+tempCRange: 15, 24
+
+---
+
+Burkill's Begonia Silver Form — Begonia burkilii "Silver Form"  [begonia-burkilii-silver-form]
+tempCRange: 18, 28
+
+---
+
+Cleopatra Begonia — Begonia cleopatrae  [begonia-cleopatrae]
+tempCRange: 18, 28
+
+---
+
+Pond Lily Begonia — Begonia conchifolia  [begonia-conchifolia]
+tempCRange: 18, 28
+
+---
+
+Dodson's Begonia — Begonia dodsoni  [begonia-dodsoni]
+tempCRange: 15, 24
+
+---
+
+Elaeagnus-leaf Begonia — Begonia elaeagnifolia  [begonia-elaeagnifolia]
+tempCRange: 18, 28
+
+---
+
+Fern-leaf Begonia — Begonia foliosa var. foliosa  [begonia-foliosa-var-foliosa]
+tempCRange: 15, 24
+
+---
+
+Bronze Climbing Begonia — Begonia glabra 'Bronze'  [begonia-glabra-bronze]
+tempCRange: 18, 28
+
+---
+
+Klemme's Begonia — Begonia klemmei  [begonia-klemmei]
+tempCRange: 18, 28
+
+---
+
+Fringed Begonia Sizemoreae — Begonia longiciliata 'Sizemoreae'  [begonia-longiciliata-sizemoreae]
+tempCRange: 18, 28
+
+---
+
+Loranthoides Begonia — Begonia loranthoides sp. rhopalocarpa  [begonia-loranthoides-sp-rhopalocarpa]
+tempCRange: 18, 28
+
+---
+
+Luzon Begonia — Begonia luzonensis  [begonia-luzonensis]
+tempCRange: 18, 28
+
+---
+
+Manaus Begonia — Begonia manaus  [begonia-manaus]
+tempCRange: 18, 28
+
+---
+
+Blue Maurandiae Begonia — Begonia maurandiae 'Blue'  [begonia-maurandiae-blue]
+tempCRange: 15, 24
+
+---
+
+Pollilo Begonia — Begonia polliloensis  [begonia-polliloensis]
+tempCRange: 18, 28
+
+---
+
+Prism-fruit Begonia — Begonia prismatocarpa  [begonia-prismatocarpa]
+tempCRange: 18, 28
+
+---
+
+Blister Begonia — Begonia pustulata  [begonia-pustulata]
+tempCRange: 18, 28
+
+---
+
+Raja Begonia — Begonia raja  [begonia-raja]
+tempCRange: 18, 28
+
+---
+
+Sun-changing Begonia — Begonia soli-mutata  [begonia-soli-mutata]
+tempCRange: 18, 28
+
+---
+
+Saunders Legacy Begonia — Begonia sutherlandii 'Saunders Legacy'  [begonia-sutherlandii-saunders-legacy]
+tempCRange: 10, 22
+
+---
+
+Thelma's Begonia — Begonia thelmae  [begonia-thelmae]
+tempCRange: 15, 24
+
+---
+
+Turrialba Begonia — Begonia turrialbae  [begonia-turrialbae]
+tempCRange: 15, 24
+
+---
+
+Variable Begonia — Begonia variabilis  [begonia-variabilis]
+tempCRange: 18, 28
+
+---
+
+Absolute Zero Earth Star — Cryptanthus 'Absolute Zero'  [cryptanthus-absolute-zero]
+tempCRange: 18, 28
+
+---
+
+Blushing Tiger x Puntatissima Neoregelia — Neoregelia 'Blushing Tiger x Puntatissima'  [neoregelia-blushing-tiger-puntatissima]
+tempCRange: 18, 28
+
+---
+
+Cotton Candy Neoregelia — Neoregelia 'Cotton Candy'  [neoregelia-cotton-candy]
+tempCRange: 18, 28
+
+---
+
+Easter Egg Neoregelia — Neoregelia 'Easter Egg'  [neoregelia-easter-egg]
+tempCRange: 18, 28
+
+---
+
+Fireball Neoregelia — Neoregelia 'Fireball'  [neoregelia-fireball]
+tempCRange: 18, 28
+
+---
+
+Lilyput x Pheasant Neoregelia — Neoregelia 'Lilyput x Pheasant'  [neoregelia-lilyput-pheasant]
+tempCRange: 18, 28
+
+---
+
+Mini Skirt Neoregelia — Neoregelia 'Mini Skirt'  [neoregelia-mini-skirt]
+tempCRange: 18, 28
+
+---
+
+Mojo Neoregelia — Neoregelia 'Mojo'  [neoregelia-mojo]
+tempCRange: 18, 28
+
+---
+
+Skotak's Matilde Neoregelia — Neoregelia 'Skotak's Matilde'  [neoregelia-skotaks-matilde]
+tempCRange: 18, 28
+
+---
+
+Skotak Mirage Neoregelia — Neoregelia 'Skotak Mirage'  [neoregelia-skotak-mirage]
+tempCRange: 18, 28
+
+---
+
+Skotak's Unregistered Neoregelia — Neoregelia 'Skotak's Unregistered'  [neoregelia-skotaks-unregistered]
+tempCRange: 18, 28
+
+---
+
+Wild Tiger Goode Neoregelia — Neoregelia 'Wild Tiger Goode'  [neoregelia-wild-tiger-goode]
+tempCRange: 18, 28
+
+---
+
+Seersucker Plant — Geogenanthus poeppigii  [geogenanthus-poeppigii]
+tempCRange: 18, 27
+
+---
+
+Dwarf Hair Grass — Eleocharis radicans  [eleocharis-radicans]
+tempCRange: 20, 28
+
+---
+
+Lance-Leaf Sundew — Drosera adelae  [drosera-adelae]
+tempCRange: 15, 28
+
+---
+
+Spoon-Leaf Sundew — Drosera spatulata  [drosera-spatulata]
+tempCRange: 10, 30
+
+---
+
+Andean Horsetail — Equisetum bogotense  [equisetum-bogotense]
+tempCRange: 12, 22
+
+---
+
+Black Pagoda Lipstick Plant — Aeschynanthus longicaulis 'Black Pagoda'  [aeschynanthus-longicaulis-black-pagoda]
+tempCRange: 18, 27
+
+---
+
+Lace Flower Vine — Alsobia dianthiflora  [alsobia-dianthiflora]
+tempCRange: 16, 26
+
+---
+
+Codonanthe — Codonanthe carnosa  [codonanthe-carnosa]
+tempCRange: 18, 27
+
+---
+
+Codonanthe Digna — Codonanthe digna  [codonanthe-digna]
+tempCRange: 18, 27
+
+---
+
+Miniature Chirita — Deinostigma tamiana  [deinostigma-tamiana]
+tempCRange: 16, 26
+
+---
+
+Chocolate Velvet Flame Violet — Episcia 'Chocolate Velvet'  [episcia-chocolate-velvet]
+tempCRange: 18, 27
+
+---
+
+Lilacina Flame Violet — Episcia 'Lilacina'  [episcia-lilacina]
+tempCRange: 18, 27
+
+---
+
+Silver Dust Flame Violet — Episcia 'Silver Dust'  [episcia-silver-dust]
+tempCRange: 18, 27
+
+---
+
+Nautilocalyx — Nautilocalyx sp.  [nautilocalyx-sp]
+tempCRange: 18, 27
+
+---
+
+Paradrymonia — Paradrymonia campostyla  [paradrymonia-campostyla-suriname]
+tempCRange: 18, 27
+
+---
+
+Freckles Miniature Sinningia — Sinningia 'Freckles'  [sinningia-freckles]
+tempCRange: 16, 26
+
+---
+
+Prudence Risley Miniature Sinningia — Sinningia 'Prudence Risley'  [sinningia-prudence-risley]
+tempCRange: 16, 26
+
+---
+
+Minute Filmy Fern — Crepidomanes minutum  [crepidomanes-minutum]
+tempCRange: 18, 26
+
+---
+
+Indian Pogostemon — Pogostemon deccanensis  [pogostemon-deccanensis]
+tempCRange: 22, 30
+
+---
+
+Clubmoss / Tassel Fern — Huperzia sp.  [huperzia-sp]
+tempCRange: 16, 26
+
+---
+
+Bronze Marcgravia — Marcgravia sp. 'Bronze'  [marcgravia-bronze]
+tempCRange: 20, 28
+
+---
+
+Dark Brown Marcgravia — Marcgravia sp. 'Dark Brown'  [marcgravia-dark-brown]
+tempCRange: 20, 28
+
+---
+
+Ecuador Marcgravia — Marcgravia sp. 'Ecuador'  [marcgravia-ecuador]
+tempCRange: 20, 26
+
+---
+
+El Coca Marcgravia — Marcgravia sp. 'El Coca'  [marcgravia-el-coca]
+tempCRange: 20, 27
+
+---
+
+Peru Marcgravia — Marcgravia sp. 'Peru'  [marcgravia-peru]
+tempCRange: 20, 28
+
+---
+
+Puerto Rico Marcgravia — Marcgravia sp. 'Puerto Rico'  [marcgravia-puerto-rico]
+tempCRange: 20, 28
+
+---
+
+St Lucia Island Marcgravia — Marcgravia sp. 'St Lucia Island'  [marcgravia-st-lucia-island]
+tempCRange: 20, 28
+
+---
+
+Sintines' Marcgravia — Marcgravia sintinesii  [marcgravia-sintinesii]
+tempCRange: 20, 28
+
+---
+
+Suriname Marcgravia — Marcgravia sp. 'Suriname'  [marcgravia-suriname]
+tempCRange: 22, 30
+
+---
+
+Red Umbellata Marcgravia — Marcgravia umbellata 'Red'  [marcgravia-umbellata-red]
+tempCRange: 18, 28
+
+---
+
+Calvoa — Calvoa sessiliflora  [calvoa-sessiliflora]
+tempCRange: 20, 28
+
+---
+
+Red Monolena — Monolena primulaeflora 'Red'  [monolena-primulaeflora-red]
+tempCRange: 20, 28
+
+---
+
+Neon Lights Sonerila — Sonerila sp. 'Neon Lights'  [sonerila-neon-lights]
+tempCRange: 18, 26
+
+---
+
+Vietnam Sonerila — Sonerila cantonensis  [sonerila-cantonensis-vietnam]
+tempCRange: 16, 25
+
+---
+
+Thunberg's Fig — Ficus thunbergii  [ficus-thunbergii]
+tempCRange: 15, 28
+
+---
+
+Berry-Leaf Creeping Fig — Ficus vaccinioides  [ficus-vaccinioides]
+tempCRange: 16, 28
+
+---
+
+Velvet Creeping Fig — Ficus villosa  [ficus-vilosa]
+tempCRange: 18, 30
+
+---
+
+Spotted Fig — Ficus punctata  [ficus-punctata]
+tempCRange: 18, 30
+
+---
+
+Snowflake Creeping Fig — Ficus pumila 'Snowflake'  [ficus-pumila-snowflake]
+tempCRange: 10, 28
+
+---
+
+Monte Carlo — Micranthemum tweedei  [micranthemum-tweedei]
+tempCRange: 18, 28
+
+---
+
+Silver-Veined Jewel Orchid — Anoectochilus albolineatus  [anoectochilus-albolineatus]
+tempCRange: 18, 26
+
+---
+
+Charlotte's Web Jewel Orchid — Anoectochilus sp. 'Charlotte's Web'  [anoectochilus-charlottes-web]
+tempCRange: 18, 26
+
+---
+
+Formosan Jewel Orchid — Anoectochilus formosanus  [anoectochilus-formosanus]
+tempCRange: 15, 25
+
+---
+
+Gold-Purple Masdevallia — Masdevallia auropurpurea  [masdevallia-auropurpurea]
+tempCRange: 10, 20
+
+---
+
+Floriferous Masdevallia — Masdevallia floribunda  [masdevallia-floribunda]
+tempCRange: 12, 22
+
+---
+
+Nest Masdevallia — Masdevallia nidifica  [masdevallia-nidifica]
+tempCRange: 10, 20
+
+---
+
+Allen's Pleurothallis — Pleurothallis allenii  [pleurothallis-allenii]
+tempCRange: 15, 25
+
+---
+
+Costa Rican Pleurothallis — Pleurothallis costaricensis  [pleurothallis-costaricensis]
+tempCRange: 15, 24
+
+---
+
+Groby's Pleurothallis — Pleurothallis grobyi  [pleurothallis-grobyi]
+tempCRange: 14, 26
+
+---
+
+Red Pleurothallis — Pleurothallis rubella  [pleurothallis-rubella]
+tempCRange: 15, 24
+
+---
+
+Lansburg's Restrepia — Restrepia lansburgii  [restrepia-lansburghi]
+tempCRange: 12, 22
+
+---
+
+Fly-Trap Restrepia — Restrepia muscifera  [restrepia-muscifera]
+tempCRange: 12, 22
+
+---
+
+Dodson's Scaphosepalum — Scaphosepalum dodsoni  [scaphosepalum-dodsoni]
+tempCRange: 12, 21
+
+---
+
+Silver Stelis — Stelis argentata  [stelis-argentata]
+tempCRange: 14, 24
+
+---
+
+Zootrophion — Zootrophion sp.  [zootrophion-sp]
+tempCRange: 12, 22
+
+---
+
+Barbosella — Barbosella hiftzii  [barbosella-hiftzii]
+tempCRange: 12, 22
+
+---
+
+Bulbophyllum Intersitum — Bulbophyllum intersitum  [bulbophyllum-intersitum]
+tempCRange: 18, 28
+
+---
+
+Farrer's Cirrhopetalum — Bulbophyllum farreri  [cirrhopetalum-farreri]
+tempCRange: 15, 28
+
+---
+
+Taiwanese Cirrhopetalum — Bulbophyllum sp. 'Taiwanese'  [cirrhopetalum-taiwanese]
+tempCRange: 14, 26
+
+---
+
+Fragrant Haraella — Haraella odorata  [haerella-odorata]
+tempCRange: 15, 28
+
+---
+
+Beetle Peperomia — Peperomia angulata  [peperomia-angulata]
+tempCRange: 18, 28
+
+---
+
+Notched-Leaf Peperomia — Peperomia emarginella  [peperomia-emarginella]
+tempCRange: 18, 28
+
+---
+
+Fagerlind's Peperomia — Peperomia fagerlindii  [peperomia-fagerlindii]
+tempCRange: 18, 28
+
+---
+
+Raindrop Peperomia — Peperomia guttulata  [peperomia-guttalata]
+tempCRange: 18, 28
+
+---
+
+Pepper Spot Peperomia — Peperomia sp. 'Pepper Spot'  [peperomia-pepper-spot]
+tempCRange: 18, 28
+
+---
+
+Parallel Peperomia — Peperomia puteolata  [peperomia-puteolata]
+tempCRange: 18, 30
+
+---
+
+Itsy-Bitsy Peperomia — Peperomia rubella  [peperomia-rubella]
+tempCRange: 18, 28
+
+---
+
+Vining Peperomia — Peperomia serpens  [peperomia-serpens]
+tempCRange: 18, 30
+
+---
+
+Fiji Peperomia — Peperomia taroriana  [peperomia-taroriana]
+tempCRange: 20, 30
+
+---
+
+Tingo Maria Peperomia — Peperomia sp. 'Tingo Maria'  [peperomia-tingo-maria]
+tempCRange: 18, 28
+
+---
+
+Three-Veined Peperomia — Peperomia trinervis  [peperomia-trinervis]
+tempCRange: 18, 28
+
+---
+
+Turbo Peperomia — Peperomia turboensis  [peperomia-turboensis]
+tempCRange: 18, 28
+
+---
+
+Red Log Peperomia — Peperomia verticillata 'Red Log'  [peperomia-verticillata-red-log]
+tempCRange: 18, 30
+
+---
+
+Ornate Pepper Vine — Piper crocatum  [piper-crocatum]
+tempCRange: 18, 28
+
+---
+
+African Water Fern — Bolbitis heudelotii  [bolbitis-heudelotii]
+tempCRange: 20, 28
+
+---
+
+Cuspidate Bolbitis — Bolbitis heteroclita 'Cuspidata'  [bolbitis-heteroclita-cuspidata]
+tempCRange: 20, 28
+
+---
+
+Coin-Leaf Fern — Lemmaphyllum microphyllum  [lemmaphyllum-microphyllum]
+tempCRange: 15, 28
+
+---
+
+Wart Fern — Pleopeltis percussa  [pleopeltis-percussa]
+tempCRange: 18, 28
+
+---
+
+Coin-Leaf Tongue Fern — Pyrrosia nummularifolia  [pyrrosia-nummularifolia]
+tempCRange: 18, 30
+
+---
+
+Ceylon Tectaria — Tectaria zeilanica  [tectaria-zeilanica]
+tempCRange: 18, 28
+
+---
+
+Palm Fern — Actiniopteris australis  [actiniopteris-australis]
+tempCRange: 15, 35
+
+---
+
+Dancing Bones Cactus — Hatiora salicornioides  [hatiora-salicornioides]
+tempCRange: 18, 30
+
+---
+
+Wire Vine — Muehlenbeckia complexa  [muehlenbeckia-complexa]
+tempCRange: 5, 25
+
+---
+
+Variegated Wire Vine — Muehlenbeckia complexa 'Variegated'  [muehlenbeckia-complexa-variegated]
+tempCRange: 5, 25
+
+---
+
+Red Spike Moss — Selaginella erythropus 'Sanguinea'  [selaginella-erythropus-sanguinea]
+tempCRange: 18, 28
+
+---
+
+Silver-Tipped Spike Moss — Selaginella martensii 'Watsoniana'  [selaginella-martensii-watsoniana]
+tempCRange: 15, 26
+
+---
+
+Bindweed-Leaf Nightshade — Solanum evolvulifolium  [solanum-evolvulifolium]
+tempCRange: 18, 28
+
+---
+
+Ule's Nightshade — Solanum uleanum  [solanum-uleanum]
+tempCRange: 18, 28
+
+---
+
+Aquamarine Artillery Plant — Pilea libanensis 'Aquamarine'  [pilea-libanensis-aquamarine]
+tempCRange: 15, 26
+
+---
+
+Silver Cloud Pilea — Pilea pubescens 'Silver Cloud'  [pilea-pubescens-silver-cloud]
+tempCRange: 18, 28
+
+---
+
+Silver Tree Pilea — Pilea spruceana  [pilea-spruceana]
+tempCRange: 16, 26
+
+---
+
+Beautiful Procris — Procris pulchra  [procris-pulchra]
+tempCRange: 18, 28
+
+---
+
+Amazon Vine — Cissus amazonica  [cissus-amazonicus]
+tempCRange: 18, 28
+
+---
+
+Rex Begonia Vine — Cissus discolor  [cissus-discolor]
+tempCRange: 18, 28

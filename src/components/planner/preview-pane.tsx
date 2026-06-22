@@ -135,29 +135,37 @@ export function ArrangeOverlay({ draft, plants, onCommit, onClose }: ArrangeOver
       exiting={FadeOut.duration(140)}
       style={[StyleSheet.absoluteFill, styles.overlay, { backgroundColor: c.background }]}>
       <View style={styles.overlayInner}>
+        {/* Header (Now just the title) */}
         <View style={styles.arrangeBar}>
           <Text variant="subhead">Arrange plants</Text>
+        </View>
+
+        <Text variant="caption" role="textMuted" style={styles.arrangeHint}>
+          Drag a plant left or right to position it. Tap Done when you’re happy.
+        </Text>
+
+        {/* Canvas (flex: 1 pushes the button below it to the bottom) */}
+        <View style={styles.arrangeStage}>
+          <TerrariumCrossSection
+              draft={draft}
+              plants={plants}
+              draggableKind="plant"
+              onCommit={onCommit}
+              height={stageH}
+          />
+        </View>
+
+        {/* Moved the Done button down here! */}
+        <View style={styles.doneContainer}>
           <Pressable
-            onPress={done}
-            accessibilityRole="button"
-            hitSlop={8}
-            style={[styles.doneBtn, { backgroundColor: c.primary }]}>
+              onPress={done}
+              accessibilityRole="button"
+              hitSlop={8}
+              style={[styles.doneBtn, { backgroundColor: c.primary }]}>
             <Text variant="body" style={{ color: c.onPrimary, fontWeight: '600' }}>
               Done
             </Text>
           </Pressable>
-        </View>
-        <Text variant="caption" role="textMuted" style={styles.arrangeHint}>
-          Drag a plant left or right to position it. Tap Done when you’re happy.
-        </Text>
-        <View style={styles.arrangeStage}>
-          <TerrariumCrossSection
-            draft={draft}
-            plants={plants}
-            draggableKind="plant"
-            onCommit={onCommit}
-            height={stageH}
-          />
         </View>
       </View>
     </Animated.View>
@@ -173,13 +181,29 @@ const styles = StyleSheet.create({
   overlay: { zIndex: 50, elevation: 50 },
   overlayInner: { flex: 1, width: '100%', maxWidth: MaxContentWidth, alignSelf: 'center' },
   arrangeBar: {
-    flexDirection: 'row',
+    // Removed flexDirection and space-between to let the title center naturally
     alignItems: 'center',
-    justifyContent: 'space-between',
     paddingTop: Spacing.md,
     paddingBottom: Spacing.sm,
   },
-  doneBtn: { paddingHorizontal: Spacing.lg, paddingVertical: Spacing.sm, borderRadius: Radii.pill },
-  arrangeHint: { paddingBottom: Spacing.md },
-  arrangeStage: { flex: 1, justifyContent: 'center' },
+  arrangeHint: {
+    paddingBottom: Spacing.md,
+    textAlign: 'center' // Centers the helper text
+  },
+  arrangeStage: {
+    flex: 1,
+    justifyContent: 'center'
+  },
+  doneContainer: {
+    // New wrapper to center the button at the bottom
+    alignItems: 'center',
+    paddingBottom: Spacing.xl, // Gives it some breathing room from the bottom edge
+    paddingTop: Spacing.md,
+  },
+  doneBtn: {
+    paddingHorizontal: Spacing.lg,
+    paddingVertical: Spacing.sm,
+    borderRadius: Radii.pill
+  },
+
 });

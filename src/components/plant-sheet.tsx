@@ -16,10 +16,12 @@ import { Pressable, ScrollView, StyleSheet, useWindowDimensions, View } from 're
 import * as WebBrowser from 'expo-web-browser';
 
 import { BottomSheet, haptics, SectionLabel, StatStrip, type Stat, Text } from '@/components/ui';
+import { GlossaryText } from '@/components/glossary-text';
+import { TermSheet } from '@/components/term-sheet';
 import { Radii, Spacing } from '@/constants/theme';
 import { humanize, lightLabel, moistureLabel, suitabilityLabel } from '@/lib/labels';
 import { useTokens } from '@/hooks/use-tokens';
-import type { Conflict } from '@/types';
+import { vocabSlug } from '@/types';
 import type { Plant, PlantSource } from '@/types/plant';
 
 /** Human-readable label for a source link — its `label`, else the bare host. */
@@ -59,6 +61,7 @@ const PLANT_TYPE_EMOJI: Record<string, string> = {
   carnivorous: '🪤',
   aroid: '🍃',
   begonia: '🌺',
+  bromeliad: '🍍',
   orchid: '🌸',
   vine: '🌿',
   'ground-cover': '🌱',
@@ -70,11 +73,16 @@ export function PlantSheet({ plant, onClose, context, isSelected, onToggle, conf
   const { height } = useWindowDimensions();
   const { c } = useTokens();
 
-  // Reset Tier 3 when a different plant opens.
+  // Glossary term sheet opened from inline chip / stat / prose links — stacks over
+  // this sheet and shares the single TermSheet component (ADR 0006).
+  const [termSlug, setTermSlug] = useState<string | null>(null);
+
+  // Reset Tier 3 + any open term when a different plant opens.
   const [lastSlug, setLastSlug] = useState<string | null>(null);
   if (plant && plant.slug !== lastSlug) {
     setLastSlug(plant.slug);
     setTier3Open(false);
+    setTermSlug(null);
   }
 
   function handleToggle() {
@@ -84,6 +92,7 @@ export function PlantSheet({ plant, onClose, context, isSelected, onToggle, conf
   }
 
   return (
+    <>
     <BottomSheet visible={plant != null} onClose={onClose} title={plant?.commonName}>
       {plant ? (
         <>
@@ -99,15 +108,25 @@ export function PlantSheet({ plant, onClose, context, isSelected, onToggle, conf
             </Text>
             <View style={styles.headerChips}>
               {plant.plantType ? (
-                <View style={[styles.typeChip, { backgroundColor: c.surfaceSunken }]}>
-                  <Text variant="overline">{PLANT_TYPE_EMOJI[plant.plantType] ?? '🌱'}</Text>
-                  <Text variant="overline">{humanize(plant.plantType)}</Text>
-                </View>
+                <Pressable
+                  onPress={() => { haptics.select(); setTermSlug(vocabSlug('plantType', plant.plantType!)); }}
+                  accessibilityRole="link"
+                  accessibilityLabel={`Define ${humanize(plant.plantType)}`}>
+                  <View style={[styles.typeChip, { backgroundColor: c.surfaceSunken }]}>
+                    <Text variant="overline">{PLANT_TYPE_EMOJI[plant.plantType] ?? '🌱'}</Text>
+                    <Text variant="overline" style={styles.linkUnderline}>{humanize(plant.plantType)}</Text>
+                  </View>
+                </Pressable>
               ) : null}
               {plant.nativeBiome ? (
-                <View style={[styles.typeChip, { backgroundColor: c.surfaceSunken }]}>
-                  <Text variant="overline">{humanize(plant.nativeBiome)}</Text>
-                </View>
+                <Pressable
+                  onPress={() => { haptics.select(); setTermSlug(vocabSlug('biome', plant.nativeBiome!)); }}
+                  accessibilityRole="link"
+                  accessibilityLabel={`Define ${humanize(plant.nativeBiome)}`}>
+                  <View style={[styles.typeChip, { backgroundColor: c.surfaceSunken }]}>
+                    <Text variant="overline" style={styles.linkUnderline}>{humanize(plant.nativeBiome)}</Text>
+                  </View>
+                </Pressable>
               ) : null}
               <View style={[styles.typeChip, { backgroundColor: c.surfaceSunken }]}>
                 <Text variant="overline">Difficulty {plant.difficulty}/5</Text>
@@ -133,7 +152,7 @@ export function PlantSheet({ plant, onClose, context, isSelected, onToggle, conf
 
             {/* Tier 2 — care requirements (always visible) */}
             <SectionLabel>Care requirements</SectionLabel>
-            <StatStrip items={tier2Stats(plant)} />
+            <StatStrip items={tier2Stats(plant)} onPressTerm={setTermSlug} />
 
             {/* Tier 3 toggle */}
             <Pressable
@@ -151,25 +170,25 @@ export function PlantSheet({ plant, onClose, context, isSelected, onToggle, conf
                 {tier3Stats(plant).length > 0 ? (
                   <>
                     <SectionLabel>Full profile</SectionLabel>
-                    <StatStrip items={tier3Stats(plant)} />
+                    <StatStrip items={tier3Stats(plant)} onPressTerm={setTermSlug} />
                   </>
                 ) : null}
 
                 {plant.nativeContext ? (
                   <>
                     <SectionLabel>Origin</SectionLabel>
-                    <Text variant="body" role="textMuted" style={styles.bodyBlock}>
-                      {plant.nativeContext}
-                    </Text>
+                    <GlossaryText
+                      text={plant.nativeContext}
+                      onPressTerm={setTermSlug}
+                      style={styles.bodyBlock}
+                    />
                   </>
                 ) : null}
 
                 {plant.notes ? (
                   <>
                     <SectionLabel>Notes</SectionLabel>
-                    <Text variant="body" role="textMuted" style={styles.bodyBlock}>
-                      {plant.notes}
-                    </Text>
+                    <GlossaryText text={plant.notes} onPressTerm={setTermSlug} style={styles.bodyBlock} />
                   </>
                 ) : null}
 
@@ -227,17 +246,19 @@ export function PlantSheet({ plant, onClose, context, isSelected, onToggle, conf
         </>
       ) : null}
     </BottomSheet>
+    <TermSheet slug={termSlug} onClose={() => setTermSlug(null)} />
+    </>
   );
 }
 
 function tier2Stats(plant: Plant): Stat[] {
   return [
-    { label: 'Light', value: lightLabel(plant.light) },
-    { label: 'Soil', value: moistureLabel(plant.soilMoisture) },
+    { label: 'Light', value: lightLabel(plant.light), slug: vocabSlug('light', plant.light.primary) },
+    { label: 'Soil', value: moistureLabel(plant.soilMoisture), slug: vocabSlug('moisture', plant.soilMoisture.primary) },
     { label: 'Humidity', value: `${plant.humidityPctRange[0]}–${plant.humidityPctRange[1]}%` },
     { label: 'Temperature', value: `${plant.tempCRange[0]}–${plant.tempCRange[1]}°C` },
     { label: 'Max height', value: `${plant.maxHeightCm} cm` },
-    { label: 'Growth rate', value: humanize(plant.growthRate) },
+    { label: 'Growth rate', value: humanize(plant.growthRate), slug: vocabSlug('growthRate', plant.growthRate) },
     { label: 'Suitability', value: suitabilityLabel(plant.closedTerrariumOk, plant.openTerrariumOk) },
   ];
 }
@@ -249,12 +270,14 @@ function tier3Stats(plant: Plant): Stat[] {
       plant.soilPhMin != null && plant.soilPhMax != null
         ? ` (${plant.soilPhMin}–${plant.soilPhMax})`
         : '';
-    stats.push({ label: 'pH', value: `${humanize(plant.phPreference)}${range}` });
+    stats.push({ label: 'pH', value: `${humanize(plant.phPreference)}${range}`, slug: vocabSlug('ph', plant.phPreference) });
   }
   if (plant.rootDepthMinCm != null && plant.rootDepthMaxCm != null) {
     stats.push({ label: 'Root depth', value: `${plant.rootDepthMinCm}–${plant.rootDepthMaxCm} cm` });
   }
-  if (plant.growthHabit) stats.push({ label: 'Habit', value: humanize(plant.growthHabit) });
+  if (plant.growthHabit) {
+    stats.push({ label: 'Habit', value: humanize(plant.growthHabit), slug: vocabSlug('growthHabit', plant.growthHabit) });
+  }
   if (plant.rarity) stats.push({ label: 'Rarity', value: humanize(plant.rarity) });
   if (plant.spreadMinCm != null || plant.spreadMaxCm != null) {
     const min = plant.spreadMinCm ?? '?';
@@ -268,6 +291,7 @@ const styles = StyleSheet.create({
   scrollContent: { gap: Spacing.md, paddingBottom: Spacing.sm },
   sci: { fontStyle: 'italic', marginTop: -Spacing.xs },
   headerChips: { flexDirection: 'row', flexWrap: 'wrap', gap: Spacing.xs },
+  linkUnderline: { textDecorationLine: 'underline', textDecorationStyle: 'dotted' },
   typeChip: {
     flexDirection: 'row',
     alignItems: 'center',

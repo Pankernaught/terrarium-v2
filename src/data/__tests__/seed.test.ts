@@ -3,9 +3,9 @@
  *   1. **Build-time validation** — every shipped plant/container/preset parses
  *      against the zod schemas (a malformed record fails CI, not the device).
  *   2. **Throwaway-DB load** — the validated rows insert into a real, in-memory
- *      SQLite database (Node's built-in `node:sqlite`) and the row counts are
- *      exactly 67 / 16, mirroring the on-device expo-sqlite seed without pulling
- *      a native module into the Node test runner.
+ *      SQLite database (Node's built-in `node:sqlite`) and the row counts equal
+ *      the loaded seed arrays, mirroring the on-device expo-sqlite seed without
+ *      pulling a native module into the Node test runner.
  *
  * Plus invariants: toxicity is partial and never a safety claim, the substrate
  * vocabulary is frozen, and the presets reference only real plants/containers.
@@ -27,8 +27,8 @@ const containers = loadContainers();
 const presets = loadPresets();
 
 describe('seed counts', () => {
-  it('ships 95 plants and 16 containers', () => {
-    expect(plants).toHaveLength(95);
+  it('ships 243 plants and 16 containers', () => {
+    expect(plants).toHaveLength(243);
     expect(containers).toHaveLength(16);
   });
 
@@ -44,7 +44,7 @@ describe('seed counts', () => {
 });
 
 describe('throwaway SQLite seed', () => {
-  it('loads every validated row into an in-memory DB with counts 95 / 16', () => {
+  it('loads every validated row into an in-memory DB with counts matching the seed', () => {
     const db = new DatabaseSync(':memory:');
     db.exec(`
       CREATE TABLE plants (slug TEXT PRIMARY KEY, common_name TEXT, image TEXT);
@@ -59,8 +59,12 @@ describe('throwaway SQLite seed', () => {
     const insPr = db.prepare('INSERT INTO presets VALUES (?, ?, ?)');
     for (const pr of presets) insPr.run(pr.slug, pr.containerSlug, JSON.stringify(pr.placements));
 
-    expect((db.prepare('SELECT count(*) c FROM plants').get() as { c: number }).c).toBe(95);
-    expect((db.prepare('SELECT count(*) c FROM containers').get() as { c: number }).c).toBe(16);
+    expect((db.prepare('SELECT count(*) c FROM plants').get() as { c: number }).c).toBe(
+      plants.length,
+    );
+    expect((db.prepare('SELECT count(*) c FROM containers').get() as { c: number }).c).toBe(
+      containers.length,
+    );
     expect((db.prepare('SELECT count(*) c FROM presets').get() as { c: number }).c).toBe(presets.length);
     db.close();
   });
@@ -68,8 +72,8 @@ describe('throwaway SQLite seed', () => {
   it('loadSeed() returns the bundle and passes referential integrity', () => {
     const seed = loadSeed();
     expect(seed.schemaVersion).toBe(1);
-    expect(seed.plants).toHaveLength(95);
-    expect(seed.containers).toHaveLength(16);
+    expect(seed.plants).toHaveLength(plants.length);
+    expect(seed.containers).toHaveLength(containers.length);
   });
 });
 

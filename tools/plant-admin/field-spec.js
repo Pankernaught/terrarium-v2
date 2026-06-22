@@ -24,7 +24,7 @@ const GROWTH_RATES = ['slow', 'moderate', 'fast'];
 const GROWTH_HABITS = ['trailing', 'upright', 'rosette', 'creeping', 'climbing', 'mounding'];
 const PLANT_TYPES = [
   'fern', 'fern-ally', 'moss', 'succulent', 'carnivorous', 'aroid',
-  'begonia', 'orchid', 'vine', 'ground-cover', 'foliage',
+  'begonia', 'bromeliad', 'orchid', 'vine', 'ground-cover', 'foliage',
 ];
 const NATIVE_BIOMES = [
   'tropical', 'subtropical', 'temperate', 'montane', 'arid', 'mediterranean', 'aquatic',

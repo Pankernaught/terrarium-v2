@@ -1,0 +1,525 @@
+{
+  "schemaVersion": 1,
+  "terms": [
+    {
+      "slug": "low",
+      "term": "Low light",
+      "category": "light",
+      "definition": "Light well back from a window or in a shaded corner — enough to read by, but no direct sun and little bright sky in view. In a terrarium it suits forest-floor plants like many ferns and mosses; most variegated or flowering plants etch and stretch toward the glass here.",
+      "seeAlso": ["medium", "bright-indirect"]
+    },
+    {
+      "slug": "medium",
+      "term": "Medium light",
+      "category": "light",
+      "definition": "Bright ambient light with little or no direct sun — typically a few feet back from a window. It is the middle band most foliage terrarium plants tolerate comfortably.",
+      "seeAlso": ["low", "bright-indirect"]
+    },
+    {
+      "slug": "bright-indirect",
+      "term": "Bright indirect light",
+      "category": "light",
+      "definition": "Strong, even light without the sun's rays landing directly on the leaves — beside a bright window or behind a sheer curtain. It is the sweet spot for most terrarium foliage: enough energy for compact growth and colour without the leaf scorch a glass container amplifies.",
+      "seeAlso": ["medium", "direct"]
+    },
+    {
+      "slug": "direct",
+      "term": "Direct light",
+      "category": "light",
+      "definition": "Unfiltered sunlight striking the leaves for part of the day. In a closed terrarium it is usually a hazard — glass magnifies it, the air overheats, and tender foliage cooks — so only sun-adapted succulents and a few tough plants tolerate it.",
+      "seeAlso": ["bright-indirect", "succulent"]
+    },
+
+    {
+      "slug": "dry",
+      "term": "Dry soil",
+      "category": "moisture",
+      "definition": "Substrate kept barely damp and allowed to dry out between waterings. It suits succulents and arid-climate plants whose roots rot if they sit in standing moisture.",
+      "seeAlso": ["moderate-moisture", "succulent"]
+    },
+    {
+      "slug": "moderate-moisture",
+      "term": "Moderate moisture",
+      "category": "moisture",
+      "definition": "Substrate kept evenly damp but never soggy — moist to the touch with no water pooling. It is the safe default for most foliage plants and for mixed plantings.",
+      "seeAlso": ["dry", "moist"]
+    },
+    {
+      "slug": "moist",
+      "term": "Moist soil",
+      "category": "moisture",
+      "definition": "Substrate kept consistently damp and never drying out fully. This is typical of tropical-forest plants and most closed-terrarium foliage, where the sealed environment holds the moisture in.",
+      "seeAlso": ["moderate-moisture", "wet"]
+    },
+    {
+      "slug": "wet",
+      "term": "Wet soil",
+      "category": "moisture",
+      "definition": "Substrate kept saturated, often with standing water at the base. It is reserved for bog and marginal plants such as carnivores and some mosses; for most plants it suffocates the roots.",
+      "seeAlso": ["moist", "false-bottom"]
+    },
+
+    {
+      "slug": "acidic",
+      "term": "Acidic",
+      "category": "ph",
+      "definition": "A substrate pH below about 6.5. Peat- and sphagnum-based mixes trend acidic, which suits carnivorous plants, many ferns, and other acid-loving species.",
+      "seeAlso": ["neutral", "peat"]
+    },
+    {
+      "slug": "neutral",
+      "term": "Neutral",
+      "category": "ph",
+      "definition": "A substrate pH around 6.5–7.5, neither strongly acidic nor alkaline. It is the broad comfort zone for the majority of terrarium plants.",
+      "seeAlso": ["acidic", "alkaline"]
+    },
+    {
+      "slug": "alkaline",
+      "term": "Alkaline",
+      "category": "ph",
+      "definition": "A substrate pH above about 7.5. Few terrarium plants prefer it; it suits certain lithophytes and plants native to limestone regions.",
+      "seeAlso": ["neutral", "lithophyte"]
+    },
+
+    {
+      "slug": "slow",
+      "term": "Slow growth",
+      "category": "growthRate",
+      "definition": "Adds little size in a season and takes years to fill a container. Slow growers are prized in terrariums because the planting holds its composition without constant pruning.",
+      "seeAlso": ["moderate-growth"]
+    },
+    {
+      "slug": "moderate-growth",
+      "term": "Moderate growth",
+      "category": "growthRate",
+      "definition": "A steady but manageable pace — filling in over months without overrunning its neighbours. A reliable middle ground for a mixed planting.",
+      "seeAlso": ["slow", "fast"]
+    },
+    {
+      "slug": "fast",
+      "term": "Fast growth",
+      "category": "growthRate",
+      "definition": "Puts on size quickly and needs regular pruning to stay in scale. Useful for filling a new layout fast, but it can smother slower neighbours in a sealed container.",
+      "seeAlso": ["moderate-growth"]
+    },
+
+    {
+      "slug": "trailing",
+      "term": "Trailing",
+      "category": "growthHabit",
+      "definition": "Stems that hang or spill downward rather than standing upright. Good for softening a container's edges and cascading from height.",
+      "seeAlso": ["climbing", "creeping"]
+    },
+    {
+      "slug": "upright",
+      "term": "Upright",
+      "category": "growthHabit",
+      "definition": "Grows vertically on self-supporting stems. It provides height and structure as a background or specimen plant.",
+      "seeAlso": ["rosette", "mounding"]
+    },
+    {
+      "slug": "rosette",
+      "term": "Rosette",
+      "category": "growthHabit",
+      "definition": "Leaves radiating from a single central point at the base, like a star or a cup. Many bromeliads and succulents grow this way; the form often channels water to — or away from — the centre.",
+      "seeAlso": ["mounding", "bromeliad"]
+    },
+    {
+      "slug": "creeping",
+      "term": "Creeping",
+      "category": "growthHabit",
+      "definition": "Spreads horizontally across the surface, rooting as it goes. It forms a living groundcover that knits a planting together.",
+      "seeAlso": ["ground-cover", "stolon"]
+    },
+    {
+      "slug": "climbing",
+      "term": "Climbing",
+      "category": "growthHabit",
+      "definition": "Ascends a surface using aerial roots or tendrils. In a terrarium it can be trained up a wood or cork background.",
+      "seeAlso": ["trailing", "epiphyte"]
+    },
+    {
+      "slug": "mounding",
+      "term": "Mounding",
+      "category": "growthHabit",
+      "definition": "Forms a compact, rounded clump. It holds a tidy shape with little intervention — a dependable mid-ground form.",
+      "seeAlso": ["rosette", "upright"]
+    },
+
+    {
+      "slug": "fern",
+      "term": "Fern",
+      "category": "plantType",
+      "definition": "A non-flowering plant that reproduces by spores, usually with divided fronds and a liking for humidity and shade. Ferns are terrarium staples because a closed, damp container mimics their forest-floor home.",
+      "seeAlso": ["fern-ally", "frond", "moss"]
+    },
+    {
+      "slug": "fern-ally",
+      "term": "Fern ally",
+      "category": "plantType",
+      "definition": "A spore-reproducing plant related to ferns but not a true fern — clubmosses, spikemosses (Selaginella), and horsetails. They thrive in the same humid, shaded terrarium conditions.",
+      "seeAlso": ["fern", "moss"]
+    },
+    {
+      "slug": "moss",
+      "term": "Moss",
+      "category": "plantType",
+      "definition": "A small, rootless non-vascular plant that absorbs water through its leaves and forms soft carpets. Mosses are the classic terrarium groundcover, thriving in the high humidity that glass provides.",
+      "seeAlso": ["fern", "closed-terrarium"]
+    },
+    {
+      "slug": "succulent",
+      "term": "Succulent",
+      "category": "plantType",
+      "definition": "A plant with thick, water-storing leaves or stems adapted to drought. Most want bright light and dry, gritty soil — usually a poor match for a closed, humid terrarium and far better in an open one.",
+      "seeAlso": ["arid", "open-terrarium", "dry"]
+    },
+    {
+      "slug": "carnivorous",
+      "term": "Carnivorous plant",
+      "category": "plantType",
+      "definition": "A plant that traps and digests insects to supplement nutrients from poor soil — sundews, pitcher plants, Venus flytraps. They demand wet, acidic, nutrient-free media and bright light, a specialised bog setup.",
+      "seeAlso": ["wet", "acidic", "sphagnum"]
+    },
+    {
+      "slug": "aroid",
+      "term": "Aroid",
+      "category": "plantType",
+      "definition": "A member of the arum family (Araceae) — philodendrons, anthuriums, pothos, Monstera — recognised by a spathe-and-spadix flower. Many are humidity-loving climbers well suited to terrariums.",
+      "seeAlso": ["climbing", "epiphyte"]
+    },
+    {
+      "slug": "begonia",
+      "term": "Begonia",
+      "category": "plantType",
+      "definition": "A large genus of foliage and flowering plants, many with strikingly patterned or textured leaves. Compact, humidity-loving species are terrarium favourites, often grown from a creeping rhizome.",
+      "seeAlso": ["rhizome", "foliage"]
+    },
+    {
+      "slug": "bromeliad",
+      "term": "Bromeliad",
+      "category": "plantType",
+      "definition": "A member of the pineapple family, often a rosette that holds water in a central cup, or tank. Many are epiphytes and bring bold colour to vivariums and paludariums.",
+      "seeAlso": ["rosette", "epiphyte"]
+    },
+    {
+      "slug": "orchid",
+      "term": "Orchid",
+      "category": "plantType",
+      "definition": "A member of the orchid family; terrarium-suited types are usually compact, humidity-loving epiphytes such as miniature Pleurothallids. The stable humidity of an enclosure suits them well.",
+      "seeAlso": ["epiphyte", "orchid-bark"]
+    },
+    {
+      "slug": "vine",
+      "term": "Vine",
+      "category": "plantType",
+      "definition": "A plant with long, flexible stems that climb or trail rather than self-support. It is used to add vertical lines or to cascade over hardscape.",
+      "seeAlso": ["climbing", "trailing"]
+    },
+    {
+      "slug": "ground-cover",
+      "term": "Ground cover",
+      "category": "plantType",
+      "definition": "A low, spreading plant that carpets the substrate surface. It knits a planting together visually and helps hold moisture at the soil line.",
+      "seeAlso": ["creeping", "moss"]
+    },
+    {
+      "slug": "foliage",
+      "term": "Foliage plant",
+      "category": "plantType",
+      "definition": "A plant grown chiefly for its leaves rather than its flowers. Foliage plants are the backbone of most terrarium plantings, valued for colour, pattern, and texture.",
+      "seeAlso": ["aroid", "begonia"]
+    },
+
+    {
+      "slug": "tropical",
+      "term": "Tropical",
+      "category": "biome",
+      "definition": "Warm, humid lowland regions with little seasonal change. Most classic terrarium plants come from here, which is why a warm, humid, stable enclosure suits them so well.",
+      "seeAlso": ["subtropical", "montane"]
+    },
+    {
+      "slug": "subtropical",
+      "term": "Subtropical",
+      "category": "biome",
+      "definition": "Regions bordering the tropics, with warm summers and mild, cooler winters. Plants from here tolerate a wider temperature swing than strictly tropical species.",
+      "seeAlso": ["tropical", "temperate"]
+    },
+    {
+      "slug": "temperate",
+      "term": "Temperate",
+      "category": "biome",
+      "definition": "Regions with distinct warm and cold seasons. Temperate plants — some ferns and mosses — may want a cool winter rest and can struggle in a constantly warm enclosure.",
+      "seeAlso": ["subtropical", "montane"]
+    },
+    {
+      "slug": "montane",
+      "term": "Montane",
+      "category": "biome",
+      "definition": "Cool, humid mountain-forest habitats, often bathed in cloud. Montane plants want high humidity but cooler temperatures, so they suit an enclosure kept on the cool side.",
+      "seeAlso": ["tropical", "humidity"]
+    },
+    {
+      "slug": "arid",
+      "term": "Arid",
+      "category": "biome",
+      "definition": "Dry desert and semi-desert regions with scarce, irregular rain. Arid plants such as succulents and cacti need dry, fast-draining conditions and resent a humid, closed terrarium.",
+      "seeAlso": ["succulent", "dry", "mediterranean"]
+    },
+    {
+      "slug": "mediterranean",
+      "term": "Mediterranean",
+      "category": "biome",
+      "definition": "Regions with hot, dry summers and mild, wet winters. These plants tolerate drought and dislike constant moisture, so they are better suited to open containers.",
+      "seeAlso": ["arid", "open-terrarium"]
+    },
+    {
+      "slug": "aquatic",
+      "term": "Aquatic",
+      "category": "biome",
+      "definition": "Living in or at the edge of water. Aquatic and marginal plants belong in the water feature or saturated zone of a paludarium, not in ordinary substrate.",
+      "seeAlso": ["paludarium", "wet"]
+    },
+
+    {
+      "slug": "perlite",
+      "term": "Perlite",
+      "category": "substrate",
+      "definition": "Lightweight white granules of puffed volcanic glass. Mixed into substrate it opens the mix up — improving drainage and aeration so roots get oxygen instead of sitting wet.",
+      "seeAlso": ["pumice", "vermiculite"]
+    },
+    {
+      "slug": "peat",
+      "term": "Peat",
+      "category": "substrate",
+      "definition": "Partially decomposed sphagnum, dark and moisture-retentive with an acidic pH. A traditional base for moisture- and acid-loving plants, though increasingly replaced by coco coir for sustainability.",
+      "seeAlso": ["coco-coir", "sphagnum", "acidic"]
+    },
+    {
+      "slug": "sphagnum",
+      "term": "Sphagnum moss",
+      "category": "substrate",
+      "definition": "Dried (or living) bog moss that holds many times its weight in water while staying airy. It is used as a mix component, a top dressing, or to wrap epiphyte roots; it is naturally acidic and nearly sterile.",
+      "seeAlso": ["peat", "epiphyte"]
+    },
+    {
+      "slug": "sand",
+      "term": "Sand",
+      "category": "substrate",
+      "definition": "Coarse mineral grit that adds weight and sharp drainage. A small proportion keeps a mix open for succulents and arid plants.",
+      "seeAlso": ["grit", "succulent"]
+    },
+    {
+      "slug": "coco-coir",
+      "term": "Coco coir",
+      "category": "substrate",
+      "definition": "Coconut-husk fibre, a renewable peat substitute. It holds moisture while staying loose and near-neutral in pH — a versatile base for most terrarium mixes.",
+      "seeAlso": ["peat", "neutral"]
+    },
+    {
+      "slug": "grit",
+      "term": "Grit",
+      "category": "substrate",
+      "definition": "Fine gravel or coarse sand that sharpens drainage and adds weight low in a mix. It helps keep arid-plant roots from staying wet.",
+      "seeAlso": ["sand", "pumice"]
+    },
+    {
+      "slug": "orchid-bark",
+      "term": "Orchid bark",
+      "category": "substrate",
+      "definition": "Chunky pieces of fir or pine bark that create large air pockets. It is used for epiphytes and aroids whose roots need air and a coarse, fast-draining footing.",
+      "seeAlso": ["orchid", "epiphyte", "aroid"]
+    },
+    {
+      "slug": "pumice",
+      "term": "Pumice",
+      "category": "substrate",
+      "definition": "Porous volcanic rock, like a heavier perlite. It adds drainage and air while holding a little moisture, and unlike perlite it does not float to the surface.",
+      "seeAlso": ["perlite", "grit"]
+    },
+    {
+      "slug": "mud",
+      "term": "Mud",
+      "category": "substrate",
+      "definition": "A dense, water-retentive substrate for bog and paludarium margins. It is used where saturated, low-oxygen conditions are wanted — the opposite of a free-draining mix.",
+      "seeAlso": ["wet", "paludarium"]
+    },
+    {
+      "slug": "potting-soil",
+      "term": "Potting soil",
+      "category": "substrate",
+      "definition": "A general bagged growing medium of composted organic matter. It is nutrient-rich but can pack down and stay wet, so it is usually lightened with perlite or bark for terrarium use.",
+      "seeAlso": ["perlite", "worm-castings"]
+    },
+    {
+      "slug": "worm-castings",
+      "term": "Worm castings",
+      "category": "substrate",
+      "definition": "Worm-digested organic matter — a mild, slow-release fertiliser. A small amount enriches a terrarium mix without the burn risk of synthetic feed.",
+      "seeAlso": ["potting-soil"]
+    },
+    {
+      "slug": "vermiculite",
+      "term": "Vermiculite",
+      "category": "substrate",
+      "definition": "Expanded mica flakes that hold water and nutrients. It boosts a mix's moisture retention — the counterpart to perlite's drainage.",
+      "seeAlso": ["perlite"]
+    },
+    {
+      "slug": "leca",
+      "term": "LECA",
+      "category": "substrate",
+      "definition": "Lightweight Expanded Clay Aggregate: fired clay balls that wick water and hold air. It is used as a drainage layer beneath the substrate (a false bottom) or as a semi-hydroponic medium on its own.",
+      "seeAlso": ["drainage-layer", "false-bottom"]
+    },
+
+    {
+      "slug": "epiphyte",
+      "term": "Epiphyte",
+      "category": "concept",
+      "definition": "A plant that grows on another plant or surface rather than in soil, drawing moisture and nutrients from the air, rain, and debris — orchids, many bromeliads, and ferns. In a terrarium they are mounted on wood or cork rather than planted in substrate.",
+      "seeAlso": ["lithophyte", "terrestrial", "hardscape"]
+    },
+    {
+      "slug": "terrestrial",
+      "term": "Terrestrial",
+      "category": "concept",
+      "definition": "Growing in the ground, rooted in soil or substrate — as opposed to on a tree (epiphyte) or a rock (lithophyte). Most terrarium plants are terrestrial.",
+      "seeAlso": ["epiphyte", "lithophyte"]
+    },
+    {
+      "slug": "lithophyte",
+      "term": "Lithophyte",
+      "category": "concept",
+      "definition": "A plant that grows on rock, anchoring in crevices and feeding on rain, litter, and its own debris. In a terrarium they suit a stony hardscape.",
+      "seeAlso": ["epiphyte", "terrestrial", "hardscape"]
+    },
+    {
+      "slug": "false-bottom",
+      "term": "False bottom",
+      "category": "concept",
+      "definition": "A raised drainage void at the base of a terrarium — built on a grate or a layer of LECA — that keeps the substrate above any standing water. It stops roots from sitting in the runoff that collects in a container with no drainage hole.",
+      "seeAlso": ["drainage-layer", "leca", "horticultural-charcoal"]
+    },
+    {
+      "slug": "drainage-layer",
+      "term": "Drainage layer",
+      "category": "concept",
+      "definition": "A coarse layer of LECA, gravel, or pumice under the substrate that gives excess water somewhere to collect, away from the roots. It is the simplest insurance against overwatering in a container with no drainage hole.",
+      "seeAlso": ["false-bottom", "leca"]
+    },
+    {
+      "slug": "paludarium",
+      "term": "Paludarium",
+      "category": "concept",
+      "definition": "An enclosure combining land and water — part terrarium, part aquarium — for marginal and aquatic plants, and sometimes animals. The water feature drives very high humidity.",
+      "seeAlso": ["vivarium", "aquatic", "humidity"]
+    },
+    {
+      "slug": "vivarium",
+      "term": "Vivarium",
+      "category": "concept",
+      "definition": "An enclosure built to house live animals — often amphibians or reptiles — alongside live plants. Plant choices must be non-toxic and tough enough for the inhabitants.",
+      "seeAlso": ["paludarium"]
+    },
+    {
+      "slug": "closed-terrarium",
+      "term": "Closed terrarium",
+      "category": "concept",
+      "definition": "A sealed or near-sealed glass container that recycles its own moisture, staying warm and very humid. It is ideal for tropical foliage, ferns, and moss, but fatal to succulents and other dry-loving plants.",
+      "seeAlso": ["open-terrarium", "humidity", "condensation"]
+    },
+    {
+      "slug": "open-terrarium",
+      "term": "Open terrarium",
+      "category": "concept",
+      "definition": "An unsealed container with free airflow and lower humidity. It suits succulents, cacti, and arid plants that would rot in a closed, humid setup.",
+      "seeAlso": ["closed-terrarium", "succulent"]
+    },
+    {
+      "slug": "hardscape",
+      "term": "Hardscape",
+      "category": "concept",
+      "definition": "The non-living structure of a layout — wood, rock, and cork — that sets the terrain before any plants go in. Beyond looks, it gives epiphytes and climbers something to grow on.",
+      "seeAlso": ["epiphyte", "lithophyte"]
+    },
+    {
+      "slug": "horticultural-charcoal",
+      "term": "Horticultural charcoal",
+      "category": "concept",
+      "definition": "A thin layer of porous carbon set between the drainage layer and the substrate. It helps keep a closed, waterlogged-prone container fresh by adsorbing impurities from the trapped water.",
+      "seeAlso": ["false-bottom", "drainage-layer"]
+    },
+    {
+      "slug": "acclimation",
+      "term": "Acclimation",
+      "category": "concept",
+      "definition": "The gradual adjustment of a new plant to the terrarium's humidity, light, and temperature. Easing the transition prevents the leaf drop and melt that a sudden change can trigger.",
+      "seeAlso": ["humidity"]
+    },
+    {
+      "slug": "humidity",
+      "term": "Humidity",
+      "category": "concept",
+      "definition": "The amount of water vapour in the air, given as a percentage (relative humidity). A closed terrarium holds it high, which is why moisture-loving plants thrive and dry-loving ones rot.",
+      "seeAlso": ["closed-terrarium", "condensation", "transpiration"]
+    },
+    {
+      "slug": "condensation",
+      "term": "Condensation",
+      "category": "concept",
+      "definition": "Water vapour returning to liquid on the cool glass — the visible sign of the terrarium's water cycle. A light, intermittent fog is healthy; constant heavy fogging means it is too wet and needs airing.",
+      "seeAlso": ["humidity", "transpiration"]
+    },
+    {
+      "slug": "transpiration",
+      "term": "Transpiration",
+      "category": "concept",
+      "definition": "The release of water vapour from a plant's leaves. In a sealed container this water recondenses and returns to the soil, driving the self-watering cycle.",
+      "seeAlso": ["humidity", "condensation"]
+    },
+
+    {
+      "slug": "rhizome",
+      "term": "Rhizome",
+      "category": "anatomy",
+      "definition": "A horizontal stem, usually creeping along or just under the surface, that sends up leaves and down roots as it spreads. Many ferns and begonias grow from one, and you propagate them by dividing it.",
+      "seeAlso": ["stolon", "node", "begonia"]
+    },
+    {
+      "slug": "frond",
+      "term": "Frond",
+      "category": "anatomy",
+      "definition": "The leaf of a fern (or a palm). A new frond often unfurls from a coiled tip called a crozier, or fiddlehead.",
+      "seeAlso": ["fern", "crozier"]
+    },
+    {
+      "slug": "stolon",
+      "term": "Stolon",
+      "category": "anatomy",
+      "definition": "A runner — a stem that creeps across the surface and roots at its tip or nodes to form a new plant, the way a strawberry or spider plant spreads. It is a quick way for a plant to fill a terrarium floor.",
+      "seeAlso": ["rhizome", "node", "creeping"]
+    },
+    {
+      "slug": "node",
+      "term": "Node",
+      "category": "anatomy",
+      "definition": "The point on a stem where leaves, roots, or side-shoots emerge. Cuttings are taken just below a node because that is where new roots form most readily.",
+      "seeAlso": ["petiole", "stolon"]
+    },
+    {
+      "slug": "petiole",
+      "term": "Petiole",
+      "category": "anatomy",
+      "definition": "The stalk that joins a leaf blade to the stem. Its length and stance shape how a plant fills the space around it.",
+      "seeAlso": ["node"]
+    },
+    {
+      "slug": "crozier",
+      "term": "Crozier",
+      "category": "anatomy",
+      "definition": "The tightly coiled tip of an emerging fern frond, also called a fiddlehead. It unrolls as the frond expands to full size.",
+      "seeAlso": ["frond", "fern"]
+    }
+  ]
+}

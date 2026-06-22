@@ -2,3 +2,4 @@
 export * from './plant';
 export * from './container';
 export * from './results';
+export * from './glossary';

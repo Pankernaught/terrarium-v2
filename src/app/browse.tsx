@@ -20,12 +20,17 @@ import { Linking, Pressable, ScrollView, StyleSheet, TextInput, View } from 'rea
 
 import { Card, Chip, GlanceHeader, Screen, SectionLabel, Text } from '@/components/ui';
 import { PlantSheet } from '@/components/plant-sheet';
+import { TermSheet } from '@/components/term-sheet';
 import { MaxContentWidth, Radii, Spacing } from '@/constants/theme';
-import { loadPlants } from '@/data';
+import { loadGlossary, loadPlants } from '@/data';
 import { type BrowseSort, filterPlants } from '@/logic/browse-filter';
+import { filterGlossary } from '@/logic/glossary-filter';
 import { LIGHT_LEVELS, NATIVE_BIOMES, PLANT_TYPES, type Plant } from '@/types/plant';
+import { GLOSSARY_CATEGORIES, GLOSSARY_CATEGORY_LABELS, type GlossaryEntry } from '@/types';
 import { humanize } from '@/lib/labels';
 import { useTokens } from '@/hooks/use-tokens';
+
+type BrowseMode = 'plants' | 'terms';
 
 const SUGGEST_EMAIL = 'pankernaught@gmail.com';
 const DIFFICULTIES = [1, 2, 3, 4, 5];
@@ -38,6 +43,9 @@ const SORTS: { value: BrowseSort; label: string }[] = [
 export default function BrowseScreen() {
   const { c } = useTokens();
   const plants = useMemo(() => loadPlants(), []);
+  const glossary = useMemo(() => loadGlossary(), []);
+
+  const [mode, setMode] = useState<BrowseMode>('plants');
 
   const [search, setSearch] = useState('');
   const [types, setTypes] = useState<string[]>([]);
@@ -48,11 +56,21 @@ export default function BrowseScreen() {
   const [filtersOpen, setFiltersOpen] = useState(false);
   const [sheetPlant, setSheetPlant] = useState<(typeof plants)[0] | null>(null);
 
+  // Terms mode: search + category chips → TermSheet (by slug).
+  const [termSearch, setTermSearch] = useState('');
+  const [termCats, setTermCats] = useState<string[]>([]);
+  const [termSlug, setTermSlug] = useState<string | null>(null);
+
   const results = useMemo(
     () => filterPlants(plants, { search, types, biomes, lights, difficulties, sort }),
     [plants, search, types, biomes, lights, difficulties, sort],
   );
   const activeFilters = types.length + biomes.length + lights.length + difficulties.length;
+
+  const termResults = useMemo(
+    () => filterGlossary(glossary, { search: termSearch, categories: termCats }),
+    [glossary, termSearch, termCats],
+  );
 
   function toggle<T>(list: T[], set: (v: T[]) => void, value: T) {
     set(list.includes(value) ? list.filter((x) => x !== value) : [...list, value]);
@@ -79,9 +97,30 @@ export default function BrowseScreen() {
         <View style={styles.inner}>
           <GlanceHeader
             title="Browse"
-            subtitle={`${results.length} of ${plants.length} plants`}
+            subtitle={
+              mode === 'plants'
+                ? `${results.length} of ${plants.length} plants`
+                : `${termResults.length} of ${glossary.length} terms`
+            }
           />
 
+          {/* Plants | Terms mode toggle — a glossary does not earn its own nav tab. */}
+          <View style={styles.modeToggle}>
+            <Chip label="Plants" tone="primary" selected={mode === 'plants'} onPress={() => setMode('plants')} />
+            <Chip label="Terms" tone="primary" selected={mode === 'terms'} onPress={() => setMode('terms')} />
+          </View>
+
+          {mode === 'terms' ? (
+            <TermsBrowse
+              search={termSearch}
+              onSearch={setTermSearch}
+              categories={termCats}
+              onToggleCategory={(v) => toggle(termCats, setTermCats, v)}
+              results={termResults}
+              onOpenTerm={setTermSlug}
+            />
+          ) : (
+          <>
           {/* Search */}
           <TextInput
             value={search}
@@ -170,6 +209,8 @@ export default function BrowseScreen() {
               The catalog is curator-maintained
             </Text>
           </Pressable>
+          </>
+          )}
         </View>
       </ScrollView>
 
@@ -178,6 +219,7 @@ export default function BrowseScreen() {
         onClose={() => setSheetPlant(null)}
         context="browse"
       />
+      <TermSheet slug={termSlug} onClose={() => setTermSlug(null)} />
     </Screen>
   );
 }
@@ -243,11 +285,91 @@ function PlantRow({ plant, onPress }: { plant: Plant; onPress: () => void }) {
   );
 }
 
+/** Terms mode — search + category chips over the glossary, rows open a TermSheet. */
+function TermsBrowse({
+  search,
+  onSearch,
+  categories,
+  onToggleCategory,
+  results,
+  onOpenTerm,
+}: {
+  search: string;
+  onSearch: (v: string) => void;
+  categories: string[];
+  onToggleCategory: (v: string) => void;
+  results: GlossaryEntry[];
+  onOpenTerm: (slug: string) => void;
+}) {
+  const { c } = useTokens();
+  return (
+    <>
+      <TextInput
+        value={search}
+        onChangeText={onSearch}
+        placeholder="Search terms…"
+        placeholderTextColor={c.textMuted}
+        style={[styles.search, { backgroundColor: c.surface, borderColor: c.border, color: c.text }]}
+        autoCorrect={false}
+        returnKeyType="search"
+        accessibilityLabel="Search glossary terms"
+      />
+
+      <View style={styles.chipWrap}>
+        {GLOSSARY_CATEGORIES.map((cat) => (
+          <Chip
+            key={cat}
+            label={GLOSSARY_CATEGORY_LABELS[cat]}
+            tone="sage"
+            selected={categories.includes(cat)}
+            onPress={() => onToggleCategory(cat)}
+          />
+        ))}
+      </View>
+
+      {results.length === 0 ? (
+        <Card style={styles.empty}>
+          <Text variant="subhead">No terms match</Text>
+          <Text variant="body" role="textMuted">
+            Try a different search or clear a category.
+          </Text>
+        </Card>
+      ) : (
+        <View style={styles.list}>
+          {results.map((t) => (
+            <TermRow key={t.slug} entry={t} onPress={() => onOpenTerm(t.slug)} />
+          ))}
+        </View>
+      )}
+    </>
+  );
+}
+
+function TermRow({ entry, onPress }: { entry: GlossaryEntry; onPress: () => void }) {
+  return (
+    <Pressable onPress={onPress} accessibilityRole="button" accessibilityLabel={`Define ${entry.term}`}>
+      <Card style={styles.row}>
+        <View style={styles.rowHead}>
+          <Text variant="subhead" numberOfLines={1} style={styles.termRowTitle}>
+            {entry.term}
+          </Text>
+          <Chip label={GLOSSARY_CATEGORY_LABELS[entry.category]} tone="neutral" />
+        </View>
+        <Text variant="caption" role="textMuted" numberOfLines={2}>
+          {entry.definition}
+        </Text>
+      </Card>
+    </Pressable>
+  );
+}
+
 const styles = StyleSheet.create({
   scroll: { alignItems: 'center', paddingBottom: Spacing.xxl },
   inner: { width: '100%', maxWidth: MaxContentWidth, alignSelf: 'center', gap: Spacing.md, paddingTop: Spacing.md },
   search: { borderWidth: 1, borderRadius: Radii.md, paddingHorizontal: Spacing.md, paddingVertical: Spacing.sm + 2, fontSize: 16 },
+  modeToggle: { flexDirection: 'row', gap: Spacing.sm },
   controlRow: { flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', gap: Spacing.sm, flexWrap: 'wrap' },
+  termRowTitle: { flexShrink: 1 },
   sortGroup: { flexDirection: 'row', gap: Spacing.xs, flexWrap: 'wrap' },
   filterCard: { padding: Spacing.lg, gap: Spacing.md },
   facet: { gap: Spacing.sm },

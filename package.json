@@ -57,6 +57,7 @@
     "web": "expo start --web",
     "lint": "expo lint",
     "plant-admin": "node tools/plant-admin/server.js",
+    "plants": "node tools/plants-query.mjs",
     "test": "vitest",
     "test:run": "vitest run",
     "typecheck": "tsc --noEmit"

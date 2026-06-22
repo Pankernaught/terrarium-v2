@@ -69,7 +69,7 @@ function getConflicts(candidate: Plant, selected: Plant[]): PlantConflict[] {
       })),
     );
 }
-
+let placementCounter = 0;
 export function PlantsStep({ draft, plants, update }: StepProps) {
   const { c, scheme } = useTokens();
 
@@ -180,7 +180,9 @@ export function PlantsStep({ draft, plants, update }: StepProps) {
     if (selectedSlugs.has(slug)) return;
     haptics.select();
     const nextSlugs = [...draft.plantSlugs, slug];
-    const placement = defaultPlacement(slug, draft.placements.length);
+    // Increment our unique counter so no two plants ever share an index
+    placementCounter++;
+    const placement = defaultPlacement(slug, placementCounter);
     update({ plantSlugs: nextSlugs, placements: upsertPlacement(draft.placements, placement) });
   }
 
@@ -239,7 +241,7 @@ export function PlantsStep({ draft, plants, update }: StepProps) {
         <Text
           variant="caption"
           role={survivalCritical ? 'accent' : 'textMuted'}
-          numberOfLines={2}
+          numberOfLines={3}
           style={styles.ecoVerdict}>
           {ecoMessage}
         </Text>
@@ -526,7 +528,7 @@ const styles = StyleSheet.create({
   ecoBar: { padding: Spacing.lg, gap: Spacing.sm },
   ecoHead: { flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', gap: Spacing.sm },
   emptyMeter: { height: 10, borderRadius: 5 },
-  ecoVerdict: { minHeight: 36 },
+  ecoVerdict: { minHeight: 54 },
   glow: { position: 'absolute', left: 0, right: 0, top: 0, bottom: 0, borderRadius: Radii.pill },
 
   // Filter panel

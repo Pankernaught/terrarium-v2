@@ -1,8 +1,8 @@
 /**
  * First-launch seed gate: `seedStore()` loads the validated bundle into the
- * store's reference tables with counts 92 / 16 / presets, is idempotent on re-run
- * (mirrors v1 `load_seed_data`), round-trips a record through JSON, and never
- * touches user-data tables.
+ * store's reference tables (counts derived from the loaded seed), is idempotent
+ * on re-run (mirrors v1 `load_seed_data`), round-trips a record through JSON, and
+ * never touches user-data tables.
  */
 import { eq } from 'drizzle-orm';
 import { beforeEach, describe, expect, it } from 'vitest';
@@ -20,20 +20,24 @@ beforeEach(() => {
 });
 
 describe('seedStore', () => {
-  it('loads 92 plants / 16 containers / presets into the store', async () => {
+  it('loads all plants / containers / presets into the store', async () => {
     const counts = await seedStore(db, seed);
-    expect(counts).toEqual({ plants: 92, containers: 16, presets: seed.presets.length });
+    expect(counts).toEqual({
+      plants: seed.plants.length,
+      containers: seed.containers.length,
+      presets: seed.presets.length,
+    });
 
-    expect(await db.select().from(plants)).toHaveLength(92);
-    expect(await db.select().from(containers)).toHaveLength(16);
+    expect(await db.select().from(plants)).toHaveLength(seed.plants.length);
+    expect(await db.select().from(containers)).toHaveLength(seed.containers.length);
     expect(await db.select().from(presets)).toHaveLength(seed.presets.length);
   });
 
   it('is idempotent — re-running keeps the same counts', async () => {
     await seedStore(db, seed);
     await seedStore(db, seed);
-    expect(await db.select().from(plants)).toHaveLength(92);
-    expect(await db.select().from(containers)).toHaveLength(16);
+    expect(await db.select().from(plants)).toHaveLength(seed.plants.length);
+    expect(await db.select().from(containers)).toHaveLength(seed.containers.length);
     expect(await db.select().from(presets)).toHaveLength(seed.presets.length);
   });
 
@@ -50,7 +54,7 @@ describe('seedStore', () => {
     // Re-seed with one fewer plant — the dropped slug must be pruned.
     const trimmed = { ...seed, plants: seed.plants.slice(0, -1) };
     await seedStore(db, trimmed);
-    expect(await db.select().from(plants)).toHaveLength(91);
+    expect(await db.select().from(plants)).toHaveLength(seed.plants.length - 1);
   });
 
   it('does not touch user-data tables', async () => {

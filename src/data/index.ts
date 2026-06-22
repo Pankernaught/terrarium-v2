@@ -15,11 +15,20 @@
  */
 import { z } from 'zod';
 
-import { containerSchema, plantSchema, type Container, type Plant } from '../types';
+import {
+  containerSchema,
+  glossaryEntrySchema,
+  plantSchema,
+  type Container,
+  type GlossaryEntry,
+  type Plant,
+} from '../types';
 import containersJson from './containers.json';
+import glossaryJson from './glossary.json';
 import plantsJson from './plants.json';
 import { PRESETS, presetSchema, type Preset } from './presets';
 import { isSubstrateComponentId } from './substrate-components';
+import { glossaryMarkupSlugs } from '../logic/glossary-markup';
 
 export const SEED_SCHEMA_VERSION = 1;
 
@@ -33,17 +42,19 @@ export const seedPlantSchema = plantSchema.extend({
     .default([]),
 });
 
-function versioned<T>(raw: unknown, key: 'plants' | 'containers'): T[] {
+function versioned<T>(
+  raw: unknown,
+  key: 'plants' | 'containers' | 'terms',
+  file = `${key}.json`,
+): T[] {
   const obj = raw as { schemaVersion?: number; [k: string]: unknown };
   if (obj.schemaVersion !== SEED_SCHEMA_VERSION) {
-    throw new Error(
-      `${key}.json schemaVersion ${obj.schemaVersion} != expected ${SEED_SCHEMA_VERSION}`,
-    );
+    throw new Error(`${file} schemaVersion ${obj.schemaVersion} != expected ${SEED_SCHEMA_VERSION}`);
   }
   return obj[key] as T[];
 }
 
-/** All 92 seed plants, validated. Throws (fails CI) on any malformed record. */
+/** All seed plants, validated. Throws (fails CI) on any malformed record. */
 export function loadPlants(): Plant[] {
   return z.array(seedPlantSchema).parse(versioned(plantsJson, 'plants'));
 }
@@ -56,6 +67,22 @@ export function loadContainers(): Container[] {
 /** The 3–5 onboarding presets, validated. */
 export function loadPresets(): Preset[] {
   return z.array(presetSchema).parse(PRESETS);
+}
+
+/** All glossary terms, validated. Throws (fails CI) on any malformed record. */
+export function loadGlossary(): GlossaryEntry[] {
+  return z.array(glossaryEntrySchema).parse(versioned(glossaryJson, 'terms', 'glossary.json'));
+}
+
+/**
+ * Lazily-indexed `slug → entry` lookup — the single resolver behind inline chip
+ * links, prose `[[slug]]` links, and `seeAlso` cross-links. Vocab callers compute
+ * the slug with `vocabSlug(category, value)` (see `src/types/glossary.ts`).
+ */
+let glossaryIndex: Map<string, GlossaryEntry> | null = null;
+export function lookupTerm(slug: string): GlossaryEntry | undefined {
+  glossaryIndex ??= new Map(loadGlossary().map((e) => [e.slug, e]));
+  return glossaryIndex.get(slug);
 }
 
 /** Validated seed bundle + cross-record referential-integrity check. */
@@ -78,6 +105,19 @@ export function loadSeed(): {
     for (const placement of preset.placements) {
       if (!plantSlugs.has(placement.slug)) {
         throw new Error(`preset ${preset.slug}: unknown plant ${placement.slug}`);
+      }
+    }
+  }
+
+  // Inline glossary links in care prose must resolve (ADR 0006) — a typo'd
+  // `[[slug]]` fails the build here instead of dead-linking on the device.
+  for (const plant of plants) {
+    for (const field of [plant.notes, plant.nativeContext]) {
+      if (!field) continue;
+      for (const slug of glossaryMarkupSlugs(field)) {
+        if (!lookupTerm(slug)) {
+          throw new Error(`plant ${plant.slug}: unresolved glossary link [[${slug}]]`);
+        }
       }
     }
   }
