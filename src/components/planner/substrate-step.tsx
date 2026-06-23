@@ -3,13 +3,12 @@
  *
  * Substrate depth is a direct stepper. Drainage and charcoal are **optional** layers
  * (null = off) — tapping an off row turns it on at a default depth; tapping an on
- * row opens a depth-edit sheet. The custom mix recipe is persisted to
- * `draft.substrateMix`; it does not affect the Eco score.
+ * row turns it off.
  */
 import { useEffect, useRef, useState } from 'react';
 import { Pressable, StyleSheet, View } from 'react-native';
 
-import { BottomSheet, CollapsibleCard, Chip, haptics, Meter, Text } from '@/components/ui';
+import { CollapsibleCard, Chip, haptics, Meter, Text } from '@/components/ui';
 import { Radii, Spacing } from '@/constants/theme';
 import { useTokens } from '@/hooks/use-tokens';
 import { SUBSTRATE_COMPONENTS, componentLabel } from '@/data/substrate-components';
@@ -86,13 +85,11 @@ export function SubstrateStep({ draft, plants, update }: StepProps) {
   const charcoalOn = charcoalDepth != null;
   const charcoal = charcoalDepth ?? 0;
 
-  // Shared depth-edit sheet for drainage and charcoal.
-  const [depthModal, setDepthModal] = useState<null | 'drainage' | 'charcoal'>(null);
-
   function toggleDrainage() {
     haptics.select();
     if (drainageOn) {
-      setDepthModal('drainage');
+      drainageExplicitlyOff.current = true;
+      update({ drainageDepth: null });
     } else {
       drainageExplicitlyOff.current = false;
       update({ drainageDepth: DRAINAGE_DEFAULT_CM });
@@ -101,22 +98,7 @@ export function SubstrateStep({ draft, plants, update }: StepProps) {
 
   function toggleCharcoal() {
     haptics.select();
-    if (charcoalOn) {
-      setDepthModal('charcoal');
-    } else {
-      update({ charcoalDepth: CHARCOAL_DEFAULT_CM });
-    }
-  }
-
-  function removeModalLayer() {
-    haptics.select();
-    if (depthModal === 'drainage') {
-      drainageExplicitlyOff.current = true;
-      update({ drainageDepth: null });
-    } else if (depthModal === 'charcoal') {
-      update({ charcoalDepth: null });
-    }
-    setDepthModal(null);
+    update({ charcoalDepth: charcoalOn ? null : CHARCOAL_DEFAULT_CM });
   }
 
   const [open, setOpenState] = useState({
@@ -307,39 +289,6 @@ export function SubstrateStep({ draft, plants, update }: StepProps) {
         </CollapsibleCard>
       )}
 
-      {/* Depth-edit sheet — shared for drainage and charcoal */}
-      <BottomSheet
-        visible={depthModal != null}
-        onClose={() => setDepthModal(null)}
-        title={depthModal === 'drainage' ? 'Drainage layer depth' : 'Charcoal layer depth'}>
-        <Stepper
-          c={c}
-          value={
-            depthModal === 'drainage'
-              ? (drainageDepth ?? DRAINAGE_DEFAULT_CM)
-              : (charcoalDepth ?? CHARCOAL_DEFAULT_CM)
-          }
-          max={depthModal === 'drainage' ? DRAINAGE_MAX_CM : CHARCOAL_MAX_CM}
-          step={STEP_CM}
-          unit="cm"
-          format={fmtCm}
-          decLabel="Decrease depth"
-          incLabel="Increase depth"
-          onChange={(n) => {
-            if (depthModal === 'drainage') update({ drainageDepth: n });
-            else update({ charcoalDepth: n });
-          }}
-        />
-        <Pressable
-          onPress={removeModalLayer}
-          accessibilityRole="button"
-          accessibilityLabel="Remove this layer"
-          style={[styles.removeBtn, { borderTopColor: c.border }]}>
-          <Text variant="body" style={{ color: c.accent }}>
-            Remove layer
-          </Text>
-        </Pressable>
-      </BottomSheet>
     </View>
   );
 }
@@ -534,10 +483,4 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   stepperBtnDisabled: { opacity: 0.4 },
-  removeBtn: {
-    paddingVertical: Spacing.md,
-    alignItems: 'center',
-    borderTopWidth: StyleSheet.hairlineWidth,
-    marginTop: Spacing.xs,
-  },
 });
