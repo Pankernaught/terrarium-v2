@@ -23,6 +23,7 @@ import { PlantSheet } from '@/components/plant-sheet';
 import { TermSheet } from '@/components/term-sheet';
 import { MaxContentWidth, Radii, Spacing } from '@/constants/theme';
 import { loadGlossary, loadPlants } from '@/data';
+import { copy } from '@/lib/copy';
 import { type BrowseSort, filterPlants } from '@/logic/browse-filter';
 import { filterGlossary } from '@/logic/glossary-filter';
 import { LIGHT_LEVELS, NATIVE_BIOMES, PLANT_TYPES, type Plant } from '@/types/plant';
@@ -83,8 +84,8 @@ export default function BrowseScreen() {
   }
 
   function suggestPlant() {
-    const subject = encodeURIComponent('Terrarium Planner — plant suggestion');
-    const body = encodeURIComponent('Plant (common + scientific name):\n\nWhy it belongs / source:\n');
+    const subject = encodeURIComponent(copy('browse.suggest.subject'));
+    const body = encodeURIComponent(copy('browse.suggest.body'));
     Linking.openURL(`mailto:${SUGGEST_EMAIL}?subject=${subject}&body=${body}`).catch(() => {});
   }
 
@@ -164,8 +165,8 @@ export default function BrowseScreen() {
           ListEmptyComponent={
             <EmptyState
               pose="sad"
-              title="No terms match"
-              body="Try a different search or clear a category."
+              title={copy('browse.terms.empty.title')}
+              body={copy('browse.terms.empty.body')}
             />
           }
         />
@@ -251,8 +252,8 @@ export default function BrowseScreen() {
           ListEmptyComponent={
             <EmptyState
               pose="sad"
-              title="No plants match"
-              body="Try broadening your search or clearing a filter."
+              title={copy('browse.plants.empty.title')}
+              body={copy('browse.plants.empty.body')}
             />
           }
           ListFooterComponent={

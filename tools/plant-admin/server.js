@@ -29,6 +29,7 @@ const spec = require('./field-spec');
 const ROOT = path.join(__dirname, '..', '..');
 const PLANTS_JSON = path.join(ROOT, 'src', 'data', 'plants.json');
 const GLOSSARY_JSON = path.join(ROOT, 'src', 'data', 'glossary.json');
+const COPY_JSON = path.join(ROOT, 'src', 'data', 'copy.json');
 const ASSETS_DIR = path.join(ROOT, 'assets', 'plants');
 const PLACEHOLDER_SCRIPT = path.join(ROOT, 'scripts', 'build-placeholders.mjs');
 const INDEX_HTML = path.join(__dirname, 'index.html');
@@ -258,6 +259,29 @@ function removeTerm(res, slug) {
   send(res, 200, { ok: true, count: doc.terms.length, terms: doc.terms, missing: coverageMissing(doc.terms) });
 }
 
+// --- copy.json I/O (the editable UI-prose catalog) ---------------------------
+// A flat `key → text` map. Keys are wired to code (`keyof typeof copy.json`), so
+// the tab is edit-only: you reword existing entries, never add/remove keys. Saved
+// with plain 2-space JSON — order is preserved, the blank-line grouping in the
+// authored file collapses on first save (cosmetic only).
+function readCopy() {
+  return JSON.parse(fs.readFileSync(COPY_JSON, 'utf8'));
+}
+
+function saveCopy(res, body) {
+  const entries = body && body.entries;
+  if (!entries || typeof entries !== 'object') return send(res, 400, { error: 'Missing entries' });
+
+  const doc = readCopy();
+  for (const [key, value] of Object.entries(entries)) {
+    if (!(key in doc)) return send(res, 422, { error: `Unknown copy key "${key}"` });
+    if (typeof value !== 'string') return send(res, 422, { error: `"${key}" must be a string` });
+    doc[key] = value; // in-place keeps the original key order
+  }
+  fs.writeFileSync(COPY_JSON, JSON.stringify(doc, null, 2) + '\n');
+  send(res, 200, { ok: true, copy: doc });
+}
+
 // --- router ------------------------------------------------------------------
 const server = http.createServer(async (req, res) => {
   try {
@@ -298,6 +322,11 @@ const server = http.createServer(async (req, res) => {
       const slug = decodeURIComponent(parts[2]);
       if (req.method === 'PUT') return upsertTerm(res, await readBody(req), slug);
       if (req.method === 'DELETE') return removeTerm(res, slug);
+    }
+
+    if (url.pathname === '/api/copy') {
+      if (req.method === 'GET') return send(res, 200, { copy: readCopy() });
+      if (req.method === 'PUT') return saveCopy(res, await readBody(req));
     }
 
     send(res, 404, { error: 'Not found' });

@@ -63,6 +63,7 @@ import { Card, haptics, Screen, SectionLabel, Text } from '@/components/ui';
 import { MaxContentWidth, Radii, Spacing } from '@/constants/theme';
 import { loadPlants } from '@/data';
 import { useDbState } from '@/db/provider';
+import { copy } from '@/lib/copy';
 import { useTokens } from '@/hooks/use-tokens';
 import { upsertPlacement, type Placement } from '@/logic/placement';
 
@@ -73,10 +74,10 @@ interface Step {
 }
 
 const STEPS: Step[] = [
-  { key: 'container', label: 'Container', blurb: 'Pick a shape, size, and opening — sealed, lidded, or open.' },
-  { key: 'substrate', label: 'Substrate', blurb: 'Layer drainage and substrate depths for the volume.' },
-  { key: 'plants', label: 'Plants', blurb: 'Add plants and watch your ecosystem settle into equilibrium.' },
-  { key: 'final', label: 'Final', blurb: 'Name it, review the verdict, and save.' },
+  { key: 'container', label: 'Container', blurb: copy('planner.step.container.blurb') },
+  { key: 'substrate', label: 'Substrate', blurb: copy('planner.step.substrate.blurb') },
+  { key: 'plants', label: 'Plants', blurb: copy('planner.step.plants.blurb') },
+  { key: 'final', label: 'Final', blurb: copy('planner.step.final.blurb') },
 ];
 
 // --- Header geometry --------------------------------------------------------
@@ -217,7 +218,7 @@ export default function PlannerScreen() {
   async function handleSave() {
     if (!draft || saving) return;
     if (db.status !== 'ready') {
-      Alert.alert('Not ready', 'Your library is still loading — try again in a moment.');
+      Alert.alert(copy('planner.notReady.title'), copy('planner.notReady.body'));
       return;
     }
     setSaving(true);
@@ -228,7 +229,7 @@ export default function PlannerScreen() {
       haptics.success();
       router.replace(`/build/${id}` as Href);
     } catch (err) {
-      Alert.alert("Couldn’t save", err instanceof Error ? err.message : String(err));
+      Alert.alert(copy('planner.saveFailed.title'), err instanceof Error ? err.message : String(err));
     } finally {
       // Always reset — no-op if the component already unmounted after navigation.
       setSaving(false);

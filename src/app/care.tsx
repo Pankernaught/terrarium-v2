@@ -23,6 +23,7 @@ import { MaxContentWidth, Radii, Spacing } from '@/constants/theme';
 import { loadPlants } from '@/data';
 import { type Repos, useDbState } from '@/db/provider';
 import type { Build, CareMark } from '@/db/schema';
+import { copy } from '@/lib/copy';
 import { useTokens } from '@/hooks/use-tokens';
 import {
   buildCareSchedule,
@@ -55,7 +56,7 @@ export default function CareScreen() {
     configureCareNotifications();
   }, []);
 
-  if (state.status === 'loading') return <CareMessage title="Care" body="Loading your terrariums…" />;
+  if (state.status === 'loading') return <CareMessage title="Care" body={copy('care.loading')} />;
   if (state.status === 'error') return <CareMessage title="Care" body={state.error} accent />;
   return <Care repos={state.repos} />;
 }
@@ -174,10 +175,7 @@ function Care({ repos }: { repos: Repos }) {
     // then seed the schedule as pending rows. Permission refusal leaves reminders off.
     const granted = await ensureCarePermission();
     if (!granted) {
-      Alert.alert(
-        'Reminders need permission',
-        'Allow notifications for Terrarium in Settings to get gentle care reminders.',
-      );
+      Alert.alert(copy('care.perm.title'), copy('care.perm.body'));
       return;
     }
     // Seed only the tasks the owner hasn't muted (muted ones stay off until un-muted).
@@ -264,7 +262,7 @@ function Care({ repos }: { repos: Repos }) {
     await reload();
   }
 
-  if (rows === null) return <CareMessage title="Care" body="Loading your terrariums…" />;
+  if (rows === null) return <CareMessage title="Care" body={copy('care.loading')} />;
 
   const schedulable = rows.filter((r) => r.schedule.length > 0);
 
@@ -272,19 +270,15 @@ function Care({ repos }: { repos: Repos }) {
     <Screen>
       <ScrollView contentContainerStyle={styles.scroll} showsVerticalScrollIndicator={false}>
         <View style={styles.inner}>
-          <GlanceHeader title="Care" subtitle="Gentle reminders for your terrariums" />
+          <GlanceHeader title="Care" subtitle={copy('care.subtitle')} />
 
           {plan && plan.deferredBuildCount > 0 ? <OverflowNotice plan={plan} /> : null}
 
           {schedulable.length === 0 ? (
             <EmptyState
               pose="default"
-              title="All quiet for now"
-              body={
-                rows.length > 0
-                  ? 'Add a container and at least one plant, and a custom care schedule will appear here.'
-                  : 'Save your first terrarium and custom care reminders will show up here.'
-              }
+              title={copy('care.empty.title')}
+              body={rows.length > 0 ? copy('care.empty.noBuilds') : copy('care.empty.noSchedule')}
             />
           ) : (
             schedulable.map((row) => (
@@ -311,8 +305,8 @@ function Care({ repos }: { repos: Repos }) {
 }
 
 const FALLBACK_META = {
-  title: 'Terrarium care',
-  body: 'Time to check on your terrarium.',
+  title: copy('care.notif.title'),
+  body: copy('care.notif.body'),
   intervalDays: 7,
 };
 
@@ -440,9 +434,7 @@ function CareBuildCard({
             />
           ))}
           <Text variant="caption" role="textMuted" style={styles.editorHint}>
-            {row.enabled
-              ? 'Cadence changes apply to upcoming reminders.'
-              : 'Turn reminders on to start this cycle.'}
+            {row.enabled ? copy('care.cadence.applies') : copy('care.cadence.turnOn')}
           </Text>
         </View>
       </Collapse>

@@ -40,6 +40,7 @@ import type { Build, BuildPhoto } from '@/db/schema';
 import { resolveBuildContainer } from '@/logic/containers';
 import { resolveBuildSummary } from '@/logic/export-txt';
 import { generateBuildGuide } from '@/logic/guide';
+import { copy } from '@/lib/copy';
 import { shareBuildPdf, shareBuildTxt } from '@/lib/export';
 import { scoreBuild } from '@/logic/score-build';
 import type { CompatibilityResult, Conflict } from '@/types/results';
@@ -51,7 +52,7 @@ import { useTokens } from '@/hooks/use-tokens';
 export default function BuildDetailRoute() {
   const state = useDbState();
   if (state.status === 'loading') return <DetailMessage title="Loading…" />;
-  if (state.status === 'error') return <DetailMessage title="Couldn’t open your library" body={state.error} />;
+  if (state.status === 'error') return <DetailMessage title={copy('build.libError.title')} body={state.error} />;
   return <BuildDetail repos={state.repos} />;
 }
 
@@ -132,10 +133,8 @@ function BuildDetail({ repos }: { repos: Repos }) {
           : await ImagePicker.requestMediaLibraryPermissionsAsync();
       if (!permission.granted) {
         Alert.alert(
-          source === 'camera' ? 'Camera access needed' : 'Photo access needed',
-          source === 'camera'
-            ? 'Allow camera access in Settings to take a progress photo.'
-            : 'Allow photo-library access in Settings to choose a progress photo.',
+          source === 'camera' ? copy('build.photo.cameraPermTitle') : copy('build.photo.libraryPermTitle'),
+          source === 'camera' ? copy('build.photo.cameraPermBody') : copy('build.photo.libraryPermBody'),
         );
         return;
       }
@@ -148,13 +147,13 @@ function BuildDetail({ repos }: { repos: Repos }) {
       haptics.commit();
       await reload();
     } catch (err) {
-      Alert.alert('Couldn’t add photo', err instanceof Error ? err.message : String(err));
+      Alert.alert(copy('build.photo.failedTitle'), err instanceof Error ? err.message : String(err));
     }
   }
 
-  if (load.status === 'loading') return <DetailMessage title="Loading…" />;
+  if (load.status === 'loading') return <DetailMessage title={copy('build.loading.title')} />;
   if (load.status === 'missing')
-    return <DetailMessage title="Build not found" body="This terrarium may have been deleted." />;
+    return <DetailMessage title={copy('build.notFound.title')} body={copy('build.notFound.body')} />;
 
   const { build, heroUri, photos, primaryId } = load;
   const scored = scoreBuild(build, plants);
@@ -188,7 +187,7 @@ function BuildDetail({ repos }: { repos: Repos }) {
 
   function onExport() {
     const data = resolveBuildSummary(build, plants);
-    Alert.alert('Export', `Choose a format for “${build.name}”.`, [
+    Alert.alert(copy('export.title'), copy('export.body', { name: build.name }), [
       { text: 'Text (.txt)', onPress: () => shareBuildTxt(data).catch(reportExportError) },
       { text: 'PDF', onPress: () => shareBuildPdf(data).catch(reportExportError) },
       { text: 'Cancel', style: 'cancel' },
@@ -333,7 +332,7 @@ function BuildDetail({ repos }: { repos: Repos }) {
       <ActionSheet
         visible={addSheetOpen}
         onClose={() => setAddSheetOpen(false)}
-        title="Add a progress photo"
+        title={copy('build.photo.addTitle')}
         actions={[
           { label: 'Take photo', onPress: () => addFrom('camera') },
           { label: 'Choose from library', onPress: () => addFrom('library') },
@@ -353,7 +352,7 @@ function BuildDetail({ repos }: { repos: Repos }) {
 }
 
 function reportExportError(err: unknown) {
-  Alert.alert('Export failed', err instanceof Error ? err.message : String(err));
+  Alert.alert(copy('export.failedTitle'), err instanceof Error ? err.message : String(err));
 }
 
 function subtitle(plantCount: number, containerName?: string): string {

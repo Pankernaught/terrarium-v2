@@ -52,6 +52,7 @@ import {
 } from './constants';
 import { floorAreaCm2, parseDimensionsStr } from './containers';
 import { deriveEnvelope } from './environment';
+import { copy } from '../lib/copy';
 
 /** True if the two closed intervals share any common point. */
 function rangesOverlap(minA: number, maxA: number, minB: number, maxB: number): boolean {
@@ -119,10 +120,7 @@ export function checkPair(a: Plant, b: Plant): CompatibilityResult {
     conflicts.push({
       factor: 'light',
       severity: 'incompatible',
-      message:
-        `${a.commonName} needs ${aLight} light and ${b.commonName} needs ${bLight} light — ` +
-        'direct sunlight through glass creates a greenhouse effect and will cook ' +
-        'shade-adapted plants — lethal.',
+      message: copy('compat.light.lethal', { a: a.commonName, b: b.commonName, aLight, bLight }),
       affectedPlants: [a.slug, b.slug],
     });
   } else {
@@ -138,9 +136,7 @@ export function checkPair(a: Plant, b: Plant): CompatibilityResult {
         conflicts.push({
           factor: 'light',
           severity: 'caution',
-          message:
-            `${a.commonName} prefers ${aLight} light; ${b.commonName} prefers ${bLight} — ` +
-            'they overlap only on a secondary (tolerated) light level.',
+          message: copy('compat.light.secondaryOnly', { a: a.commonName, b: b.commonName, aLight, bLight }),
           affectedPlants: [a.slug, b.slug],
           viaSecondary: true,
         });
@@ -150,9 +146,7 @@ export function checkPair(a: Plant, b: Plant): CompatibilityResult {
       conflicts.push({
         factor: 'light',
         severity: 'caution',
-        message:
-          `${a.commonName} prefers ${aLight} light; ${b.commonName} prefers ${bLight} — ` +
-          'one step apart, manageable.',
+        message: copy('compat.light.oneStep', { a: a.commonName, b: b.commonName, aLight, bLight }),
         affectedPlants: [a.slug, b.slug],
         ...annotate(viaSecondary),
       });
@@ -164,10 +158,8 @@ export function checkPair(a: Plant, b: Plant): CompatibilityResult {
       // primaries). This graduated path only fires for direct + bright-indirect,
       // a -30 caution-to-incompatible that the survival ceiling never clamps.
       const message = involvesDirect
-        ? `${a.commonName} needs ${aLight} light; ${b.commonName} needs ${bLight} — ` +
-          'light needs are two steps apart — a risky mismatch.'
-        : `${a.commonName} needs ${aLight} light but ${b.commonName} needs ${bLight} — ` +
-          'their light needs are too far apart.';
+        ? copy('compat.light.twoStepDirect', { a: a.commonName, b: b.commonName, aLight, bLight })
+        : copy('compat.light.tooFar', { a: a.commonName, b: b.commonName, aLight, bLight });
       conflicts.push({
         factor: 'light',
         severity: 'incompatible',
@@ -192,9 +184,14 @@ export function checkPair(a: Plant, b: Plant): CompatibilityResult {
     conflicts.push({
       factor: 'humidity',
       severity: 'incompatible',
-      message:
-        `${a.commonName} needs ${a.humidityPctRange[0]}–${a.humidityPctRange[1]}% humidity; ` +
-        `${b.commonName} needs ${b.humidityPctRange[0]}–${b.humidityPctRange[1]}% — humidity needs don't overlap, incompatible.`,
+      message: copy('compat.humidity.noOverlap', {
+        a: a.commonName,
+        b: b.commonName,
+        aMin: a.humidityPctRange[0],
+        aMax: a.humidityPctRange[1],
+        bMin: b.humidityPctRange[0],
+        bMax: b.humidityPctRange[1],
+      }),
       affectedPlants: [a.slug, b.slug],
     });
   }
@@ -210,9 +207,7 @@ export function checkPair(a: Plant, b: Plant): CompatibilityResult {
     conflicts.push({
       factor: 'soil_moisture',
       severity: 'incompatible',
-      message:
-        `${a.commonName} likes it ${aMoist} soil but ${b.commonName} prefers ${bMoist} — ` +
-        'in one shared substrate, one plant will struggle.',
+      message: copy('compat.moisture.survival', { a: a.commonName, b: b.commonName, aMoist, bMoist }),
       affectedPlants: [a.slug, b.slug],
     });
   } else {
@@ -227,9 +222,7 @@ export function checkPair(a: Plant, b: Plant): CompatibilityResult {
         conflicts.push({
           factor: 'soil_moisture',
           severity: 'caution',
-          message:
-            `${a.commonName} prefers ${aMoist}; ${b.commonName} prefers ${bMoist} — ` +
-            'they overlap only on a secondary (tolerated) moisture level.',
+          message: copy('compat.moisture.secondaryOnly', { a: a.commonName, b: b.commonName, aMoist, bMoist }),
           affectedPlants: [a.slug, b.slug],
           viaSecondary: true,
         });
@@ -239,9 +232,7 @@ export function checkPair(a: Plant, b: Plant): CompatibilityResult {
       conflicts.push({
         factor: 'soil_moisture',
         severity: 'caution',
-        message:
-          `${a.commonName} prefers ${aMoist}; ${b.commonName} prefers ${bMoist} — ` +
-          'one step apart, manageable with care.',
+        message: copy('compat.moisture.oneStep', { a: a.commonName, b: b.commonName, aMoist, bMoist }),
         affectedPlants: [a.slug, b.slug],
         ...annotate(viaSecondary),
       });
@@ -251,9 +242,7 @@ export function checkPair(a: Plant, b: Plant): CompatibilityResult {
       conflicts.push({
         factor: 'soil_moisture',
         severity: 'caution',
-        message:
-          `${a.commonName} prefers ${aMoist} soil but ${b.commonName} prefers ${bMoist} — ` +
-          'one plant may struggle.',
+        message: copy('compat.moisture.twoStep', { a: a.commonName, b: b.commonName, aMoist, bMoist }),
         affectedPlants: [a.slug, b.slug],
         ...annotate(viaSecondary),
       });
@@ -274,10 +263,14 @@ export function checkPair(a: Plant, b: Plant): CompatibilityResult {
     conflicts.push({
       factor: 'temperature',
       severity: 'incompatible',
-      message:
-        `${a.commonName}: ${a.tempCRange[0]}–${a.tempCRange[1]}°C; ` +
-        `${b.commonName}: ${b.tempCRange[0]}–${b.tempCRange[1]}°C — ` +
-        "their temperature ranges don't overlap, incompatible.",
+      message: copy('compat.temp.noOverlap', {
+        a: a.commonName,
+        b: b.commonName,
+        aMin: a.tempCRange[0],
+        aMax: a.tempCRange[1],
+        bMin: b.tempCRange[0],
+        bMax: b.tempCRange[1],
+      }),
       affectedPlants: [a.slug, b.slug],
     });
   }
@@ -292,10 +285,12 @@ export function checkPair(a: Plant, b: Plant): CompatibilityResult {
       conflicts.push({
         factor: 'soil_ph',
         severity: 'incompatible',
-        message:
-          `${a.commonName} needs ${a.phPreference} substrate and ${b.commonName} needs ` +
-          `${b.phPreference} — no single substrate can be both acidic and alkaline — ` +
-          'one plant will struggle regardless of care.',
+        message: copy('compat.ph.survival', {
+          a: a.commonName,
+          b: b.commonName,
+          aPh: a.phPreference,
+          bPh: b.phPreference,
+        }),
         affectedPlants: [a.slug, b.slug],
       });
     } else if (phDiff === 1) {
@@ -303,9 +298,12 @@ export function checkPair(a: Plant, b: Plant): CompatibilityResult {
       conflicts.push({
         factor: 'soil_ph',
         severity: 'caution',
-        message:
-          `${a.commonName} prefers ${a.phPreference} substrate; ${b.commonName} prefers ` +
-          `${b.phPreference} — one band apart. A near-neutral mix keeps both within tolerance.`,
+        message: copy('compat.ph.oneStep', {
+          a: a.commonName,
+          b: b.commonName,
+          aPh: a.phPreference,
+          bPh: b.phPreference,
+        }),
         affectedPlants: [a.slug, b.slug],
       });
     }
@@ -399,14 +397,14 @@ export function checkGroup(plants: Plant[], container: Container): GroupReport {
       containerFitIssues.push({
         factor: 'container_type',
         severity: 'incompatible',
-        message: `${plant.commonName} needs airflow, so it is not suitable for a closed or lidded terrarium.`,
+        message: copy('compat.container.closed', { plant: plant.commonName }),
         affectedPlants: [plant.slug],
       });
     } else if (container.opening === 'open' && !plant.openTerrariumOk) {
       containerFitIssues.push({
         factor: 'container_type',
         severity: 'caution',
-        message: `${plant.commonName} prefers humid conditions — may struggle in an open container.`,
+        message: copy('compat.container.open', { plant: plant.commonName }),
         affectedPlants: [plant.slug],
       });
     }
@@ -426,14 +424,14 @@ export function checkGroup(plants: Plant[], container: Container): GroupReport {
       containerFitIssues.push({
         factor: 'crowding',
         severity: 'incompatible',
-        message: `${plants.length} plants share only ${Math.round(floorArea)} cm² of floor — overcrowded, they'll compete for root space.`,
+        message: copy('compat.crowding.error', { count: plants.length, area: Math.round(floorArea) }),
         affectedPlants: plants.map((p) => p.slug),
       });
     } else if (areaPerPlant < CROWDING_AREA_CAUTION_CM2) {
       containerFitIssues.push({
         factor: 'crowding',
         severity: 'caution',
-        message: `${plants.length} plants share ${Math.round(floorArea)} cm² of floor — tight, monitor for overcrowding.`,
+        message: copy('compat.crowding.caution', { count: plants.length, area: Math.round(floorArea) }),
         affectedPlants: plants.map((p) => p.slug),
       });
     }
@@ -449,7 +447,7 @@ export function checkGroup(plants: Plant[], container: Container): GroupReport {
         containerFitIssues.push({
           factor: 'gas_exchange',
           severity: 'caution',
-          message: `${plant.commonName} grows fast and may deplete CO₂ quickly in this micro sealed container.`,
+          message: copy('compat.gasExchange', { plant: plant.commonName }),
           affectedPlants: [plant.slug],
         });
       }

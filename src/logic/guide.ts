@@ -14,6 +14,7 @@
  * a plain `<Text>`.
  */
 import type { Container, Plant } from '../types';
+import { copy } from '../lib/copy';
 
 /** One ordered build step (camelCase mirror of the v1 `{step, title, instruction}` dict). */
 export interface BuildStep {
@@ -100,9 +101,8 @@ export function generateBuildGuide(
 
   // 1. Container Preparation (always present)
   stepsData.push({
-    title: 'Container Preparation',
-    instruction:
-      'Clean the container with warm water (no soap) and ensure it is fully dry before starting.',
+    title: copy('guide.title.containerPrep'),
+    instruction: copy('guide.containerPrep'),
   });
 
   // 2 & 3. Drainage & Separation Layers. The build's real depth drives the line:
@@ -127,13 +127,12 @@ export function generateBuildGuide(
     }
 
     stepsData.push({
-      title: 'Drainage Layer',
-      instruction: `Add ${actualDrainageDepth} of ${drainageMaterial} to the bottom.`,
+      title: copy('guide.title.drainage'),
+      instruction: copy('guide.drainage', { depth: actualDrainageDepth, material: drainageMaterial }),
     });
     stepsData.push({
-      title: 'Separation Layer',
-      instruction:
-        'Add a thin layer of [[sphagnum|sphagnum moss]] or fine mesh over the [[drainage-layer|drainage layer]] to prevent substrate mixing.',
+      title: copy('guide.title.separation'),
+      instruction: copy('guide.separation'),
     });
   }
 
@@ -141,8 +140,8 @@ export function generateBuildGuide(
   // between the separation layer and the substrate.
   if (charcoalDepth != null && charcoalDepth > 0) {
     stepsData.push({
-      title: 'Charcoal Layer',
-      instruction: `Add ${fmtCm(charcoalDepth)} of [[horticultural-charcoal|horticultural charcoal]] over the separation layer to keep the build fresh.`,
+      title: copy('guide.title.charcoal'),
+      instruction: copy('guide.charcoal', { depth: fmtCm(charcoalDepth) }),
     });
   }
 
@@ -158,85 +157,78 @@ export function generateBuildGuide(
 
   const substrateInstruction =
     substrateMix && substrateMix.recipe
-      ? `Add ${actualSubstrateDepth} of your custom mix: ${substrateMix.recipe} — ` +
-        `${articleFor(substrateMix.character)} ${substrateMix.character} blend.`
-      : `Add ${actualSubstrateDepth} of a standard well-draining terrarium mix.`;
+      ? copy('guide.substrate.custom', {
+          depth: actualSubstrateDepth,
+          recipe: substrateMix.recipe,
+          article: articleFor(substrateMix.character),
+          character: substrateMix.character,
+        })
+      : copy('guide.substrate.standard', { depth: actualSubstrateDepth });
 
-  stepsData.push({ title: 'Substrate Layer', instruction: substrateInstruction });
+  stepsData.push({ title: copy('guide.title.substrate'), instruction: substrateInstruction });
 
   // 5. Plant Placement
   const sortedPlants = [...plants].sort((a, b) => b.maxHeightCm - a.maxHeightCm);
   const plantNames = sortedPlants.map((p) => p.commonName);
   const fastGrowers = plants.filter((p) => p.growthRate === 'fast').map((p) => p.commonName);
 
-  let plantInstr = `Plant the tallest or deepest-rooted plants first: ${plantNames.join(', ')}.`;
+  let plantInstr = copy('guide.placement', { names: plantNames.join(', ') });
   if (fastGrowers.length > 0) {
-    plantInstr += ` Note: ${fastGrowers.join(', ')} grow fast, so leave extra room around them.`;
+    plantInstr += copy('guide.placement.fast', { names: fastGrowers.join(', ') });
   }
 
-  stepsData.push({ title: 'Plant Placement', instruction: plantInstr });
+  stepsData.push({ title: copy('guide.title.placement'), instruction: plantInstr });
 
   // 6. Initial Watering
   const moistures = new Set(plants.map((p) => p.soilMoisture.primary));
   let wateringMode: string;
   if (moistures.has('wet') || moistures.has('moist')) {
-    wateringMode = 'water thoroughly';
+    wateringMode = copy('guide.watering.thorough');
   } else if (moistures.has('moderate')) {
-    wateringMode = 'water lightly';
+    wateringMode = copy('guide.watering.light');
   } else {
-    wateringMode = 'barely mist';
+    wateringMode = copy('guide.watering.mist');
   }
 
   stepsData.push({
-    title: 'Initial Watering',
-    instruction: `Based on these plants' needs, ${wateringMode} the terrarium.`,
+    title: copy('guide.title.watering'),
+    instruction: copy('guide.watering', { mode: wateringMode }),
   });
 
   // 7. Sealing / Ventilation Setup
   let ventInstr: string;
   if (container.opening === 'sealed') {
-    ventInstr =
-      'Seal the container completely and place in indirect light for 48 hours to stabilise.';
+    ventInstr = copy('guide.seal.sealed');
   } else if (container.opening === 'lidded') {
-    ventInstr =
-      'Close the lid, but crack it open briefly each day for the first week to allow gas exchange.';
+    ventInstr = copy('guide.seal.lidded');
   } else {
-    ventInstr = 'No sealing needed. Monitor [[humidity]] closely during the first week.';
+    ventInstr = copy('guide.seal.open');
   }
 
-  stepsData.push({ title: 'Sealing / Ventilation Setup', instruction: ventInstr });
+  stepsData.push({ title: copy('guide.title.sealing'), instruction: ventInstr });
 
   // 8. Light Placement — conflict-aware
   const lights = new Set(plants.map((p) => p.light.primary));
   let lightInstr: string;
   if (lights.size === 1) {
-    lightInstr = `Place in ${[...lights][0].replace('-', ' ')} light.`;
+    lightInstr = copy('guide.light.single', { light: [...lights][0].replace('-', ' ') });
   } else if (lights.has('direct') && lights.size > 1) {
     const other = new Set(lights);
     other.delete('direct');
     if (other.has('low') || other.has('medium')) {
-      lightInstr =
-        'Conflicting light needs: some plants need direct sun, others prefer low or medium light. ' +
-        'Place in [[bright-indirect|bright indirect light]] as a compromise — watch sun-lovers for [[etiolation]] ' +
-        'and shade plants for bleaching.';
+      lightInstr = copy('guide.light.conflictLowMed');
     } else {
       // direct + bright-indirect
-      lightInstr =
-        'Direct and bright-indirect light requirements conflict. Place in [[bright-indirect|bright indirect light]]. ' +
-        'Direct sun through glass can trap dangerous heat in an enclosed container.';
+      lightInstr = copy('guide.light.conflictBright');
     }
   } else if (lights.has('bright-indirect') && (lights.has('low') || lights.has('medium'))) {
-    lightInstr =
-      'Mixed light needs. Position in medium-bright indirect light — slightly further from ' +
-      'the window than optimal for the bright-indirect plants to protect low-light ones.';
+    lightInstr = copy('guide.light.mixedBright');
   } else {
     // low + medium only
-    lightInstr =
-      'Mixed low and medium light needs. A medium-low indirect light spot works well ' +
-      '— a few feet back from a bright window.';
+    lightInstr = copy('guide.light.mixedLow');
   }
 
-  stepsData.push({ title: 'Light Placement', instruction: lightInstr });
+  stepsData.push({ title: copy('guide.title.light'), instruction: lightInstr });
 
   // Attach sequential step numbers.
   return stepsData.map((s, i) => ({ step: i + 1, title: s.title, instruction: s.instruction }));

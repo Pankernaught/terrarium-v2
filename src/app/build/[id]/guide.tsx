@@ -25,6 +25,7 @@ import { GlossaryText } from '@/components/glossary-text';
 import { TermSheet } from '@/components/term-sheet';
 import { Radii, Spacing } from '@/constants/theme';
 import { useTokens } from '@/hooks/use-tokens';
+import { copy } from '@/lib/copy';
 import { loadPlants } from '@/data';
 import { componentLabel } from '@/data/substrate-components';
 import { useDbState, type Repos } from '@/db/provider';
@@ -36,9 +37,9 @@ import type { Plant } from '@/types/plant';
 
 export default function BuildGuideRoute() {
   const state = useDbState();
-  if (state.status === 'loading') return <GuideMessage title="Loading…" />;
+  if (state.status === 'loading') return <GuideMessage title={copy('build.loading.title')} />;
   if (state.status === 'error')
-    return <GuideMessage title="Couldn’t open your library" body={state.error} />;
+    return <GuideMessage title={copy('build.libError.title')} body={state.error} />;
   return <BuildGuide repos={state.repos} />;
 }
 
@@ -67,9 +68,9 @@ function BuildGuide({ repos }: { repos: Repos }) {
     };
   }, [repos, id]);
 
-  if (load.status === 'loading') return <GuideMessage title="Loading…" />;
+  if (load.status === 'loading') return <GuideMessage title={copy('build.loading.title')} />;
   if (load.status === 'missing')
-    return <GuideMessage title="Build not found" body="This terrarium may have been deleted." />;
+    return <GuideMessage title={copy('build.notFound.title')} body={copy('build.notFound.body')} />;
 
   const { build } = load;
   const container = resolveBuildContainer(build);

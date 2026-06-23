@@ -13,6 +13,7 @@ import { VIBES } from '@/components/vibes';
 import { Radii, Spacing } from '@/constants/theme';
 import { type Repos, useDbState } from '@/db/provider';
 import { backupToFile, restoreFromFile } from '@/lib/backup-io';
+import { copy } from '@/lib/copy';
 import { type ColorSchemePref, usePreferences } from '@/hooks/use-preferences';
 import { useTokens } from '@/hooks/use-tokens';
 
@@ -21,7 +22,7 @@ export default function SettingsScreen() {
   return (
     <Screen edges={{ bottom: true }}>
       <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={styles.scroll}>
-        <GlanceHeader title="Settings" subtitle="App preferences and backup" />
+        <GlanceHeader title="Settings" subtitle={copy('settings.subtitle')} />
         <AppearanceSection />
         {state.status === 'ready' ? (
           <BackupSection repos={state.repos} />
@@ -115,7 +116,7 @@ function BackupSection({ repos }: { repos: Repos }) {
     try {
       await backupToFile(repos.db);
     } catch (err) {
-      Alert.alert('Backup failed', messageOf(err));
+      Alert.alert(copy('settings.backupFailed.title'), messageOf(err));
     } finally {
       setBusy(null);
     }
@@ -123,8 +124,8 @@ function BackupSection({ repos }: { repos: Repos }) {
 
   function onRestore() {
     Alert.alert(
-      'Restore from file?',
-      "This replaces all of your current terrariums and care notes with the contents of the backup. This can’t be undone.",
+      copy('settings.restore.confirmTitle'),
+      copy('settings.restore.confirmBody'),
       [
         { text: 'Cancel', style: 'cancel' },
         { text: 'Replace', style: 'destructive', onPress: doRestore },
@@ -138,12 +139,12 @@ function BackupSection({ repos }: { repos: Repos }) {
       const result = await restoreFromFile(repos.db);
       if (result === null) return;
       Alert.alert(
-        'Restore complete',
+        copy('settings.restore.completeTitle'),
         `Restored ${result.builds} ${result.builds === 1 ? 'terrarium' : 'terrariums'}` +
           `${result.careMarks > 0 ? ` and ${result.careMarks} care notes` : ''}.`,
       );
     } catch (err) {
-      Alert.alert("Couldn't restore", messageOf(err));
+      Alert.alert(copy('settings.restoreFailed.title'), messageOf(err));
     } finally {
       setBusy(null);
     }

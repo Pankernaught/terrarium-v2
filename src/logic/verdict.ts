@@ -9,6 +9,7 @@
  */
 import type { Conflict, GroupReport } from '@/types/results';
 
+import { copy } from '../lib/copy';
 import { ecoBand, type EcoBand } from './eco';
 
 /** Collect every conflict in the report (container fit + the upper-triangle pairs). */
@@ -43,7 +44,7 @@ export function summarizeVerdict(report: GroupReport, plantCount: number): Verdi
   if (plantCount === 0) {
     return {
       band,
-      sentence: 'No plants yet — add a few and see how your ecosystem balances.',
+      sentence: copy('verdict.empty'),
       issueCount: 0,
     };
   }
@@ -55,22 +56,22 @@ export function summarizeVerdict(report: GroupReport, plantCount: number): Verdi
   if (critical.length > 0) {
     return {
       band,
-      sentence: `Needs attention — ${critical[0].message}`,
+      sentence: copy('verdict.critical', { message: critical[0].message }),
       issueCount: conflicts.length,
     };
   }
 
   if (cautions.length === 1) {
-    return { band, sentence: `Mostly healthy — ${cautions[0].message}`, issueCount: 1 };
+    return { band, sentence: copy('verdict.caution', { message: cautions[0].message }), issueCount: 1 };
   }
 
   if (cautions.length > 1) {
     return {
       band,
-      sentence: `Mostly healthy — ${cautions[0].message} (+${cautions.length - 1} more to review)`,
+      sentence: copy('verdict.cautionMore', { message: cautions[0].message, count: cautions.length - 1 }),
       issueCount: cautions.length,
     };
   }
 
-  return { band, sentence: 'A thriving ecosystem — every plant suits this setup.', issueCount: 0 };
+  return { band, sentence: copy('verdict.thriving'), issueCount: 0 };
 }

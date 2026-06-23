@@ -129,6 +129,23 @@
   .dialog p { color: var(--muted); }
   .dialog .row-btns { display: flex; gap: 10px; justify-content: flex-end; margin-top: 18px; }
   .badge { font-size: 11px; color: var(--warn); }
+  /* --- copy (UI prose) view --- */
+  #copyView { flex: 1; min-height: 0; width: 100%; box-sizing: border-box; display: flex; flex-direction: column; }
+  .copy-bar { display: flex; gap: 12px; align-items: center; padding: 12px 20px; border-bottom: 1px solid var(--line); }
+  .copy-bar input { flex: 1; max-width: 420px; }
+  .copy-dirty { color: var(--muted); font-size: 12px; margin-left: auto; }
+  .copy-body { overflow: auto; min-height: 0; padding: 8px 20px 60px; }
+  .copy-group-title {
+    font-size: 12px; text-transform: uppercase; letter-spacing: .07em; color: var(--accent);
+    margin: 22px 0 8px; padding-bottom: 5px; border-bottom: 1px solid var(--line);
+  }
+  .copy-item { padding: 9px 0; max-width: 820px; }
+  .copy-item .copy-key { font-family: ui-monospace, monospace; font-size: 12px; color: var(--muted); }
+  /* field-sizing grows the textarea with its content — no JS, no measure-timing bugs. */
+  .copy-item textarea { width: 100%; field-sizing: content; min-height: 40px; max-height: 400px; margin-top: 4px; }
+  .copy-item.changed textarea { border-color: var(--accent); }
+  .copy-slots { font-size: 11.5px; color: var(--muted); margin-top: 3px; }
+  .copy-slots code { color: var(--accent); font-size: 11px; }
   /* --- verify panel --- */
   .verify-panel {
     border-left: 1px solid var(--line); display: flex; flex-direction: column; overflow: auto; min-height: 0;
@@ -166,6 +183,7 @@
   <div class="seg" id="entityToggle">
     <button type="button" data-entity="plants" class="active">Plants</button>
     <button type="button" data-entity="terms">Terms</button>
+    <button type="button" data-entity="copy">Copy</button>
   </div>
   <span class="save-note" id="saveNote">Autosaves to <code>src/data/plants.json</code> · restart Expo to apply</span>
 </header>
@@ -186,6 +204,15 @@
     <div class="vp-empty">Select a plant to see field checks.</div>
   </aside>
 </div>
+
+<section id="copyView" style="display:none">
+  <div class="copy-bar">
+    <input type="text" id="copySearch" placeholder="Filter by key or text…" />
+    <span class="copy-dirty" id="copyDirty"></span>
+    <button class="primary" id="copySave" disabled>Save changes</button>
+  </div>
+  <div class="copy-body" id="copyBody"></div>
+</section>
 
 <datalist id="term-slugs"></datalist>
 <div id="toast"></div>
@@ -255,9 +282,12 @@ window.SPEC = SPEC;
   };
 
   const state = {
-    entity: 'plants',  // 'plants' | 'terms'
+    entity: 'plants',  // 'plants' | 'terms' | 'copy'
     plants: [],
     terms: [],
+    copy: null,        // flat key→text catalog (copy.json), loaded lazily
+    copyDirty: {},     // key→pending text, until saved
+    copySearch: '',
     termsLoaded: false,
     missing: [],       // coverage worklist (terms mode)
     mode: null,        // 'add' | 'edit'
@@ -824,14 +854,77 @@ window.SPEC = SPEC;
   }
 
   function setEntity(entity) {
-    if (entity === state.entity || !MODES[entity]) return;
+    if (entity === state.entity) return;
+    const toCopy = entity === 'copy';
+    if (!toCopy && !MODES[entity]) return;
     state.entity = entity;
     state.search = ''; state.filterValue = '';
     document.querySelectorAll('#entityToggle button').forEach((b) =>
       b.classList.toggle('active', b.getAttribute('data-entity') === entity));
+    // Copy is a flat key→text catalog, not a slug'd record — it gets its own
+    // full-width view rather than the list/form/verify record machinery.
+    document.querySelector('.layout').style.display = toCopy ? 'none' : '';
+    document.getElementById('copyView').style.display = toCopy ? 'flex' : 'none';
+    if (toCopy) { enterCopyView(); return; }
     $('#saveNote').innerHTML = cfg().saveNote;
     renderControls();
     closeForm(); // resets the form, then renders verify panel + list for the new entity
+  }
+
+  // ---- copy (UI prose) view ----
+  // Edit-only: keys are wired to code (`keyof typeof copy.json`), so you reword
+  // existing entries, never add or delete them. Loaded lazily on first open.
+  function enterCopyView() {
+    $('#saveNote').innerHTML = 'Autosaves nothing — edit text, then <b>Save changes</b> · restart Expo to apply';
+    if (state.copy) return renderCopyView();
+    $('#copyBody').innerHTML = '<div class="empty">Loading…</div>';
+    api('GET', '/api/copy').then((d) => { state.copy = d.copy; state.copyDirty = {}; renderCopyView(); })
+      .catch((e) => toast('Load failed: ' + e.message, 'bad'));
+  }
+
+  function copyGroupOf(key) { return key.split('.')[0]; }
+
+  function renderCopyView() {
+    const q = state.copySearch.trim().toLowerCase();
+    const body = $('#copyBody');
+    const keys = Object.keys(state.copy).filter((k) =>
+      !q || k.toLowerCase().includes(q) || String(state.copy[k]).toLowerCase().includes(q));
+    if (!keys.length) { body.innerHTML = '<div class="empty">No copy keys match.</div>'; return; }
+    let html = '', group = null;
+    for (const key of keys) {
+      const g = copyGroupOf(key);
+      if (g !== group) { group = g; html += `<div class="copy-group-title">${esc(g)}</div>`; }
+      const changed = key in state.copyDirty;
+      const val = changed ? state.copyDirty[key] : state.copy[key]; // keep unsaved edits across filter/tab
+      const slots = [...new Set((state.copy[key].match(/\{[a-zA-Z]+\}/g) || []))];
+      const slotHint = slots.length
+        ? `<div class="copy-slots">Keep these placeholders — the app fills them: ${slots.map((s) => `<code>${esc(s)}</code>`).join(' ')}</div>`
+        : '';
+      html += `<div class="copy-item${changed ? ' changed' : ''}" data-key="${esc(key)}">
+        <div class="copy-key">${esc(key)}</div>
+        <textarea rows="1" data-copy-key="${esc(key)}">${esc(val)}</textarea>
+        ${slotHint}</div>`;
+    }
+    body.innerHTML = html;
+    refreshCopyDirty();
+  }
+
+  function refreshCopyDirty() {
+    const n = Object.keys(state.copyDirty).length;
+    $('#copyDirty').textContent = n ? `${n} unsaved change${n === 1 ? '' : 's'}` : '';
+    $('#copySave').disabled = n === 0;
+  }
+
+  async function saveCopyChanges() {
+    const entries = {};
+    for (const k of Object.keys(state.copyDirty)) entries[k] = state.copyDirty[k];
+    if (!Object.keys(entries).length) return;
+    try {
+      const d = await api('PUT', '/api/copy', { entries });
+      state.copy = d.copy; state.copyDirty = {};
+      renderCopyView();
+      toast(`Saved ${Object.keys(entries).length} copy change${Object.keys(entries).length === 1 ? '' : 's'} · restart Expo to apply`, 'ok');
+    } catch (e) { toast(e.message || 'Save failed', 'bad'); }
   }
 
   function refreshTermDatalist() {
@@ -899,6 +992,19 @@ window.SPEC = SPEC;
     localStorage.setItem('plant-verified', JSON.stringify([...state.verified]));
     cb.closest('.row').classList.toggle('verified', e.target.checked);
   });
+
+  // Copy view: track edits as dirty (compared to the saved catalog), grow textareas.
+  $('#copyBody').addEventListener('input', (e) => {
+    const ta = e.target.closest('[data-copy-key]');
+    if (!ta) return;
+    const key = ta.getAttribute('data-copy-key');
+    if (ta.value === state.copy[key]) delete state.copyDirty[key];
+    else state.copyDirty[key] = ta.value;
+    ta.closest('.copy-item').classList.toggle('changed', key in state.copyDirty);
+    refreshCopyDirty();
+  });
+  $('#copySearch').addEventListener('input', (e) => { state.copySearch = e.target.value; renderCopyView(); });
+  $('#copySave').addEventListener('click', saveCopyChanges);
 
   renderControls();
 

@@ -20,6 +20,7 @@ import { MaxContentWidth, Radii, Spacing } from '@/constants/theme';
 import { loadPlants } from '@/data';
 import { type Repos, useDbState } from '@/db/provider';
 import type { Build } from '@/db/schema';
+import { copy } from '@/lib/copy';
 import { shareBuildPdf, shareBuildTxt } from '@/lib/export';
 import { resolveBuildSummary } from '@/logic/export-txt';
 import { scoreBuild, type ScoredBuild } from '@/logic/score-build';
@@ -109,7 +110,7 @@ function Dashboard({ repos }: { repos: Repos }) {
 
   function onExport(row: Row) {
     const data = resolveBuildSummary(row.build, plants);
-    Alert.alert('Export', `Choose a format for “${row.build.name}”.`, [
+    Alert.alert(copy('export.title'), copy('export.body', { name: row.build.name }), [
       { text: 'Text (.txt)', onPress: () => shareBuildTxt(data).catch(reportExportError) },
       { text: 'PDF', onPress: () => shareBuildPdf(data).catch(reportExportError) },
       { text: 'Cancel', style: 'cancel' },
@@ -156,8 +157,8 @@ function Dashboard({ repos }: { repos: Repos }) {
           {rows.length === 0 ? (
             <EmptyState
               pose="default"
-              title="No terrariums yet"
-              body="Press new to grow your first ecosystem"
+              title={copy('home.empty.title')}
+              body={copy('home.empty.body')}
               cta={{ label: 'New terrarium', onPress: () => router.push('/planner' as Href) }}
             />
           ) : (
@@ -216,7 +217,7 @@ function Dashboard({ repos }: { repos: Repos }) {
 }
 
 function reportExportError(err: unknown) {
-  Alert.alert('Export failed', err instanceof Error ? err.message : String(err));
+  Alert.alert(copy('export.failedTitle'), err instanceof Error ? err.message : String(err));
 }
 
 // --- Pieces -----------------------------------------------------------------
