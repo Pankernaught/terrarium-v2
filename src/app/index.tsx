@@ -12,9 +12,9 @@
  */
 import { type Href, useFocusEffect, useRouter } from 'expo-router';
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
-import { Alert, Pressable, ScrollView, StyleSheet, useWindowDimensions, View } from 'react-native';
+import { Alert, Pressable, ScrollView, StyleSheet, TextInput, useWindowDimensions, View } from 'react-native';
 
-import { ActionSheet, Card, GlanceHeader, haptics, Screen, Text } from '@/components/ui';
+import { ActionSheet, BottomSheet, Card, GlanceHeader, haptics, Screen, Text } from '@/components/ui';
 import { BuildCard } from '@/components/build-card';
 import { MaxContentWidth, Radii, Spacing } from '@/constants/theme';
 import { loadContainers, loadPlants } from '@/data';
@@ -54,6 +54,7 @@ function Dashboard({ repos }: { repos: Repos }) {
 
   const [rows, setRows] = useState<Row[] | null>(null);
   const [overflowFor, setOverflowFor] = useState<Row | null>(null);
+  const [renameFor, setRenameFor] = useState<Row | null>(null);
   // Optimistic delete: the row is gone from the grid while an undo window is open.
   const [pendingDelete, setPendingDelete] = useState<Row | null>(null);
   const deleteTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
@@ -94,6 +95,13 @@ function Dashboard({ repos }: { repos: Repos }) {
   const cardW = (avail - GRID_GAP * (cols - 1)) / cols;
 
   // --- Overflow actions ---
+  async function onRename(row: Row, name: string) {
+    await repos.builds.rename(row.build.id, name);
+    setRenameFor(null);
+    haptics.success();
+    await reload();
+  }
+
   async function onDuplicate(row: Row) {
     await repos.builds.duplicate(row.build.id, `${row.build.name} (copy)`);
     haptics.success();
@@ -176,12 +184,23 @@ function Dashboard({ repos }: { repos: Repos }) {
         actions={
           overflowFor
             ? [
+                { label: 'Rename', onPress: () => setRenameFor(overflowFor) },
                 { label: 'Duplicate', onPress: () => onDuplicate(overflowFor) },
                 { label: 'Export', onPress: () => onExport(overflowFor) },
                 { label: 'Delete', destructive: true, onPress: () => startDelete(overflowFor) },
               ]
             : []
         }
+      />
+
+      {/* Rename — a small keyboard-aware sheet (the planner is the only other place
+          a build can be named). */}
+      <RenameSheet
+        row={renameFor}
+        onClose={() => setRenameFor(null)}
+        onSave={(name) => {
+          if (renameFor) onRename(renameFor, name);
+        }}
       />
 
       {/* Undo snackbar — the SQLite delete commits only after the window closes */}
@@ -252,6 +271,59 @@ function UndoSnackbar({ label, onUndo }: { label: string; onUndo: () => void }) 
   );
 }
 
+function RenameSheet({
+  row,
+  onClose,
+  onSave,
+}: {
+  row: Row | null;
+  onClose: () => void;
+  onSave: (name: string) => void;
+}) {
+  const { c } = useTokens();
+  const [text, setText] = useState('');
+  // Seed the field with the current name whenever a different build opens (setState
+  // during render, deriving from props — the same pattern PlantSheet uses).
+  const [lastId, setLastId] = useState<string | null>(null);
+  if (row && row.build.id !== lastId) {
+    setLastId(row.build.id);
+    setText(row.build.name);
+  }
+
+  const trimmed = text.trim();
+  function commit() {
+    if (trimmed) onSave(trimmed);
+  }
+
+  return (
+    <BottomSheet visible={row != null} onClose={onClose} title="Rename terrarium">
+      <TextInput
+        value={text}
+        onChangeText={setText}
+        placeholder="Terrarium name"
+        placeholderTextColor={c.textMuted}
+        autoFocus
+        autoCapitalize="words"
+        autoCorrect={false}
+        returnKeyType="done"
+        onSubmitEditing={commit}
+        accessibilityLabel="Terrarium name"
+        style={[styles.renameInput, { backgroundColor: c.surfaceSunken, borderColor: c.border, color: c.text }]}
+      />
+      <Pressable
+        onPress={commit}
+        disabled={!trimmed}
+        accessibilityRole="button"
+        accessibilityState={{ disabled: !trimmed }}
+        style={[styles.renameSave, { backgroundColor: c.primary }, !trimmed && styles.renameSaveDisabled]}>
+        <Text variant="body" style={{ color: c.onPrimary, fontWeight: '600' }}>
+          Save
+        </Text>
+      </Pressable>
+    </BottomSheet>
+  );
+}
+
 function DashboardSkeleton() {
   const { c } = useTokens();
   const { width } = useWindowDimensions();
@@ -298,6 +370,20 @@ const styles = StyleSheet.create({
   emptyBody: { lineHeight: 22 },
   emptyCta: { alignSelf: 'flex-start', marginTop: Spacing.xs, paddingHorizontal: Spacing.lg, paddingVertical: Spacing.sm, borderRadius: Radii.md },
   newBtn: { paddingHorizontal: Spacing.md, paddingVertical: Spacing.xs + 2, borderRadius: Radii.pill },
+  renameInput: {
+    borderWidth: 1,
+    borderRadius: Radii.md,
+    paddingHorizontal: Spacing.md,
+    minHeight: 44,
+    fontSize: 16,
+  },
+  renameSave: {
+    alignItems: 'center',
+    paddingVertical: Spacing.md,
+    borderRadius: Radii.md,
+    marginTop: Spacing.xs,
+  },
+  renameSaveDisabled: { opacity: 0.4 },
   skeleton: { height: 240, borderRadius: Radii.lg, opacity: 0.6 },
   snackWrap: { position: 'absolute', left: Spacing.md, right: Spacing.md, bottom: Spacing.lg },
   snack: {

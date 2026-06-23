@@ -12,8 +12,8 @@
  * Drag-to-place itself lives in the persistent {@link PlannerPreview}; this body
  * owns selection + live compatibility read-outs.
  */
-import { useEffect, useMemo, useState } from 'react';
-import { type LayoutChangeEvent, Pressable, StyleSheet, TextInput, View } from 'react-native';
+import { memo, useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { ActivityIndicator, InteractionManager, type LayoutChangeEvent, Pressable, StyleSheet, TextInput, View } from 'react-native';
 import Animated, { Easing, useAnimatedStyle, useSharedValue, withSequence, withTiming } from 'react-native-reanimated';
 
 import { Card, Chip, EcoMeter, haptics, SectionLabel, Text } from '@/components/ui';
@@ -73,6 +73,12 @@ let placementCounter = 0;
 export function PlantsStep({ draft, plants, update }: StepProps) {
   const { c, scheme } = useTokens();
 
+  // Refs keep the stable togglePlant callback from capturing stale closures.
+  const draftRef = useRef(draft);
+  draftRef.current = draft;
+  const updateRef = useRef(update);
+  updateRef.current = update;
+
   const catalog = useMemo(() => loadPlants(), []);
   const containers = useMemo(() => loadContainers(), []);
   const container = useMemo(() => resolveBuildContainer(draft, containers), [draft, containers]);
@@ -104,6 +110,16 @@ export function PlantsStep({ draft, plants, update }: StepProps) {
 
   // --- Plant sheet state ---
   const [sheetPlant, setSheetPlant] = useState<Plant | null>(null);
+
+  // Defer the ~100-row catalog until after the step transition settles. The step
+  // mounts fresh on every tap into Plants; rendering every row synchronously on
+  // mount janks the transition. Eco bar + search + filters paint instantly; rows
+  // pop in the next interaction frame.
+  const [rowsReady, setRowsReady] = useState(false);
+  useEffect(() => {
+    const task = InteractionManager.runAfterInteractions(() => setRowsReady(true));
+    return () => task.cancel();
+  }, []);
 
   // --- Fit scores for every catalog plant ---
   const fitScores = useMemo(() => {
@@ -176,35 +192,26 @@ export function PlantsStep({ draft, plants, update }: StepProps) {
   }
 
   // --- Add / remove ---
-  function addPlant(slug: string) {
-    if (selectedSlugs.has(slug)) return;
+  // ponytail: stable via refs — memo on PlantCatalogRow skips re-renders when
+  // eco score / filters / sheet state change (only selected/fitScore props trigger).
+  const togglePlant = useCallback((slug: string) => {
+    const d = draftRef.current;
+    const upd = updateRef.current;
     haptics.select();
-    const nextSlugs = [...draft.plantSlugs, slug];
-    // Increment our unique counter so no two plants ever share an index
-    placementCounter++;
-    const placement = defaultPlacement(slug, placementCounter);
-    update({ plantSlugs: nextSlugs, placements: upsertPlacement(draft.placements, placement) });
-  }
-
-  function removePlant(slug: string) {
-    haptics.select();
-    update({
-      plantSlugs: draft.plantSlugs.filter((s) => s !== slug),
-      placements: removePlacement(draft.placements, slug),
-    });
-  }
-
-  function togglePlant(slug: string) {
-    if (selectedSlugs.has(slug)) removePlant(slug);
-    else addPlant(slug);
-  }
+    if (d.plantSlugs.includes(slug)) {
+      upd({ plantSlugs: d.plantSlugs.filter((s) => s !== slug), placements: removePlacement(d.placements, slug) });
+    } else {
+      placementCounter++;
+      upd({ plantSlugs: [...d.plantSlugs, slug], placements: upsertPlacement(d.placements, defaultPlacement(slug, placementCounter)) });
+    }
+  }, []);
 
   // The one-line readout under the meter — honest for every state: a prompt when
   // empty, the scoring diagnostic when it can't be scored yet (e.g. no container),
   // and the verdict sentence once it scores.
   const ecoMessage =
-    draft.plantSlugs.length === 0
-      ? 'Add plants to see how they balance.'
+    scored.empty
+      ? scored.verdict?.sentence ?? ''
       : scored.score != null
         ? scored.verdict?.sentence ?? ''
         : scored.diagnostic ?? 'Can’t score this build yet.';
@@ -217,7 +224,7 @@ export function PlantsStep({ draft, plants, update }: StepProps) {
       <Card style={styles.ecoBar}>
         <View style={styles.ecoHead}>
           <SectionLabel>Eco-balance</SectionLabel>
-          {scored.score != null && draft.plantSlugs.length > 0 ? (
+          {scored.score != null && !scored.empty ? (
             <Text
               variant="caption"
               style={{ color: ecoColor(scored.score, scheme), fontWeight: '600' }}>
@@ -226,7 +233,7 @@ export function PlantsStep({ draft, plants, update }: StepProps) {
           ) : null}
         </View>
 
-        {scored.score != null && draft.plantSlugs.length > 0 ? (
+        {scored.score != null && !scored.empty ? (
           <View>
             <EcoMeter score={scored.score} height={10} />
             <Animated.View
@@ -285,6 +292,9 @@ export function PlantsStep({ draft, plants, update }: StepProps) {
           onChangeText={setQuery}
           placeholder="Search plants…"
           placeholderTextColor={c.textMuted}
+          autoCorrect={false}
+          autoCapitalize="none"
+          returnKeyType="search"
           accessibilityLabel="Search plants"
           style={[styles.search, { backgroundColor: c.surfaceSunken, borderColor: c.border, color: c.text }]}
         />
@@ -338,28 +348,27 @@ export function PlantsStep({ draft, plants, update }: StepProps) {
           </View>
         ) : null}
 
-        {/* Catalog rows */}
+        {/* Catalog rows — deferred one frame past mount (see rowsReady). */}
         <View style={styles.catalogList}>
-          {filtered.map((p) => {
-            const fit = fitScores.get(p.slug) ?? null;
-            const on = selectedSlugs.has(p.slug);
-            return (
-              <PlantCatalogRow
-                key={p.slug}
-                plant={p}
-                selected={on}
-                fitScore={fit}
-                scheme={scheme}
-                onToggle={() => togglePlant(p.slug)}
-                onInfo={() => setSheetPlant(p)}
-              />
-            );
-          })}
-          {filtered.length === 0 ? (
+          {!rowsReady ? (
+            <ActivityIndicator color={c.textMuted} style={styles.catalogLoading} />
+          ) : filtered.length === 0 ? (
             <Text variant="caption" role="textMuted">
               No plants match{query.trim() ? ` "${query.trim()}"` : ' these filters'}.
             </Text>
-          ) : null}
+          ) : (
+            filtered.map((p) => (
+              <PlantCatalogRow
+                key={p.slug}
+                plant={p}
+                selected={selectedSlugs.has(p.slug)}
+                fitScore={fitScores.get(p.slug) ?? null}
+                scheme={scheme}
+                onToggle={togglePlant}
+                onInfo={setSheetPlant}
+              />
+            ))
+          )}
         </View>
       </Card>
 
@@ -394,7 +403,7 @@ const PLANT_TYPE_EMOJI: Record<string, string> = {
   foliage: '🍃',
 };
 
-function PlantCatalogRow({
+const PlantCatalogRow = memo(function PlantCatalogRow({
   plant,
   selected,
   fitScore,
@@ -406,8 +415,8 @@ function PlantCatalogRow({
   selected: boolean;
   fitScore: number | null;
   scheme: 'light' | 'dark';
-  onToggle: () => void;
-  onInfo: () => void;
+  onToggle: (slug: string) => void;
+  onInfo: (plant: Plant) => void;
 }) {
   const { c } = useTokens();
   const emoji = plant.plantType ? (PLANT_TYPE_EMOJI[plant.plantType] ?? '🌱') : '🌱';
@@ -415,7 +424,7 @@ function PlantCatalogRow({
 
   return (
     <Pressable
-      onPress={onToggle}
+      onPress={() => onToggle(plant.slug)}
       accessibilityRole="button"
       accessibilityLabel={`${selected ? 'Remove' : 'Add'} ${plant.commonName}`}>
       <View
@@ -440,7 +449,7 @@ function PlantCatalogRow({
           </View>
         ) : null}
         <Pressable
-          onPress={onInfo}
+          onPress={() => onInfo(plant)}
           hitSlop={12}
           accessibilityRole="button"
           accessibilityLabel={`Info for ${plant.commonName}`}>
@@ -449,7 +458,7 @@ function PlantCatalogRow({
       </View>
     </Pressable>
   );
-}
+});
 
 function FacetGroup({
   label,
@@ -548,6 +557,7 @@ const styles = StyleSheet.create({
 
   // Catalog rows
   catalogList: { gap: Spacing.xs },
+  catalogLoading: { paddingVertical: Spacing.xl },
   catalogRow: {
     flexDirection: 'row',
     alignItems: 'center',

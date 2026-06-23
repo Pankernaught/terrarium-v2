@@ -1,0 +1,12 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "plant-admin",
+      "runtimeExecutable": "npm",
+      "runtimeArgs": ["run", "plant-admin"],
+      "port": 4317,
+      "autoPort": true
+    }
+  ]
+}

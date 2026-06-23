@@ -13,7 +13,11 @@ import { restoreBackup } from '../backup';
 import { createBuildRepository } from '../builds-repo';
 import { createNodeDb } from '../client.node';
 import { STORE_SCHEMA_VERSION } from '../migrate';
-import { CHARCOAL_DEPTH_COLUMN, ensureCharcoalDepthColumn } from '../schema';
+import {
+  CHARCOAL_DEPTH_COLUMN,
+  ensureCareOverridesColumn,
+  ensureCharcoalDepthColumn,
+} from '../schema';
 import { makeTestDb } from './helpers';
 
 /** A `builds` table from before the charcoal layer shipped — no `charcoal_depth`. */
@@ -56,6 +60,10 @@ describe('charcoal_depth additive ALTER (pre-charcoal-layer store upgrade)', () 
 
     // Idempotent — a second open is a no-op.
     ensureCharcoalDepthColumn(buildsColumns(sqlite), (sql) => sqlite.exec(sql));
+
+    // A pre-charcoal store also predates the care-cycle editor — the real open path
+    // runs every guarded ALTER, so the repo can write every current column.
+    ensureCareOverridesColumn(buildsColumns(sqlite), (sql) => sqlite.exec(sql));
 
     const repo = createBuildRepository(createNodeDb(sqlite));
     const saved = await repo.save({ name: 'Charcoal build', plantSlugs: [], tags: [], charcoalDepth: 1.5 });

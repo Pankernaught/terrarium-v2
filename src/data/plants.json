@@ -33,8 +33,8 @@
       "openTerrariumOk": false,
       "difficulty": 2,
       "image": "plants/fittonia-albivenis.png",
-      "nativeContext": "Native to the rainforest understorey of Peru and neighbouring South America, carpeting damp, shaded forest floors.",
-      "notes": "The Nerve Plant is a great starting point for closed builds. It wilts dramatically when dry but bounces back quickly with water, so don't panic when it droops. Keep it out of direct light.",
+      "nativeContext": "Native to the rainforest understorey of Peru and neighboring South America, carpeting damp, shaded forest floors.",
+      "notes": "The Nerve Plant is a great starting point for closed builds. It wilts dramatically when dry but bounces back quickly with water, so don't panic when it droops. Keep out of direct light.",
       "sources": [
         {
           "url": "https://en.wikipedia.org/wiki/Fittonia_albivenis",
@@ -248,7 +248,7 @@
       "openTerrariumOk": false,
       "difficulty": 2,
       "image": "plants/pellionia-repens.png",
-      "notes": "Trailing Watermelon Begonia has attractive silvery-green patterned leaves and trails nicely over substrate or rocks. Despite the common name, it's not a true begonia.",
+      "notes": "Trailing Watermelon Begonia has beautiful silver-green patterned leaves and trails nicely over substrate or rocks. Despite the common name, it’s not a true begonia nor does it make watermelons.",
       "sources": [
         {
           "url": "https://en.wikipedia.org/wiki/Pellionia_repens",
@@ -266,7 +266,7 @@
       "plantType": "vine",
       "rarity": "uncommon",
       "nativeBiome": "tropical",
-      "nativeContext": "Native to the shaded, humid forests of Vietnam and neighbouring Southeast Asia, trailing across damp forest floors.",
+      "nativeContext": "Native to the shaded, humid forests of Vietnam and neighboring Southeast Asia, trailing across damp forest floors.",
       "growthHabit": "creeping"
     },
     {
@@ -302,7 +302,7 @@
       "difficulty": 3,
       "image": "plants/maranta-leuconeura.png",
       "nativeContext": "Native to the humid tropical rainforests of Brazil, on the shaded forest floor.",
-      "notes": "Expect the leaves on the Prayer Plant to fold up at night — that's normal, not a sign something's wrong. It's very sensitive to minerals like fluoride in its water. Keep an eye out for spider mites, especially if conditions run dry.",
+      "notes": "The leaves on the Prayer Plant fold up at night. In the wild, this is to preserve moisture and avoid damage. It’s very sensitive to minerals like fluoride in its water. Prone to [[spider-mites|spider mites]], especially if conditions run dry.",
       "sources": [
         {
           "url": "https://en.wikipedia.org/wiki/Maranta_leuconeura",
@@ -355,7 +355,7 @@
       "difficulty": 4,
       "image": "plants/calathea-ornata.png",
       "nativeContext": "From the warm, humid rainforests of Colombia and Ecuador, in deep shade beneath the canopy.",
-      "notes": "The Pinstripe Calathea has striking pink-striped leaves that are sensitive to drafts, cold, and mineral-heavy water. It does best in a stable sealed environment where conditions don't fluctuate.",
+      "notes": "The Pinstripe Calathea has striking pink-striped leaves that are sensitive to drafts, cold, and mineral-heavy water. It does best in a stable sealed environment where conditions don’t fluctuate.",
       "sources": [
         {
           "url": "https://en.wikipedia.org/wiki/Calathea_ornata",
@@ -406,7 +406,7 @@
       "openTerrariumOk": false,
       "difficulty": 3,
       "image": "plants/hypoestes-phyllostachya.png",
-      "notes": "Polka Dot Plant is a fast grower that needs regular tip pinching to stay compact. Growth becomes leggy in low light, and colour intensity fades without adequate indirect light.",
+      "notes": "Polka Dot Plant is a fast grower that needs regular tip [[pinching]] to stay compact. Growth becomes leggy and color fades without adequate indirect light.",
       "sources": [
         {
           "url": "https://en.wikipedia.org/wiki/Hypoestes_phyllostachya",
@@ -460,7 +460,7 @@
       "difficulty": 4,
       "image": "plants/adiantum-raddianum.png",
       "nativeContext": "From humid, shaded ravines and waterfall splash zones in tropical South America.",
-      "notes": "The Maidenhair Fern has fan-shaped fronds that are beautiful but unforgiving. If humidity goes down it will drop them without warning. It's one of the more demanding ferns, but it genuinely thrives in a sealed build where conditions stay stable.",
+      "notes": "The Maidenhair Fern has fan-shaped [[frond|fronds]] that are beautiful but unforgiving. Changes in humidity can cause frond drop with little warning. It’s one of the more demanding ferns, but it genuinely thrives in a closed build where conditions stay stable.",
       "sources": [
         {
           "url": "https://en.wikipedia.org/wiki/Adiantum_raddianum",
@@ -518,7 +518,7 @@
       "nativeBiome": "tropical",
       "rarity": "common",
       "nativeContext": "An epiphytic fern of tropical African, Asian ,and Pacific rainforests, perched in the forks of canopy trees.",
-      "notes": "Bird's Nest Fern has bold, glossy strap-shaped fronds and is more tolerant than most delicate ferns. Avoid letting water sit in the crown. It can get very large, so it's best suited to bigger builds.",
+      "notes": "Bird’s Nest Fern has bold, glossy strap-shaped [[frond|fronds]] and is more tolerant than most delicate ferns. Avoid letting water sit in the crown. It can get very large, so it’s best suited to bigger builds.",
       "sources": [
         {
           "url": "https://en.wikipedia.org/wiki/Asplenium_nidus",
@@ -567,7 +567,7 @@
       "openTerrariumOk": false,
       "difficulty": 2,
       "image": "plants/pilea-involucrata.png",
-      "notes": "Friendship Plant has deeply textured, bronze-green leaves and is easy to propagate from cuttings. It works well as a mid-layer plant in closed builds.",
+      "notes": "Friendship Plant has deeply textured, bronze-green leaves and is easy to propagate from [[node]] cuttings. It lives happily in closed builds.",
       "sources": [
         {
           "url": "https://en.wikipedia.org/wiki/Pilea_involucrata",
@@ -621,7 +621,7 @@
       "difficulty": 2,
       "image": "plants/microsorum-pteropus.png",
       "nativeContext": "An aquatic fern from the streams and riverbanks of Southeast Asia, attached to rocks and wood.",
-      "notes": "Java Fern's rhizome needs to be attached to wood or rock rather than buried in substrate. It propagates via plantlets that form on older fronds.",
+      "notes": "Java Fern’s [[rhizome]] needs to be attached to wood or rock rather than buried in substrate. It propagates via [[plantlet|plantlets]] that form on older [[frond|fronds]].",
       "sources": [
         {
           "url": "https://en.wikipedia.org/wiki/Microsorum_pteropus",
@@ -672,7 +672,7 @@
       "openTerrariumOk": false,
       "difficulty": 3,
       "image": "plants/episcia-cupreata.png",
-      "notes": "Flame Violet has metallic copper-green foliage with orange-red flowers. It needs warmth, as cold drafts cause leaf drop. It spreads via stolons.",
+      "notes": "Flame Violet has metallic copper-green foliage with orange-red flowers. It needs warmth and cold drafts can cause leaves to drop. It spreads via [[stolon|stolons]].",
       "sources": [
         {
           "url": "https://en.wikipedia.org/wiki/Episcia_cupreata",
@@ -727,7 +727,7 @@
       "difficulty": 2,
       "image": "plants/philodendron-hederaceum-mini.png",
       "toxicity": "Contains insoluble calcium oxalate crystals — chewing or ingesting causes intense mouth and throat irritation, drooling, and vomiting in pets and people. Keep away from curious pets and children.",
-      "notes": "Heartleaf Philodendron has a trailing or climbing habit that needs regular trimming to stay at a manageable scale in enclosed builds. It's very adaptable and forgiving overall.",
+      "notes": "Heartleaf Philodendron has a trailing or climbing habit that needs regular trimming to stay at a manageable scale in enclosed builds. It’s very adaptable and forgiving overall.",
       "sources": [
         {
           "url": "https://en.wikipedia.org/wiki/Philodendron_hederaceum",
@@ -780,7 +780,7 @@
       "openTerrariumOk": false,
       "difficulty": 4,
       "image": "plants/miniature-orchid.png",
-      "notes": "Miniature Orchid is a pleurothallid type that prefers good airflow even in high humidity, so don't let air go stagnant around it. It can be mounted on cork bark or fine sphagnum rather than planted in substrate.",
+      "notes": "Miniature Orchid is a pleurothallid (A large subset of the orchid family) type that prefers good airflow even in high humidity. It can be mounted on cork bark or fine sphagnum rather than planted in substrate.",
       "sources": [
         {
           "url": "https://en.wikipedia.org/wiki/Lepanthes_telipogoniflora",
@@ -834,7 +834,7 @@
       "openTerrariumOk": true,
       "difficulty": 2,
       "image": "plants/peperomia-caperata.png",
-      "notes": "Emerald Ripple Peperomia has textured, rippled leaves and semi-succulent stems that store some water. Allow the top of the substrate to dry slightly between waterings.",
+      "notes": "Emerald Ripple Peperomia has textured, rippled leaves and semi-succulent stems that store some water. Prefers the top of the substrate to dry slightly between waterings.",
       "sources": [
         {
           "url": "https://en.wikipedia.org/wiki/Peperomia_caperata",
@@ -857,7 +857,7 @@
     },
     {
       "slug": "peperomia-rotundifolia",
-      "commonName": "Trailing Jade",
+      "commonName": "Creeping Buttons",
       "scientificName": "Peperomia rotundifolia",
       "light": {
         "primary": "medium"
@@ -879,14 +879,19 @@
       "phPreference": "neutral",
       "growthRate": "slow",
       "substrateTags": [
-        "peat",
         "perlite",
+        "peat",
         "sand"
       ],
       "closedTerrariumOk": true,
       "openTerrariumOk": true,
       "difficulty": 2,
       "image": "plants/peperomia-rotundifolia.png",
+      "growthHabit": "trailing",
+      "plantType": "vine",
+      "nativeBiome": "tropical",
+      "rarity": "common",
+      "nativeContext": "From the humid forests of tropical Central and South America, trailing over mossy rocks and tree branches in dappled light.",
       "notes": "Trailing Jade has delicate stems with small round leaves that cascade nicely over edges of backgrounds or wood.",
       "sources": [
         {
@@ -901,12 +906,7 @@
           "url": "https://plants.ces.ncsu.edu/plants/peperomia-rotundifolia/",
           "label": "NCSU Extension"
         }
-      ],
-      "plantType": "vine",
-      "rarity": "common",
-      "nativeBiome": "tropical",
-      "nativeContext": "From the humid forests of tropical Central and South America, trailing over mossy rocks and tree branches in dappled light.",
-      "growthHabit": "trailing"
+      ]
     },
     {
       "slug": "cryptanthus-bivittatus",
@@ -942,7 +942,7 @@
       "difficulty": 2,
       "image": "plants/cryptanthus-bivittatus.png",
       "nativeContext": "A terrestrial bromeliad from the shaded forest floors of eastern Brazil.",
-      "notes": "Earth Star Bromeliad is a star-shaped rosette that holds water in its central cup. Don't let the cup go dry, and expect it to pup freely after flowering.",
+      "notes": "Earth Star Bromeliad is a star-shaped rosette that holds water in its central cup. [[pup|Pups]] freely after flowering.",
       "sources": [
         {
           "url": "https://en.wikipedia.org/wiki/Cryptanthus_bivittatus",
@@ -994,7 +994,7 @@
       "openTerrariumOk": true,
       "difficulty": 1,
       "image": "plants/ophiopogon-japonicus-mini.png",
-      "notes": "Dwarf Mondo Grass forms compact, grass-like tufts and is very cold-tolerant, making it one of the few viable options for cool builds. It works well as a ground-cover accent.",
+      "notes": "Dwarf Mondo Grass forms compact, grass-like tufts and is very cold-tolerant, making it one of the few viable options for cooler builds. It works well as a ground-cover accent.",
       "sources": [
         {
           "url": "https://en.wikipedia.org/wiki/Ophiopogon_japonicus",
@@ -1052,7 +1052,7 @@
       "rarity": "common",
       "toxicity": "Foliage and sap carry calcium oxalate crystals; ingestion irritates the mouth and digestive tract and the sap can irritate skin. Toxic to cats and dogs. See more information on the NCSU page.",
       "nativeContext": "From the humid tropical forests of Latin America, climbing and trailing in dappled light beneath the canopy.",
-      "notes": "Arrowhead Plant has compact juvenile growth with arrow-shaped leaves, but mature climbing growth isn't suitable for enclosed builds, so trim it frequently.",
+      "notes": "Arrowhead Plant has compact juvenile growth with arrow-shaped leaves, but mature climbing growth isn’t suitable for enclosed builds, so trim it frequently.",
       "sources": [
         {
           "url": "https://en.wikipedia.org/wiki/Syngonium_podophyllum",
@@ -1102,7 +1102,7 @@
       "difficulty": 1,
       "image": "plants/pilea-nummulariifolia.png",
       "growthHabit": "trailing",
-      "notes": "Creeping Charlie is a fast-spreading carpet plant with tiny round leaves. It's easy to control with trimming and works well as a filler for open midground areas.",
+      "notes": "Creeping Charlie is a fast-spreading carpet plant with tiny round leaves. It’s easy to control with trimming.",
       "sources": [
         {
           "url": "https://en.wikipedia.org/wiki/Pilea_nummulariifolia",
@@ -1154,7 +1154,7 @@
       "difficulty": 3,
       "image": "plants/begonia-rex.png",
       "toxicity": "Begonias contain soluble calcium oxalates, most concentrated in the tubers; ingestion can cause mouth irritation, drooling, and vomiting in cats and dogs.",
-      "notes": "Rex Begonia is grown for its metallic, patterned foliage and needs bright indirect light to stay looking that way. High humidity is essential, but water sitting on the leaves causes botrytis, so keep the leaves dry.",
+      "notes": "Rex Begonia is grown for its metallic, patterned foliage. Without enough bright indirect light, it can lose the metallic look. High humidity is essential, but water sitting on the leaves causes [[botrytis]], so keep the leaves dry.",
       "sources": [
         {
           "url": "https://en.wikipedia.org/wiki/Begonia_rex-cultorum",
@@ -1209,7 +1209,7 @@
       "difficulty": 1,
       "image": "plants/haworthia-attenuata.png",
       "nativeContext": "From shaded, rocky ground in the Eastern Cape of South Africa, often sheltered under shrubs.",
-      "notes": "Zebra Haworthia tolerates low light better than most succulents and has distinctive white warty stripes on its leaves. It prefers bright indirect light over direct sun, so windows without afternoon sun are ideal.",
+      "notes": "Zebra Haworthia prefers bright indirect light and tolerates low light better than most succulents, but direct sun can scorch the leaves. It has distinctive white warty stripes on its leaves.",
       "sources": [
         {
           "url": "https://en.wikipedia.org/wiki/Haworthia_attenuata",
@@ -1263,7 +1263,7 @@
       "difficulty": 1,
       "image": "plants/echeveria-elegans.png",
       "nativeContext": "From semi-arid rocky outcrops in the highlands of Mexico, in bright sun and fast-draining ground.",
-      "notes": "Mexican Snowball is a classic rosette succulent that needs bright direct sun to maintain its compact form. It etiolates quickly in shade and pups prolifically.",
+      "notes": "Mexican Snowball is a classic rosette succulent. It needs bright direct sun to maintain its compact form, and will grow leggy without enough light. It [[pup|pups]] prolifically.",
       "sources": [
         {
           "url": "https://en.wikipedia.org/wiki/Echeveria_elegans",
@@ -1334,7 +1334,7 @@
       "plantType": "succulent",
       "rarity": "common",
       "nativeBiome": "subtropical",
-      "nativeContext": "Native to rocky hillsides in Mexico, where its plump, coloured leaves store water through dry seasons.",
+      "nativeContext": "Native to rocky hillsides in Mexico, where its plump, colored leaves store water through dry seasons.",
       "growthHabit": "trailing"
     },
     {
@@ -1370,7 +1370,7 @@
       "difficulty": 1,
       "image": "plants/crassula-ovata-mini.png",
       "toxicity": "Jade is toxic to cats and dogs; ingestion can cause vomiting, lethargy, and incoordination. Keep away from pets.",
-      "notes": "Mini Jade Plant is a dwarf jade that stays compact for years. Water only when completely dry. It's a good choice for rock-garden style open terrariums.",
+      "notes": "Mini Jade Plant is a dwarf jade that stays compact for years. Water only when completely dry. It’s a good choice for rock-garden style open terrariums.",
       "sources": [
         {
           "url": "https://en.wikipedia.org/wiki/Crassula_ovata",
@@ -1428,7 +1428,7 @@
       "nativeBiome": "temperate",
       "rarity": "common",
       "nativeContext": "Native to the forested foothills of the Himalayas in Yunnan, China.",
-      "notes": "Chinese Money Plant has distinctive round, pancake-shaped leaves and prefers cooler temperatures than most tropical species. Rotate it regularly for even growth, and expect it to pup freely at the base.",
+      "notes": "Chinese Money Plant has distinctive round, pancake-shaped leaves and prefers cooler temperatures than most tropical species. Rotate it regularly for even growth, and expect it to [[pup]] freely at the base.",
       "sources": [
         {
           "url": "https://en.wikipedia.org/wiki/Pilea_peperomioides",
@@ -1476,8 +1476,13 @@
       "openTerrariumOk": true,
       "difficulty": 1,
       "image": "plants/tradescantia-fluminensis.png",
+      "growthHabit": "trailing",
+      "plantType": "vine",
+      "nativeBiome": "subtropical",
+      "rarity": "common",
       "toxicity": "The sap causes contact dermatitis in pets and can irritate sensitive skin in people; ingestion may cause mild digestive upset. Listed toxic to cats and dogs.",
-      "notes": "Wandering Dude is a very fast-growing trailing plant that can overwhelm smaller companions, so trim it frequently. Purple-leaf varieties need brighter light to retain their colour.",
+      "nativeContext": "Native to the subtropical forests of southeastern South America, carpeting the ground in damp, shaded conditions.",
+      "notes": "Wandering Dude is a very fast-growing trailing plant that can overwhelm smaller companions, so trim it frequently. (You know the type.) Purple-leaf varieties need brighter light to retain their color.",
       "sources": [
         {
           "url": "https://en.wikipedia.org/wiki/Tradescantia_fluminensis",
@@ -1491,12 +1496,7 @@
           "url": "https://plants.ces.ncsu.edu/plants/tradescantia-fluminensis/",
           "label": "NCSU Extension"
         }
-      ],
-      "plantType": "vine",
-      "rarity": "common",
-      "nativeBiome": "subtropical",
-      "nativeContext": "Native to the subtropical forests of southeastern South America, carpeting the ground in damp, shaded conditions.",
-      "growthHabit": "trailing"
+      ]
     },
     {
       "slug": "leucobryum-glaucum",
@@ -1581,7 +1581,7 @@
       "openTerrariumOk": false,
       "difficulty": 2,
       "image": "plants/fissidens-fontanus.png",
-      "notes": "Pocket Moss is a feathery aquatic moss that grows well on damp wood or rocks. It's a good choice for miniature sealed setups.",
+      "notes": "Pocket Moss is a feathery aquatic moss that grows well on damp wood or rocks. It’s a good choice for miniature sealed setups.",
       "sources": [
         {
           "url": "https://en.wikipedia.org/wiki/Fissidens_fontanus",
@@ -1635,7 +1635,7 @@
       "openTerrariumOk": true,
       "difficulty": 2,
       "image": "plants/davallia-fejeensis.png",
-      "notes": "Rabbit's Foot Fern has furry surface rhizomes that resemble animal feet. It thrives in both closed and well-ventilated open terrariums.",
+      "notes": "Rabbit’s Foot Fern has furry surface [[rhizome|rhizomes]] that resemble animal feet -- It’s important not to trim these! It thrives in both closed and well-ventilated open terrariums.",
       "sources": [
         {
           "url": "https://en.wikipedia.org/wiki/Davallia_fejeensis",
@@ -1688,7 +1688,7 @@
       "openTerrariumOk": false,
       "difficulty": 3,
       "image": "plants/asplenium-bulbiferum.png",
-      "notes": "Mother Spleenwort is a graceful fern that grows miniature plantlets directly on its fronds. It prefers stable, highly humid closed systems.",
+      "notes": "Mother Spleenwort is a graceful fern that grows miniature plantlets directly on its [[frond|fronds]]. It prefers stable, highly humid closed systems.",
       "sources": [
         {
           "url": "https://en.wikipedia.org/wiki/Asplenium_bulbiferum",
@@ -1801,7 +1801,7 @@
       "nativeBiome": "tropical",
       "rarity": "common",
       "nativeContext": "Native to the tropical forests of Central America and the Caribbean, growing in shaded, moist understorey.",
-      "notes": "Baby Rubber Plant has thick, glossy leaves that store moisture and prefers some airflow. It's a durable choice for larger open terrariums, and closed ones should be ventilated regularly.",
+      "notes": "Baby Rubber Plant has thick, glossy leaves that store moisture and prefers some airflow. It’s a durable choice for larger open terrariums, and closed ones should be ventilated regularly.",
       "sources": [
         {
           "url": "https://en.wikipedia.org/wiki/Peperomia_obtusifolia",
@@ -1904,7 +1904,7 @@
       "nativeBiome": "tropical",
       "rarity": "uncommon",
       "nativeContext": "A slow-growing aquatic aroid from the shaded streams and rivers of West and Central Africa, anchored to rocks and submerged wood.",
-      "notes": "Anubias Petite is an extremely robust miniature aquatic plant that thrives in waterlogged, hyper-humid conditions, especially on wood or hardscape inside tiny jars. Covering the rhizome will cause rot.",
+      "notes": "Anubias Petite is an extremely robust miniature aquatic plant that thrives in waterlogged, hyper-humid conditions, especially on wood or hardscape inside tiny jars. Covering the [[rhizome]] will cause rot.",
       "sources": [
         {
           "url": "https://en.wikipedia.org/wiki/Anubias_barteri_var._nana",
@@ -1953,7 +1953,7 @@
       "openTerrariumOk": false,
       "difficulty": 2,
       "image": "plants/hydrocotyle-tripartita.png",
-      "notes": "Dwarf Pennywort produces small clover-like leaves on fast-growing creeping runners. It forms a dense green carpet if trimmed regularly.",
+      "notes": "Dwarf Pennywort produces small clover-like leaves on fast-growing creeping [[stolon|runners]]. It forms a dense green carpet if trimmed regularly.",
       "sources": [
         {
           "url": "https://en.wikipedia.org/wiki/Hydrocotyle_tripartita",
@@ -2165,7 +2165,7 @@
       "openTerrariumOk": false,
       "difficulty": 1,
       "image": "plants/vesicularia-dubyana.png",
-      "notes": "This Java Moss grows in triangular, fern-like branch structures resembling a pine tree. It's highly forgiving and well suited to miniature setups.",
+      "notes": "This Java Moss grows in triangular, fern-like branch structures resembling a pine tree. It’s highly forgiving and well suited to miniature setups.",
       "sources": [
         {
           "url": "https://en.wikipedia.org/wiki/Vesicularia_dubyana",
@@ -2210,7 +2210,7 @@
       "openTerrariumOk": false,
       "difficulty": 2,
       "image": "plants/soleirolia-soleirolii-minor.png",
-      "notes": "Miniature Baby Tears is even smaller and more compact than standard Baby Tears. It forms an ultra-dense, bright green carpet.",
+      "notes": "Miniature Baby Tears is a very sad name (Who is making miniature babies cry?) and it is even smaller and more compact than standard Baby Tears. It forms an ultra-dense, bright green carpet.",
       "sources": [
         {
           "url": "https://en.wikipedia.org/wiki/Soleirolia_soleirolii",
@@ -2265,7 +2265,7 @@
       "difficulty": 2,
       "image": "plants/rhipsalis-baccifera.png",
       "nativeContext": "An epiphytic jungle cactus of tropical American rainforests, dangling from tree branches.",
-      "notes": "Mistletoe Cactus is an epiphytic jungle cactus that prefers indirect light rather than direct sun. It tolerates well-monitored closed terrariums better than most cacti.",
+      "notes": "Mistletoe Cactus is an epiphytic jungle cactus that prefers indirect light rather than direct sun. It tolerates well-monitored closed terrariums better than most cacti with occasional ventilation and good drainage.",
       "sources": [
         {
           "url": "https://en.wikipedia.org/wiki/Rhipsalis_baccifera",
@@ -2322,7 +2322,7 @@
       "plantType": "carnivorous",
       "nativeBiome": "subtropical",
       "nativeContext": "From the winter-rainfall fynbos of South Africa's Western Cape, in permanently damp, nutrient-poor seeps.",
-      "notes": "Cape Sundew is a forgiving beginner carnivore, but it must only receive rain or distilled water as minerals are lethal to it. It wants bright light and airflow, as the sticky dew drops in stale air.",
+      "notes": "Cape Sundew is a forgiving beginner [[carnivore]], but it must only receive rain or distilled water as minerals are lethal to it. It wants bright light and airflow, as the sticky dew drops in stale air.",
       "sources": [
         {
           "url": "https://en.wikipedia.org/wiki/Drosera_capensis",
@@ -2375,7 +2375,7 @@
       "plantType": "carnivorous",
       "nativeBiome": "tropical",
       "nativeContext": "A highland pitcher plant endemic to the Philippines, on mossy mountain slopes in cool, humid cloud forest.",
-      "notes": "Tropical Pitcher Plant is a tolerant highland Nepenthes that pitchers well in humid enclosures. Never let its airy, chunky mix stay soggy, and use distilled water only.",
+      "notes": "Tropical Pitcher Plant is a tolerant highland Nepenthes that pitchers well in humid enclosures. It should have an airy, chunky mix and should never stay soggy. Minerals can be harmful, so use distilled water only.",
       "sources": [
         {
           "url": "https://en.wikipedia.org/wiki/Nepenthes_ventricosa",
@@ -2428,7 +2428,7 @@
       "plantType": "carnivorous",
       "nativeBiome": "montane",
       "nativeContext": "Native to rocky, seasonally dry slopes in the mountains of Mexico and Central America.",
-      "notes": "Mexican Butterwort uses its sticky leaves to catch gnats and prefers a mineral, near-neutral mix, which is unusual for a carnivore. It has a drier winter succulent phase, so ease off watering during that time.",
+      "notes": "Mexican Butterwort uses its sticky leaves to catch [[fungus-gnats|gnats]] and prefers a mineral, near-neutral mix, which is unusual for a [[carnivore]]. It has a drier winter succulent phase, so ease off watering during that time.",
       "sources": [
         {
           "url": "https://en.wikipedia.org/wiki/Pinguicula_moranensis",
@@ -2482,7 +2482,7 @@
       "growthHabit": "upright",
       "plantType": "fern",
       "nativeBiome": "tropical",
-      "notes": "Lemon Button Fern has compact, lemon-scented button fronds and is one of the easiest ferns for both open and closed setups. Keep it evenly moist.",
+      "notes": "Lemon Button Fern has compact, lemon-scented button [[frond|fronds]] and is one of the easiest ferns for both open and closed setups. Keep it evenly moist.",
       "sources": [
         {
           "url": "https://en.wikipedia.org/wiki/Nephrolepis_cordifolia",
@@ -2534,7 +2534,7 @@
       "growthHabit": "upright",
       "plantType": "fern",
       "nativeBiome": "subtropical",
-      "notes": "Silver Lace Fern is a variegated cretan brake fern that tolerates a touch of lime, so a neutral mix works fine. Its airy fronds suit medium-sized planted terraria.",
+      "notes": "Silver Lace Fern is a variegated cretan brake fern. Its airy [[frond|fronds]] suit medium-sized planted terraria.",
       "sources": [
         {
           "url": "https://en.wikipedia.org/wiki/Pteris_cretica",
@@ -2588,7 +2588,7 @@
       "growthHabit": "upright",
       "plantType": "fern",
       "nativeBiome": "tropical",
-      "notes": "Crocodile Fern has distinctive puckered, crocodile-skin fronds. It's an epiphyte at heart and loves humidity, but the roots should never sit in waterlogged substrate.",
+      "notes": "Crocodile Fern has distinctive puckered, crocodile-skin [[frond|fronds]]. It’s an epiphyte at heart and loves humidity, but the roots should never sit in waterlogged substrate.",
       "sources": [
         {
           "url": "https://en.wikipedia.org/wiki/Microsorum_musifolium",
@@ -2641,7 +2641,7 @@
       "growthHabit": "creeping",
       "plantType": "fern-ally",
       "nativeBiome": "tropical",
-      "notes": "Golden Clubmoss is a chartreuse carpeting spikemoss that needs constant humidity and crisps quickly in open air. It works well as a foreground ground cover in sealed jars.",
+      "notes": "Golden Clubmoss is a carpeting spikemoss that needs constant humidity and crisps quickly in open air. It works well as ground cover in sealed jars.",
       "sources": [
         {
           "url": "https://en.wikipedia.org/wiki/Selaginella_kraussiana",
@@ -2804,7 +2804,7 @@
       "nativeBiome": "tropical",
       "toxicity": "An aroid containing calcium oxalate crystals; ingestion irritates the mouth and digestive tract. Toxic to cats and dogs.",
       "nativeContext": "From the rainforests of southern Thailand and Malaysia, climbing tree trunks toward the light.",
-      "notes": "Mini Monstera is a fast-growing fenestrated climber that needs a moss pole in larger open terraria, or it will sprawl. It's too vigorous for small sealed jars.",
+      "notes": "Mini Monstera is a fast-growing fenestrated climber that needs climbing support in larger open terraria to avoid sprawling. It’s too vigorous for small sealed jars.",
       "sources": [
         {
           "url": "https://en.wikipedia.org/wiki/Rhaphidophora_tetrasperma",
@@ -2915,7 +2915,7 @@
       "nativeBiome": "tropical",
       "toxicity": "Peace lily contains insoluble calcium oxalate crystals; ingestion irritates the mouth and throat and causes drooling and vomiting. Toxic to cats and dogs.",
       "nativeContext": "Native to the humid rainforest floor of Central and South America.",
-      "notes": "Peace Lily is low-light tolerant and acts as a useful humidity gauge, drooping visibly when conditions run dry. A compact specimen suits medium terraria but should be removed once it outgrows the space.",
+      "notes": "Peace Lily is low-light tolerant and droops visibly when conditions run dry. A compact specimen suits medium terraria but may need to be removed once it outgrows the space.",
       "sources": [
         {
           "url": "https://en.wikipedia.org/wiki/Spathiphyllum_wallisii",
@@ -2969,7 +2969,7 @@
       "nativeBiome": "montane",
       "toxicity": "Begonias contain soluble calcium oxalates, most concentrated in the tubers; ingestion can cause mouth irritation, drooling, and vomiting in cats and dogs.",
       "nativeContext": "From the dim understorey of Malaysian montane rainforest, where its leaves shimmer blue in low light.",
-      "notes": "Peacock Begonia has iridescent blue leaves caused by structural colour that only develops in low light. It needs sealed humidity and shade to maintain the shimmer.",
+      "notes": "Peacock Begonia has iridescent blue leaves caused by structural color that only develops in low light. It needs sealed humidity and shade to maintain the shimmer.",
       "sources": [
         {
           "url": "https://en.wikipedia.org/wiki/Begonia_pavonina",
@@ -3021,7 +3021,7 @@
       "plantType": "begonia",
       "nativeBiome": "tropical",
       "toxicity": "Begonias contain soluble calcium oxalates, most concentrated in the tubers; ingestion can cause mouth irritation, drooling, and vomiting in cats and dogs.",
-      "notes": "Polka Dot Begonia has silver-spotted angel-wing leaves that prefer airflow over a fully sealed lid, as poor ventilation promotes mildew. It works best as a centrepiece in an open terrarium.",
+      "notes": "Polka Dot Begonia has silver-spotted wing-like leaves that prefer airflow over a fully sealed lid since it’s prone to mildew.",
       "sources": [
         {
           "url": "https://en.wikipedia.org/wiki/Begonia_maculata",
@@ -3074,7 +3074,7 @@
       "growthHabit": "trailing",
       "plantType": "foliage",
       "nativeBiome": "tropical",
-      "notes": "Lipstick Plant is an epiphytic trailer with tubular red blooms. It works best cascading from the rim of an open container in an airy epiphyte mix.",
+      "notes": "Lipstick Plant is an epiphytic trailer with tubular red blooms. It works best in an airy epiphyte mix.",
       "sources": [
         {
           "url": "https://en.wikipedia.org/wiki/Aeschynanthus_radicans",
@@ -3181,7 +3181,7 @@
       "nativeBiome": "arid",
       "toxicity": "String of pearls is toxic if ingested — causing drooling, vomiting, and lethargy in pets — and the sap can irritate skin. Mildly toxic to people.",
       "nativeContext": "Native to the dry scrublands of south-western Africa, trailing over rock in the shade of larger plants.",
-      "notes": "String of Pearls is a bead-like trailing succulent for the edge of an open dish. It cannot handle humidity or wet feet, so keep it in an open container with gritty substrate that dries between soaks.",
+      "notes": "String of Pearls is a bead-like trailing succulent for the edge of an open dish. It cannot handle humidity or [[wet-feet|wet feet]], so keep it in an open container with gritty substrate that dries between soaks.",
       "sources": [
         {
           "url": "https://en.wikipedia.org/wiki/Curio_rowleyanus",
@@ -3233,8 +3233,9 @@
       "growthHabit": "mounding",
       "plantType": "succulent",
       "nativeBiome": "arid",
+      "rarity": "common",
       "nativeContext": "From the arid gravel plains of southern Africa, mimicking surrounding stones to escape grazing.",
-      "notes": "Living Stones are mimicry succulents shaped and patterned to look like the pebbles they grow among. They need direct sun, a mineral alkaline grit mix, and essentially no water through winter. Never grow them in a closed container; any trapped humidity will rot them.",
+      "notes": "Living Stones are mimicry succulents shaped and patterned to look like the pebbles they grow among. (They have committed to this bit for roughly 37 million years.) They need direct sun, a mineral alkaline grit mix, and essentially no water through winter. Never grow them in a closed container; any trapped humidity will rot them.",
       "sources": [
         {
           "url": "https://en.wikipedia.org/wiki/Lithops",
@@ -3248,8 +3249,7 @@
           "url": "https://plants.ces.ncsu.edu/plants/lithops/",
           "label": "NCSU Extension"
         }
-      ],
-      "rarity": "common"
+      ]
     },
     {
       "slug": "mammillaria-gracilis",
@@ -3286,8 +3286,9 @@
       "growthHabit": "mounding",
       "plantType": "succulent",
       "nativeBiome": "arid",
+      "rarity": "common",
       "nativeContext": "Native to arid limestone hills in central Mexico.",
-      "notes": "Thimble Cactus is a clustering cactus that throws offsets constantly — they detach at the slightest touch and root easily wherever they land. It needs bright direct sun and a sharp, alkaline-leaning grit mix. Never grow it in a closed container; trapped humidity will cause rot with near certainty.",
+      "notes": "Thimble Cactus is a clustering cactus that throws [[offset|offsets]] constantly — they detach at the slightest touch and root easily wherever they land. (It is, reproductively speaking, extremely optimistic.) It needs bright direct sun and a sharp, [[alkaline]]-leaning grit mix. Never grow it in a closed container; trapped humidity will cause rot.",
       "sources": [
         {
           "url": "https://en.wikipedia.org/wiki/Mammillaria_gracilis",
@@ -3301,8 +3302,7 @@
           "url": "https://plants.ces.ncsu.edu/plants/mammillaria-gracilis/",
           "label": "NCSU Extension"
         }
-      ],
-      "rarity": "common"
+      ]
     },
     {
       "slug": "sedum-morganianum",
@@ -3340,7 +3340,7 @@
       "plantType": "succulent",
       "nativeBiome": "arid",
       "nativeContext": "From shaded cliffs in southern Mexico, where its stems trail down rock faces.",
-      "notes": "Burro's Tail trails long, dense ropes of plump blue-green leaves that detach at the slightest touch. If you brush the stems while positioning it, you'll lose a handful of leaves without trying. It needs an open container, a fast-draining dry substrate, and plenty of light.",
+      "notes": "Burro’s Tail trails long, dense ropes of plump blue-green leaves that detach at the slightest touch. If you brush the stems while positioning it, you’ll lose a handful of leaves without trying. It needs an open container, a fast-draining dry substrate, and plenty of light.",
       "sources": [
         {
           "url": "https://en.wikipedia.org/wiki/Sedum_morganianum",
@@ -3396,7 +3396,7 @@
       "nativeBiome": "subtropical",
       "toxicity": "Ficus sap (a milky latex) can irritate skin and the mouth; ingestion may cause mild digestive upset. Toxic to cats and dogs.",
       "nativeContext": "From the forests and rocky slopes of East Asia, climbing tree trunks and walls.",
-      "notes": "Creeping Fig is a tiny-leaved, self-clinging vine that carpets any surface it contacts — glass, cork, stone, substrate, other plants. In a closed tank, it will blanket everything in a matter of months without regular pinching. It's one of the easiest backgrounds to establish, but plan to manage it actively.",
+      "notes": "Creeping Fig is a tiny-leaved, self-clinging vine that carpets any surface it contacts — glass, cork, stone, substrate, other plants. In a closed tank, it will blanket everything in a matter of months without regular [[pinching]] or trimming. It’s one of the easiest backgrounds to establish, but plan to manage it actively.",
       "sources": [
         {
           "url": "https://en.wikipedia.org/wiki/Ficus_pumila",
@@ -3448,7 +3448,7 @@
       "growthHabit": "creeping",
       "plantType": "ground-cover",
       "nativeBiome": "temperate",
-      "notes": "Strawberry Begonia is neither strawberry nor begonia, but a hardy saxifrage rosette that spreads by throwing small plantlets on long runners. It prefers cooler temperatures and tolerates both open and lidded setups, which makes it unusually flexible among terrarium plants.",
+      "notes": "Strawberry Begonia is neither strawberry nor begonia (an identity crisis decades in the making), but a hardy [[saxifrage]] rosette that spreads by throwing small plantlets on long runners. It prefers cooler temperatures and tolerates both open and lidded setups, which makes it unusually flexible among terrarium plants.",
       "sources": [
         {
           "url": "https://en.wikipedia.org/wiki/Saxifraga_stolonifera",
@@ -3464,7 +3464,7 @@
         }
       ],
       "rarity": "common",
-      "nativeContext": "From the cool, shaded forest floors of China and Japan, sending out long runners across mossy ground."
+      "nativeContext": "From the cool, shaded forest floors of China and Japan, sending out long [[stolon|runners]] across mossy ground."
     },
     {
       "slug": "pilea-cadierei",
@@ -3502,7 +3502,7 @@
       "nativeBiome": "tropical",
       "rarity": "common",
       "nativeContext": "Native to the southern Chinese provinces of Guizhou and Yunnan, as well as Vietnam.",
-      "notes": "Aluminum Plant has silver-splashed, quilted leaves and grows quickly into a full, bushy shape. Regular tip-pinching keeps it dense rather than leggy. It does better with airflow than under a sealed lid, so a vented enclosure or open container suits it better than a fully closed build.",
+      "notes": "Aluminum Plant has silver-splashed, quilted leaves and grows quickly into a full, bushy shape. Regular [[pinching]] keeps it dense rather than leggy. It does better with airflow than under a sealed lid, so a vented enclosure or open container suits it better than a fully closed build.",
       "sources": [
         {
           "url": "https://en.wikipedia.org/wiki/Pilea_cadierei",
@@ -3556,7 +3556,7 @@
       "rarity": "common",
       "toxicity": "The sap causes contact dermatitis in pets and can irritate sensitive skin in people; ingestion may cause mild digestive upset. Listed toxic to cats and dogs.",
       "nativeContext": "Native to the humid tropical forests of Mexico and Central America, trailing across the shaded forest floor.",
-      "notes": "Inch Plant is a fast-growing purple-striped trailer that can provide ground coverage in open terrariums within weeks. It gets leggy fast — bare stems with a tuft of leaves at the tips — and benefits from being cut back hard when that happens.",
+      "notes": "Inch Plant is a fast-growing purple-striped trailer that can provide ground coverage in open terrariums within weeks. It gets leggy fast — bare stems with a tuft of leaves at the tips — and benefits from being cut back hard when that happens. Cuttings will propagate easily!",
       "sources": [
         {
           "url": "https://en.wikipedia.org/wiki/Tradescantia_zebrina",
@@ -3610,7 +3610,7 @@
       "difficulty": 4,
       "image": "plants/macodes-petola.png",
       "nativeContext": "From the deeply shaded, mossy rainforest floors of Borneo, Malaysia, and the Philippines, growing in moist leaf litter under dense canopy.",
-      "notes": "Lightning Bolt Orchid is one of the most striking jewel orchids, grown for its dark, velvety leaves threaded with electric-gold venation that shimmers under light. It should be planted shallowly in damp sphagnum with good drainage below — soggy roots will kill it, and so will any direct light.",
+      "notes": "Lightning Bolt Orchid is one of the most striking jewel orchids, grown for its dark, velvety leaves threaded with electric-gold [[venation]] that shimmers under light. It should be planted shallowly in damp sphagnum with good drainage below — soggy roots will kill it, and so will any direct light.",
       "sources": [
         {
           "url": "https://en.wikipedia.org/wiki/Macodes_petola",
@@ -3660,7 +3660,7 @@
       "nativeBiome": "tropical",
       "rarity": "common",
       "nativeContext": "From the dark, humid forest floors of Southeast Asia — Myanmar, southern China, and Indonesia — commonly found on the forest floor.",
-      "notes": "Black Jewel Orchid is the most forgiving jewel orchid — its deep maroon-black leaves have parallel red-gold pin-stripe venation, and its creeping stems root readily at every node. Shallow planting works best, letting the stems sprawl along the substrate surface rather than burying them.",
+      "notes": "Black Jewel Orchid is the most forgiving jewel orchid — its deep maroon-black leaves have parallel red-gold pin-stripe [[venation]], and its creeping stems root readily at every [[node]]. Shallow planting works best, letting the stems sprawl along the substrate surface rather than burying them.",
       "sources": [
         {
           "url": "https://en.wikipedia.org/wiki/Ludisia_discolor",
@@ -3714,7 +3714,7 @@
       "difficulty": 3,
       "image": "plants/peperomia-prostrata.png",
       "nativeContext": "Native to the tropical rainforests of South America, trailing from mossy banks and ledges in humid shade.",
-      "notes": "String of Turtles has tiny, fleshy, circular leaves patterned like turtle shells on a fine trailing vine. It's more prone to rot than most other peperomias, so the top layer of substrate should dry slightly between waterings — consistent dampness will kill it faster than a missed watering.",
+      "notes": "String of Turtles has tiny, fleshy, circular leaves patterned like turtle shells on a fine trailing vine. It’s more prone to rot than most other peperomias, so the top layer of substrate should dry slightly between waterings — consistent dampness will kill it.",
       "sources": [
         {
           "url": "https://en.wikipedia.org/wiki/Peperomia_prostrata",
@@ -3821,7 +3821,7 @@
       "rarity": "common",
       "toxicity": "Berries are toxic to pets if ingested; repeated contact with fine foliage can cause skin irritation. Toxic to cats and dogs.",
       "nativeContext": "Native to the coastal scrub and forest margins of southern Africa, scrambling through shrubs with hook-like branchlets.",
-      "notes": "Asparagus Fern is not a true fern but a lily-family member with feathery, horizontal cloud-like fronds that create a convincing illusion of scale in large vessels. It grows vigorously and will outgrow most small or closed builds within a year or two — best used as a deliberate accent in large open containers.",
+      "notes": "Asparagus Fern is not a true fern but a lily-family member with feathery, horizontal cloud-like [[frond|fronds]] that create a convincing illusion of scale in large vessels. It grows vigorously and will outgrow most small or closed builds within a year or two.",
       "sources": [
         {
           "url": "https://en.wikipedia.org/wiki/Asparagus_setaceus",
@@ -3930,7 +3930,7 @@
       "difficulty": 2,
       "image": "plants/chamaedorea-elegans.png",
       "nativeContext": "From the humid, deeply shaded understorey of montane rainforests in southern Mexico and Guatemala.",
-      "notes": "Parlor Palm is typically sold as multi-stem seedlings that look exactly like a miniature palm grove. It grows very slowly, giving years of use in a tall, open container before it outgrows the space. One thing to know: it's sensitive to fluoride in tap water — if the leaf tips start browning without any humidity or watering issue, that's likely the cause.",
+      "notes": "Parlor Palm is typically sold as multi-stem seedlings that look exactly like a miniature palm grove. It grows very slowly, giving years of use in a tall, open container before it outgrows the space. It’s sensitive to fluoride in tap water, which will cause leaves to brown.",
       "sources": [
         {
           "url": "https://en.wikipedia.org/wiki/Chamaedorea_elegans",
@@ -3984,7 +3984,7 @@
       "difficulty": 3,
       "image": "plants/biophytum-sensitivum.png",
       "nativeContext": "A cosmopolitan tropical plant of humid forest floors and moist grasslands across Asia and West Africa, thriving where temperatures stay above 20 °C.",
-      "notes": "Little Tree Plant is a single-stemmed accent that looks exactly like a tiny palm tree, with leaflets that fold shut when touched or at dusk. It's short-lived, typically declining after flowering, but it sets seed readily in a closed container and self-renews if conditions stay stable.",
+      "notes": "Little Tree Plant is a single-stemmed accent that looks exactly like a tiny palm tree, with leaflets that fold shut when touched or at dusk. It’s short-lived, typically declining after flowering, but it sets seed readily in a closed container and self-renews if conditions stay stable.",
       "sources": [
         {
           "url": "https://en.wikipedia.org/wiki/Biophytum_sensitivum",
@@ -4082,7 +4082,7 @@
       "difficulty": 3,
       "image": "plants/neoregelia-hybrid-liliputiana.png",
       "nativeContext": "Bred from Neoregelia species native to the Atlantic rainforest of Brazil; miniature cultivars developed specifically for use in enclosed vivariums.",
-      "notes": "Miniature Neoregelia can be mounted on driftwood, which lets the blushing, water-filled central cup be displayed prominently. The cup should be kept topped up with water and flushed and refilled weekly to prevent stagnation. It produces offshoots freely after flowering, so the clump expands on its own.",
+      "notes": "Miniature Neoregelia can be mounted on driftwood, which lets the blushing, water-filled central cup be displayed prominently. The cup should be kept topped up with water and flushed and refilled weekly to prevent stagnation. It produces [[offset|offshoots]] freely after flowering, so the clump expands on its own.",
       "sources": [
         {
           "url": "https://en.wikipedia.org/wiki/Neoregelia",
@@ -4131,7 +4131,7 @@
       "difficulty": 4,
       "image": "plants/marcgravia-rectiflora.png",
       "nativeContext": "A neotropical liana from the humid rainforests of Central and South America, clinging and climbing tree trunks in deep understorey shade.",
-      "notes": "Marcgravia rectiflora is the most sought-after terrarium shingler, pressing rounded juvenile leaves flat against cork, glass, or wood as it climbs toward the light. The shingling habit only develops when the stem is in direct contact with a vertical surface — a plant left to trail loose will never flatten out the same way.",
+      "notes": "Marcgravia rectiflora is the most sought-after terrarium [[shingling|shingler]], pressing rounded juvenile leaves flat against cork, glass, or wood as it climbs toward the light. The shingling habit only develops when the stem is in direct contact with a vertical surface.",
       "sources": [
         {
           "url": "https://en.wikipedia.org/wiki/Marcgravia",
@@ -4181,7 +4181,7 @@
       "difficulty": 3,
       "image": "plants/dischidia-ruscifolia.png",
       "nativeContext": "A Southeast Asian epiphyte native to the Philippines and surrounding islands, clinging to tree branches in humid tropical forest canopies.",
-      "notes": "Million Hearts Plant is an epiphytic vine with tiny, stiff, heart-shaped leaves that are slightly succulent in texture. It can be mounted on branches or cork bark in a high-humidity build, where the thickened leaves store enough moisture to tolerate brief gaps in watering.",
+      "notes": "Million Hearts Plant is an epiphytic vine with tiny, stiff, heart-shaped leaves that are slightly succulent in texture. Does not like [[wet-feet|wet feet]], and can be mounted on branches or cork bark in a high-humidity build since the thickened leaves store enough moisture to tolerate brief gaps in watering.",
       "sources": [
         {
           "url": "https://en.wikipedia.org/wiki/Dischidia_ruscifolia",
@@ -4232,7 +4232,7 @@
       "image": "plants/ficus-pumila-panama.png",
       "toxicity": "Ficus sap (a milky latex) can irritate skin and the mouth; ingestion may cause mild digestive upset. Toxic to cats and dogs.",
       "nativeContext": "A dwarf cultivar of a species native to East Asia, selected for smaller leaf scale and less aggressive growth than the standard creeping fig.",
-      "notes": "Panama Creeping Fig is a micro-leaved cultivar of Ficus pumila that forms a dense, delicate mat over backgrounds and substrate. It's far less vigorous than the standard species, which makes it much safer for small builds where you don't want one plant taking over everything.",
+      "notes": "Panama Creeping Fig is a micro-leaved cultivar of Ficus pumila that forms a dense, delicate mat over backgrounds and substrate. It’s far less vigorous than the standard species, which makes it much safer for small builds with limited space.",
       "sources": [
         {
           "url": "https://en.wikipedia.org/wiki/Ficus_pumila",
@@ -4283,7 +4283,7 @@
       "image": "plants/rhaphidophora-hayi.png",
       "toxicity": "An aroid containing insoluble calcium oxalate crystals; ingestion causes oral irritation, drooling, and vomiting. Toxic to cats and dogs.",
       "nativeContext": "A rare aroid from the rainforests of Papua New Guinea and Queensland, Australia, where it presses its leaves flat against tree trunks in humid understorey.",
-      "notes": "Shingle Vine presses flat, alternating oval leaves tight against any textured vertical surface as it climbs toward the light. The shingling habit only develops when the stem is in contact with that surface — cork bark is the most reliable backing, and a plant left to trail loose won't shingle at all.",
+      "notes": "Shingle Vine presses flat, alternating oval leaves tight against any textured vertical surface as it climbs toward the light. The [[shingling]] habit only develops when the stem is in contact with that surface — cork bark is the most reliable backing, and a plant left to trail loose won’t shingle at all.",
       "sources": [
         {
           "url": "https://en.wikipedia.org/wiki/Rhaphidophora_hayi",
@@ -4333,7 +4333,7 @@
       "difficulty": 3,
       "image": "plants/hemionitis-arifolia.png",
       "nativeContext": "Native to the humid tropical forests of Southeast Asia, from Sri Lanka to Japan, growing on shaded forest floors and among mossy rocks.",
-      "notes": "Heart Fern is a dwarf fern with thick, glossy, heart-shaped fronds that are quite unlike most ferns in texture and form. It's highly sensitive to dry air — exposure to low humidity even briefly causes fronds to crisp at the edges and collapse. A sealed enclosure is non-negotiable, but within those conditions it's a reliable and compact centrepiece plant.",
+      "notes": "Heart Fern is a dwarf fern with thick, glossy, heart-shaped [[frond|fronds]] that are quite unlike most ferns in texture and form. It’s highly sensitive to dry air — exposure to low humidity even briefly causes fronds to crisp at the edges and collapse. This means a sealed enclosure is non-negotiable.",
       "sources": [
         {
           "url": "https://en.wikipedia.org/wiki/Hemionitis_arifolia",
@@ -4383,7 +4383,7 @@
       "difficulty": 4,
       "image": "plants/microsorum-thailandicum.png",
       "nativeContext": "From the humid rainforests of Thailand and Southeast Asia, growing as an epiphyte on shaded tree trunks and mossy forest floors.",
-      "notes": "Blue Oil Fern develops a metallic blue-teal iridescence that appears under low light in high humidity — it's one of the more dramatic colour effects in terrarium keeping. The blue sheen fades with too much light or insufficient moisture, so dim conditions and consistent dampness are both required to maintain it. It's a collector's plant, and the effect is worth the conditions.",
+      "notes": "Blue Oil Fern develops a metallic blue-teal iridescence that appears under low light in high humidity — it’s one of the more dramatic color effects in terrarium keeping. The blue sheen fades with too much light or insufficient moisture, so dim conditions and consistent dampness are both required to maintain it.",
       "sources": [
         {
           "url": "https://en.wikipedia.org/wiki/Microsorum",
@@ -4484,7 +4484,7 @@
       "openTerrariumOk": true,
       "difficulty": 1,
       "image": "plants/peperomia-orba-pixie-lime.png",
-      "nativeContext": "A compact cultivar bred from a species native to the tropical Americas, selected for miniature size and chartreuse colouration.",
+      "nativeContext": "A compact cultivar bred from a species native to the tropical Americas, selected for miniature size and chartreuse coloration.",
       "notes": "Pixie Lime Peperomia is a dwarf peperomia with light chartreuse leaves that stays under 10 cm even at maturity. It handles the moisture levels of a closed terrarium better than most peperomias, without the rot risk that makes other species unreliable in sealed builds.",
       "sources": [
         {
@@ -4534,7 +4534,7 @@
       "difficulty": 2,
       "image": "plants/peperomia-albovittata-piccolo-banda.png",
       "nativeContext": "A cultivar of a species native to the humid lowland forests of Ecuador and Peru, selected for striking silver-and-crimson variegation.",
-      "notes": "Piccolo Banda Peperomia has thick, slightly succulent, metallic silvery-green leaves with deep purple-crimson veining — the contrast between the silver ground and dark veins is the plant's main visual feature. Its succulent leaves rot quickly in soggy substrate, so the mix should be allowed to partially dry between waterings.",
+      "notes": "Piccolo Banda Peperomia has thick, slightly succulent, metallic silvery-green leaves with deep purple-crimson veining. Its succulent leaves rot quickly in soggy substrate, so the mix should be allowed to partially dry between waterings.",
       "sources": [
         {
           "url": "https://powo.science.kew.org/results?q=Peperomia%20albovittata",
@@ -4581,7 +4581,7 @@
       "difficulty": 4,
       "image": "plants/begonia-amphioxus.png",
       "nativeContext": "A rare species from the humid rainforests of Borneo, growing in near-constant high humidity deep in forest understories.",
-      "notes": "Butterfly Begonia has narrow, translucent green leaves covered in vivid crimson spots that make it one of the more visually arresting begonias in cultivation. It needs the stable humidity of a sealed glass enclosure — open air will cause it to decline quickly, and the decline is difficult to reverse once it starts.",
+      "notes": "Butterfly Begonia has narrow, translucent green leaves covered in vivid crimson spots. It needs the stable humidity of a sealed glass enclosure — open air will cause it to decline quickly, and the decline is difficult to reverse once it starts.",
       "sources": [
         {
           "url": "https://en.wikipedia.org/wiki/Begonia_amphioxus",
@@ -4680,7 +4680,7 @@
       "image": "plants/alocasia-reginula-black-velvet.png",
       "toxicity": "An aroid containing insoluble calcium oxalate crystals. All parts are toxic if ingested, causing oral irritation, drooling, and vomiting. Toxic to cats and dogs.",
       "nativeContext": "A compact 'Jewel Alocasia' from the deep shade of rainforest floors in Borneo, where it grows in consistently high humidity.",
-      "notes": "Black Velvet Alocasia has near-black, velvety leaves with stark white veins that show up dramatically even under low light. It grows more slowly than most aroids, which makes it manageable in medium-to-large closed builds. The substrate surface should approach dryness before watering — the corm sits at the soil line and rots in consistently soggy conditions.",
+      "notes": "Black Velvet Alocasia has near-black, velvety leaves with stark white veins that show up dramatically even under low light. It grows more slowly than most aroids, which makes it manageable in medium-to-large closed builds. The substrate surface should approach dryness before watering — the [[corm]] sits at the soil line and rots in consistently soggy conditions.",
       "sources": [
         {
           "url": "https://en.wikipedia.org/wiki/Alocasia_reginula",
@@ -4729,7 +4729,7 @@
       "difficulty": 2,
       "image": "plants/hyophila-involuta.png",
       "nativeContext": "A cosmopolitan terrestrial moss found on bare soil, rock, and disturbed ground across tropical and subtropical regions worldwide.",
-      "notes": "Star Moss forms short, dense clumps that radiate outward in a star pattern when viewed from above. It works well as a foreground accent and for filling the gaps between rocks and hardscape where a taller groundcover would not fit.",
+      "notes": "Star Moss forms short, dense clumps that radiate outward in a star pattern when viewed from above. It works well for filling the gaps between rocks and hardscape where a taller groundcover would not fit.",
       "sources": [
         {
           "url": "https://en.wikipedia.org/wiki/Hyophila_involuta",
@@ -4838,7 +4838,7 @@
       "difficulty": 1,
       "image": "plants/portulacaria-afra.png",
       "nativeContext": "A semi-arid dwarf shrub native to the Eastern Cape of South Africa, where it forms dense thickets on rocky slopes and is browsed extensively by elephants.",
-      "notes": "Elephant Bush is a woody-stemmed succulent that works well as a structural mini-tree in desert and arid landscape builds. It responds well to pinching and shaping, tolerates significant neglect, and grows back quickly from hard cuts. It needs a fast-draining mineral mix and full sun — without both, it will etiolate and lose its form.",
+      "notes": "Elephant Bush is a woody-stemmed succulent that works well as a structural mini-tree in desert and arid landscape builds. It responds well to [[pinching]] and shaping, tolerates significant neglect, and grows back quickly from hard cuts. It needs a fast-draining mineral mix and full sun — without both, it will [[etiolation|etiolate]] and lose its form.",
       "sources": [
         {
           "url": "https://en.wikipedia.org/wiki/Portulacaria_afra",
@@ -4894,7 +4894,7 @@
       "toxicity": "Contains calcium oxalate crystals; causes mouth and throat irritation if ingested. Toxic to cats and dogs.",
       "image": "plants/alocasia-baginda-silver-dragon.png",
       "nativeContext": "From the humid tropical rainforests of Borneo (Kalimantan), Indonesia, growing on shaded forest floors in deep leaf litter.",
-      "notes": "Silver Dragon Alocasia has striking, textured silver-grey leaves with dark raised venation that gives the surface a sculptural quality. It needs high humidity and an extremely well-draining mix — the corm base is prone to rot if it sits in moisture for any length of time.",
+      "notes": "Silver Dragon Alocasia has striking, textured silver-gray leaves with dark raised [[venation]] that gives the surface a sculptural quality. It needs high humidity and an extremely well-draining mix — the [[corm]] base is prone to rot if it sits in moisture for any length of time.",
       "sources": [
         {
           "url": "https://en.wikipedia.org/wiki/Alocasia_baginda",
@@ -4998,7 +4998,7 @@
       "toxicity": "Contains calcium oxalate crystals; causes mouth and throat irritation if ingested. Toxic to cats and dogs.",
       "image": "plants/alocasia-maharani-grey-dragon.png",
       "nativeContext": "Native to the tropical forests of Thailand and peninsular Malaysia; the thick, heavily textured 'maharani' form was selected for its exceptional dragon-scale leaf surface.",
-      "notes": "Grey Dragon Alocasia has ultra-thick, rigid leaves with pronounced dragon-scale ridge texture and a metallic grey-green colouration that looks almost artificial. It's more tolerant of lower humidity than most jewel alocasias, but it still demands excellent drainage — soggy substrate will rot the corm just as readily.",
+      "notes": "Grey Dragon Alocasia has ultra-thick, rigid leaves with pronounced dragon-scale ridge texture and a metallic gray-green coloration that looks almost artificial. It’s more tolerant of lower humidity than most jewel alocasias, but it still demands excellent drainage — soggy substrate will rot the [[corm]] just as readily.",
       "sources": [
         {
           "url": "https://en.wikipedia.org/wiki/Alocasia",
@@ -5047,7 +5047,7 @@
       "nativeBiome": "temperate",
       "rarity": "common",
       "nativeContext": "Common and abundant in moist, shaded forest floors across eastern North America, carpeting soil, logs, and stumps.",
-      "notes": "Fern Moss spreads in flat, lacy sheets with distinctive thrice-pinnate branching that closely mimics tiny fern fronds. It's one of the most popular terrarium mosses for naturalistic forest builds. It knits quickly over substrate and hardscape and tolerates the high humidity of a sealed lid without any trouble.",
+      "notes": "Fern Moss spreads in flat, lacy sheets with distinctive branching that closely mimics tiny fern [[frond|fronds]]. It’s one of the most popular terrarium mosses for naturalistic forest builds. It knits quickly over substrate and hardscape and tolerates the high humidity of a sealed lid without any trouble.",
       "sources": [
         {
           "url": "https://en.wikipedia.org/wiki/Thuidium_delicatulum",
@@ -5097,7 +5097,7 @@
       "difficulty": 2,
       "image": "plants/acorus-chacosekisho.png",
       "nativeContext": "Native to moist streamsides and pond margins in Japan and temperate East Asia, Acorus gramineus grows as a semi-aquatic grass-like perennial in cool to subtropical climates. 'Chacosekisho' is a Japanese cultivar prized for its vivid gold-and-green striped foliage.",
-      "notes": "Chacosekisho Sweet Flag does best with roots consistently wet or partially submerged, which makes it well-suited to the wet zone of a paludarium or the base of a closed terrarium. It prefers cooler temperatures than most tropical species — prolonged heat above 25°C will cause it to decline. It's slow-growing and stays compact, so it works well as a foreground plant without needing regular trimming.",
+      "notes": "Chacosekisho Sweet Flag does best with roots consistently wet or partially submerged, which makes it well-suited to the base of a closed terrarium. It prefers cooler temperatures than most tropical species — prolonged heat above 25°C will cause it to decline. It’s slow-growing and stays compact.",
       "sources": [
         {
           "url": "https://powo.science.kew.org/results?q=Acorus%20gramineus",
@@ -5148,7 +5148,7 @@
       "difficulty": 2,
       "image": "plants/hemigraphis-alternata.png",
       "nativeContext": "Native to the tropical understorey of Southeast Asia, Hemigraphis alternata grows as a low trailing herb on moist forest floors and shaded slopes. Its leaves display silvery-green metallic tops and rich deep-purple undersides.",
-      "notes": "Purple Waffle Plant thrives in the warm, humid confines of a closed terrarium, where its trailing habit adds ground-level colour. The substrate should be kept evenly moist but not waterlogged. The purple colouration is most vivid under bright indirect light — if the light drops too low, the leaves revert to plain green and most of the visual interest is lost.",
+      "notes": "Purple Waffle Plant thrives in the warm, humid confines of a closed terrarium, where its trailing habit adds ground-level color. The substrate should be kept evenly moist but not waterlogged. The purple coloration is most vivid under bright indirect light — if the light drops too low, the leaves revert to plain green.",
       "sources": [
         {
           "url": "https://powo.science.kew.org/results?q=Hemigraphis%20alternata",
@@ -5198,7 +5198,7 @@
       "difficulty": 2,
       "image": "plants/hygrophila-pinnatifida.png",
       "nativeContext": "Native to slow-moving rivers, streams, and flooded margins in India, Hygrophila pinnatifida is an emergent aquatic plant with distinctively pinnate, fern-like leaves and reddish-brown undersides.",
-      "notes": "Hygrophila pinnatifida is excellent for paludarium builds, where it can be attached to hardscape above the waterline or planted in wet substrate for emersed growth. Emersed leaves are the largest and most ornate, but they need very high ambient humidity to develop fully — without it, the leaves stay small and undistinguished. Iron-rich substrate or supplemental iron dosing encourages the signature reddish colouration.",
+      "notes": "Hygrophila pinnatifida is excellent for terrarium builds where it can be planted in wet substrate for emersed growth. Emersed leaves are the largest and most ornate, but they need very high ambient humidity to develop fully — without it, the leaves stay small and undistinguished. Iron-rich substrate or supplemental iron dosing encourages the signature reddish coloration.",
       "sources": [
         {
           "url": "https://powo.science.kew.org/results?q=Hygrophila%20pinnatifida",
@@ -5244,7 +5244,7 @@
       "difficulty": 3,
       "image": "plants/ruellia-makoyana.png",
       "nativeContext": "Native to the tropical forests of Brazil, Ruellia makoyana grows in warm, humid understorey conditions. It produces velvety dark-green leaves marked with silver veining and bears bright pink tubular flowers.",
-      "notes": "Monkey Plant is best suited to large closed terrariums or Wardian cases where its potential height has room to develop. Regular stem pinching keeps it bushy and compact rather than leggy. The velvety leaves will rot if misted directly, so the plant relies on ambient humidity rather than overhead watering.",
+      "notes": "Monkey Plant is best suited to large closed terrariums where its potential height has room to develop. Regular stem [[pinching]] keeps it bushy and compact rather than leggy. The velvety leaves will rot if misted directly, so the plant relies on ambient humidity rather than overhead watering.",
       "sources": [
         {
           "url": "https://powo.science.kew.org/results?q=Ruellia%20makoyana",
@@ -5290,7 +5290,7 @@
       "difficulty": 2,
       "image": "plants/strobilanthes-dyerianus.png",
       "nativeContext": "Native to the tropical forests of Myanmar, Strobilanthes dyerianus thrives in warm, humid environments with bright filtered light. Its iridescent silver-purple foliage is produced by microscopic light-diffracting structures on the leaf surface.",
-      "notes": "Persian Shield grows too large and vigorous for most enclosed terrariums and works better as an open container accent plant or a houseplant companion piece. It needs bright indirect light to maintain its iridescent purple colouration — in low light the leaves revert to dull green and most of the visual interest is lost. Good airflow around the broad leaves helps prevent the fungal issues they're prone to in still, humid conditions.",
+      "notes": "Persian Shield grows too large and vigorous for most enclosed terrariums and works better as an open container accent plant. It needs bright indirect light to maintain its iridescent purple coloration — in low light the leaves revert to dull green and most of the visual interest is lost. Good airflow around the broad leaves helps prevent the fungal issues they’re prone to in still, humid conditions.",
       "sources": [
         {
           "url": "https://powo.science.kew.org/results?q=Strobilanthes%20dyerianus",
@@ -5340,8 +5340,8 @@
       "openTerrariumOk": true,
       "difficulty": 1,
       "image": "plants/ceropegia-woodii.png",
-      "nativeContext": "Native to rocky slopes and scrublands of South Africa and Zimbabwe, Ceropegia woodii grows as a semi-succulent trailing vine, storing water in its caudex and heart-shaped leaves.",
-      "notes": "String of Hearts needs deep watering followed by the substrate drying out completely before the next watering — overwatering is the main reason this plant fails, not underwatering. It trails naturally over the edge of an open bowl or shelf planter. The silver marbling on the heart-shaped leaves becomes more pronounced with brighter light.",
+      "nativeContext": "Native to rocky slopes and scrublands of South Africa and Zimbabwe, Ceropegia woodii grows as a semi-succulent trailing vine, storing water in its [[caudex]] and heart-shaped leaves.",
+      "notes": "String of Hearts needs deep watering followed by the substrate drying out completely before the next watering — overwatering is the main reason this plant fails. It trails naturally over the edge of an open bowl or shelf planter. The silver marbling on the heart-shaped leaves becomes more pronounced with brighter light.",
       "sources": [
         {
           "url": "https://powo.science.kew.org/results?q=Ceropegia%20woodii",
@@ -5392,7 +5392,7 @@
       "difficulty": 1,
       "image": "plants/ceropegia-woodii-string-of-spades.png",
       "nativeContext": "A selected form of Ceropegia woodii from southern Africa, the String of Spades produces darker foliage with more prominently spade-shaped leaves compared to the standard heart-leaf form.",
-      "notes": "String of Spades is a variant of Ceropegia woodii with a darker leaf colour and more pronounced spade shape, and its care is identical to the standard species. The substrate should dry out completely between waterings, and bright light is needed to maintain the leaf colour. It works well in open dish gardens and shelf displays.",
+      "notes": "String of Spades is a variant of Ceropegia woodii with a darker leaf color and more pronounced spade shape, and its care is identical to the standard species. The substrate should dry out completely between waterings, and bright light is needed to maintain the leaf color. It works well in open builds.",
       "sources": [
         {
           "url": "https://powo.science.kew.org/results?q=Ceropegia%20woodii",
@@ -5438,8 +5438,8 @@
       "openTerrariumOk": false,
       "difficulty": 3,
       "image": "plants/alocasia-dragon-scale.png",
-      "nativeContext": "Alocasia baginda is endemic to the limestone karst forests of Borneo, where it grows as an understorey plant in high humidity and filtered light. The 'Dragon Scale' cultivar is prized for its dark green leaves with dramatic silver-grey venation resembling reptilian scales.",
-      "notes": "Dragon Scale Alocasia needs consistently high humidity — if it drops below 70%, the leaf edges start to brown and crisp, and that damage is permanent. The mix should drain very well to prevent rhizome rot while still keeping moisture available to the roots. Juvenile plants are compact and suit larger terrariums reasonably well, but mature specimens will outgrow most enclosed builds.",
+      "nativeContext": "Alocasia baginda is endemic to the limestone karst forests of Borneo, where it grows as an understorey plant in high humidity and filtered light. The 'Dragon Scale' cultivar is prized for its dark green leaves with dramatic silver-gray venation resembling reptilian scales.",
+      "notes": "Dragon Scale Alocasia needs consistently high humidity — if it drops below 70%, the leaf edges start to brown and crisp, and that damage is permanent. The mix should drain very well to prevent [[rhizome]] rot while still keeping moisture available to the roots. Juvenile plants are compact and suit larger terrariums reasonably well, but mature specimens will outgrow most enclosed builds.",
       "sources": [
         {
           "url": "https://powo.science.kew.org/results?q=Alocasia%20baginda",
@@ -5485,7 +5485,7 @@
       "difficulty": 2,
       "image": "plants/anubias-hastifolia.png",
       "nativeContext": "Native to tropical West and Central Africa, Anubias hastifolia inhabits shallow rivers, streams, and flooded forest margins. It produces large arrowhead-shaped leaves and grows emersed or submerged, anchoring its rhizome to rocks and submerged wood.",
-      "notes": "Hastifolia Anubias has one non-negotiable requirement: the rhizome must never be buried. It should be attached to hardscape above or at the waterline and left to send roots down on its own. It's one of the larger Anubias species, which makes it best suited to spacious paludariums rather than small builds. Growth is extremely slow, but once established it's very robust.",
+      "notes": "The [[rhizome]] of Hastifolia Anubias must never be buried. It should be attached to hardscape above the soil and left to send roots down on its own. It’s one of the larger Anubias species, which makes it best suited to spacious rather than small builds. Growth is extremely slow, but once established it’s very robust.",
       "sources": [
         {
           "url": "https://powo.science.kew.org/results?q=Anubias%20hastifolia",
@@ -5629,7 +5629,7 @@
       "difficulty": 3,
       "image": "plants/philodendron-verrucosum.png",
       "nativeContext": "Found in montane and lowland tropical forests across Ecuador, Peru, Colombia, and Costa Rica, Philodendron verrucosum is a hemiepiphytic climber. Its deeply velvety dark green leaves are laced with golden-yellow veining.",
-      "notes": "Velvet Leaf Philodendron needs humidity above 70% — if it drops below that, leaf edges brown and new growth hardens before it fully opens. A chunky substrate or moss pole that lets the aerial roots grip something vertical mimics its natural epiphytic habit. Evening temperature drops are worth engineering if you can manage them, as they can trigger spectacular colouration in the foliage.",
+      "notes": "Velvet Leaf Philodendron needs humidity above 70% — if it drops below that, leaf edges brown and new growth hardens before it fully opens. A chunky substrate or climbing support that lets the aerial roots grip something vertical mimics its natural epiphytic habit.",
       "sources": [
         {
           "url": "https://powo.science.kew.org/results?q=Philodendron%20verrucosum",
@@ -5727,7 +5727,7 @@
       "difficulty": 2,
       "image": "plants/philodendron-wend-imbe.png",
       "nativeContext": "Philodendron 'Wend-Imbe' is a climbing hybrid of Central and South American parentage, producing elongated lanceolate leaves with a semi-glossy finish. It grows as a hemiepiphyte in warm, humid tropical forest conditions.",
-      "notes": "Wend-Imbe Philodendron is a vigorous climber well-suited to large paludariums or Wardian cases with vertical hardscape. A moss pole or cork backing lets the aerial roots attach properly and encourages faster upward growth. It's notably more tolerant of lower humidity than velvet-leaf species, which makes it a more practical choice for builds that can't maintain consistently high levels.",
+      "notes": "Wend-Imbe Philodendron is a vigorous climber well-suited to large terrariums with vertical hardscape backing that lets the aerial roots attach properly -- and encourages faster upward growth. It’s notably more tolerant of lower humidity than velvet-leaf species, which makes it a more practical choice for builds that can’t maintain consistently high levels.",
       "sources": [
         {
           "url": "https://powo.science.kew.org/results?q=Philodendron",
@@ -5820,7 +5820,7 @@
       "difficulty": 2,
       "image": "plants/syngonium-albo.png",
       "nativeContext": "A variegated cultivar of Syngonium podophyllum, which is native to tropical rainforests from Mexico through to Bolivia and Brazil. The species grows as a hemiepiphytic climbing vine in warm, humid understorey conditions.",
-      "notes": "Albo Variegated Arrowhead Plant has white variegated sectors that lack chlorophyll and are more sensitive to direct light than the green portions — direct sun will scorch them. Consistent moisture without waterlogging keeps the plant healthy. Reversion to all-green growth can occur at any time; removing all-green shoots promptly helps maintain the variegated pattern.",
+      "notes": "Albo Variegated Arrowhead Plant has white variegated sectors that lack chlorophyll and are more sensitive to direct light than the green portions — direct sun will scorch them. Consistent moisture without giving it [[wet-feet|wet feet]] keeps the plant healthy. Reversion to all-green growth can occur at any time; removing all-green shoots promptly helps maintain the variegated pattern.",
       "sources": [
         {
           "url": "https://powo.science.kew.org/results?q=Syngonium%20podophyllum",
@@ -5871,7 +5871,7 @@
       "difficulty": 3,
       "image": "plants/syngonium-rayii.png",
       "nativeContext": "Native to the tropical understorey forests of Costa Rica and Panama, Syngonium rayii is a compact, slow-growing species with deep velvety dark-green leaves bisected by a bold silver midrib.",
-      "notes": "Silver Goosefoot Plant is one of the most desirable compact Syngonium species for closed terrariums — the velvety texture and striking silver midrib read best at close range, which a glass-sided build provides naturally. It needs higher humidity than common Syngonium cultivars, and its slow growth keeps it manageable in medium-sized builds without constant trimming.",
+      "notes": "Silver Goosefoot Plant is one of the most desirable compact Syngonium species for closed terrariums — the velvety texture and striking silver [[midrib]] read best at close range, which a glass-sided build provides naturally. It needs higher humidity than common Syngonium cultivars, and its slow growth keeps it manageable in medium-sized builds without constant trimming.",
       "sources": [
         {
           "url": "https://powo.science.kew.org/results?q=Syngonium%20rayii",
@@ -5964,7 +5964,7 @@
       "difficulty": 4,
       "image": "plants/begonia-bipinnatifida.png",
       "nativeContext": "Endemic to the cloud forests of New Guinea at higher elevations, where cool temperatures, persistent mist, and extremely high humidity prevail year-round.",
-      "notes": "Begonia bipinnatifida has deeply pinnately lobed, fern-like leaves that are quite unlike any other begonia. It needs very high humidity above 80% and cooler temperatures, which makes a large, stable closed terrarium the only realistic option. It's sensitive to stagnant conditions, so gentle airflow within the enclosure is important — a small fan or regular ventilation helps.",
+      "notes": "Begonia bipinnatifida has deeply pinnately lobed, fern-like leaves that are quite unlike any other begonia. It needs very high humidity above 80% and cooler temperatures, which makes a large, stable closed terrarium the only realistic option. It’s sensitive to stagnant conditions, so gentle airflow within the enclosure is important — a small fan or regular ventilation helps.",
       "sources": [
         {
           "url": "https://powo.science.kew.org/results?q=Begonia%20bipinnatifida",
@@ -6010,7 +6010,7 @@
       "difficulty": 3,
       "image": "plants/begonia-burkilii-silver-form.png",
       "nativeContext": "Native to the humid tropical forests of Malaysia and surrounding Southeast Asian regions, growing as a forest-floor rhizomatous plant in filtered light.",
-      "notes": "Burkill's Begonia Silver Form is a terrarium classic prized for its intense silvery-green leaf colouration. Its rhizomatous growth makes propagation from leaf or stem cuttings very straightforward. A closed environment is essential for maintaining the high humidity that keeps the leaf colour vivid and the plant vigorous.",
+      "notes": "Burkill’s Begonia Silver Form is a terrarium classic prized for its intense silvery-green leaf coloration. Its rhizomatous growth makes propagation from leaf or stem cuttings very straightforward. A closed environment is essential for maintaining the high humidity that keeps the leaf color vivid and the plant vigorous.",
       "sources": [
         {
           "url": "https://powo.science.kew.org/results?q=Begonia%20burkilii",
@@ -6103,7 +6103,7 @@
       "difficulty": 2,
       "image": "plants/begonia-conchifolia.png",
       "nativeContext": "Native to the humid lowland and mid-elevation tropical forests of Costa Rica and Panama, growing in shaded spots with consistent moisture.",
-      "notes": "Pond Lily Begonia is one of the most forgiving terrarium begonias, tolerating a wide range of light and moisture conditions without complaint. The distinctive peltate leaves — where the petiole attaches at the centre of the leaf rather than the edge — are easy to identify. It propagates readily from leaf cuttings placed on moist substrate.",
+      "notes": "Pond Lily Begonia is one of the most forgiving terrarium begonias, tolerating a wide range of light and moisture conditions without complaint. The distinctive peltate leaves — where the [[petiole]] attaches at the centre of the leaf rather than the edge — are easy to identify. It propagates readily from leaf cuttings placed on moist substrate.",
       "sources": [
         {
           "url": "https://powo.science.kew.org/results?q=Begonia%20conchifolia",
@@ -6706,7 +6706,7 @@
       "difficulty": 2,
       "image": "plants/begonia-pustulata.png",
       "nativeContext": "Native to the tropical forests of Mexico and Central America, growing as a rhizomatous ground-cover plant in humid, shaded understorey conditions.",
-      "notes": "Begonia pustulata has deeply bullate, puckered dark green leaves with contrasting silver markings — one of the most visually dramatic terrarium begonias available. It's manageable for the impact it delivers; propagate from rhizome cuttings and keep humidity consistently high.",
+      "notes": "Begonia pustulata has deeply bullate, puckered dark green leaves with contrasting silver markings — one of the most visually dramatic terrarium begonias available. It's manageable for the impact it delivers; propagate from [[rhizome]] cuttings and keep humidity consistently high.",
       "sources": [
         {
           "url": "https://powo.science.kew.org/results?q=Begonia%20pustulata",
@@ -7031,7 +7031,7 @@
       "nativeBiome": "tropical",
       "rarity": "rare",
       "nativeContext": "Terrestrial bromeliad native to Brazil, growing on the forest floor in dappled light.",
-      "notes": "Cryptanthus 'Absolute Zero' is a compact earth star with silvery-white striped leaves that holds minimal water in its central cup compared to tank bromeliads. It needs airflow — avoid sealed enclosures — and offsets freely once established.",
+      "notes": "Cryptanthus 'Absolute Zero' is a compact earth star with silvery-white striped leaves that holds minimal water in its central cup compared to tank bromeliads. It needs airflow — avoid sealed enclosures — and [[offset|offsets]] freely once established.",
       "sources": [
         {
           "url": "https://powo.science.kew.org/results?q=Cryptanthus",
@@ -7216,7 +7216,7 @@
       "difficulty": 2,
       "image": "plants/neoregelia-fireball.png",
       "nativeContext": "Popular compact Neoregelia cultivar, parentage from Brazilian Atlantic Forest species.",
-      "notes": "Neoregelia 'Fireball' is one of the most widely grown miniature Neoregelia cultivars. It turns brilliant crimson-red under high bright-indirect or some direct light, and stays green in lower light. It offsets readily and forms clumping colonies over time.",
+      "notes": "Neoregelia 'Fireball' is one of the most widely grown miniature Neoregelia cultivars. It turns brilliant crimson-red under high bright-indirect or some direct light, and stays green in lower light. It [[offset|offsets]] readily and forms clumping colonies over time.",
       "sources": [
         {
           "url": "https://powo.science.kew.org/results?q=Neoregelia",
@@ -7622,7 +7622,7 @@
       "difficulty": 2,
       "image": "plants/eleocharis-radicans.png",
       "nativeContext": "Widespread across tropical Central and South America in shallow water, marsh edges, and wet meadows. Can grow emersed or submerged.",
-      "notes": "Eleocharis radicans is a fine grass-like sedge that creates a dense carpet effect when grown emersed in a paludarium or high-humidity closed terrarium with a wet substrate. It spreads by stolons to form a mat; the roots must remain wet at all times and the substrate should never dry out.",
+      "notes": "Eleocharis radicans is a fine grass-like sedge that creates a dense carpet effect when grown emersed in a paludarium or high-humidity closed terrarium with a wet substrate. It spreads by [[stolon|stolons]] to form a mat; the roots must remain wet at all times and the substrate should never dry out.",
       "sources": [
         {
           "url": "https://powo.science.kew.org/results?q=Eleocharis%20radicans",
@@ -7765,7 +7765,7 @@
       "difficulty": 3,
       "image": "plants/equisetum-bogotense.png",
       "nativeContext": "Cloud forests and montane wetlands of the Andes — Colombia, Ecuador, Peru, and Bolivia — at elevations of 2000-4000m.",
-      "notes": "Equisetum bogotense, the Andean Horsetail, is a delicate fine-stemmed species quite unlike the robust common Equisetum arvense. It requires cool intermediate temperatures and will suffer above 22°C, so it's suited only to closed cool terrariums with extremely high humidity. Once established it can spread vigorously via rhizomes.",
+      "notes": "Equisetum bogotense, the Andean Horsetail, is a delicate fine-stemmed species quite unlike the robust common Equisetum arvense. It requires cool intermediate temperatures and will suffer above 22°C, so it's suited only to closed cool terrariums with extremely high humidity. Once established it can spread vigorously via [[rhizome|rhizomes]].",
       "sources": [
         {
           "url": "https://powo.science.kew.org/results?q=Equisetum%20bogotense",
@@ -7860,7 +7860,7 @@
       "difficulty": 2,
       "image": "plants/alsobia-dianthiflora.png",
       "nativeContext": "Tropical forests of Mexico and Central America; stoloniferous creeping herb on forest floors and rocky banks.",
-      "notes": "Alsobia dianthiflora, the Lace Flower Vine, produces distinctive white tubular flowers with heavily fringed petal margins. It spreads readily by stolons and makes an excellent terrarium ground cover; avoid waterlogging and ensure good drainage. It's sensitive to cold drafts.",
+      "notes": "Alsobia dianthiflora, the Lace Flower Vine, produces distinctive white tubular flowers with heavily fringed petal margins. It spreads readily by [[stolon|stolons]] and makes an excellent terrarium ground cover; avoid waterlogging and ensure good drainage. It's sensitive to cold drafts.",
       "sources": [
         {
           "url": "https://powo.science.kew.org/results?q=Alsobia%20dianthiflora",
@@ -8040,7 +8040,7 @@
       "difficulty": 3,
       "image": "plants/episcia-chocolate-velvet.png",
       "nativeContext": "Cultivar derived from Central and South American Episcia species; parent species grow on tropical forest floors and as epiphytes.",
-      "notes": "Episcia 'Chocolate Velvet' has velvety chocolate-brown leaves with contrasting silvery markings and produces orange-red tubular flowers. It spreads by stolons to form a ground-covering mat, but is extremely sensitive to cold air and low humidity — a single cold draft can cause leaf damage. Never mist the leaves directly.",
+      "notes": "Episcia 'Chocolate Velvet' has velvety chocolate-brown leaves with contrasting silvery markings and produces orange-red tubular flowers. It spreads by [[stolon|stolons]] to form a ground-covering mat, but is extremely sensitive to cold air and low humidity — a single cold draft can cause leaf damage. Never mist the leaves directly.",
       "sources": [
         {
           "url": "https://powo.science.kew.org/results?q=Episcia",
@@ -8085,7 +8085,7 @@
       "difficulty": 3,
       "image": "plants/episcia-lilacina.png",
       "nativeContext": "Cultivar derived from Central and South American Episcia species; parent species inhabit humid tropical forest understory.",
-      "notes": "Episcia 'Lilacina' has silver-green patterned foliage and produces lilac to lavender flowers, unusual in the Episcia genus. It spreads by stolons and requires consistently high humidity and warmth; any temperature drop or dry air will cause rapid deterioration.",
+      "notes": "Episcia 'Lilacina' has silver-green patterned foliage and produces lilac to lavender flowers, unusual in the Episcia genus. It spreads by [[stolon|stolons]] and requires consistently high humidity and warmth; any temperature drop or dry air will cause rapid deterioration.",
       "sources": [
         {
           "url": "https://powo.science.kew.org/results?q=Episcia",
@@ -8267,7 +8267,7 @@
       "difficulty": 2,
       "image": "plants/sinningia-freckles.png",
       "nativeContext": "Hybrid cultivar; parent species are native to Brazil and tropical South America, typically growing on rocky outcrops and in forest margins.",
-      "notes": "Sinningia 'Freckles' is a tiny tuberous gesneriad that forms a compact mound of small velvety leaves topped with spotted purple flowers. It goes dormant in winter — reduce watering significantly and keep the tuber dry until new growth emerges in spring. It's excellent for nano terrariums.",
+      "notes": "Sinningia 'Freckles' is a tiny tuberous gesneriad that forms a compact mound of small velvety leaves topped with spotted purple flowers. It goes dormant in winter — reduce watering significantly and keep the [[tuber]] dry until new growth emerges in spring. It's excellent for nano terrariums.",
       "sources": [
         {
           "url": "https://powo.science.kew.org/results?q=Sinningia",
@@ -8312,7 +8312,7 @@
       "difficulty": 2,
       "image": "plants/sinningia-prudence-risley.png",
       "nativeContext": "Hybrid cultivar; parent species native to Brazil and tropical South America, growing on rocky outcrops and in shaded forest margins.",
-      "notes": "Sinningia 'Prudence Risley' is a classic miniature Sinningia for terrariums, producing violet-purple tubular flowers prolifically above compact foliage. It grows from a small tuber and may go dormant in low-light winter conditions — resume regular watering once new growth appears. A well-draining substrate is critical to prevent tuber rot.",
+      "notes": "Sinningia 'Prudence Risley' is a classic miniature Sinningia for terrariums, producing violet-purple tubular flowers prolifically above compact foliage. It grows from a small [[tuber]] and may go dormant in low-light winter conditions — resume regular watering once new growth appears. A well-draining substrate is critical to prevent tuber rot.",
       "sources": [
         {
           "url": "https://powo.science.kew.org/results?q=Sinningia",
@@ -8356,7 +8356,7 @@
       "difficulty": 4,
       "image": "plants/crepidomanes-minutum.png",
       "nativeContext": "Widespread across tropical and subtropical Asia, Pacific islands, and Africa; grows on moist rock faces, tree bark, and soil in deeply shaded humid forests.",
-      "notes": "Crepidomanes minutum, the Minute Filmy Fern, has fronds just a single cell layer thick and completely transparent. It will desiccate and die within hours if humidity drops below saturation — sealed or near-sealed terrariums with stable near-100% humidity are the only suitable environment. It can be attached to live moss or moist rock rather than planted in substrate, and grows extremely slowly.",
+      "notes": "Crepidomanes minutum, the Minute Filmy Fern, has [[frond|fronds]] just a single cell layer thick and completely transparent. It will desiccate and die within hours if humidity drops below saturation — sealed or near-sealed terrariums with stable near-100% humidity are the only suitable environment. It can be attached to live moss or moist rock rather than planted in substrate, and grows extremely slowly.",
       "sources": [
         {
           "url": "https://powo.science.kew.org/results?q=Crepidomanes%20minutum",
@@ -8493,7 +8493,7 @@
       "difficulty": 4,
       "image": "plants/marcgravia-bronze.png",
       "nativeContext": "An informally named Marcgravia morphotype from tropical South or Central America, circulated in the vivarium hobby for its warm bronze-tinted juvenile shingling leaves. Marcgravia species grow as hemi-epiphytic vines in humid tropical rainforest, pressing juvenile leaves flat against tree bark.",
-      "notes": "Marcgravia sp. 'Bronze' can be mounted on cork bark or a coir panel within a high-humidity vivarium, where its juvenile leaves will shingle flat to the surface as it climbs. Mount it vertically only — sitting in wet soil will cause decline. Even brief desiccation causes leaf drop, so stable humidity and temperature are non-negotiable.",
+      "notes": "Marcgravia sp. 'Bronze' can be mounted on cork bark or a coir panel within a high-humidity vivarium, where its juvenile leaves will [[shingling|shingle]] flat to the surface as it climbs. Mount it vertically only — sitting in wet soil will cause decline. Even brief desiccation causes leaf drop, so stable humidity and temperature are non-negotiable.",
       "sources": [
         {
           "url": "https://www.inaturalist.org/taxa/Marcgravia",
@@ -8585,7 +8585,7 @@
       "difficulty": 4,
       "image": "plants/marcgravia-ecuador.png",
       "nativeContext": "A Marcgravia morphotype or undescribed species collected from Ecuador's tropical lowland or foothill rainforest, circulated in the specialist vivarium hobby. Juvenile leaves are typically small, round, and press flat to bark in classic shingling fashion.",
-      "notes": "Marcgravia sp. 'Ecuador' needs a vertical cork bark mounting surface, ultra-high humidity, and stable warmth. Progress is slow by any measure — shingling marcgravias advance only a few centimeters per month under good conditions. Don't let humidity drop below 80% or the roots dry out.",
+      "notes": "Marcgravia sp. 'Ecuador' needs a vertical cork bark mounting surface, ultra-high humidity, and stable warmth. Progress is slow by any measure — [[shingling]] marcgravias advance only a few centimeters per month under good conditions. Don't let humidity drop below 80% or the roots dry out.",
       "sources": [
         {
           "url": "https://www.inaturalist.org/taxa/Marcgravia",
@@ -8677,7 +8677,7 @@
       "difficulty": 4,
       "image": "plants/marcgravia-peru.png",
       "nativeContext": "A Marcgravia form collected from the Peruvian Amazon or Andean foothills, traded in the vivarium hobby as a shingling background vine. Peru has exceptional Marcgravia diversity across its lowland and cloud-forest zones.",
-      "notes": "Marcgravia sp. 'Peru' can be mounted vertically in a closed high-humidity vivarium and is well-suited to the back wall of a large paludarium or rainforest terrarium. Like all shingling vines, it needs enough vertical run — a cramped enclosure will stall growth quickly.",
+      "notes": "Marcgravia sp. 'Peru' can be mounted vertically in a closed high-humidity vivarium and is well-suited to the back wall of a large paludarium or rainforest terrarium. Like all [[shingling]] vines, it needs enough vertical run — a cramped enclosure will stall growth quickly.",
       "sources": [
         {
           "url": "https://www.inaturalist.org/taxa/Marcgravia",
@@ -8768,8 +8768,8 @@
       "openTerrariumOk": false,
       "difficulty": 4,
       "image": "plants/marcgravia-st-lucia-island.png",
-      "nativeContext": "A Marcgravia form originating from St Lucia in the Lesser Antilles, where it grows epiphytically in the island's rain-forested peaks. Island endemic forms can differ meaningfully from mainland species in leaf shape and stem colouring.",
-      "notes": "Marcgravia sp. 'St Lucia Island' follows the standard closed-vivarium shingling care protocol. Because St Lucia's climate is consistently warm and humid year-round, this form may be especially intolerant of temperature fluctuations — keep conditions stable above 20°C.",
+      "nativeContext": "A Marcgravia form originating from St Lucia in the Lesser Antilles, where it grows epiphytically in the island's rain-forested peaks. Island endemic forms can differ meaningfully from mainland species in leaf shape and stem coloring.",
+      "notes": "Marcgravia sp. 'St Lucia Island' follows the standard closed-vivarium [[shingling]] care protocol. Because St Lucia's climate is consistently warm and humid year-round, this form may be especially intolerant of temperature fluctuations — keep conditions stable above 20°C.",
       "sources": [
         {
           "url": "https://www.inaturalist.org/taxa/Marcgravia",
@@ -8815,7 +8815,7 @@
       "difficulty": 4,
       "image": "plants/marcgravia-sintinesii.png",
       "nativeContext": "A described Marcgravia species from the Caribbean and northern South America region. Like other members of the genus it climbs tree trunks in humid rainforest, producing clasping juvenile leaves and pendant adult inflorescences with cup-like nectaries that attract bats for pollination.",
-      "notes": "Marcgravia sintinesii requires the same high-humidity, high-warmth closed conditions as all Marcgravia. It's one of the more structurally variable species as it transitions from its shingling juvenile to free-hanging adult phase — a mature specimen in a large vivarium is a showpiece, but allow adequate vertical height for that to happen.",
+      "notes": "Marcgravia sintinesii requires the same high-humidity, high-warmth closed conditions as all Marcgravia. It's one of the more structurally variable species as it transitions from its [[shingling]] juvenile to free-hanging adult phase — a mature specimen in a large vivarium is a showpiece, but allow adequate vertical height for that to happen.",
       "sources": [
         {
           "url": "https://powo.science.kew.org/taxon/urn:lsid:ipni.org:names:153847-1",
@@ -9006,7 +9006,7 @@
       "openTerrariumOk": false,
       "difficulty": 4,
       "image": "plants/monolena-primulaeflora-red.png",
-      "nativeContext": "Monolena primulaeflora is a compact, rosette-forming member of the Melastomataceae from the tropical rainforests of South America, particularly Ecuador and Peru. The 'Red' form is selected for vivid red-purple undersides and suffused upper leaf colouring, making it highly ornamental.",
+      "nativeContext": "Monolena primulaeflora is a compact, rosette-forming member of the Melastomataceae from the tropical rainforests of South America, particularly Ecuador and Peru. The 'Red' form is selected for vivid red-purple undersides and suffused upper leaf coloring, making it highly ornamental.",
       "notes": "Monolena primulaeflora 'Red' is a stunning but demanding plant that requires consistently saturated humidity and warmth. Plant it in a shallow-rooted mix of fine peat and sphagnum and never let it dry out. The red coloration intensifies in slightly brighter light, but direct exposure will cause burning — a mature, stable closed terrarium is the only reliable environment.",
       "sources": [
         {
@@ -9238,7 +9238,7 @@
       "difficulty": 3,
       "image": "plants/ficus-vilosa.png",
       "nativeContext": "Ficus villosa is a climbing fig from Southeast Asia — ranging through Thailand, Malaysia, Borneo, and the Philippines — where it climbs tree trunks and rocky outcrops in humid tropical and montane forests. Its leaves are notably hairy (villous) giving a distinctive velvety texture.",
-      "notes": "Ficus villosa is distinguished by its hairy leaves, which press flat to bark in the juvenile shingling phase and work well covering the background of a vivarium. High humidity helps keep the leaf hairs clean and healthy. It's more tolerant of lower humidity than Marcgravia but still does best in a closed environment.",
+      "notes": "Ficus villosa is distinguished by its hairy leaves, which press flat to bark in the juvenile [[shingling]] phase and work well covering the background of a vivarium. High humidity helps keep the leaf hairs clean and healthy. It's more tolerant of lower humidity than Marcgravia but still does best in a closed environment.",
       "sources": [
         {
           "url": "https://powo.science.kew.org/results?q=Ficus+villosa",
@@ -9284,7 +9284,7 @@
       "difficulty": 3,
       "image": "plants/ficus-punctata.png",
       "nativeContext": "Ficus punctata is a shingling/climbing fig from Southeast Asia (Malaysia, Indonesia, Philippines) that grows epiphytically on tree trunks in humid tropical rainforest. Its juvenile leaves press flat to bark and are punctuated with small dot-like structures, giving it its name.",
-      "notes": "Ficus punctata is a fast-shingling background vine once established, capable of creating a dense covering on cork bark. It needs a vertical surface, high humidity, and bright indirect light for best growth. Easier than Marcgravia, it produces waxy, pale green juvenile leaves with interesting textural detail.",
+      "notes": "Ficus punctata is a fast-[[shingling]] background vine once established, capable of creating a dense covering on cork bark. It needs a vertical surface, high humidity, and bright indirect light for best growth. Easier than Marcgravia, it produces waxy, pale green juvenile leaves with interesting textural detail.",
       "sources": [
         {
           "url": "https://powo.science.kew.org/results?q=Ficus+punctata",
@@ -9380,7 +9380,7 @@
       "difficulty": 2,
       "image": "plants/micranthemum-tweedei.png",
       "nativeContext": "Micranthemum tweedei, sold under the trade name 'Monte Carlo', is native to Argentina and Uruguay where it grows as a semi-aquatic carpet plant along stream margins and seasonally inundated areas. It is popular in aquascaping and emersed terrarium work.",
-      "notes": "Micranthemum tweedei, commonly known as Monte Carlo, forms a dense, low bright-green carpet when grown emersed in high-humidity terrariums. It needs a nutrient-rich fine substrate kept permanently saturated, making it excellent for the wet zone of a paludarium or the floor of a high-humidity closed build. Under bright light it stays compact; under low light, stems etiolate and the carpet opens up.",
+      "notes": "Micranthemum tweedei, commonly known as Monte Carlo, forms a dense, low bright-green carpet when grown emersed in high-humidity terrariums. It needs a nutrient-rich fine substrate kept permanently saturated, making it excellent for the wet zone of a paludarium or the floor of a high-humidity closed build. Under bright light it stays compact; under low light, stems [[etiolation|etiolate]] and the carpet opens up.",
       "sources": [
         {
           "url": "https://powo.science.kew.org/results?q=Micranthemum+tweedei",
@@ -9567,7 +9567,7 @@
       "openTerrariumOk": true,
       "difficulty": 4,
       "image": "plants/masdevallia-auropurpurea.png",
-      "nativeContext": "Masdevallia auropurpurea is a cool-growing epiphytic orchid from the cloud forests of Colombia and Ecuador, typically found at elevations of 1800–2800 m. It produces dramatic flowers with gold-yellow inner colouration and purple-flushed sepaline tails.",
+      "nativeContext": "Masdevallia auropurpurea is a cool-growing epiphytic orchid from the cloud forests of Colombia and Ecuador, typically found at elevations of 1800–2800 m. It produces dramatic flowers with gold-yellow inner coloration and purple-flushed sepaline tails.",
       "notes": "Masdevallia auropurpurea is a cool-growing orchid that critically requires cool temperatures — sustained warmth above 22°C will kill it. A closed terrarium will overheat unless actively chilled, so it's best grown in a cool orchid cabinet or a cool-room terrarium with excellent ventilation. Plant it in fine bark-sphagnum mix and never let the roots dry completely; use rainwater or RO water, as water quality matters for this genus.",
       "sources": [
         {
@@ -9749,7 +9749,7 @@
       "difficulty": 3,
       "image": "plants/pleurothallis-costaricensis.png",
       "nativeContext": "Pleurothallis costaricensis is native to the montane cloud forests of Costa Rica where it grows as a miniature epiphyte in perpetually humid conditions. It produces a succession of tiny intricate flowers throughout the year directly from its flat, round leaves.",
-      "notes": "Pleurothallis costaricensis is a diminutive orchid suited to nano terrariums or small vivaria with intermediate to cool temperatures. Cork bark mounting allows the roots to breathe. Its flowers are tiny but appear consistently from the leaf axil and reward a closer look with a loupe. Never let the mount dry completely — it's sensitive to desiccation.",
+      "notes": "Pleurothallis costaricensis is a diminutive orchid suited to nano terrariums or small vivaria with intermediate to cool temperatures. Cork bark mounting allows the roots to breathe. Its flowers are tiny but appear consistently from the leaf [[axil]] and reward a closer look with a loupe. Never let the mount dry completely — it's sensitive to desiccation.",
       "sources": [
         {
           "url": "https://powo.science.kew.org/results?q=Pleurothallis+costaricensis",
@@ -9888,7 +9888,7 @@
       "openTerrariumOk": true,
       "difficulty": 3,
       "image": "plants/restrepia-lansburghi.png",
-      "nativeContext": "Restrepia lansburgii is a cool-to-intermediate growing epiphytic orchid from the Andes cloud forests of Colombia and Venezuela, found at 1500–2800 m elevation. Restrepia species produce a succession of colourful, intricate flowers from the leaf base throughout the year.",
+      "nativeContext": "Restrepia lansburgii is a cool-to-intermediate growing epiphytic orchid from the Andes cloud forests of Colombia and Venezuela, found at 1500–2800 m elevation. Restrepia species produce a succession of colorful, intricate flowers from the leaf base throughout the year.",
       "notes": "Restrepia lansburgii is an excellent candidate for a well-ventilated cool orchid terrarium — it stays compact and flowers continuously when conditions are right. Provide intermediate to cool temperatures (12–22°C), good airflow, and consistent moisture without waterlogging. It will not tolerate the heat of a closed tropics-style vivarium.",
       "sources": [
         {
@@ -9935,7 +9935,7 @@
       "difficulty": 3,
       "image": "plants/restrepia-muscifera.png",
       "nativeContext": "Restrepia muscifera is a cool-growing Andean cloud forest orchid from Colombia, Venezuela, and Ecuador at 1500–2700 m. The name 'muscifera' (fly-bearing) refers to the fly-mimicking flower structure it uses to attract insect pollinators.",
-      "notes": "Restrepia muscifera follows the same care as other cool Restrepia: intermediate to cool temperatures, high humidity, and excellent air circulation. Its intricately patterned flowers mimic flies, which is genuinely fascinating, and it produces flowers at multiple times of year from leaf nodes. An ideal cool-case orchid for a specimen vivarium.",
+      "notes": "Restrepia muscifera follows the same care as other cool Restrepia: intermediate to cool temperatures, high humidity, and excellent air circulation. Its intricately patterned flowers mimic flies, which is genuinely fascinating, and it produces flowers at multiple times of year from leaf [[node|nodes]]. An ideal cool-case orchid for a specimen vivarium.",
       "sources": [
         {
           "url": "https://powo.science.kew.org/results?q=Restrepia+muscifera",
@@ -10068,7 +10068,7 @@
       "openTerrariumOk": true,
       "difficulty": 4,
       "image": "plants/zootrophion-sp.png",
-      "nativeContext": "Zootrophion is a small genus of cool-growing miniature orchids from the cloud forests of Central and South America. Known for their highly unusual trap-like flowers with small apertures and intricate internal colouring, they grow epiphytically on mossy branches in perpetually misty conditions.",
+      "nativeContext": "Zootrophion is a small genus of cool-growing miniature orchids from the cloud forests of Central and South America. Known for their highly unusual trap-like flowers with small apertures and intricate internal coloring, they grow epiphytically on mossy branches in perpetually misty conditions.",
       "notes": "Zootrophion sp. is a specialist cool-growing orchid for experienced collectors, requiring consistently cool temperatures below 22°C, near-saturated humidity, and excellent air movement — essentially cloud-forest conditions in a case. The bizarre flowers appear from leaf bases. It is not recommended for beginners or for tropical vivaria.",
       "sources": [
         {
@@ -10113,7 +10113,7 @@
       "openTerrariumOk": true,
       "difficulty": 4,
       "image": "plants/barbosella-hiftzii.png",
-      "nativeContext": "Barbosella is a small genus of miniature cool-to-intermediate epiphytic orchids from Andean cloud forests of South America. They grow on mossy branches in high-humidity, mist-shrouded conditions, producing tiny but intricately coloured flowers throughout the year.",
+      "nativeContext": "Barbosella is a small genus of miniature cool-to-intermediate epiphytic orchids from Andean cloud forests of South America. They grow on mossy branches in high-humidity, mist-shrouded conditions, producing tiny but intricately colored flowers throughout the year.",
       "notes": "Barbosella hiftzii is a true micro-orchid suited only to cool, high-humidity specialist conditions. It can be mounted on cork with live sphagnum or fine bark, with the roots kept consistently moist. The flowers are tiny but beautiful under magnification. Keep it below 22°C at all times — warmth is fatal, not just stressful. For experienced growers only.",
       "sources": [
         {
@@ -10158,7 +10158,7 @@
       "difficulty": 3,
       "image": "plants/bulbophyllum-intersitum.png",
       "nativeContext": "Bulbophyllum intersitum is a warm-to-intermediate growing epiphytic orchid from Southeast Asia's tropical forests. Like most Bulbophyllum, it grows on mossy tree bark in humid, warm rainforest conditions and produces distinctive, often unusually-shaped flowers.",
-      "notes": "Bulbophyllum intersitum is a warm-growing species more suited to tropical vivaria than cool-growing orchids. Mount it on cork bark and ensure the pseudobulbs and roots never dry out completely between waterings; good humidity and warmth are the main requirements. The pseudobulbs store water, which provides some drought tolerance.",
+      "notes": "Bulbophyllum intersitum is a warm-growing species more suited to tropical vivaria than cool-growing orchids. Mount it on cork bark and ensure the [[pseudobulb|pseudobulbs]] and roots never dry out completely between waterings; good humidity and warmth are the main requirements. The pseudobulbs store water, which provides some drought tolerance.",
       "sources": [
         {
           "url": "https://powo.science.kew.org/results?q=Bulbophyllum+intersitum",
@@ -10341,7 +10341,7 @@
       "difficulty": 2,
       "image": "plants/peperomia-angulata.png",
       "nativeContext": "Peperomia angulata (syn. P. quadrangularis) is native to the tropical forests of Central and South America. It grows as a compact, trailing herb in the humid forest understorey, producing distinctive dark-green leaves with paler longitudinal stripes along the veins.",
-      "notes": "Peperomia angulata is a robust, low-maintenance terrarium peperomia. Its trailing stems and striped leaves work well in mid-level positions, and it performs reliably under low light, making it useful in darker terrarium corners. Allow the substrate to approach dryness between waterings — peperomia roots rot easily in saturated soil.",
+      "notes": "Peperomia angulata is a robust, low-maintenance terrarium peperomia. It performs reliably under low light. Allow the substrate to approach dryness between waterings — peperomia roots rot easily in saturated soil.",
       "sources": [
         {
           "url": "https://powo.science.kew.org/results?q=Peperomia+angulata",
@@ -10433,7 +10433,7 @@
       "difficulty": 2,
       "image": "plants/peperomia-fagerlindii.png",
       "nativeContext": "Peperomia fagerlindii is a miniature trailing peperomia from the tropical forests of South America, characterised by small, rounded, succulent-textured leaves on delicate creeping stems.",
-      "notes": "Peperomia fagerlindii is a compact, well-behaved peperomia suited to foreground or mid-level planting. Like all peperomia, it's semi-succulent and tolerant of occasional dry periods; the fleshy leaves store moisture and the roots are sensitive to waterlogging, so avoid overwatering.",
+      "notes": "Peperomia fagerlindii is a compact, well-behaved peperomia. Like all peperomia, it's semi-succulent and tolerant of occasional dry periods; the fleshy leaves store moisture and the roots are sensitive to waterlogging, so avoid overwatering.",
       "sources": [
         {
           "url": "https://powo.science.kew.org/results?q=Peperomia+fagerlindii",
@@ -10524,7 +10524,7 @@
       "difficulty": 2,
       "image": "plants/peperomia-pepper-spot.png",
       "nativeContext": "An informally named Peperomia form circulated in the terrarium hobby, noted for small, round leaves adorned with dark spots or speckles on a lighter background. Likely from the tropical forests of South or Central America.",
-      "notes": "Peperomia sp. 'Pepper Spot' is a charming, compact accent plant for foreground positions in a terrarium. Like all peperomia, allow the substrate to partially dry between waterings and avoid overwatering. The spotted foliage makes it visually interesting even when not in flower.",
+      "notes": "Peperomia sp. 'Pepper Spot' is a charming, compact accent plant for terrariums. Like all peperomia, allow the substrate to partially dry between waterings and avoid overwatering. The spotted foliage makes it visually interesting even when not in flower.",
       "sources": [
         {
           "url": "https://powo.science.kew.org/results?q=Peperomia",
@@ -10616,7 +10616,7 @@
       "difficulty": 2,
       "image": "plants/peperomia-rubella.png",
       "nativeContext": "Peperomia rubella is a miniature trailing peperomia native to Jamaica's montane forests. It produces tiny, oval leaves with distinctive reddish-burgundy undersides and stems, growing in a delicate trailing or hanging habit on mossy rocks and tree limbs.",
-      "notes": "Peperomia rubella is a charming, compact peperomia whose red-underside leaves are a feature many enthusiasts prize. It works well in foreground or mid-level trailing positions in a vivarium. Avoid heavy watering — the small, fleshy leaves store moisture. The red coloration intensifies in brighter indirect light, and good humidity helps it stay compact and healthy.",
+      "notes": "Peperomia rubella is a charming, compact peperomia whose red-underside leaves are a feature many enthusiasts prize.  Avoid heavy watering — the small, fleshy leaves store moisture. The red coloration intensifies in brighter indirect light, and good humidity helps it stay compact and healthy.",
       "sources": [
         {
           "url": "https://powo.science.kew.org/results?q=Peperomia+rubella",
@@ -10845,7 +10845,7 @@
       "difficulty": 3,
       "image": "plants/peperomia-turboensis.png",
       "nativeContext": "Peperomia turboensis is a small peperomia from the tropical forests of South America, notable for its compact rosette form and fleshy, patterned foliage.",
-      "notes": "Peperomia turboensis is a compact rosette-forming peperomia suited to foreground planting in a closed terrarium. Its fleshy leaves store water and give it some drought tolerance; allow the substrate to partially dry between waterings. It's not commonly available, so source it from specialist vivarium plant suppliers.",
+      "notes": "Peperomia turboensis is a compact rosette-forming peperomia suited to closed terrariums. Its fleshy leaves store water and give it some drought tolerance; allow the substrate to partially dry between waterings. It's not commonly available, so source it from specialist vivarium plant suppliers.",
       "sources": [
         {
           "url": "https://powo.science.kew.org/results?q=Peperomia+turboensis",
@@ -10890,7 +10890,7 @@
       "openTerrariumOk": false,
       "difficulty": 2,
       "image": "plants/peperomia-verticillata-red-log.png",
-      "nativeContext": "Peperomia verticillata is native to Cuba and the Caribbean, growing in rocky forest habitats. The 'Red Log' cultivar is notable for its deep crimson-red undersides contrasting with dark green upper leaf surfaces on compact whorled stems — giving a striking bicolour effect.",
+      "nativeContext": "Peperomia verticillata is native to Cuba and the Caribbean, growing in rocky forest habitats. The 'Red Log' cultivar is notable for its deep crimson-red undersides contrasting with dark green upper leaf surfaces on compact whorled stems — giving a striking bicolor effect.",
       "notes": "Peperomia verticillata 'Red Log' is one of the most visually striking peperomia for terrariums. The red undersides are especially impactful when the plant is viewed from the side through glass. It prefers slightly lower humidity than many tropical terrariums, which makes it a useful bridge between open and closed builds. Allow partial drying between waterings.",
       "sources": [
         {
@@ -10988,7 +10988,7 @@
       "difficulty": 3,
       "image": "plants/bolbitis-heudelotii.png",
       "nativeContext": "Bolbitis heudelotii is an aquatic to semi-aquatic fern native to fast-flowing tropical African rivers and streams, particularly in West and Central Africa. It grows submerged or emersed, attaching rhizomes to rocks and wood in clear, oxygenated water.",
-      "notes": "Bolbitis heudelotii, the African Water Fern, is best grown attached to rock or driftwood in the wet zone of a paludarium, submerged or with the rhizome partially above water. Never bury the rhizome — it must remain exposed or it will rot. The plant prefers cool, moving, oxygen-rich water when aquatic; in emersed cultivation at high humidity it produces larger, more lace-like fronds.",
+      "notes": "Bolbitis heudelotii, the African Water Fern, is best grown attached to rock or driftwood in the wet zone of a paludarium, submerged or with the rhizome partially above water. Never bury the [[rhizome]] — it must remain exposed or it will rot. The plant prefers cool, moving, oxygen-rich water when aquatic; in emersed cultivation at high humidity it produces larger, more lace-like [[frond|fronds]].",
       "sources": [
         {
           "url": "https://powo.science.kew.org/results?q=Bolbitis+heudelotii",
@@ -11038,7 +11038,7 @@
       "difficulty": 3,
       "image": "plants/bolbitis-heteroclita-cuspidata.png",
       "nativeContext": "Bolbitis heteroclita is a Southeast Asian aquatic and semi-aquatic fern growing in humid, shaded stream margins from India to the Philippines. The 'Cuspidata' form is distinguished by distinctively tufted or crested pinnae tips, making it more ornamental than the standard form.",
-      "notes": "Bolbitis heteroclita 'Cuspidata' can be attached by its rhizomes to wood or rock and grown submerged or at the water's edge in a paludarium. Like all Bolbitis, never bury the rhizome. The cuspidate tip form is particularly attractive in emersed cultivation, and it requires high humidity, soft to neutral water, and warm temperatures.",
+      "notes": "Bolbitis heteroclita 'Cuspidata' can be attached by its rhizomes to wood or rock and grown submerged or at the water's edge in a paludarium. Like all Bolbitis, never bury the [[rhizome]]. The cuspidate tip form is particularly attractive in emersed cultivation, and it requires high humidity, soft to neutral water, and warm temperatures.",
       "sources": [
         {
           "url": "https://powo.science.kew.org/results?q=Bolbitis+heteroclita",
@@ -11083,8 +11083,8 @@
       "openTerrariumOk": false,
       "difficulty": 2,
       "image": "plants/lemmaphyllum-microphyllum.png",
-      "nativeContext": "Lemmaphyllum microphyllum is a miniature epiphytic fern from East and Southeast Asia, growing on mossy tree bark and rocks in humid forest environments. It produces tiny, round (coin-shaped) fronds on creeping rhizomes, carpeting surfaces with a delicate texture.",
-      "notes": "Lemmaphyllum microphyllum is an excellent epiphytic terrarium fern that grows flat against bark or moss walls, producing a charming mosaic of tiny round fronds. It can be attached to cork bark or grown on moist wood, and it tolerates lower temperatures than many tropical ferns. Keep it moist and humid — the small fronds desiccate quickly if conditions drop.",
+      "nativeContext": "Lemmaphyllum microphyllum is a miniature epiphytic fern from East and Southeast Asia, growing on mossy tree bark and rocks in humid forest environments. It produces tiny, round (coin-shaped) fronds on creeping [[rhizome|rhizomes]], carpeting surfaces with a delicate texture.",
+      "notes": "Lemmaphyllum microphyllum is an excellent epiphytic terrarium fern that grows flat against bark or moss walls, producing a charming mosaic of tiny round fronds. It can be attached to cork bark or grown on moist wood, and it tolerates lower temperatures than many tropical ferns. Keep it moist and humid — the small [[frond|fronds]] desiccate quickly if conditions drop.",
       "sources": [
         {
           "url": "https://powo.science.kew.org/results?q=Lemmaphyllum+microphyllum",
@@ -11129,7 +11129,7 @@
       "difficulty": 2,
       "image": "plants/pleopeltis-percussa.png",
       "nativeContext": "Pleopeltis percussa is a drought-tolerant epiphytic fern from the tropical and subtropical Americas, growing on tree bark and rocky outcrops. Its strap-shaped fronds are marked with distinctive impressed dots (punctae) on the surface, from which the common name derives.",
-      "notes": "Pleopeltis percussa, the Wart Fern, is a tough epiphytic fern well-suited to terrarium culture. It can survive brief dry periods by curling its fronds in a manner similar to resurrection ferns, and it rewets readily from dormancy. It can be mounted on bark or grown in a well-draining mix, and it's easier to care for than many of the more delicate terrarium ferns.",
+      "notes": "Pleopeltis percussa, the Wart Fern, is a tough epiphytic fern well-suited to terrarium culture. It can survive brief dry periods by curling its [[frond|fronds]] in a manner similar to resurrection ferns, and it rewets readily from dormancy. It can be mounted on bark or grown in a well-draining mix, and it's easier to care for than many of the more delicate terrarium ferns.",
       "sources": [
         {
           "url": "https://powo.science.kew.org/results?q=Pleopeltis+percussa",
@@ -11174,7 +11174,7 @@
       "difficulty": 2,
       "image": "plants/pyrrosia-nummularifolia.png",
       "nativeContext": "Pyrrosia nummularifolia is a miniature creeping epiphytic fern from Southeast Asia (Thailand, Malaysia, Indonesia), producing tiny round, coin-shaped fronds on creeping rhizomes. It grows on mossy bark in humid tropical and subtropical forest.",
-      "notes": "Pyrrosia nummularifolia is a popular terrarium fern for its miniature, perfectly round fronds that carpet bark and wood surfaces over time. Keep the rhizomes exposed rather than buried, attach it to cork or a wood panel, and provide moderate to high humidity and stable warmth for the best growth. It's very slow-growing, but it forms attractive dense mats once established.",
+      "notes": "Pyrrosia nummularifolia is a popular terrarium fern for its miniature, perfectly round [[frond|fronds]] that carpet bark and wood surfaces over time. Keep the [[rhizome|rhizomes]] exposed rather than buried, attach it to cork or a wood panel, and provide moderate to high humidity and stable warmth for the best growth. It's very slow-growing, but it forms attractive dense mats once established.",
       "sources": [
         {
           "url": "https://powo.science.kew.org/results?q=Pyrrosia+nummularifolia",
@@ -11220,7 +11220,7 @@
       "difficulty": 3,
       "image": "plants/tectaria-zeilanica.png",
       "nativeContext": "Tectaria zeilanica is a tropical fern native to Sri Lanka and South Asia, growing in deeply shaded, humid forest floors where moisture is consistently high. The fronds are large, divided, and have an almost lace-like quality, making it visually impressive.",
-      "notes": "Tectaria zeilanica, the Ceylon Tectaria, is suited to large, mature closed terrariums or Wardian cases where consistent deep shade and high humidity can be maintained. The fronds are delicate and do not tolerate direct light or dry spells; plant it in deep, rich, moist substrate. It's a striking architectural fern once established.",
+      "notes": "Tectaria zeilanica, the Ceylon Tectaria, is suited to large, mature closed terrariums or Wardian cases where consistent deep shade and high humidity can be maintained. The [[frond|fronds]] are delicate and do not tolerate direct light or dry spells; plant it in deep, rich, moist substrate. It's a striking architectural fern once established.",
       "sources": [
         {
           "url": "https://powo.science.kew.org/results?q=Tectaria+zeilanica",
@@ -11265,7 +11265,7 @@
       "openTerrariumOk": true,
       "difficulty": 3,
       "image": "plants/actiniopteris-australis.png",
-      "nativeContext": "Actiniopteris australis is a distinctive fern from arid and semi-arid rocky habitats across Africa, the Middle East, and South Asia. Its fan-shaped, palm-like fronds are highly adapted to drought, allowing the plant to survive in rock crevices and dry hillsides where most ferns cannot.",
+      "nativeContext": "Actiniopteris australis is a distinctive fern from arid and semi-arid rocky habitats across Africa, the Middle East, and South Asia. Its fan-shaped, palm-like [[frond|fronds]] are highly adapted to drought, allowing the plant to survive in rock crevices and dry hillsides where most ferns cannot.",
       "notes": "Actiniopteris australis, the Palm Fern, is an unusual arid-adapted fern completely unlike typical terrarium ferns. It's best suited to a dryland or desert open terrarium rather than a closed humid build — allow the substrate to dry thoroughly between waterings and provide bright, indirect to partial direct light. It's very drought-tolerant once established but dislikes overwatering.",
       "sources": [
         {
@@ -11457,7 +11457,7 @@
       "openTerrariumOk": false,
       "difficulty": 2,
       "image": "plants/selaginella-erythropus-sanguinea.png",
-      "nativeContext": "Selaginella erythropus 'Sanguinea' is a form of the red spike moss native to the humid tropical forests of Central and South America. The 'Sanguinea' selection is chosen for its especially vivid blood-red to ruby colouration on the upper frond surface, contrasting with pale green undersides.",
+      "nativeContext": "Selaginella erythropus 'Sanguinea' is a form of the red spike moss native to the humid tropical forests of Central and South America. The 'Sanguinea' selection is chosen for its especially vivid blood-red to ruby coloration on the upper [[frond]] surface, contrasting with pale green undersides.",
       "notes": "Selaginella erythropus 'Sanguinea' produces its red coloration from anthocyanin pigments, and the color is most vivid under low to medium indirect light at high humidity — counter-intuitively, bright light can actually reduce the color intensity. It can be grown in consistently moist fine peat or coco-coir and makes excellent ground cover for tropical closed builds. High ambient humidity is required.",
       "sources": [
         {
@@ -11504,7 +11504,7 @@
       "difficulty": 2,
       "image": "plants/selaginella-martensii-watsoniana.png",
       "nativeContext": "Selaginella martensii 'Watsoniana' is a cultivar of a Mexican and Central American spike moss species, selected for variegated silver-white tips on the frond ends that give a frosted or snow-dusted appearance to the otherwise green foliage.",
-      "notes": "Selaginella martensii 'Watsoniana' is an extremely attractive selaginella for closed builds — the silver-tipped fronds glow under terrarium lighting. It prefers slightly cooler temperatures and lower humidity than strictly tropical species, making it more versatile than many selaginellas. Keep it moist at all times; it's a reliable and forgiving ground cover.",
+      "notes": "Selaginella martensii 'Watsoniana' is an extremely attractive selaginella for closed builds — the silver-tipped [[frond|fronds]] glow under terrarium lighting. It prefers slightly cooler temperatures and lower humidity than strictly tropical species, making it more versatile than many selaginellas. Keep it moist at all times; it's a reliable and forgiving ground cover.",
       "sources": [
         {
           "url": "https://powo.science.kew.org/results?q=Selaginella+martensii",
@@ -11642,7 +11642,7 @@
       "difficulty": 2,
       "image": "plants/pilea-libanensis-aquamarine.png",
       "nativeContext": "Pilea libanensis 'Aquamarine' is a cultivar of a small Pilea species producing a cloud of delicate, thread-like stems and tiny round leaves with a blue-green to aquamarine tint. It grows as a groundcover in humid subtropical to tropical forests.",
-      "notes": "Pilea libanensis 'Aquamarine' creates a stunning, airy effect in terrariums — the fine stems and tiny leaves resemble a miniature cloud or soft moss from a distance. It prefers moderate to high humidity and moist but well-drained substrate. Trim it periodically to keep it dense and compact; it suits foreground or mid-level positions.",
+      "notes": "Pilea libanensis 'Aquamarine' creates a stunning, airy effect in terrariums — the fine stems and tiny leaves resemble a miniature cloud or soft moss from a distance. It prefers moderate to high humidity and moist but well-drained substrate. Trim it periodically to keep it dense and compact.",
       "sources": [
         {
           "url": "https://powo.science.kew.org/results?q=Pilea+libanensis",
@@ -11687,7 +11687,7 @@
       "difficulty": 2,
       "image": "plants/pilea-pubescens-silver-cloud.png",
       "nativeContext": "Pilea pubescens 'Silver Cloud' is a Caribbean and tropical South American Pilea cultivar selected for heavily silver-frosted foliage — the metallic sheen covering most of the leaf surface gives the impression of a silver cloud above the green base.",
-      "notes": "Pilea pubescens 'Silver Cloud' is a striking metallic-leaved pilea well-suited to closed terrariums. The silver coloration is brightest under medium light — too low and it fades, too high and it bleaches. Keep it moist and humid; it's compact and relatively well-behaved, making it a good focal-point plant at mid-level in a build.",
+      "notes": "Pilea pubescens 'Silver Cloud' is a striking metallic-leaved pilea well-suited to closed terrariums. The silver coloration is brightest under medium light — too low and it fades, too high and it bleaches. Keep it moist and humid; it's compact and relatively well-behaved.",
       "sources": [
         {
           "url": "https://powo.science.kew.org/results?q=Pilea+pubescens",
@@ -11824,7 +11824,7 @@
       "openTerrariumOk": false,
       "difficulty": 2,
       "image": "plants/cissus-amazonicus.png",
-      "nativeContext": "Cissus amazonica is a climbing vine native to the rainforests of the Amazon basin in Brazil and neighbouring South America. It produces lanceolate, dark-green leaves marked with a distinctive silver chevron pattern along the midrib and lateral veins, with deep red-purple undersides.",
+      "nativeContext": "Cissus amazonica is a climbing vine native to the rainforests of the Amazon basin in Brazil and neighboring South America. It produces lanceolate, dark-green leaves marked with a distinctive silver chevron pattern along the [[midrib]] and lateral veins, with deep red-purple undersides.",
       "notes": "Cissus amazonica is an excellent large-build terrarium vine with striking metallic foliage that climbs readily on wood, cork, or background panels. Keep it consistently moist with high humidity — the large leaf area transpires rapidly in dry conditions. Vigorous growth means regular trimming may be needed in enclosed spaces; it's best suited to large vivaria or Wardian cases.",
       "sources": [
         {

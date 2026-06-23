@@ -32,6 +32,73 @@ import { generateCareGuide } from './care';
 
 export type CareTaskType = 'watering-inspection' | 'lid-opening' | 'trimming';
 
+/**
+ * Per-task, owner-set customization that overrides the derived defaults. Persisted
+ * on the build (`builds.care_overrides`) so it survives a reminders off→on cycle —
+ * unlike the live `care_marks` rows, which only exist while reminders are on.
+ *
+ *   - `intervalDays` — replaces the derived cadence for this task. Absent → use the
+ *     suggested bucket value. Clamped to {@link MIN_CARE_INTERVAL_DAYS}…{@link
+ *     MAX_CARE_INTERVAL_DAYS} when applied.
+ *   - `muted` — the owner has silenced *this* task without disabling the whole
+ *     build. A muted task is never seeded as a pending occurrence.
+ *
+ * Manual *reschedule* (nudging the next occurrence's due date) is **not** here —
+ * that edits the live `care_marks` row's `dueAt` directly and only exists while the
+ * occurrence does.
+ */
+export interface CareTaskOverride {
+  intervalDays?: number;
+  muted?: boolean;
+}
+
+/** Sparse map of task type → its override. Absent keys use the derived defaults. */
+export type CareOverrides = Partial<Record<CareTaskType, CareTaskOverride>>;
+
+/** Cadence override bounds — keep a custom interval sane (daily … quarterly). */
+export const MIN_CARE_INTERVAL_DAYS = 1;
+export const MAX_CARE_INTERVAL_DAYS = 90;
+
+/** Round to whole days and clamp into the supported cadence range. */
+export function clampCareInterval(days: number): number {
+  const whole = Math.round(days);
+  if (whole < MIN_CARE_INTERVAL_DAYS) return MIN_CARE_INTERVAL_DAYS;
+  if (whole > MAX_CARE_INTERVAL_DAYS) return MAX_CARE_INTERVAL_DAYS;
+  return whole;
+}
+
+// --- Cadence as a count × unit (Care-tab input only) -------------------------
+// Storage stays a plain day-count (`intervalDays`); these just let the editor
+// offer "every N days/weeks/months" instead of one-day-at-a-time stepping.
+// ponytail: a month is a flat 30 days — good enough for a reminder cadence; no
+// calendar math, and it keeps MAX (90d) a clean 3 months.
+
+export type CareIntervalUnit = 'days' | 'weeks' | 'months';
+export const CARE_INTERVAL_UNITS: readonly CareIntervalUnit[] = ['days', 'weeks', 'months'];
+const UNIT_DAYS: Record<CareIntervalUnit, number> = { days: 1, weeks: 7, months: 30 };
+
+/** The largest unit a day-count divides cleanly into (months → weeks → days). */
+export function splitInterval(days: number): { count: number; unit: CareIntervalUnit } {
+  if (days % UNIT_DAYS.months === 0) return { count: days / UNIT_DAYS.months, unit: 'months' };
+  if (days % UNIT_DAYS.weeks === 0) return { count: days / UNIT_DAYS.weeks, unit: 'weeks' };
+  return { count: days, unit: 'days' };
+}
+
+/** A whole count in `unit`, expressed (and clamped) as days. Count floored to ≥1. */
+export function intervalToDays(count: number, unit: CareIntervalUnit): number {
+  return clampCareInterval(Math.max(1, Math.round(count)) * UNIT_DAYS[unit]);
+}
+
+/** How many whole `unit`s a day-count is, for the stepper display (≥1). */
+export function intervalCount(days: number, unit: CareIntervalUnit): number {
+  return Math.max(1, Math.round(days / UNIT_DAYS[unit]));
+}
+
+/** Largest whole count allowed in `unit` — the stepper's upper bound. */
+export function maxIntervalCount(unit: CareIntervalUnit): number {
+  return Math.floor(MAX_CARE_INTERVAL_DAYS / UNIT_DAYS[unit]);
+}
+
 /** All three task kinds, in display order (calmest → most active). */
 export const CARE_TASK_TYPES: readonly CareTaskType[] = [
   'watering-inspection',
@@ -117,7 +184,10 @@ export interface CareTask {
   type: CareTaskType;
   /** The coarse bucket that selected the interval (transparency + tests). */
   bucket: string;
+  /** The effective cadence — an owner override if set, else the derived default. */
   intervalDays: number;
+  /** True when the owner has silenced this task (never seeded as a pending row). */
+  muted: boolean;
   /** Notification body — reused verbatim from `generateCareGuide`. */
   body: string;
   /** First fire: one interval after build creation (don't nag on save). */
@@ -130,14 +200,22 @@ export interface CareTask {
  * Returns `[]` when there are no plants (nothing to inspect, vent, or trim). The
  * tasks come back in `CARE_TASK_TYPES` order.
  *
+ * Owner `overrides` (cadence / mute) are folded in here so the effective schedule
+ * is the single thing the Care tab, the seeding logic, and the notification budget
+ * all read — `task.intervalDays` is already the overridden value and `task.muted`
+ * already reflects the owner's choice. Muted tasks are still **returned** (so the
+ * editor can list and un-mute them); the caller skips them when seeding occurrences.
+ *
  * @param plants    the build's resolved plants (empty → `[]`).
  * @param container the build's resolved container.
  * @param createdAt the build's creation time — `firstDueAt = createdAt + interval`.
+ * @param overrides per-task owner customization, or omitted for pure defaults.
  */
 export function buildCareSchedule(
   plants: Plant[],
   container: Container,
   createdAt: Date,
+  overrides?: CareOverrides,
 ): CareTask[] {
   if (plants.length === 0) return [];
 
@@ -149,11 +227,15 @@ export function buildCareSchedule(
   const base = createdAt.getTime();
   const tasks: CareTask[] = [];
 
-  const push = (type: CareTaskType, bucket: string, intervalDays: number) => {
+  const push = (type: CareTaskType, bucket: string, defaultInterval: number) => {
+    const override = overrides?.[type];
+    const intervalDays =
+      override?.intervalDays != null ? clampCareInterval(override.intervalDays) : defaultInterval;
     tasks.push({
       type,
       bucket,
       intervalDays,
+      muted: override?.muted ?? false,
       body: bodyOf(type),
       firstDueAt: base + intervalDays * DAY_MS,
     });

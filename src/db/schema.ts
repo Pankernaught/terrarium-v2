@@ -33,6 +33,7 @@ import type { BaseSQLiteDatabase } from 'drizzle-orm/sqlite-core';
 import { index, integer, real, sqliteTable, text } from 'drizzle-orm/sqlite-core';
 
 import type { Placement } from '../data/presets';
+import type { CareOverrides } from '../logic/careSchedule';
 import type { Dimensions } from '../logic/containers';
 import type { SubstrateMix } from '../logic/substrateMixer';
 
@@ -81,6 +82,14 @@ export const builds = sqliteTable('builds', {
    * (`ensureSubstrateMixColumn`), not `CREATE TABLE`.
    */
   substrateMix: text('substrate_mix', { mode: 'json' }).$type<SubstrateMix>(),
+  /**
+   * Per-task care-cycle customization (`taskType → { intervalDays?, muted? }`), or
+   * `null` when the owner has left every task on its suggested cadence. Read by the
+   * Care tab to override the derived schedule; never feeds the compatibility score.
+   * Additive column → an existing store gets it via the guarded ALTER on open
+   * (`ensureCareOverridesColumn`), not `CREATE TABLE`.
+   */
+  careOverrides: text('care_overrides', { mode: 'json' }).$type<CareOverrides>(),
   /** Explicit hero pointer — not necessarily the newest photo — into `build_photos.id`. */
   primaryPhotoId: text('primary_photo_id'),
   createdAt: integer('created_at', { mode: 'timestamp_ms' }).notNull(),
@@ -179,6 +188,7 @@ CREATE TABLE IF NOT EXISTS builds (
   drainage_depth REAL,
   charcoal_depth REAL,
   substrate_mix TEXT,
+  care_overrides TEXT,
   primary_photo_id TEXT,
   created_at INTEGER NOT NULL,
   updated_at INTEGER NOT NULL
@@ -228,6 +238,9 @@ export const SUBSTRATE_MIX_COLUMN = 'substrate_mix';
 /** The additive column the charcoal layer adds to `builds`. */
 export const CHARCOAL_DEPTH_COLUMN = 'charcoal_depth';
 
+/** The additive column the customizable care cycle adds to `builds`. */
+export const CARE_OVERRIDES_COLUMN = 'care_overrides';
+
 /**
  * Guarded additive migration, run on every store open after `SCHEMA_DDL`.
  *
@@ -271,5 +284,24 @@ export function ensureCharcoalDepthColumn(
 ): void {
   if (!buildsColumns.includes(CHARCOAL_DEPTH_COLUMN)) {
     exec(`ALTER TABLE builds ADD COLUMN ${CHARCOAL_DEPTH_COLUMN} REAL`);
+  }
+}
+
+/**
+ * Guarded additive migration for the customizable care cycle — same pattern and
+ * rationale as {@link ensureSubstrateMixColumn}: a store created before the care-cycle
+ * editor shipped has every table but lacks `builds.care_overrides`, and `CREATE TABLE
+ * IF NOT EXISTS` can't backfill it. Both drivers route through this on open; idempotent
+ * (a fresh DB already has the column from the DDL, so the guard no-ops).
+ *
+ * @param buildsColumns the live column names of `builds` (from `PRAGMA table_info`).
+ * @param exec runs a result-less DDL statement on the underlying driver.
+ */
+export function ensureCareOverridesColumn(
+  buildsColumns: readonly string[],
+  exec: (sql: string) => void,
+): void {
+  if (!buildsColumns.includes(CARE_OVERRIDES_COLUMN)) {
+    exec(`ALTER TABLE builds ADD COLUMN ${CARE_OVERRIDES_COLUMN} TEXT`);
   }
 }

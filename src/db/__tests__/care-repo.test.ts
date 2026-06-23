@@ -199,6 +199,62 @@ describe('care repository', () => {
     await expect(repo.markDone('nope', 7)).rejects.toThrow(/not found/);
   });
 
+  it('reschedule moves a pending row to a new due time', async () => {
+    const buildId = await makeBuild(db);
+    const mark = await repo.add({
+      buildId,
+      kind: 'watering-inspection',
+      dueAt: new Date('2026-07-01T00:00:00.000Z'),
+    });
+    const newDue = new Date('2026-07-05T00:00:00.000Z');
+
+    const updated = await repo.reschedule(mark.id, newDue);
+    expect(updated.id).toBe(mark.id);
+    expect(updated.dueAt!.getTime()).toBe(newDue.getTime());
+
+    const pending = await repo.pendingForBuild(buildId);
+    expect(pending).toHaveLength(1);
+    expect(pending[0].dueAt!.getTime()).toBe(newDue.getTime());
+  });
+
+  it('reschedule rejects an unknown id and a completed row', async () => {
+    const buildId = await makeBuild(db);
+    await expect(repo.reschedule('nope', new Date())).rejects.toThrow(/not found/);
+
+    const mark = await repo.add({
+      buildId,
+      kind: 'trimming',
+      dueAt: new Date('2026-07-01T00:00:00.000Z'),
+    });
+    await repo.markDone(mark.id, 7); // completes `mark`
+    await expect(repo.reschedule(mark.id, new Date())).rejects.toThrow(/already completed/);
+  });
+
+  it('disableKind clears only the named kind, leaving others and history intact', async () => {
+    const buildId = await makeBuild(db);
+    const water = await repo.add({
+      buildId,
+      kind: 'watering-inspection',
+      dueAt: new Date('2026-07-01T00:00:00.000Z'),
+    });
+    await repo.add({
+      buildId,
+      kind: 'lid-opening',
+      dueAt: new Date('2026-07-02T00:00:00.000Z'),
+    });
+    // A completed watering row in history must survive the mute.
+    await repo.markDone(water.id, 7);
+
+    await repo.disableKind(buildId, 'watering-inspection');
+
+    const pending = await repo.pendingForBuild(buildId);
+    expect(pending.map((m) => m.kind)).toEqual(['lid-opening']);
+
+    const completed = (await repo.listForBuild(buildId)).filter((m) => m.completedAt !== null);
+    expect(completed).toHaveLength(1);
+    expect(completed[0].id).toBe(water.id);
+  });
+
   it('disableForBuild removes pending rows but keeps completed ones', async () => {
     const buildId = await makeBuild(db);
     const a = await repo.add({

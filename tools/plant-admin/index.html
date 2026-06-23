@@ -21,6 +21,11 @@
   header h1 { font-size: 17px; margin: 0; font-weight: 650; }
   header .count { color: var(--muted); font-size: 13px; }
   header .save-note { margin-left: auto; color: var(--muted); font-size: 12px; }
+  /* --- entity toggle (Plants | Terms) --- */
+  .seg { display: inline-flex; align-self: center; border: 1px solid var(--line); border-radius: 8px; overflow: hidden; }
+  .seg button { border: 0; border-radius: 0; background: transparent; color: var(--muted); padding: 5px 14px; font: inherit; font-size: 13px; font-weight: 600; cursor: pointer; }
+  .seg button:hover { border: 0; color: var(--ink); }
+  .seg button.active { background: var(--accent); color: var(--accent-ink); }
   .layout { display: grid; grid-template-columns: 320px 1fr 210px; flex: 1; min-height: 0; }
   /* --- list --- */
   .list { border-right: 1px solid var(--line); display: flex; flex-direction: column; min-width: 0; min-height: 0; }
@@ -77,6 +82,10 @@
   .link-row { display: flex; gap: 8px; margin-bottom: 6px; }
   .link-row input { flex: 1; }
   .link-row .link-label { flex: 0 0 32%; }
+  /* --- sluglist (glossary seeAlso) --- */
+  .slug-row { display: flex; gap: 8px; margin-bottom: 6px; }
+  .slug-row input { flex: 1; font-family: ui-monospace, monospace; font-size: 12.5px; }
+  .slug-row.invalid input { border-color: var(--danger); }
   /* --- buttons --- */
   button {
     font: inherit; border: 1px solid var(--line); background: var(--panel-solid); color: var(--ink);
@@ -131,6 +140,7 @@
   .vp-title { font-size: 12px; font-weight: 650; color: var(--muted); text-transform: uppercase; letter-spacing: .06em; flex: 1; }
   .vp-count { font-size: 12px; color: var(--accent); font-variant-numeric: tabular-nums; }
   .vp-empty { color: var(--muted); font-size: 13px; padding: 28px 14px; text-align: center; }
+  .vp-good { color: var(--accent); font-size: 13px; padding: 24px 14px; text-align: center; line-height: 1.5; }
   .vf-group { padding: 10px 14px 4px; }
   .vf-group-title {
     font-size: 10.5px; text-transform: uppercase; letter-spacing: .07em; color: var(--accent);
@@ -140,12 +150,24 @@
   .vf-item input { width: 13px; height: 13px; accent-color: var(--accent); flex-shrink: 0; cursor: pointer; }
   .vf-item span { font-size: 12px; color: var(--muted); line-height: 1.3; }
   .vf-item.checked span { color: var(--ink); }
+  /* --- coverage worklist (Terms verify panel) --- */
+  .vf-cov {
+    display: block; width: 100%; text-align: left; border: 1px solid var(--line);
+    background: var(--field); border-radius: 7px; padding: 7px 9px; margin: 0 0 6px;
+  }
+  .vf-cov:hover { border-color: var(--accent); }
+  .vf-cov .cov-slug { font-family: ui-monospace, monospace; font-size: 12.5px; color: var(--ink); }
+  .vf-cov .cov-cat { font-size: 11px; color: var(--muted); margin-top: 1px; }
 </style>
 
 <header>
   <h1>🌿 Plant Admin</h1>
   <span class="count" id="count"></span>
-  <span class="save-note">Autosaves to <code>src/data/plants.json</code> · restart Expo to apply</span>
+  <div class="seg" id="entityToggle">
+    <button type="button" data-entity="plants" class="active">Plants</button>
+    <button type="button" data-entity="terms">Terms</button>
+  </div>
+  <span class="save-note" id="saveNote">Autosaves to <code>src/data/plants.json</code> · restart Expo to apply</span>
 </header>
 
 <div class="layout">
@@ -153,7 +175,7 @@
     <div class="controls">
       <button class="primary" id="addBtn">+ Add plant</button>
       <input type="text" id="search" placeholder="Search name or slug…" />
-      <select id="typeFilter"><option value="">All plant types</option></select>
+      <select id="filter"><option value="">All plant types</option></select>
     </div>
     <div class="rows" id="rows"></div>
   </aside>
@@ -165,6 +187,7 @@
   </aside>
 </div>
 
+<datalist id="term-slugs"></datalist>
 <div id="toast"></div>
 <div id="modal">
   <div class="dialog">
@@ -187,18 +210,69 @@ window.SPEC = SPEC;
   const SPEC = window.SPEC;
   const $ = (s, r = document) => r.querySelector(s);
 
+  // ---- per-entity config: one form engine, two entities (plants / glossary terms) ----
+  const MODES = {
+    plants: {
+      label: 'Plants', noun: 'plant', api: '/api/plants',
+      groups: SPEC.GROUPS, fields: SPEC.ALL_FIELDS,
+      autoSlugFrom: 'scientificName', hasImage: true,
+      addLabel: '+ Add plant', searchPlaceholder: 'Search name or slug…',
+      saveNote: 'Autosaves to <code>src/data/plants.json</code> · restart Expo to apply',
+      dataKey: 'plants', payloadFromData: (d) => d.plants,
+      listPrimary: (r) => r.commonName || r.slug,
+      listSecondary: (r) => r.scientificName || '',
+      searchText: (r) => [r.commonName, r.scientificName, r.slug],
+      title: (r) => r.commonName || r.slug,
+      newRecord: () => ({ substrateTags: [], closedTerrariumOk: false, openTerrariumOk: false }),
+      filter: {
+        label: 'All plant types',
+        options: () => SPEC.PLANT_TYPES,
+        optionLabel: (v) => v,
+        match: (r, v) => r.plantType === v,
+      },
+      deleteWarning: () => `This removes the plant from the catalog. Any saved build that used it will point at a missing plant until you re-add it, and its photo/placeholder files are left on disk. This can't be undone from here (use git to recover).`,
+    },
+    terms: {
+      label: 'Terms', noun: 'term', api: '/api/glossary',
+      groups: SPEC.GLOSSARY_GROUPS, fields: SPEC.GLOSSARY_ALL_FIELDS,
+      autoSlugFrom: 'term', hasImage: false,
+      addLabel: '+ Add term', searchPlaceholder: 'Search term or slug…',
+      saveNote: 'Autosaves to <code>src/data/glossary.json</code> · restart Expo to apply',
+      dataKey: 'terms', payloadFromData: (d) => d.terms,
+      listPrimary: (r) => r.term || r.slug,
+      listSecondary: (r) => SPEC.GLOSSARY_CATEGORY_LABELS[r.category] || r.category || '',
+      searchText: (r) => [r.term, r.slug, r.category],
+      title: (r) => r.term || r.slug,
+      newRecord: () => ({ seeAlso: [] }),
+      filter: {
+        label: 'All categories',
+        options: () => SPEC.GLOSSARY_CATEGORIES,
+        optionLabel: (v) => SPEC.GLOSSARY_CATEGORY_LABELS[v] || v,
+        match: (r, v) => r.category === v,
+      },
+      deleteWarning: (slug) => `This removes the term from the glossary. Any other entry's "see also" link, and any plant prose <code>[[${slug}]]</code> link, will dangle until you re-add it (CI catches a dangling prose link). This can't be undone from here (use git to recover).`,
+    },
+  };
+
   const state = {
+    entity: 'plants',  // 'plants' | 'terms'
     plants: [],
+    terms: [],
+    termsLoaded: false,
+    missing: [],       // coverage worklist (terms mode)
     mode: null,        // 'add' | 'edit'
     originalSlug: null,
     imageDataUrl: null,
     touched: new Set(),
     slugDirty: false,
     search: '',
-    typeFilter: '',
+    filterValue: '',
     verified: new Set(JSON.parse(localStorage.getItem('plant-verified') || '[]')),
     fieldVerified: JSON.parse(localStorage.getItem('plant-field-verified') || '{}'),
   };
+
+  function cfg() { return MODES[state.entity]; }
+  function records() { return state[cfg().dataKey]; }
 
   // ---- API ----
   async function api(method, path, body) {
@@ -219,31 +293,50 @@ window.SPEC = SPEC;
     setTimeout(() => (t.className = ''), 3600);
   }
 
+  // ---- validation (threads the entity's extra arg) ----
+  function otherSlugs() {
+    return new Set(records().map((r) => r.slug).filter((s) => s !== state.originalSlug));
+  }
+
+  // Glossary slug set for the plant prose-link check. Undefined until the glossary
+  // has loaded, so we never false-flag every [[link]] on a cold start.
+  function glossarySlugSet() {
+    return state.termsLoaded ? new Set(state.terms.map((t) => t.slug)) : undefined;
+  }
+
+  function validateActive(rec) {
+    const others = otherSlugs();
+    if (state.entity === 'plants') return SPEC.validatePlant(rec, others, glossarySlugSet());
+    return SPEC.validateTerm(rec, others, others); // validateTerm adds the record's own slug
+  }
+
   // ---- list ----
-  function matchesFilter(p) {
+  function matchesFilter(r) {
     const q = state.search.trim().toLowerCase();
-    if (q && ![p.commonName, p.scientificName, p.slug].some((s) => (s || '').toLowerCase().includes(q))) return false;
-    if (state.typeFilter && p.plantType !== state.typeFilter) return false;
+    if (q && !cfg().searchText(r).some((s) => (s || '').toLowerCase().includes(q))) return false;
+    if (state.filterValue && !cfg().filter.match(r, state.filterValue)) return false;
     return true;
   }
 
   function renderList() {
-    $('#count').textContent = `${state.plants.length} plants`;
+    const c = cfg();
+    $('#count').textContent = `${records().length} ${c.label.toLowerCase()}`;
     const rows = $('#rows');
-    const shown = state.plants.filter(matchesFilter)
-      .sort((a, b) => a.commonName.localeCompare(b.commonName));
-    rows.innerHTML = shown.map((p) => {
-      const isActive = state.mode === 'edit' && state.originalSlug === p.slug;
-      const isVerified = state.verified.has(p.slug);
-      return `<div class="row${isActive ? ' active' : ''}${isVerified ? ' verified' : ''}" data-slug="${esc(p.slug)}">
+    const shown = records().filter(matchesFilter)
+      .sort((a, b) => c.listPrimary(a).localeCompare(c.listPrimary(b)));
+    rows.innerHTML = shown.map((r) => {
+      const isActive = state.mode === 'edit' && state.originalSlug === r.slug;
+      const isVerified = state.entity === 'plants' && state.verified.has(r.slug);
+      const verifyBox = state.entity === 'plants'
+        ? `<label class="verify-check" title="Mark as verified"><input type="checkbox" data-verify="${esc(r.slug)}" ${isVerified ? 'checked' : ''} /></label>`
+        : '';
+      return `<div class="row${isActive ? ' active' : ''}${isVerified ? ' verified' : ''}" data-slug="${esc(r.slug)}">
         <div class="row-info">
-          <div class="cn">${esc(p.commonName)}</div>
-          <div class="sn">${esc(p.scientificName)}</div>
-          <div class="slug">${esc(p.slug)}</div>
+          <div class="cn">${esc(c.listPrimary(r))}</div>
+          <div class="sn">${esc(c.listSecondary(r))}</div>
+          <div class="slug">${esc(r.slug)}</div>
         </div>
-        <label class="verify-check" title="Mark as verified">
-          <input type="checkbox" data-verify="${esc(p.slug)}" ${isVerified ? 'checked' : ''} />
-        </label>
+        ${verifyBox}
       </div>`;
     }).join('') || `<div class="empty">No matches.</div>`;
   }
@@ -322,13 +415,22 @@ window.SPEC = SPEC;
         return `<div class="links" ${dk}>${items.map((it) => row(it.url || '', it.label || '')).join('')}
           <button type="button" class="mini ghost link-add">+ Add link</button></div>`;
       }
+      case 'sluglist': {
+        const items = Array.isArray(v) ? v : [];
+        const row = (s) => `<div class="slug-row">
+          <input type="text" class="slug-input" list="term-slugs" placeholder="related-term-slug" value="${esc(s)}" />
+          <button type="button" class="mini ghost slug-del">✕</button></div>`;
+        return `<div class="sluglist" ${dk}>${items.map(row).join('')}
+          <button type="button" class="mini ghost slug-add">+ Add link</button></div>`;
+      }
       default: // text
         return `<input type="text" ${dk} value="${esc(v || '')}" />`;
     }
   }
 
   function fieldHtml(f, rec) {
-    const wide = f.kind === 'textarea' || f.kind === 'multi' || f.kind === 'kv' || f.kind === 'links' || f.kind === 'requirement';
+    const wide = f.kind === 'textarea' || f.kind === 'multi' || f.kind === 'kv'
+      || f.kind === 'links' || f.kind === 'sluglist' || f.kind === 'requirement';
     return `<div class="field ${wide ? 'col-2' : ''}" data-field="${f.key}">
       <label class="fl">${esc(f.label)}${f.required ? ' <span class="req">*</span>' : ''}</label>
       ${controlHtml(f, rec[f.key])}
@@ -354,18 +456,19 @@ window.SPEC = SPEC;
   }
 
   function renderForm(rec) {
+    const c = cfg();
     const form = $('#form');
-    const heading = state.mode === 'add' ? 'New plant' : `Editing: ${rec.commonName || rec.slug}`;
+    const heading = state.mode === 'add' ? `New ${c.noun}` : `Editing: ${c.title(rec)}`;
     const statusOrBtn = state.mode === 'add'
       ? '' : `<span id="autosaveStatus" class="autosave-status"></span>`;
     form.innerHTML =
       `<div class="group"><div class="form-heading"><h2>${esc(heading)}</h2>${statusOrBtn}</div></div>` +
-      SPEC.GROUPS.map((g) =>
+      c.groups.map((g) =>
         `<div class="group"><h2>${esc(g.title)}</h2><div class="grid">${g.fields.map((f) => fieldHtml(f, rec)).join('')}</div></div>`
       ).join('') +
-      imageGroupHtml(rec) +
+      (c.hasImage ? imageGroupHtml(rec) : '') +
       `<div class="form-bottom">
-        ${state.mode === 'add' ? '<button class="primary" id="saveBtn">Add plant</button>' : ''}
+        ${state.mode === 'add' ? `<button class="primary" id="saveBtn">Add ${esc(c.noun)}</button>` : ''}
         ${state.mode === 'edit' ? '<button class="danger" id="delBtn">Delete…</button>' : ''}
       </div>`;
     wireForm();
@@ -378,7 +481,7 @@ window.SPEC = SPEC;
   function collect() {
     const form = $('#form');
     const rec = {};
-    for (const f of SPEC.ALL_FIELDS) {
+    for (const f of cfg().fields) {
       if (f.kind === 'requirement') {
         const pri = form.querySelector(`[data-key="${f.key}"][data-part="primary"]`).value;
         const sec = form.querySelector(`[data-key="${f.key}"][data-part="secondary"]`).value;
@@ -406,6 +509,13 @@ window.SPEC = SPEC;
           if (url) arr.push(label ? { url, label } : { url });
         });
         if (arr.length) rec[f.key] = arr;
+      } else if (f.kind === 'sluglist') {
+        const arr = [];
+        form.querySelectorAll(`[data-key="${f.key}"] .slug-row`).forEach((r) => {
+          const s = r.querySelector('.slug-input').value.trim();
+          if (s) arr.push(s);
+        });
+        if (arr.length) rec[f.key] = arr;
       } else if (f.kind === 'bool') {
         const checked = form.querySelector(`[data-key="${f.key}"]:checked`);
         rec[f.key] = checked ? checked.value === 'yes' : false;
@@ -420,33 +530,44 @@ window.SPEC = SPEC;
     return rec;
   }
 
-  function otherSlugs() {
-    return new Set(state.plants.map((p) => p.slug).filter((s) => s !== state.originalSlug));
-  }
-
   function showErrors(all) {
     const rec = collect();
-    const errors = SPEC.validatePlant(rec, otherSlugs());
-    for (const f of SPEC.ALL_FIELDS) {
+    const errors = validateActive(rec);
+    for (const f of cfg().fields) {
       const wrap = document.querySelector(`.field[data-field="${f.key}"]`);
       if (!wrap) continue;
       const show = (all || state.touched.has(f.key)) && errors[f.key];
       wrap.classList.toggle('invalid', !!show);
       wrap.querySelector('.err').textContent = show ? errors[f.key] : '';
     }
+    markSeeAlsoRows(rec);
     return errors;
+  }
+
+  // Flag individual unresolved seeAlso rows inline (terms mode only).
+  function markSeeAlsoRows(rec) {
+    if (state.entity !== 'terms') return;
+    const box = document.querySelector('[data-key="seeAlso"]');
+    if (!box) return;
+    const resolvable = otherSlugs();
+    if (rec.slug) resolvable.add(rec.slug);
+    box.querySelectorAll('.slug-row').forEach((row) => {
+      const val = row.querySelector('.slug-input').value.trim();
+      row.classList.toggle('invalid', !!val && !resolvable.has(val));
+    });
   }
 
   // ---- wiring ----
   function wireForm() {
     const form = $('#form');
+    const c = cfg();
 
-    // auto-slug from scientific name
-    const sciEl = form.querySelector('[data-key="scientificName"]');
+    // auto-slug from the entity's source field, until the curator overrides it
+    const srcEl = form.querySelector(`[data-key="${c.autoSlugFrom}"]`);
     const slugEl = form.querySelector('[data-key="slug"]');
-    if (sciEl && slugEl) {
-      sciEl.addEventListener('input', () => {
-        if (!state.slugDirty) slugEl.value = SPEC.slugify(sciEl.value);
+    if (srcEl && slugEl) {
+      srcEl.addEventListener('input', () => {
+        if (!state.slugDirty) slugEl.value = SPEC.slugify(srcEl.value);
       });
       slugEl.addEventListener('input', () => { state.slugDirty = true; });
     }
@@ -460,21 +581,22 @@ window.SPEC = SPEC;
       showErrors(false);
     }, true);
 
-
-    // image upload
-    const file = form.querySelector('#imgFile');
-    if (file) file.addEventListener('change', () => {
-      const f = file.files[0];
-      if (!f) { state.imageDataUrl = null; return; }
-      if (f.type !== 'image/png') { toast('PNG only', 'bad'); file.value = ''; return; }
-      const reader = new FileReader();
-      reader.onload = () => {
-        state.imageDataUrl = reader.result;
-        const box = form.querySelector('.img-prev');
-        box.outerHTML = `<img class="img-prev" src="${state.imageDataUrl}" />`;
-      };
-      reader.readAsDataURL(f);
-    });
+    // image upload (plants only)
+    if (c.hasImage) {
+      const file = form.querySelector('#imgFile');
+      if (file) file.addEventListener('change', () => {
+        const f = file.files[0];
+        if (!f) { state.imageDataUrl = null; return; }
+        if (f.type !== 'image/png') { toast('PNG only', 'bad'); file.value = ''; return; }
+        const reader = new FileReader();
+        reader.onload = () => {
+          state.imageDataUrl = reader.result;
+          const box = form.querySelector('.img-prev');
+          box.outerHTML = `<img class="img-prev" src="${state.imageDataUrl}" />`;
+        };
+        reader.readAsDataURL(f);
+      });
+    }
 
     const saveBtn = $('#saveBtn');
     if (saveBtn) saveBtn.addEventListener('click', save);
@@ -486,21 +608,23 @@ window.SPEC = SPEC;
     form.addEventListener('change', scheduleAutoSave);
   }
 
-  // ---- verify panel ----
+  // ---- verify panel (plants: per-field checks · terms: coverage worklist) ----
   function renderVerifyPanel() {
     const panel = document.getElementById('verifyPanel');
     if (!panel) return;
+    if (state.entity === 'terms') return renderCoveragePanel(panel);
+
     if (state.mode !== 'edit' || !state.originalSlug) {
       panel.innerHTML = '<div class="vp-empty">Select a plant to see field checks.</div>';
       return;
     }
     const slug = state.originalSlug;
     const checked = new Set(state.fieldVerified[slug] || []);
-    const total = SPEC.ALL_FIELDS.length;
-    const done = SPEC.ALL_FIELDS.filter((f) => checked.has(f.key)).length;
+    const total = cfg().fields.length;
+    const done = cfg().fields.filter((f) => checked.has(f.key)).length;
     panel.innerHTML =
       `<div class="vp-header"><span class="vp-title">Verified</span><span class="vp-count">${done} / ${total}</span></div>` +
-      SPEC.GROUPS.map((g) =>
+      cfg().groups.map((g) =>
         `<div class="vf-group"><div class="vf-group-title">${esc(g.title)}</div>` +
         g.fields.map((f) => {
           const on = checked.has(f.key);
@@ -510,9 +634,34 @@ window.SPEC = SPEC;
       ).join('');
   }
 
+  // The coverage worklist: enum-backed vocab values with no glossary entry yet.
+  function renderCoveragePanel(panel) {
+    const missing = state.missing || [];
+    if (!missing.length) {
+      panel.innerHTML =
+        `<div class="vp-header"><span class="vp-title">Coverage</span><span class="vp-count">✓</span></div>` +
+        `<div class="vp-good">Every enum-backed vocab value has a glossary entry.<br>Nothing to fill in. 🎉</div>`;
+      return;
+    }
+    const byCat = {};
+    for (const m of missing) (byCat[m.category] = byCat[m.category] || []).push(m);
+    panel.innerHTML =
+      `<div class="vp-header"><span class="vp-title">Coverage gaps</span><span class="vp-count">${missing.length}</span></div>` +
+      Object.keys(byCat).map((cat) =>
+        `<div class="vf-group"><div class="vf-group-title">${esc(SPEC.GLOSSARY_CATEGORY_LABELS[cat] || cat)}</div>` +
+        byCat[cat].map((m) =>
+          `<button type="button" class="vf-cov" data-missing="${esc(cat)}|${esc(m.slug)}|${esc(m.value)}">
+            <div class="cov-slug">${esc(m.slug)}</div>
+            <div class="cov-cat">value "${esc(m.value)}" — click to define</div>
+          </button>`
+        ).join('') +
+        `</div>`
+      ).join('');
+  }
+
   document.getElementById('verifyPanel').addEventListener('change', (e) => {
     const cb = e.target.closest('[data-fv]');
-    if (!cb || state.mode !== 'edit') return;
+    if (!cb || state.entity !== 'plants' || state.mode !== 'edit') return;
     const key = cb.getAttribute('data-fv');
     const slug = state.originalSlug;
     const set = new Set(state.fieldVerified[slug] || []);
@@ -520,11 +669,22 @@ window.SPEC = SPEC;
     state.fieldVerified[slug] = [...set];
     localStorage.setItem('plant-field-verified', JSON.stringify(state.fieldVerified));
     cb.closest('.vf-item').classList.toggle('checked', e.target.checked);
-    const total = SPEC.ALL_FIELDS.length;
-    const done = set.size;
+    const total = cfg().fields.length;
     const countEl = document.querySelector('.vp-count');
-    if (countEl) countEl.textContent = `${done} / ${total}`;
+    if (countEl) countEl.textContent = `${set.size} / ${total}`;
   });
+
+  // Click a coverage gap → open the add form pre-filled with the exact slug/category.
+  document.getElementById('verifyPanel').addEventListener('click', (e) => {
+    const btn = e.target.closest('[data-missing]');
+    if (!btn) return;
+    const [category, slug, value] = btn.getAttribute('data-missing').split('|');
+    openAddPrefilled({ category, slug, term: humanize(value) });
+  });
+
+  function humanize(s) {
+    return String(s || '').replace(/-/g, ' ').replace(/^\w/, (c) => c.toUpperCase());
+  }
 
   // ---- autosave ----
   let autoSaveTimer = null;
@@ -540,20 +700,29 @@ window.SPEC = SPEC;
     if (el) { el.textContent = text; el.className = 'autosave-status ' + (cls || ''); }
   }
 
+  // Absorb the server response (records + terms-mode coverage) into state.
+  function setRecords(data) {
+    const c = cfg();
+    state[c.dataKey] = c.payloadFromData(data) || [];
+    if (state.entity === 'terms') { state.missing = data.missing || []; refreshTermDatalist(); }
+  }
+
   async function autoSave() {
+    const c = cfg();
     const rec = collect();
-    const errors = SPEC.validatePlant(rec, otherSlugs());
-    const hasRequiredErrors = SPEC.ALL_FIELDS.some((f) => f.required && errors[f.key]);
+    const errors = validateActive(rec);
+    const hasRequiredErrors = c.fields.some((f) => f.required && errors[f.key]);
     if (hasRequiredErrors) { setAutoSaveStatus('Waiting for required fields…', ''); return; }
     setAutoSaveStatus('Saving…', '');
     try {
-      const body = { record: rec, imageDataUrl: state.imageDataUrl || undefined };
-      const data = await api('PUT', `/api/plants/${encodeURIComponent(state.originalSlug)}`, body);
-      state.plants = data.plants;
+      const body = c.hasImage ? { record: rec, imageDataUrl: state.imageDataUrl || undefined } : { record: rec };
+      const data = await api('PUT', `${c.api}/${encodeURIComponent(state.originalSlug)}`, body);
+      setRecords(data);
       if (rec.slug !== state.originalSlug) { state.originalSlug = rec.slug; }
       setAutoSaveStatus('Saved', 'ok');
       setTimeout(() => setAutoSaveStatus('', ''), 2000);
       renderList();
+      if (state.entity === 'terms') renderVerifyPanel();
     } catch (e) {
       setAutoSaveStatus('Save failed', 'bad');
       toast(e.message || 'Save failed', 'bad');
@@ -561,22 +730,22 @@ window.SPEC = SPEC;
   }
 
   async function save() {
+    const c = cfg();
     const errors = showErrors(true);
     if (Object.keys(errors).length) { toast('Fix the highlighted fields', 'bad'); return; }
     const record = collect();
     try {
-      const body = { record, imageDataUrl: state.imageDataUrl || undefined };
+      const body = c.hasImage ? { record, imageDataUrl: state.imageDataUrl || undefined } : { record };
       const data = state.mode === 'add'
-        ? await api('POST', '/api/plants', body)
-        : await api('PUT', `/api/plants/${encodeURIComponent(state.originalSlug)}`, body);
-      state.plants = data.plants;
-      const ph = data.placeholders && !data.placeholders.ok ? ' (⚠ placeholder regen failed — run build-placeholders.mjs)' : '';
-      toast(`Saved "${record.commonName}" · ${data.count} plants${ph}`, ph ? 'bad' : 'ok');
+        ? await api('POST', c.api, body)
+        : await api('PUT', `${c.api}/${encodeURIComponent(state.originalSlug)}`, body);
+      setRecords(data);
+      const ph = (c.hasImage && data.placeholders && !data.placeholders.ok) ? ' (⚠ placeholder regen failed — run build-placeholders.mjs)' : '';
+      toast(`Saved "${c.title(record)}" · ${data.count} ${c.label.toLowerCase()}${ph}`, ph ? 'bad' : 'ok');
       // re-open in edit mode at the (possibly new) slug
       openEdit(record.slug);
     } catch (e) {
       if (e.data && e.data.errors) {
-        Object.assign({}, e.data.errors);
         for (const k of Object.keys(e.data.errors)) state.touched.add(k);
         showErrors(true);
       }
@@ -585,8 +754,9 @@ window.SPEC = SPEC;
   }
 
   function confirmDelete() {
+    const c = cfg();
     $('#mTitle').textContent = `Delete "${state.originalSlug}"?`;
-    $('#mBody').innerHTML = `This removes the plant from the catalog. Any saved build that used it will point at a missing plant until you re-add it, and its photo/placeholder files are left on disk. This can't be undone from here (use git to recover).`;
+    $('#mBody').innerHTML = c.deleteWarning(state.originalSlug);
     const modal = $('#modal');
     modal.classList.add('show');
     const ok = $('#mOk'), cancel = $('#mCancel');
@@ -595,9 +765,9 @@ window.SPEC = SPEC;
     ok.onclick = async () => {
       close();
       try {
-        const data = await api('DELETE', `/api/plants/${encodeURIComponent(state.originalSlug)}`);
-        state.plants = data.plants;
-        toast(`Deleted · ${data.count} plants`, 'ok');
+        const data = await api('DELETE', `${c.api}/${encodeURIComponent(state.originalSlug)}`);
+        setRecords(data);
+        toast(`Deleted · ${data.count} ${c.label.toLowerCase()}`, 'ok');
         closeForm();
       } catch (e) { toast(e.message || 'Delete failed', 'bad'); }
     };
@@ -608,75 +778,136 @@ window.SPEC = SPEC;
 
   function openAdd() {
     state.mode = 'add'; state.originalSlug = null; resetFormState();
-    renderForm({ substrateTags: [], closedTerrariumOk: false, openTerrariumOk: false });
+    renderForm(cfg().newRecord());
+    renderVerifyPanel();
+    renderList();
+  }
+
+  // Open the add form pre-seeded (used by the coverage worklist). slugDirty so the
+  // pre-filled enum-backed slug isn't overwritten by the auto-slug.
+  function openAddPrefilled(seed) {
+    state.mode = 'add'; state.originalSlug = null; resetFormState();
+    state.slugDirty = true;
+    renderForm(Object.assign(cfg().newRecord(), seed));
     renderVerifyPanel();
     renderList();
   }
 
   function openEdit(slug) {
-    const p = state.plants.find((x) => x.slug === slug);
-    if (!p) return;
+    const r = records().find((x) => x.slug === slug);
+    if (!r) return;
     state.mode = 'edit'; state.originalSlug = slug; resetFormState(); state.slugDirty = true;
-    renderForm(JSON.parse(JSON.stringify(p)));
+    renderForm(JSON.parse(JSON.stringify(r)));
     renderVerifyPanel();
     renderList();
   }
 
   function closeForm() {
     state.mode = null; state.originalSlug = null; resetFormState();
-    $('#form').innerHTML = `<div class="empty">Select a plant to edit, or click <strong>+ Add plant</strong>.</div>`;
+    $('#form').innerHTML = `<div class="empty">Select a ${cfg().noun} to edit, or click <strong>${esc(cfg().addLabel)}</strong>.</div>`;
     renderVerifyPanel();
     renderList();
   }
 
-  // ---- boot ----
-  function initTypeFilter() {
-    const sel = $('#typeFilter');
-    SPEC.PLANT_TYPES.forEach((t) => { const o = document.createElement('option'); o.value = o.textContent = t; sel.appendChild(o); });
-    sel.addEventListener('change', () => { state.typeFilter = sel.value; renderList(); });
+  // ---- controls + entity switch ----
+  function renderControls() {
+    const c = cfg();
+    $('#addBtn').textContent = c.addLabel;
+    const search = $('#search');
+    search.placeholder = c.searchPlaceholder;
+    search.value = '';
+    const sel = $('#filter');
+    sel.innerHTML = [`<option value="">${esc(c.filter.label)}</option>`]
+      .concat(c.filter.options().map((v) => `<option value="${esc(v)}">${esc(c.filter.optionLabel(v))}</option>`))
+      .join('');
+    sel.value = '';
+  }
+
+  function setEntity(entity) {
+    if (entity === state.entity || !MODES[entity]) return;
+    state.entity = entity;
+    state.search = ''; state.filterValue = '';
+    document.querySelectorAll('#entityToggle button').forEach((b) =>
+      b.classList.toggle('active', b.getAttribute('data-entity') === entity));
+    $('#saveNote').innerHTML = cfg().saveNote;
+    renderControls();
+    closeForm(); // resets the form, then renders verify panel + list for the new entity
+  }
+
+  function refreshTermDatalist() {
+    const dl = document.getElementById('term-slugs');
+    if (!dl) return;
+    dl.innerHTML = state.terms.map((t) => `<option value="${esc(t.slug)}">${esc(t.term || '')}</option>`).join('');
   }
 
   // Single delegated handler for dynamic add/del rows — registered once so it doesn't multiply on re-renders.
   $('#form').addEventListener('click', (e) => {
-    if (e.target.classList.contains('kv-add')) {
-      const box = e.target.closest('.kv');
+    const t = e.target;
+    let changed = true;
+    if (t.classList.contains('kv-add')) {
+      const box = t.closest('.kv');
       const r = document.createElement('div');
       r.className = 'kv-row';
       r.innerHTML = `<input type="text" class="kv-k" placeholder="key" /><input type="text" class="kv-v" placeholder="value" /><button type="button" class="mini ghost kv-del">✕</button>`;
-      box.insertBefore(r, e.target);
-    } else if (e.target.classList.contains('kv-del')) {
-      e.target.closest('.kv-row').remove();
-    } else if (e.target.classList.contains('link-add')) {
-      const box = e.target.closest('.links');
+      box.insertBefore(r, t);
+    } else if (t.classList.contains('kv-del')) {
+      t.closest('.kv-row').remove();
+    } else if (t.classList.contains('link-add')) {
+      const box = t.closest('.links');
       const r = document.createElement('div');
       r.className = 'link-row';
       r.innerHTML = `<input type="text" class="link-url" placeholder="https://…" /><input type="text" class="link-label" placeholder="label (optional)" /><button type="button" class="mini ghost link-open" title="Open link">↗</button><button type="button" class="mini ghost link-del">✕</button>`;
-      box.insertBefore(r, e.target);
-    } else if (e.target.classList.contains('link-open')) {
-      const url = e.target.closest('.link-row').querySelector('.link-url').value.trim();
+      box.insertBefore(r, t);
+    } else if (t.classList.contains('link-open')) {
+      const url = t.closest('.link-row').querySelector('.link-url').value.trim();
       if (url) window.open(url, '_blank', 'noopener');
-    } else if (e.target.classList.contains('link-del')) {
-      e.target.closest('.link-row').remove();
+      changed = false;
+    } else if (t.classList.contains('link-del')) {
+      t.closest('.link-row').remove();
+    } else if (t.classList.contains('slug-add')) {
+      const box = t.closest('.sluglist');
+      const r = document.createElement('div');
+      r.className = 'slug-row';
+      r.innerHTML = `<input type="text" class="slug-input" list="term-slugs" placeholder="related-term-slug" /><button type="button" class="mini ghost slug-del">✕</button>`;
+      box.insertBefore(r, t);
+    } else if (t.classList.contains('slug-del')) {
+      t.closest('.slug-row').remove();
+    } else {
+      changed = false;
     }
+    // Row mutations don't fire input/change, so nudge validation + autosave ourselves.
+    if (changed) { showErrors(false); scheduleAutoSave(); }
   });
 
+  // ---- boot ----
   $('#addBtn').addEventListener('click', openAdd);
   $('#search').addEventListener('input', (e) => { state.search = e.target.value; renderList(); });
+  $('#filter').addEventListener('change', (e) => { state.filterValue = e.target.value; renderList(); });
+  $('#entityToggle').addEventListener('click', (e) => {
+    const b = e.target.closest('[data-entity]');
+    if (b) setEntity(b.getAttribute('data-entity'));
+  });
   $('#rows').addEventListener('click', (e) => {
     if (e.target.closest('.verify-check')) return;
     const row = e.target.closest('.row'); if (row) openEdit(row.getAttribute('data-slug'));
   });
   $('#rows').addEventListener('change', (e) => {
     const cb = e.target.closest('[data-verify]');
-    if (!cb) return;
+    if (!cb || state.entity !== 'plants') return;
     const slug = cb.getAttribute('data-verify');
     if (e.target.checked) state.verified.add(slug); else state.verified.delete(slug);
     localStorage.setItem('plant-verified', JSON.stringify([...state.verified]));
     cb.closest('.row').classList.toggle('verified', e.target.checked);
   });
-  initTypeFilter();
 
-  api('GET', '/api/plants').then((d) => { state.plants = d.plants; renderList(); })
-    .catch((e) => toast('Load failed: ' + e.message, 'bad'));
+  renderControls();
+
+  Promise.all([
+    api('GET', '/api/plants').then((d) => { state.plants = d.plants; }),
+    api('GET', '/api/glossary').then((d) => { state.terms = d.terms; state.missing = d.missing || []; state.termsLoaded = true; }),
+  ]).then(() => {
+    refreshTermDatalist();
+    renderList();
+  }).catch((e) => toast('Load failed: ' + e.message, 'bad'));
 })();
 </script>

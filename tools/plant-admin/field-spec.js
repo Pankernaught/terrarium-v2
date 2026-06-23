@@ -184,9 +184,11 @@ function isHttpUrl(s) {
  * Authoritative validator. Returns `{ field: message }` for every problem; an
  * empty object means valid. Used by the server before writing and by the client
  * on blur / before submit. `existingSlugs` lets the caller flag a duplicate slug
- * (pass the set of OTHER plants' slugs).
+ * (pass the set of OTHER plants' slugs). `knownGlossarySlugs` (optional) enables the
+ * inline `[[slug]]` prose-link check on notes/nativeContext — pass the glossary slug
+ * set; omit it (e.g. before the glossary has loaded) to skip that check.
  */
-function validatePlant(rec, existingSlugs) {
+function validatePlant(rec, existingSlugs, knownGlossarySlugs) {
   const errors = {};
   const others = existingSlugs instanceof Set ? existingSlugs : new Set(existingSlugs || []);
 
@@ -294,6 +296,21 @@ function validatePlant(rec, existingSlugs) {
     errors.slug = `Slug "${rec.slug}" is already used by another plant`;
   }
 
+  // Inline `[[slug]]` prose links must resolve to a glossary term (ADR 0006). The
+  // Phase D seed-time throw + glossary.test.ts remain the CI backstop; this flags a
+  // typo'd link in-tool. Optional — skipped when the glossary slug set isn't passed.
+  if (knownGlossarySlugs) {
+    const glossary = knownGlossarySlugs instanceof Set ? knownGlossarySlugs : new Set(knownGlossarySlugs);
+    for (const key of ['notes', 'nativeContext']) {
+      const text = rec[key];
+      if (typeof text !== 'string' || !text) continue;
+      const bad = proseLinkSlugs(text).filter((s) => !glossary.has(s));
+      if (bad.length && !errors[key]) {
+        errors[key] = `Unknown glossary link${bad.length > 1 ? 's' : ''}: ${bad.map((s) => '[[' + s + ']]').join(', ')} — define the term in Terms mode first`;
+      }
+    }
+  }
+
   return errors;
 }
 
@@ -311,12 +328,176 @@ function canonicalize(rec) {
   return out;
 }
 
+// --- Glossary: the technical-term dictionary (ADR 0006) ----------------------
+// Mirrors src/types/glossary.ts rule-for-rule. The eight enum-backed categories
+// reuse the vocab arrays above; `concept`/`anatomy` are free-form. The Terms editor
+// in index.html renders + validates from these, and the server validates
+// authoritatively before writing src/data/glossary.json. KEEP IN SYNC with the app.
+const GLOSSARY_CATEGORIES = [
+  'light', 'moisture', 'ph', 'growthRate', 'growthHabit',
+  'plantType', 'biome', 'substrate', 'concept', 'anatomy', 'pest-disease',
+];
+
+// Display labels for the category select + list secondary line. Explicit (not a
+// humanize) so `ph` reads "pH". Mirror of GLOSSARY_CATEGORY_LABELS.
+const GLOSSARY_CATEGORY_LABELS = {
+  light: 'Light', moisture: 'Moisture', ph: 'pH', growthRate: 'Growth rate',
+  growthHabit: 'Growth habit', plantType: 'Plant type', biome: 'Biome',
+  substrate: 'Substrate', concept: 'Concept', anatomy: 'Anatomy',
+  'pest-disease': 'Pest & Disease',
+};
+
+// The eight coverage-checked groups — every controlled-vocab value must resolve to
+// an entry (src/data/__tests__/glossary.test.ts). concept/anatomy are free-form.
+const ENUM_BACKED_CATEGORIES = [
+  'light', 'moisture', 'ph', 'growthRate', 'growthHabit', 'plantType', 'biome', 'substrate',
+];
+
+// `moderate` is BOTH a moisture level and a growth rate, so its enum-backed slug is
+// suffixed; nothing claims a bare `moderate`. Mirror of VOCAB_SLUG_OVERRIDES.
+const VOCAB_SLUG_OVERRIDES = {
+  'moisture/moderate': 'moderate-moisture',
+  'growthRate/moderate': 'moderate-growth',
+};
+
+/** The glossary slug for an enum-backed (category, value) — identity except the
+ *  disambiguated `moderate` clash. Mirror of `vocabSlug` in src/types/glossary.ts. */
+function vocabSlug(category, value) {
+  return VOCAB_SLUG_OVERRIDES[`${category}/${value}`] || value;
+}
+
+/** category → controlled-vocab values, for the eight enum-backed groups. Reuses the
+ *  vocab arrays mirrored above; keys are the glossary category names (NOT plant field
+ *  names, e.g. `biome` not `nativeBiome`) so they match GLOSSARY_CATEGORIES. */
+const ENUM_VOCAB = {
+  light: LIGHT_LEVELS,
+  moisture: MOISTURE_LEVELS,
+  ph: PH_PREFERENCES,
+  growthRate: GROWTH_RATES,
+  growthHabit: GROWTH_HABITS,
+  plantType: PLANT_TYPES,
+  biome: NATIVE_BIOMES,
+  substrate: SUBSTRATE_IDS,
+};
+
+// Glossary form spec — the GROUPS analog. `seeAlso` uses a new `sluglist` kind: a
+// dynamic list of term-slug inputs sharing an autocomplete datalist.
+const GLOSSARY_GROUPS = [
+  {
+    title: 'Term',
+    fields: [
+      { key: 'term', label: 'Term', kind: 'text', required: true, help: 'Display name — the entry title, e.g. "LECA" or "False bottom". Drives the auto-slug.' },
+      { key: 'slug', label: 'Slug (id)', kind: 'text', required: true, slug: true, help: 'Globally-unique key. For an enum-backed category it MUST equal the vocab value (e.g. light → "bright-indirect"); the coverage worklist pre-fills these. Free-form concept/anatomy slugs are yours to choose.' },
+      { key: 'category', label: 'Category', kind: 'enum', required: true, options: GLOSSARY_CATEGORIES, help: 'light…substrate are coverage-checked against the app vocab; concept/anatomy are free-form.' },
+    ],
+  },
+  {
+    title: 'Definition',
+    fields: [
+      { key: 'definition', label: 'Definition', kind: 'textarea', required: true, help: '2–4 sentences: a plain definition + a terrarium-specific "why it matters". Must end with . ! or ?' },
+      { key: 'seeAlso', label: 'See also', kind: 'sluglist', help: 'Cross-links to related terms, by slug. Each must resolve to an existing term; powers the sheet\'s "see also" swap.' },
+    ],
+  },
+];
+
+/** Flat list of every glossary field, in form order. */
+const GLOSSARY_ALL_FIELDS = GLOSSARY_GROUPS.flatMap((g) => g.fields);
+
+/** Canonical write order for a term's keys (mirrors glossary.json). */
+const GLOSSARY_WRITE_ORDER = ['slug', 'term', 'category', 'definition', 'seeAlso'];
+
+/** Re-key a term into canonical order, dropping empty optionals (mirrors `canonicalize`). */
+function canonicalizeTerm(rec) {
+  const out = {};
+  for (const key of GLOSSARY_WRITE_ORDER) {
+    const v = rec[key];
+    if (v === undefined || v === null) continue;
+    if (typeof v === 'string' && v === '') continue;
+    if (Array.isArray(v) && v.length === 0) continue;
+    out[key] = v;
+  }
+  return out;
+}
+
+/** Every slug referenced by a `[[slug]]` / `[[slug|display]]` link in `text`, in
+ *  order. Copied from src/logic/glossary-markup.ts so this spec stays self-contained
+ *  and injectable into the page. */
+function proseLinkSlugs(text) {
+  const slugs = [];
+  const re = /\[\[([^\]]+?)\]\]/g;
+  let m;
+  while ((m = re.exec(String(text == null ? '' : text)))) {
+    const inner = m[1];
+    const pipe = inner.indexOf('|');
+    const slug = (pipe === -1 ? inner : inner.slice(0, pipe)).trim();
+    if (slug) slugs.push(slug);
+  }
+  return slugs;
+}
+
+/**
+ * Authoritative glossary-term validator — mirror of the CI gate
+ * (src/data/__tests__/glossary.test.ts). `otherSlugs` = OTHER terms' slugs (for the
+ * uniqueness check); `knownSlugs` = the slugs a `seeAlso` may resolve to (the
+ * record's own slug is added here, so passing the other terms' slugs is enough).
+ */
+function validateTerm(rec, otherSlugs, knownSlugs) {
+  const errors = {};
+  const others = otherSlugs instanceof Set ? otherSlugs : new Set(otherSlugs || []);
+  const known = knownSlugs instanceof Set ? knownSlugs : new Set(knownSlugs || []);
+
+  if (typeof rec.term !== 'string' || !rec.term.trim()) errors.term = 'Term is required';
+
+  if (!rec.category) errors.category = 'Category is required';
+  else if (!GLOSSARY_CATEGORIES.includes(rec.category)) errors.category = `Must be one of: ${GLOSSARY_CATEGORIES.join(', ')}`;
+
+  // slug — kebab, unique, and (enum-backed) a real vocab slug.
+  const slug = typeof rec.slug === 'string' ? rec.slug : '';
+  if (!slug) {
+    errors.slug = 'Slug is required';
+  } else if (!/^[a-z0-9]+(-[a-z0-9]+)*$/.test(slug)) {
+    errors.slug = 'Lowercase letters, numbers, single hyphens only';
+  } else if (others.has(slug)) {
+    errors.slug = `Slug "${slug}" is already used by another term`;
+  } else if (ENUM_BACKED_CATEGORIES.includes(rec.category)) {
+    const allowed = (ENUM_VOCAB[rec.category] || []).map((value) => vocabSlug(rec.category, value));
+    if (!allowed.includes(slug)) {
+      errors.slug = `For "${rec.category}" the slug must match a vocab value: ${allowed.join(', ')}`;
+    }
+  }
+
+  // definition — substantial prose ending in terminal punctuation (mirrors the test).
+  const def = typeof rec.definition === 'string' ? rec.definition.trim() : '';
+  if (!def) errors.definition = 'Definition is required';
+  else if (def.length <= 20) errors.definition = 'Too short — write 2–4 sentences (a definition + why it matters)';
+  else if (!/[.!?]$/.test(def)) errors.definition = 'Must end with terminal punctuation (. ! ?)';
+
+  // seeAlso — every entry resolves to a known term (the record's own slug is allowed).
+  if (rec.seeAlso !== undefined && rec.seeAlso !== null) {
+    if (!Array.isArray(rec.seeAlso)) {
+      errors.seeAlso = 'Must be a list of slugs';
+    } else {
+      const resolvable = new Set(known);
+      if (slug) resolvable.add(slug);
+      const bad = rec.seeAlso.filter((s) => !resolvable.has(s));
+      if (bad.length) errors.seeAlso = `Unknown term${bad.length > 1 ? 's' : ''}: ${bad.join(', ')}`;
+    }
+  }
+
+  return errors;
+}
+
 const SPEC = {
   GROUPS, ALL_FIELDS, WRITE_ORDER,
   LIGHT_LEVELS, MOISTURE_LEVELS, PH_PREFERENCES, GROWTH_RATES, GROWTH_HABITS,
   PLANT_TYPES, NATIVE_BIOMES, RARITIES,
   SUBSTRATE_COMPONENTS, HARDSCAPE_COMPONENTS,
   slugify, validatePlant, canonicalize,
+  // --- glossary (ADR 0006) ---
+  GLOSSARY_CATEGORIES, GLOSSARY_CATEGORY_LABELS, ENUM_BACKED_CATEGORIES,
+  VOCAB_SLUG_OVERRIDES, vocabSlug, ENUM_VOCAB,
+  GLOSSARY_GROUPS, GLOSSARY_ALL_FIELDS, GLOSSARY_WRITE_ORDER,
+  validateTerm, canonicalizeTerm, proseLinkSlugs,
 };
 
 if (typeof module !== 'undefined' && module.exports) {

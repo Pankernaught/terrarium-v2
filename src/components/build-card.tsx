@@ -66,7 +66,7 @@ export function BuildCard({ name, plantCount, scored, heroUri, width, onPress, o
           <Text variant="caption" role="textMuted">
             {plantCount === 1 ? '1 plant' : `${plantCount} plants`}
           </Text>
-          <EcoChip score={scored.score} />
+          <EcoChip score={scored.score} empty={scored.empty} />
         </View>
       </Card>
     </Pressable>

@@ -69,6 +69,12 @@ const backupBuildSchema = z.object({
   // backup (schema v1) simply lacks the key, which the v1→v2 identity migration
   // carries through to `null` here (additive field).
   substrateMix: z.record(z.string(), z.number()).nullish(),
+  // Per-task care-cycle overrides (`taskType → { intervalDays?, muted? }`). Nullish:
+  // a backup predating the care-cycle editor lacks the key and carries through to
+  // `null` (additive field).
+  careOverrides: z
+    .record(z.string(), z.object({ intervalDays: z.number().optional(), muted: z.boolean().optional() }))
+    .nullish(),
   // Kept so the round-trip is identical; the photo it points at is gone (excluded),
   // which getPrimary degrades to a placeholder rather than crashing.
   primaryPhotoId: z.string().nullish(),
@@ -193,6 +199,7 @@ export async function restoreBackup(
     drainageDepth: b.drainageDepth ?? null,
     charcoalDepth: b.charcoalDepth ?? null,
     substrateMix: b.substrateMix ?? null,
+    careOverrides: (b.careOverrides ?? null) as NewBuild['careOverrides'],
     primaryPhotoId: b.primaryPhotoId ?? null,
     createdAt: b.createdAt,
     updatedAt: b.updatedAt,

@@ -29,6 +29,8 @@ import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import {
   ActivityIndicator,
   Alert,
+  KeyboardAvoidingView,
+  Platform,
   Pressable,
   type ScrollView,
   StyleSheet,
@@ -272,7 +274,12 @@ export default function PlannerScreen() {
 
   return (
     <Screen edges={{ bottom: true }}>
-      <View style={styles.stage}>
+      {/* KeyboardAvoidingView so the Back/Next/Save bar (and a focused input) are
+          never hidden behind the iOS keyboard; it carries the stage's flex + relative
+          positioning so no extra nesting is introduced. */}
+      <KeyboardAvoidingView
+        style={styles.stage}
+        behavior={Platform.OS === 'ios' ? 'padding' : undefined}>
         {/* The single scroll surface — full height, behind the header. Bounce is
             off so the viewer can never shrink-then-spring on a short step. */}
         <Animated.ScrollView
@@ -283,6 +290,8 @@ export default function PlannerScreen() {
           scrollEventThrottle={16}
           bounces={false}
           overScrollMode="never"
+          keyboardShouldPersistTaps="handled"
+          keyboardDismissMode="on-drag"
           showsVerticalScrollIndicator={false}>
           <View style={styles.inner}>
             <View style={styles.section}>
@@ -392,7 +401,7 @@ export default function PlannerScreen() {
             onPress={() => (isFinal ? handleSave() : go(active + 1))}
           />
         </View>
-      </View>
+      </KeyboardAvoidingView>
 
       {arranging ? (
         <ArrangeOverlay

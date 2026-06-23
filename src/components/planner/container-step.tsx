@@ -15,7 +15,7 @@
  * effects — never during render.
  */
 import { useState } from 'react';
-import { Pressable, StyleSheet, TextInput, View } from 'react-native';
+import { InputAccessoryView, Keyboard, Platform, Pressable, StyleSheet, TextInput, View } from 'react-native';
 
 import { CollapsibleCard, Chip, haptics, StatStrip, Text } from '@/components/ui';
 import { Radii, Spacing } from '@/constants/theme';
@@ -31,6 +31,10 @@ import type { StepProps } from './step';
 
 const SHAPES: ContainerShape[] = ['rectangular', 'cylindrical'];
 const OPENINGS: ContainerOpening[] = ['sealed', 'lidded', 'open'];
+
+// iOS number pads have no return/Done key, so the decimal dimension fields share a
+// "Done" accessory bar above the keyboard to dismiss it (no-op id on Android).
+const DIM_ACCESSORY_ID = 'container-dimensions';
 
 const SHAPE_LABEL: Record<ContainerShape, string> = {
   rectangular: 'Rectangular',
@@ -240,8 +244,8 @@ export function ContainerStep({ draft, plants, update }: StepProps) {
                 <TextInput
                   value={dimStr[key] ?? ''}
                   onChangeText={(t) => editDim(key, t)}
-                  keyboardType="numeric"
                   inputMode="decimal"
+                  inputAccessoryViewID={Platform.OS === 'ios' ? DIM_ACCESSORY_ID : undefined}
                   placeholder="0"
                   placeholderTextColor={c.textMuted}
                   accessibilityLabel={`${FIELD_LABEL[key]} in centimetres`}
@@ -327,6 +331,20 @@ export function ContainerStep({ draft, plants, update }: StepProps) {
           </Text>
         )}
       </CollapsibleCard>
+
+      {/* Shared "Done" bar for the decimal dimension fields (iOS number pad has no
+          return key); also dismissible by dragging the planner scroll. */}
+      {Platform.OS === 'ios' ? (
+        <InputAccessoryView nativeID={DIM_ACCESSORY_ID}>
+          <View style={[styles.accessory, { backgroundColor: c.surface, borderTopColor: c.border }]}>
+            <Pressable onPress={Keyboard.dismiss} accessibilityRole="button" hitSlop={8}>
+              <Text variant="body" role="primary" style={styles.accessoryDone}>
+                Done
+              </Text>
+            </Pressable>
+          </View>
+        </InputAccessoryView>
+      ) : null}
     </View>
   );
 }
@@ -352,4 +370,12 @@ const styles = StyleSheet.create({
     alignSelf: 'flex-start',
   },
   rationale: { gap: Spacing.xs },
+  accessory: {
+    flexDirection: 'row',
+    justifyContent: 'flex-end',
+    paddingHorizontal: Spacing.md,
+    paddingVertical: Spacing.sm,
+    borderTopWidth: StyleSheet.hairlineWidth,
+  },
+  accessoryDone: { fontWeight: '600' },
 });

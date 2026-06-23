@@ -8,13 +8,20 @@ import { describe, expect, it } from 'vitest';
 
 import {
   buildCareSchedule,
+  clampCareInterval,
   type CareTask,
   type CareTaskType,
+  intervalCount,
+  intervalToDays,
   IOS_PENDING_CAP,
+  MAX_CARE_INTERVAL_DAYS,
+  maxIntervalCount,
+  MIN_CARE_INTERVAL_DAYS,
   nextDueAfter,
   PENDING_BUDGET,
   type PendingTask,
   planNotificationBudget,
+  splitInterval,
   volumeBucket,
 } from '../careSchedule';
 import { makeContainerSpec, makePlant } from './factories';
@@ -128,6 +135,63 @@ describe('buildCareSchedule — first due + body text', () => {
   });
 });
 
+describe('buildCareSchedule — owner overrides (the customizable care cycle)', () => {
+  const plant = () => makePlant({ soilMoisture: 'moist' }); // suggested watering = every 6 days
+
+  it('defaults are unchanged when no overrides are passed', () => {
+    const water = byType(buildCareSchedule([plant()], makeContainerSpec(), CREATED)).get(
+      'watering-inspection',
+    )!;
+    expect(water.intervalDays).toBe(6);
+    expect(water.muted).toBe(false);
+  });
+
+  it('applies a cadence override and recomputes firstDueAt from it', () => {
+    const tasks = buildCareSchedule([plant()], makeContainerSpec(), CREATED, {
+      'watering-inspection': { intervalDays: 3 },
+    });
+    const water = byType(tasks).get('watering-inspection')!;
+    expect(water.intervalDays).toBe(3);
+    expect(water.firstDueAt).toBe(CREATED.getTime() + 3 * DAY_MS);
+  });
+
+  it('clamps an out-of-range override into the supported cadence band', () => {
+    const tasks = buildCareSchedule([plant()], makeContainerSpec(), CREATED, {
+      'watering-inspection': { intervalDays: 9999 },
+    });
+    expect(byType(tasks).get('watering-inspection')!.intervalDays).toBe(MAX_CARE_INTERVAL_DAYS);
+  });
+
+  it('marks a task muted but still returns it (so the editor can un-mute it)', () => {
+    const tasks = buildCareSchedule([plant()], makeContainerSpec(), CREATED, {
+      'watering-inspection': { muted: true },
+    });
+    const water = byType(tasks).get('watering-inspection')!;
+    expect(water.muted).toBe(true);
+    expect(types(tasks)).toContain('watering-inspection');
+  });
+
+  it('ignores an override for a task that does not apply to this build', () => {
+    // Open container → no lid-opening task even with a lid-opening override present.
+    const tasks = buildCareSchedule(
+      [plant()],
+      makeContainerSpec({ opening: 'open', suitableFor: 'open' }),
+      CREATED,
+      { 'lid-opening': { intervalDays: 2 } },
+    );
+    expect(types(tasks)).not.toContain('lid-opening');
+  });
+});
+
+describe('clampCareInterval', () => {
+  it('rounds to whole days and clamps to the supported band', () => {
+    expect(clampCareInterval(6.4)).toBe(6);
+    expect(clampCareInterval(0)).toBe(MIN_CARE_INTERVAL_DAYS);
+    expect(clampCareInterval(-5)).toBe(MIN_CARE_INTERVAL_DAYS);
+    expect(clampCareInterval(1000)).toBe(MAX_CARE_INTERVAL_DAYS);
+  });
+});
+
 describe('nextDueAfter', () => {
   it('reschedules one interval from the mark-done timestamp', () => {
     const done = new Date('2026-03-10T08:30:00.000Z');
@@ -180,5 +244,41 @@ describe('planNotificationBudget — the slot-budget guard', () => {
     // Overflow is disclosed, never silently dropped.
     expect(plan.deferred).toHaveLength(25);
     expect(plan.deferredBuildCount).toBeGreaterThan(0);
+  });
+});
+
+describe('cadence units (days / weeks / months)', () => {
+  it('splitInterval picks the largest unit a day-count divides cleanly into', () => {
+    expect(splitInterval(90)).toEqual({ count: 3, unit: 'months' });
+    expect(splitInterval(30)).toEqual({ count: 1, unit: 'months' });
+    expect(splitInterval(84)).toEqual({ count: 12, unit: 'weeks' });
+    expect(splitInterval(14)).toEqual({ count: 2, unit: 'weeks' });
+    expect(splitInterval(7)).toEqual({ count: 1, unit: 'weeks' });
+    expect(splitInterval(9)).toEqual({ count: 9, unit: 'days' });
+    expect(splitInterval(1)).toEqual({ count: 1, unit: 'days' });
+  });
+
+  it('round-trips a clean value back to itself', () => {
+    for (const d of [1, 6, 9, 14, 18, 30, 60, 90]) {
+      const { count, unit } = splitInterval(d);
+      expect(intervalToDays(count, unit)).toBe(d);
+    }
+  });
+
+  it('intervalToDays floors the count to ≥1 and clamps days into range', () => {
+    expect(intervalToDays(0, 'weeks')).toBe(7); // count floored to 1 → 1 week
+    expect(intervalToDays(1, 'weeks')).toBe(7);
+    expect(intervalToDays(99, 'months')).toBe(MAX_CARE_INTERVAL_DAYS); // 99mo → clamped 90
+  });
+
+  it('maxIntervalCount is the per-unit ceiling under the 90-day cap', () => {
+    expect(maxIntervalCount('days')).toBe(90);
+    expect(maxIntervalCount('weeks')).toBe(12); // 12 × 7 = 84 ≤ 90
+    expect(maxIntervalCount('months')).toBe(3); // 3 × 30 = 90
+  });
+
+  it('switching unit snaps to ≥1 of the new unit (the editor never lands on 0)', () => {
+    // 14 days viewed in months → round(14/30)=0, floored to 1 → 30 days.
+    expect(intervalToDays(intervalCount(14, 'months'), 'months')).toBe(30);
   });
 });

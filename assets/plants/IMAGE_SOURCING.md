@@ -67,7 +67,7 @@ plant, credit-required-with-CC-BY, and no `-NC`/`-ND` licenses.
 | `philodendron-hederaceum-mini` | *Philodendron hederaceum* | Heartleaf Philodendron (mini) | `plants/philodendron-hederaceum-mini.png` | Pending |
 | `miniature-orchid` | *Lepanthes telipogoniflora* | Miniature Orchid | `plants/miniature-orchid.png` | Pending |
 | `peperomia-caperata` | *Peperomia caperata* | Emerald Ripple Peperomia | `plants/peperomia-caperata.png` | Pending |
-| `peperomia-rotundifolia` | *Peperomia rotundifolia* | Trailing Jade | `plants/peperomia-rotundifolia.png` | Pending |
+| `peperomia-rotundifolia` | *Peperomia rotundifolia* | Creeping Buttons | `plants/peperomia-rotundifolia.png` | Pending |
 | `cryptanthus-bivittatus` | *Cryptanthus bivittatus* | Earth Star Bromeliad | `plants/cryptanthus-bivittatus.png` | Pending |
 | `ophiopogon-japonicus-mini` | *Ophiopogon japonicus 'Nana'* | Dwarf Mondo Grass | `plants/ophiopogon-japonicus-mini.png` | Pending |
 | `syngonium-podophyllum-mini` | *Syngonium podophyllum* | Arrowhead Plant (mini) | `plants/syngonium-podophyllum-mini.png` | Pending |

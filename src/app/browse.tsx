@@ -15,8 +15,8 @@
  *
  * Reads the seed bundle directly (no DB round-trip for the catalog).
  */
-import { useMemo, useState } from 'react';
-import { Linking, Pressable, ScrollView, StyleSheet, TextInput, View } from 'react-native';
+import { memo, useCallback, useMemo, useState } from 'react';
+import { FlatList, Linking, Pressable, StyleSheet, TextInput, View } from 'react-native';
 
 import { Card, Chip, GlanceHeader, Screen, SectionLabel, Text } from '@/components/ui';
 import { PlantSheet } from '@/components/plant-sheet';
@@ -88,131 +88,188 @@ export default function BrowseScreen() {
     Linking.openURL(`mailto:${SUGGEST_EMAIL}?subject=${subject}&body=${body}`).catch(() => {});
   }
 
+  // Stable renderers — the row components are memoized, so renderItem must not be
+  // re-created on every keystroke (it would defeat the memo). Pressed plant/slug is
+  // delivered via the stable state setters, not a fresh closure per row.
+  const renderPlant = useCallback(
+    ({ item }: { item: Plant }) => <PlantRow plant={item} onPress={setSheetPlant} />,
+    [],
+  );
+  const renderTerm = useCallback(
+    ({ item }: { item: GlossaryEntry }) => <TermRow entry={item} onPress={setTermSlug} />,
+    [],
+  );
+
+  // Shared top chrome (header + mode toggle). Lives inside each list's header so it
+  // scrolls with the content, as before. Built as a plain element tree of stable
+  // component types so the search TextInput below it never remounts (focus loss).
+  const topChrome = (
+    <>
+      <GlanceHeader
+        title="Browse"
+        subtitle={
+          mode === 'plants'
+            ? `${results.length} of ${plants.length} plants`
+            : `${termResults.length} of ${glossary.length} terms`
+        }
+      />
+      {/* Plants | Terms mode toggle — a glossary does not earn its own nav tab. */}
+      <View style={styles.modeToggle}>
+        <Chip label="Plants" tone="primary" selected={mode === 'plants'} onPress={() => setMode('plants')} />
+        <Chip label="Terms" tone="primary" selected={mode === 'terms'} onPress={() => setMode('terms')} />
+      </View>
+    </>
+  );
+
   return (
     <Screen>
-      <ScrollView
-        contentContainerStyle={styles.scroll}
-        keyboardShouldPersistTaps="handled"
-        showsVerticalScrollIndicator={false}>
-        <View style={styles.inner}>
-          <GlanceHeader
-            title="Browse"
-            subtitle={
-              mode === 'plants'
-                ? `${results.length} of ${plants.length} plants`
-                : `${termResults.length} of ${glossary.length} terms`
-            }
-          />
-
-          {/* Plants | Terms mode toggle — a glossary does not earn its own nav tab. */}
-          <View style={styles.modeToggle}>
-            <Chip label="Plants" tone="primary" selected={mode === 'plants'} onPress={() => setMode('plants')} />
-            <Chip label="Terms" tone="primary" selected={mode === 'terms'} onPress={() => setMode('terms')} />
-          </View>
-
-          {mode === 'terms' ? (
-            <TermsBrowse
-              search={termSearch}
-              onSearch={setTermSearch}
-              categories={termCats}
-              onToggleCategory={(v) => toggle(termCats, setTermCats, v)}
-              results={termResults}
-              onOpenTerm={setTermSlug}
-            />
-          ) : (
-          <>
-          {/* Search */}
-          <TextInput
-            value={search}
-            onChangeText={setSearch}
-            placeholder="Search by name…"
-            placeholderTextColor={c.textMuted}
-            style={[styles.search, { backgroundColor: c.surface, borderColor: c.border, color: c.text }]}
-            autoCorrect={false}
-            returnKeyType="search"
-            accessibilityLabel="Search plants"
-          />
-
-          {/* Filters toggle + sort */}
-          <View style={styles.controlRow}>
-            <Pressable onPress={() => setFiltersOpen((o) => !o)} accessibilityRole="button" hitSlop={6}>
-              <Chip
-                label={activeFilters > 0 ? `Filters · ${activeFilters}` : 'Filters'}
-                tone={activeFilters > 0 ? 'primary' : 'neutral'}
-                selected={activeFilters > 0}
+      {mode === 'terms' ? (
+        <FlatList
+          data={termResults}
+          keyExtractor={(t) => t.slug}
+          renderItem={renderTerm}
+          ItemSeparatorComponent={Separator}
+          contentContainerStyle={styles.listContent}
+          keyboardShouldPersistTaps="handled"
+          showsVerticalScrollIndicator={false}
+          initialNumToRender={10}
+          windowSize={7}
+          removeClippedSubviews
+          ListHeaderComponent={
+            <View style={styles.headerBlock}>
+              {topChrome}
+              <TextInput
+                value={termSearch}
+                onChangeText={setTermSearch}
+                placeholder="Search terms…"
+                placeholderTextColor={c.textMuted}
+                style={[styles.search, { backgroundColor: c.surface, borderColor: c.border, color: c.text }]}
+                autoCorrect={false}
+                returnKeyType="search"
+                accessibilityLabel="Search glossary terms"
               />
-            </Pressable>
-            <View style={styles.sortGroup}>
-              {SORTS.map((s) => (
-                <Chip
-                  key={s.value}
-                  label={s.label}
-                  tone="sage"
-                  selected={sort === s.value}
-                  onPress={() => setSort(s.value)}
-                />
-              ))}
+              <View style={styles.chipWrap}>
+                {GLOSSARY_CATEGORIES.map((cat) => (
+                  <Chip
+                    key={cat}
+                    label={GLOSSARY_CATEGORY_LABELS[cat]}
+                    tone="sage"
+                    selected={termCats.includes(cat)}
+                    onPress={() => toggle(termCats, setTermCats, cat)}
+                  />
+                ))}
+              </View>
             </View>
-          </View>
+          }
+          ListEmptyComponent={
+            <Card style={styles.empty}>
+              <Text variant="subhead">No terms match</Text>
+              <Text variant="body" role="textMuted">
+                Try a different search or clear a category.
+              </Text>
+            </Card>
+          }
+        />
+      ) : (
+        <FlatList
+          data={results}
+          keyExtractor={(p) => p.slug}
+          renderItem={renderPlant}
+          ItemSeparatorComponent={Separator}
+          contentContainerStyle={styles.listContent}
+          keyboardShouldPersistTaps="handled"
+          showsVerticalScrollIndicator={false}
+          initialNumToRender={10}
+          windowSize={7}
+          removeClippedSubviews
+          ListHeaderComponent={
+            <View style={styles.headerBlock}>
+              {topChrome}
+              {/* Search */}
+              <TextInput
+                value={search}
+                onChangeText={setSearch}
+                placeholder="Search by name…"
+                placeholderTextColor={c.textMuted}
+                style={[styles.search, { backgroundColor: c.surface, borderColor: c.border, color: c.text }]}
+                autoCorrect={false}
+                returnKeyType="search"
+                accessibilityLabel="Search plants"
+              />
 
-          {filtersOpen ? (
-            <Card style={styles.filterCard}>
-              <FacetGroup label="Type" options={PLANT_TYPES} selected={types} onToggle={(v) => toggle(types, setTypes, v)} />
-              <FacetGroup label="Biome" options={NATIVE_BIOMES} selected={biomes} onToggle={(v) => toggle(biomes, setBiomes, v)} />
-              <FacetGroup label="Light" options={LIGHT_LEVELS} selected={lights} onToggle={(v) => toggle(lights, setLights, v)} />
-              <View style={styles.facet}>
-                <SectionLabel>Difficulty</SectionLabel>
-                <View style={styles.chipWrap}>
-                  {DIFFICULTIES.map((d) => (
+              {/* Filters toggle + sort */}
+              <View style={styles.controlRow}>
+                <Pressable onPress={() => setFiltersOpen((o) => !o)} accessibilityRole="button" hitSlop={6}>
+                  <Chip
+                    label={activeFilters > 0 ? `Filters · ${activeFilters}` : 'Filters'}
+                    tone={activeFilters > 0 ? 'primary' : 'neutral'}
+                    selected={activeFilters > 0}
+                  />
+                </Pressable>
+                <View style={styles.sortGroup}>
+                  {SORTS.map((s) => (
                     <Chip
-                      key={d}
-                      label={String(d)}
+                      key={s.value}
+                      label={s.label}
                       tone="sage"
-                      selected={difficulties.includes(d)}
-                      onPress={() => toggle(difficulties, setDifficulties, d)}
+                      selected={sort === s.value}
+                      onPress={() => setSort(s.value)}
                     />
                   ))}
                 </View>
               </View>
-              {activeFilters > 0 ? (
-                <Pressable onPress={clearAll} accessibilityRole="button" hitSlop={6} style={styles.clear}>
-                  <Text variant="caption" role="primary">
-                    Clear filters
-                  </Text>
-                </Pressable>
-              ) : null}
-            </Card>
-          ) : null}
 
-          {/* Results */}
-          {results.length === 0 ? (
+              {filtersOpen ? (
+                <Card style={styles.filterCard}>
+                  <FacetGroup label="Type" options={PLANT_TYPES} selected={types} onToggle={(v) => toggle(types, setTypes, v)} />
+                  <FacetGroup label="Biome" options={NATIVE_BIOMES} selected={biomes} onToggle={(v) => toggle(biomes, setBiomes, v)} />
+                  <FacetGroup label="Light" options={LIGHT_LEVELS} selected={lights} onToggle={(v) => toggle(lights, setLights, v)} />
+                  <View style={styles.facet}>
+                    <SectionLabel>Difficulty</SectionLabel>
+                    <View style={styles.chipWrap}>
+                      {DIFFICULTIES.map((d) => (
+                        <Chip
+                          key={d}
+                          label={String(d)}
+                          tone="sage"
+                          selected={difficulties.includes(d)}
+                          onPress={() => toggle(difficulties, setDifficulties, d)}
+                        />
+                      ))}
+                    </View>
+                  </View>
+                  {activeFilters > 0 ? (
+                    <Pressable onPress={clearAll} accessibilityRole="button" hitSlop={6} style={styles.clear}>
+                      <Text variant="caption" role="primary">
+                        Clear filters
+                      </Text>
+                    </Pressable>
+                  ) : null}
+                </Card>
+              ) : null}
+            </View>
+          }
+          ListEmptyComponent={
             <Card style={styles.empty}>
               <Text variant="subhead">No plants match</Text>
               <Text variant="body" role="textMuted">
                 Try broadening your search or clearing a filter.
               </Text>
             </Card>
-          ) : (
-            <View style={styles.list}>
-              {results.map((p) => (
-                <PlantRow key={p.slug} plant={p} onPress={() => setSheetPlant(p)} />
-              ))}
-            </View>
-          )}
-
-          {/* Suggest a plant — opens a mailto. */}
-          <Pressable onPress={suggestPlant} accessibilityRole="button" style={styles.suggest}>
-            <Text variant="caption" role="primary">
-              Missing a plant? Suggest one →
-            </Text>
-            <Text variant="overline" role="textMuted">
-              The catalog is curator-maintained
-            </Text>
-          </Pressable>
-          </>
-          )}
-        </View>
-      </ScrollView>
+          }
+          ListFooterComponent={
+            /* Suggest a plant — opens a mailto. */
+            <Pressable onPress={suggestPlant} accessibilityRole="button" style={styles.suggest}>
+              <Text variant="caption" role="primary">
+                Missing a plant? Suggest one →
+              </Text>
+              <Text variant="overline" role="textMuted">
+                The catalog is curator-maintained
+              </Text>
+            </Pressable>
+          }
+        />
+      )}
 
       <PlantSheet
         plant={sheetPlant}
@@ -222,6 +279,11 @@ export default function BrowseScreen() {
       <TermSheet slug={termSlug} onClose={() => setTermSlug(null)} />
     </Screen>
   );
+}
+
+/** Item separator carrying the inter-row gap FlatList can't express via `gap`. */
+function Separator() {
+  return <View style={styles.separator} />;
 }
 
 function FacetGroup({
@@ -247,10 +309,16 @@ function FacetGroup({
   );
 }
 
-function PlantRow({ plant, onPress }: { plant: Plant; onPress: () => void }) {
+const PlantRow = memo(function PlantRow({
+  plant,
+  onPress,
+}: {
+  plant: Plant;
+  onPress: (plant: Plant) => void;
+}) {
   const { c } = useTokens();
   return (
-    <Pressable onPress={onPress} accessibilityRole="button" accessibilityLabel={`Open ${plant.commonName}`}>
+    <Pressable onPress={() => onPress(plant)} accessibilityRole="button" accessibilityLabel={`Open ${plant.commonName}`}>
       <Card style={styles.row}>
         <View style={styles.rowHead}>
           <View style={styles.rowTitle}>
@@ -283,71 +351,17 @@ function PlantRow({ plant, onPress }: { plant: Plant; onPress: () => void }) {
       </Card>
     </Pressable>
   );
-}
+});
 
-/** Terms mode — search + category chips over the glossary, rows open a TermSheet. */
-function TermsBrowse({
-  search,
-  onSearch,
-  categories,
-  onToggleCategory,
-  results,
-  onOpenTerm,
+const TermRow = memo(function TermRow({
+  entry,
+  onPress,
 }: {
-  search: string;
-  onSearch: (v: string) => void;
-  categories: string[];
-  onToggleCategory: (v: string) => void;
-  results: GlossaryEntry[];
-  onOpenTerm: (slug: string) => void;
+  entry: GlossaryEntry;
+  onPress: (slug: string) => void;
 }) {
-  const { c } = useTokens();
   return (
-    <>
-      <TextInput
-        value={search}
-        onChangeText={onSearch}
-        placeholder="Search terms…"
-        placeholderTextColor={c.textMuted}
-        style={[styles.search, { backgroundColor: c.surface, borderColor: c.border, color: c.text }]}
-        autoCorrect={false}
-        returnKeyType="search"
-        accessibilityLabel="Search glossary terms"
-      />
-
-      <View style={styles.chipWrap}>
-        {GLOSSARY_CATEGORIES.map((cat) => (
-          <Chip
-            key={cat}
-            label={GLOSSARY_CATEGORY_LABELS[cat]}
-            tone="sage"
-            selected={categories.includes(cat)}
-            onPress={() => onToggleCategory(cat)}
-          />
-        ))}
-      </View>
-
-      {results.length === 0 ? (
-        <Card style={styles.empty}>
-          <Text variant="subhead">No terms match</Text>
-          <Text variant="body" role="textMuted">
-            Try a different search or clear a category.
-          </Text>
-        </Card>
-      ) : (
-        <View style={styles.list}>
-          {results.map((t) => (
-            <TermRow key={t.slug} entry={t} onPress={() => onOpenTerm(t.slug)} />
-          ))}
-        </View>
-      )}
-    </>
-  );
-}
-
-function TermRow({ entry, onPress }: { entry: GlossaryEntry; onPress: () => void }) {
-  return (
-    <Pressable onPress={onPress} accessibilityRole="button" accessibilityLabel={`Define ${entry.term}`}>
+    <Pressable onPress={() => onPress(entry.slug)} accessibilityRole="button" accessibilityLabel={`Define ${entry.term}`}>
       <Card style={styles.row}>
         <View style={styles.rowHead}>
           <Text variant="subhead" numberOfLines={1} style={styles.termRowTitle}>
@@ -361,11 +375,22 @@ function TermRow({ entry, onPress }: { entry: GlossaryEntry; onPress: () => void
       </Card>
     </Pressable>
   );
-}
+});
 
 const styles = StyleSheet.create({
-  scroll: { alignItems: 'center', paddingBottom: Spacing.xxl },
-  inner: { width: '100%', maxWidth: MaxContentWidth, alignSelf: 'center', gap: Spacing.md, paddingTop: Spacing.md },
+  // FlatList content container — carries the centering + max-width the old `inner`
+  // wrapper did, plus the screen's top/bottom breathing room.
+  listContent: {
+    width: '100%',
+    maxWidth: MaxContentWidth,
+    alignSelf: 'center',
+    paddingTop: Spacing.md,
+    paddingBottom: Spacing.xxl,
+  },
+  // The list header (chrome above the rows) keeps its own vertical rhythm via gap,
+  // and a bottom margin to stand off the first row (separators only sit between rows).
+  headerBlock: { gap: Spacing.md, marginBottom: Spacing.md },
+  separator: { height: Spacing.md },
   search: { borderWidth: 1, borderRadius: Radii.md, paddingHorizontal: Spacing.md, paddingVertical: Spacing.sm + 2, fontSize: 16 },
   modeToggle: { flexDirection: 'row', gap: Spacing.sm },
   controlRow: { flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', gap: Spacing.sm, flexWrap: 'wrap' },
@@ -376,7 +401,6 @@ const styles = StyleSheet.create({
   chipWrap: { flexDirection: 'row', flexWrap: 'wrap', gap: Spacing.sm },
   clear: { alignSelf: 'flex-start', paddingTop: Spacing.xs },
   empty: { padding: Spacing.lg, gap: Spacing.sm },
-  list: { gap: Spacing.md },
   row: { padding: Spacing.md, gap: Spacing.sm },
   rowHead: { flexDirection: 'row', alignItems: 'flex-start', justifyContent: 'space-between', gap: Spacing.sm },
   rowTitle: { flexShrink: 1, gap: 2 },

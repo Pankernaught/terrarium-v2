@@ -41,6 +41,7 @@ describe('scoreBuild — honest scoring (no swallowed errors)', () => {
     expect(result.score).toBe(100);
     expect(result.band).toBe('healthy');
     expect(result.diagnostic).toBeNull();
+    expect(result.empty).toBe(true);
     expect(result.verdict?.sentence).toMatch(/no plants yet/i);
   });
 

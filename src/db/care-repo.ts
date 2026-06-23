@@ -56,8 +56,16 @@ export interface CareRepository {
    * is unknown.
    */
   markDone(id: string, intervalDays: number, at?: Date): Promise<CareMark>;
+  /**
+   * Move a pending occurrence to a new due time (manual reschedule). Only pending
+   * rows are touched; history is never moved. Returns the updated row. Throws if the
+   * id is unknown or already completed.
+   */
+  reschedule(id: string, dueAt: Date): Promise<CareMark>;
   /** Toggle-off: delete only the PENDING rows for a build (history survives). */
   disableForBuild(buildId: string): Promise<void>;
+  /** Mute one task: delete only the PENDING rows of a single kind for a build. */
+  disableKind(buildId: string, kind: string): Promise<void>;
   /** Build deleted: delete ALL rows for a build. */
   purgeForBuild(buildId: string): Promise<void>;
 }
@@ -133,10 +141,33 @@ export function createCareRepository(db: TerrariumDb): CareRepository {
       return next;
     },
 
+    async reschedule(id, dueAt) {
+      const mark = await getMark(id);
+      if (!mark) throw new Error(`Care mark ${id} not found.`);
+      if (mark.completedAt !== null) throw new Error(`Care mark ${id} is already completed.`);
+      await db
+        .update(careMarks)
+        .set({ dueAt })
+        .where(and(eq(careMarks.id, id), isNull(careMarks.completedAt)));
+      return { ...mark, dueAt };
+    },
+
     async disableForBuild(buildId) {
       await db
         .delete(careMarks)
         .where(and(eq(careMarks.buildId, buildId), isNull(careMarks.completedAt)));
+    },
+
+    async disableKind(buildId, kind) {
+      await db
+        .delete(careMarks)
+        .where(
+          and(
+            eq(careMarks.buildId, buildId),
+            eq(careMarks.kind, kind),
+            isNull(careMarks.completedAt),
+          ),
+        );
     },
 
     async purgeForBuild(buildId) {

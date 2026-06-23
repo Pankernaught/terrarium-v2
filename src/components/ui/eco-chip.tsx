@@ -17,10 +17,22 @@ import { Text } from './text';
 export interface EcoChipProps {
   /** 0–100, or `null` when scoring failed (renders the review state). */
   score: number | null;
+  /** No plants yet — a neutral prompt, not a fake 100%/healthy verdict. */
+  empty?: boolean;
 }
 
-export function EcoChip({ score }: EcoChipProps) {
+export function EcoChip({ score, empty }: EcoChipProps) {
   const { c, scheme } = useTokens();
+
+  if (empty) {
+    return (
+      <View style={[styles.chip, { backgroundColor: c.surfaceSunken }]}>
+        <Text variant="caption" style={{ color: c.textMuted }}>
+          No plants yet
+        </Text>
+      </View>
+    );
+  }
 
   if (score === null) {
     return (

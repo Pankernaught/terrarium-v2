@@ -94,6 +94,9 @@ export function FinalStep({ draft, plants, update }: StepProps) {
           onChangeText={(text) => update({ name: text })}
           placeholder="Untitled terrarium"
           placeholderTextColor={c.textMuted}
+          autoCorrect={false}
+          autoCapitalize="words"
+          returnKeyType="done"
           accessibilityLabel="Build name"
           style={[
             styles.input,

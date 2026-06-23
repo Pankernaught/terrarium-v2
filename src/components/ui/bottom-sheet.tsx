@@ -11,7 +11,16 @@
  * Gesture Handler + Reanimated.
  */
 import { type ReactNode, useEffect } from 'react';
-import { AccessibilityInfo, Modal, Pressable, StyleSheet, useWindowDimensions, View } from 'react-native';
+import {
+  AccessibilityInfo,
+  KeyboardAvoidingView,
+  Modal,
+  Platform,
+  Pressable,
+  StyleSheet,
+  useWindowDimensions,
+  View,
+} from 'react-native';
 import { Gesture, GestureDetector } from 'react-native-gesture-handler';
 import Animated, {
   runOnJS,
@@ -87,7 +96,9 @@ export function BottomSheet({ visible, onClose, children, title }: BottomSheetPr
 
   return (
     <Modal visible={visible} transparent animationType="none" onRequestClose={onClose} statusBarTranslucent>
-      <View style={styles.root}>
+      {/* Lift the bottom-pinned sheet above the keyboard so any TextInput inside it
+          (e.g. the rename sheet) stays visible. */}
+      <KeyboardAvoidingView style={styles.root} behavior={Platform.OS === 'ios' ? 'padding' : undefined}>
         <Animated.View style={[styles.backdrop, backdropStyle]}>
           <Pressable style={StyleSheet.absoluteFill} onPress={onClose} accessibilityLabel="Dismiss" />
         </Animated.View>
@@ -107,7 +118,7 @@ export function BottomSheet({ visible, onClose, children, title }: BottomSheetPr
             {children}
           </Animated.View>
         </GestureDetector>
-      </View>
+      </KeyboardAvoidingView>
     </Modal>
   );
 }

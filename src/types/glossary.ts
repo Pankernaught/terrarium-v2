@@ -38,6 +38,7 @@ export const GLOSSARY_CATEGORIES = [
   'substrate',
   'concept',
   'anatomy',
+  'pest-disease',
 ] as const;
 export type GlossaryCategory = (typeof GLOSSARY_CATEGORIES)[number];
 
@@ -54,6 +55,7 @@ export const GLOSSARY_CATEGORY_LABELS: Record<GlossaryCategory, string> = {
   substrate: 'Substrate',
   concept: 'Concept',
   anatomy: 'Anatomy',
+  'pest-disease': 'Pest & Disease',
 };
 
 /**

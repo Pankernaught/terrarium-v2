@@ -19,7 +19,7 @@
       "slug": "bright-indirect",
       "term": "Bright indirect light",
       "category": "light",
-      "definition": "Strong, even light without the sun's rays landing directly on the leaves — beside a bright window or behind a sheer curtain. It is the sweet spot for most terrarium foliage: enough energy for compact growth and colour without the leaf scorch a glass container amplifies.",
+      "definition": "Strong, even light without the sun's rays landing directly on the leaves — beside a bright window or behind a sheer curtain. It is the sweet spot for most terrarium foliage: enough energy for compact growth and color without the leaf scorch a glass container amplifies.",
       "seeAlso": ["medium", "direct"]
     },
     {
@@ -92,14 +92,14 @@
       "slug": "moderate-growth",
       "term": "Moderate growth",
       "category": "growthRate",
-      "definition": "A steady but manageable pace — filling in over months without overrunning its neighbours. A reliable middle ground for a mixed planting.",
+      "definition": "A steady but manageable pace — filling in over months without overrunning its neighbors. A reliable middle ground for a mixed planting.",
       "seeAlso": ["slow", "fast"]
     },
     {
       "slug": "fast",
       "term": "Fast growth",
       "category": "growthRate",
-      "definition": "Puts on size quickly and needs regular pruning to stay in scale. Useful for filling a new layout fast, but it can smother slower neighbours in a sealed container.",
+      "definition": "Puts on size quickly and needs regular pruning to stay in scale. Useful for filling a new layout fast, but it can smother slower neighbors in a sealed container.",
       "seeAlso": ["moderate-growth"]
     },
 
@@ -114,14 +114,14 @@
       "slug": "upright",
       "term": "Upright",
       "category": "growthHabit",
-      "definition": "Grows vertically on self-supporting stems. It provides height and structure as a background or specimen plant.",
+      "definition": "Grows vertically on self-supporting stems. It provides height and vertical structure in a planting.",
       "seeAlso": ["rosette", "mounding"]
     },
     {
       "slug": "rosette",
       "term": "Rosette",
       "category": "growthHabit",
-      "definition": "Leaves radiating from a single central point at the base, like a star or a cup. Many bromeliads and succulents grow this way; the form often channels water to — or away from — the centre.",
+      "definition": "Leaves radiating from a single central point at the base, like a star or a cup. Many bromeliads and succulents grow this way; the form often channels water to — or away from — the center.",
       "seeAlso": ["mounding", "bromeliad"]
     },
     {
@@ -142,8 +142,22 @@
       "slug": "mounding",
       "term": "Mounding",
       "category": "growthHabit",
-      "definition": "Forms a compact, rounded clump. It holds a tidy shape with little intervention — a dependable mid-ground form.",
+      "definition": "Forms a compact, rounded clump. It holds a tidy shape with little intervention.",
       "seeAlso": ["rosette", "upright"]
+    },
+    {
+      "slug": "shingling",
+      "term": "Shingling",
+      "category": "growthHabit",
+      "definition": "A growth form in which leaves press flat against a vertical surface — a tree trunk, cork panel, or plank — and overlap like roof shingles as the stem climbs toward the light. Shingling species (such as Rhaphidophora and Marcgravia) produce small, flat juvenile leaves in this phase; given consistent vertical contact, the leaves enlarge and change shape at maturity. In a terrarium, mount them on cork bark rather than planting in substrate.",
+      "seeAlso": ["climbing", "epiphyte"]
+    },
+    {
+      "slug": "rosettes",
+      "term": "Rosettes",
+      "category": "growthHabit",
+      "definition": "The plural of [[rosette]] — leaves radiating from a single central point at the base, like a star or cup.",
+      "seeAlso": ["rosette"]
     },
 
     {
@@ -192,14 +206,14 @@
       "slug": "begonia",
       "term": "Begonia",
       "category": "plantType",
-      "definition": "A large genus of foliage and flowering plants, many with strikingly patterned or textured leaves. Compact, humidity-loving species are terrarium favourites, often grown from a creeping rhizome.",
+      "definition": "A large genus of foliage and flowering plants, many with strikingly patterned or textured leaves. Compact, humidity-loving species are terrarium favorites, often grown from a creeping rhizome.",
       "seeAlso": ["rhizome", "foliage"]
     },
     {
       "slug": "bromeliad",
       "term": "Bromeliad",
       "category": "plantType",
-      "definition": "A member of the pineapple family, often a rosette that holds water in a central cup, or tank. Many are epiphytes and bring bold colour to vivariums and paludariums.",
+      "definition": "A member of the pineapple family, often a rosette that holds water in a central cup, or tank. Many are epiphytes and bring bold color to vivariums and paludariums.",
       "seeAlso": ["rosette", "epiphyte"]
     },
     {
@@ -227,8 +241,22 @@
       "slug": "foliage",
       "term": "Foliage plant",
       "category": "plantType",
-      "definition": "A plant grown chiefly for its leaves rather than its flowers. Foliage plants are the backbone of most terrarium plantings, valued for colour, pattern, and texture.",
+      "definition": "A plant grown chiefly for its leaves rather than its flowers. Foliage plants are the backbone of most terrarium plantings, valued for color, pattern, and texture.",
       "seeAlso": ["aroid", "begonia"]
+    },
+    {
+      "slug": "saxifrage",
+      "term": "Saxifrage",
+      "category": "plantType",
+      "definition": "A member of the genus Saxifraga: compact, cushion- or rosette-forming plants native to rocky, shaded, and alpine habitats. Several species suit cool, humid terrariums where they creep across stone as low groundcover; they need good airflow and are poorly suited to the stagnant warmth of a sealed tropical build.",
+      "seeAlso": ["lithophyte", "creeping", "rosette"]
+    },
+    {
+      "slug": "carnivore",
+      "term": "Carnivore",
+      "category": "plantType",
+      "definition": "Common shorthand for [[carnivorous|carnivorous plant]] — a plant that supplements poor-soil nutrients by trapping and digesting insects. Sundews, pitcher plants, and Venus flytraps are the most common examples in cultivation.",
+      "seeAlso": ["carnivorous", "wet", "acidic"]
     },
 
     {
@@ -478,6 +506,41 @@
       "definition": "The release of water vapour from a plant's leaves. In a sealed container this water recondenses and returns to the soil, driving the self-watering cycle.",
       "seeAlso": ["humidity", "condensation"]
     },
+    {
+      "slug": "etiolation",
+      "term": "Etiolation",
+      "category": "concept",
+      "definition": "Abnormal stem elongation caused by insufficient light — the plant stretches toward the nearest light source, producing spindly, pale, structurally weak growth. The affected section does not recover; prune back the stretched stem and move the plant to a brighter position to prevent recurrence.",
+      "seeAlso": ["bright-indirect", "direct"]
+    },
+    {
+      "slug": "pinching",
+      "term": "Pinching",
+      "category": "concept",
+      "definition": "Removing the growing tip of a stem — between finger and thumb, or with clean scissors — to halt upward growth and stimulate branching from the buds below. Used in a terrarium to keep compact plants from bolting and to maintain a full, bushy shape.",
+      "seeAlso": ["node"]
+    },
+    {
+      "slug": "wet-feet",
+      "term": "Wet feet",
+      "category": "concept",
+      "definition": "Roots sitting in standing water or permanently saturated substrate, where oxygen is excluded and decay follows quickly — also called soggy feet. Most terrarium plants cannot tolerate wet feet for long; a drainage layer or false bottom prevents the condition by keeping roots above any standing water.",
+      "seeAlso": ["drainage-layer", "false-bottom", "root-rot"]
+    },
+    {
+      "slug": "soggy-feet",
+      "term": "Soggy feet",
+      "category": "concept",
+      "definition": "Another name for [[wet-feet|wet feet]] — roots sitting in standing water or saturated substrate.",
+      "seeAlso": ["wet-feet"]
+    },
+    {
+      "slug": "epiphytic",
+      "term": "Epiphytic",
+      "category": "concept",
+      "definition": "The adjective form of [[epiphyte]]: growing on another plant or surface rather than in soil, drawing moisture from air, rain, and collected debris.",
+      "seeAlso": ["epiphyte", "terrestrial"]
+    },
 
     {
       "slug": "rhizome",
@@ -520,6 +583,132 @@
       "category": "anatomy",
       "definition": "The tightly coiled tip of an emerging fern frond, also called a fiddlehead. It unrolls as the frond expands to full size.",
       "seeAlso": ["frond", "fern"]
+    },
+    {
+      "slug": "pup",
+      "term": "Pup",
+      "category": "anatomy",
+      "definition": "A pup is a vegetative offset — a small daughter plant — produced by a parent plant, typically around its base. In bromeliads, the parent rosette flowers once and then produces pups that become the next generation; in succulents the habit continues indefinitely. Pups can be left in place to form a clump or separated once they reach roughly a third of the parent's size.",
+      "seeAlso": ["offset"]
+    },
+    {
+      "slug": "offset",
+      "term": "Offset",
+      "category": "anatomy",
+      "definition": "An offset is a vegetative offshoot growing at or near the base of a parent plant, genetically identical and capable of independent life once detached. The term is used broadly for cacti, succulents, and bromeliads where \"pup\" is less common. In a terrarium, offsets can be left to form a colony or removed to control spread.",
+      "seeAlso": ["pup"]
+    },
+    {
+      "slug": "midrib",
+      "term": "Midrib",
+      "category": "anatomy",
+      "definition": "The midrib is the prominent central vein running the full length of a leaf, from which secondary veins branch outward. It is the thickest, most rigid part of the leaf blade and provides structural support. In many terrarium aroids and ferns a pale, silver, or contrasting-color midrib is a key ornamental feature and a useful species-ID marker.",
+      "seeAlso": []
+    },
+    {
+      "slug": "corm",
+      "term": "Corm",
+      "category": "anatomy",
+      "definition": "A corm is a compact, solid, swollen stem base — not a bulb (which is layered) — that stores starch and water to carry a plant through dormancy or stress. In corm-forming plants such as Alocasia, the corm sits at or just below the soil surface. Because it stores moisture it is highly prone to rot if the substrate stays waterlogged; always ensure excellent drainage and allow a partial dry-down between waterings.",
+      "seeAlso": ["tuber"]
+    },
+    {
+      "slug": "tuber",
+      "term": "Tuber",
+      "category": "anatomy",
+      "definition": "A tuber is an enlarged, starchy underground storage organ — derived from a modified root or stem — that the plant uses to survive dormancy. Common terrarium examples include Sinningia (gesneriads) and some aroids. Care during dormancy is critical: reduce watering significantly once foliage dies back and resume only when new growth appears, or the tuber will rot from residual moisture.",
+      "seeAlso": ["corm"]
+    },
+    {
+      "slug": "pseudobulb",
+      "term": "Pseudobulb",
+      "category": "anatomy",
+      "definition": "A pseudobulb is a thickened, above-ground, bulb-like swelling of the stem found in many sympodial orchids, used to store water and carbohydrates between waterings. Unlike true bulbs, pseudobulbs are green, photosynthetically active, and sit exposed at the base of each growth. Healthy pseudobulbs are firm and plump; shrivelled pseudobulbs signal underwatering or root failure — check the mount before increasing watering frequency.",
+      "seeAlso": []
+    },
+    {
+      "slug": "axil",
+      "term": "Axil",
+      "category": "anatomy",
+      "definition": "The axil is the upper angle formed between a leaf stalk (or branch) and the stem above the point where they meet. Buds, new stems, and flowers typically emerge from the axil, making it a key site to observe when checking for new growth or blooms. In miniature epiphytic orchids in particular, flowers appear from the leaf axil rather than from a separate scape, so knowing where to look prevents accidentally removing developing flower buds during maintenance.",
+      "seeAlso": []
+    },
+    {
+      "slug": "caudex",
+      "term": "Caudex",
+      "category": "anatomy",
+      "definition": "A caudex (plural caudices) is a swollen, woody stem base that stores water and carbohydrates, found in many succulent vines and xerophytic plants. It functions as a drought reserve, allowing the plant to survive prolonged dry periods by drawing on stored resources. In terrarium care, plants with a caudex need very sharp drainage and a genuine dry-down between waterings — the caudex base is the first place to rot if moisture accumulates around it.",
+      "seeAlso": []
+    },
+    {
+      "slug": "plantlet",
+      "term": "Plantlet",
+      "category": "anatomy",
+      "definition": "A plantlet is a young plant produced on an aerial stem or leaf margin of a mother plant."
+    },
+    {
+      "slug": "venation",
+      "term": "Venation",
+      "category": "anatomy",
+      "definition": "The arrangement and branching pattern of veins within a leaf blade. The [[midrib]] is the primary vein; from it, secondary veins branch outward in patterns that vary by species — pinnate (feather-like), palmate (hand-like), or parallel. Contrasting or metallic venation is a key ornamental feature in many terrarium aroids, ferns, and begonias, and a useful species-identification marker.",
+      "seeAlso": ["midrib", "petiole"]
+    },
+
+    {
+      "slug": "fungus-gnats",
+      "term": "Fungus gnats",
+      "category": "pest-disease",
+      "definition": "Tiny flies (family Sciaridae) whose larvae live in moist organic substrate and feed on fine roots and decaying matter. In a sealed terrarium their population can explode rapidly. Adult gnats are harmless but heavy larval populations stunt roots; allow the top substrate layer to dry between waterings, or introduce predatory nematodes (Steinernema feltiae) or Hypoaspis mites.",
+      "seeAlso": ["root-rot", "drainage-layer"]
+    },
+    {
+      "slug": "root-rot",
+      "term": "Root rot",
+      "category": "pest-disease",
+      "definition": "Decay of roots caused by water-mold pathogens — typically Pythium or Phytophthora — thriving in oxygen-starved, waterlogged substrate. Symptoms appear above ground first: wilting or yellowing despite wet soil. Remove affected roots, drench with a dilute hydrogen peroxide solution, repot into fresh well-draining substrate, and reduce watering. A drainage layer and charcoal layer are the structural prevention.",
+      "seeAlso": ["wet-feet", "drainage-layer", "horticultural-charcoal"]
+    },
+    {
+      "slug": "spider-mites",
+      "term": "Spider mites",
+      "category": "pest-disease",
+      "definition": "Tiny arachnids — not insects — that pierce leaf cells and suck sap, leaving pale stippling on upper leaf surfaces and, in heavy infestations, fine webbing on stems and leaves. They thrive in warm, dry conditions; the high humidity of a closed terrarium suppresses them naturally. Treat with neem oil or insecticidal soap, ensuring coverage of leaf undersides.",
+      "seeAlso": ["mealybugs", "scale"]
+    },
+    {
+      "slug": "mealybugs",
+      "term": "Mealybugs",
+      "category": "pest-disease",
+      "definition": "Soft-bodied insects coated in white waxy fluff, found in leaf axils, stem joints, and root zones. They weaken plants by sucking sap and excreting sticky honeydew that can host sooty mold. In a terrarium they spread easily; isolate new plants before introduction, and treat infestations with rubbing alcohol on a cotton swab or a neem oil spray.",
+      "seeAlso": ["scale", "spider-mites"]
+    },
+    {
+      "slug": "scale",
+      "term": "Scale",
+      "category": "pest-disease",
+      "definition": "Small sucking insects that anchor to stems and leaves under a protective shell (armored scale) or waxy coating (soft scale). Easy to miss at low numbers. Remove by hand with rubbing alcohol and a soft brush, then follow with a neem oil treatment; check leaf undersides and stem joints carefully.",
+      "seeAlso": ["mealybugs"]
+    },
+    {
+      "slug": "powdery-mildew",
+      "term": "Powdery mildew",
+      "category": "pest-disease",
+      "definition": "A fungal disease that produces a powdery white coating on leaf surfaces, spreading rapidly in warm, stagnant air with poor circulation. Increase airflow, remove affected leaves, and treat with a dilute solution of baking soda or potassium bicarbonate. More common in open builds or poorly ventilated closed containers.",
+      "seeAlso": ["botrytis", "damping-off"]
+    },
+    {
+      "slug": "botrytis",
+      "term": "Botrytis",
+      "category": "pest-disease",
+      "definition": "Gray mold — a fungal disease caused by Botrytis cinerea that appears as fuzzy gray growth on dying or damaged plant tissue, spreading rapidly in cool, humid, still air. Remove affected tissue immediately and improve ventilation; avoid splashing water onto foliage, and remove all dead plant matter from the substrate promptly.",
+      "seeAlso": ["powdery-mildew", "damping-off"]
+    },
+    {
+      "slug": "damping-off",
+      "term": "Damping off",
+      "category": "pest-disease",
+      "definition": "A soilborne disease complex — usually Pythium or Rhizoctonia — that rots seedlings at the soil line, causing them to collapse suddenly. Spreads in overcrowded, poorly-ventilated conditions with wet substrate. Prevention: use sterile substrate, avoid overwatering, and provide airflow.",
+      "seeAlso": ["root-rot", "powdery-mildew"]
     }
   ]
 }

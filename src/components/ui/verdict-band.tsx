@@ -19,6 +19,21 @@ import { Text } from './text';
 export function VerdictBand({ scored }: { scored: ScoredBuild }) {
   const { c } = useTokens();
 
+  // No plants yet — a prompt, not a fake 100%/healthy meter. Must read the same
+  // as the plants step's empty Eco-balance bar (both source the verdict sentence).
+  if (scored.empty) {
+    return (
+      <Card style={styles.card}>
+        <Text variant="overline" role="textMuted">
+          Eco-balance
+        </Text>
+        <Text variant="body" role="textMuted">
+          {scored.verdict?.sentence ?? 'No plants yet — add a few to see how they balance.'}
+        </Text>
+      </Card>
+    );
+  }
+
   // Scoring failed — surface the diagnostic plainly (no grey badge).
   if (scored.score === null || scored.verdict === null) {
     return (

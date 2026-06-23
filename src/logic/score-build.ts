@@ -32,6 +32,11 @@ export interface ScoredBuild {
    * as a real diagnostic, never swallowed. `null` on success.
    */
   diagnostic: string | null;
+  /**
+   * No plants yet. Scores 100 for v1 parity, but the UI must render this as a
+   * "add plants" prompt — not a real 100%/healthy verdict.
+   */
+  empty: boolean;
 }
 
 /**
@@ -47,11 +52,12 @@ export function scoreBuild(
   plants: readonly Plant[],
   containers: readonly Container[],
 ): ScoredBuild {
-  const empty: Omit<ScoredBuild, 'diagnostic'> = {
+  const failed: Omit<ScoredBuild, 'diagnostic'> = {
     score: null,
     band: null,
     report: null,
     verdict: null,
+    empty: false,
   };
 
   // Empty build: v1 scores this 100 (nothing to conflict).
@@ -62,12 +68,13 @@ export function scoreBuild(
       report: null,
       verdict: { band: ecoBand(100), sentence: 'No plants yet — add a few to see how they balance.', issueCount: 0 },
       diagnostic: null,
+      empty: true,
     };
   }
 
   const container = resolveBuildContainer(build, containers);
   if (!container) {
-    return { ...empty, diagnostic: 'This build has no container, so it can’t be scored yet.' };
+    return { ...failed, diagnostic: 'This build has no container, so it can’t be scored yet.' };
   }
 
   const bySlug = new Map(plants.map((p) => [p.slug, p]));
@@ -80,7 +87,7 @@ export function scoreBuild(
   }
   if (missing.length > 0) {
     return {
-      ...empty,
+      ...failed,
       diagnostic: `Missing plant data for: ${missing.join(', ')}. The plant catalog may be out of date.`,
     };
   }
@@ -94,10 +101,11 @@ export function scoreBuild(
       report,
       verdict,
       diagnostic: null,
+      empty: false,
     };
   } catch (err) {
     // The v1 `except: pass` lived here. Surface it.
     const message = err instanceof Error ? err.message : String(err);
-    return { ...empty, diagnostic: `Couldn’t score this build: ${message}` };
+    return { ...failed, diagnostic: `Couldn’t score this build: ${message}` };
   }
 }

@@ -11,6 +11,7 @@ import { DatabaseSync } from 'node:sqlite';
 
 import { createNodeDb } from '../client.node';
 import {
+  ensureCareOverridesColumn,
   ensureCharcoalDepthColumn,
   ensureSubstrateMixColumn,
   SCHEMA_DDL,
@@ -37,5 +38,6 @@ export function makeTestDb(): TestDb {
   );
   ensureSubstrateMixColumn(cols, (sql) => sqlite.exec(sql));
   ensureCharcoalDepthColumn(cols, (sql) => sqlite.exec(sql));
+  ensureCareOverridesColumn(cols, (sql) => sqlite.exec(sql));
   return { db: createNodeDb(sqlite), sqlite };
 }
