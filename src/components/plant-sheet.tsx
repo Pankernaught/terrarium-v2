@@ -129,7 +129,7 @@ export function PlantSheet({ plant, onClose, context, isSelected, onToggle, conf
                 </Pressable>
               ) : null}
               <View style={[styles.typeChip, { backgroundColor: c.surfaceSunken }]}>
-                <Text variant="overline">Difficulty {plant.difficulty}/5</Text>
+                <Text variant="overline">Care level {plant.difficulty}/5</Text>
               </View>
             </View>
 

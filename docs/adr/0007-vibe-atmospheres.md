@@ -269,8 +269,25 @@ referenced file is still asserted to exist.
 
 ### Parked
 
-Sweetening the clinical empty-state copy — a separate pass; the `<EmptyState>`
-extraction is where it lands.
+- **Sweetening the clinical empty-state copy** — a separate pass; the `<EmptyState>`
+  extraction is where it lands.
+- **Content-level critters (on / around the cards, not just the backdrop)** —
+  deferred until the real art lands. Today critters live in the *backdrop*
+  (`StyleSheet.absoluteFill` behind content), so the opaque cards occlude any critter
+  positioned where a card sits; they only peek through the gaps (below content, side
+  gutters, row-gaps). Making a critter appear *on* a card (a frog on a build card's
+  corner, a snail tucked beside a planner row) means lifting critters **out of the
+  backdrop into the content layer** — per-screen, content-relative placement. That is
+  the design A8 deliberately rejected: it reopens the legibility/AA question (art over
+  text) and adds a new mount mechanism + a global-ish placement concern (a handoff
+  "drift tell"). **Why wait:** the payoff can't be judged on the magenta placeholders
+  — same reasoning as A10 (don't build the expensive, taste-dependent layer before the
+  real art proves the feeling). **Trigger:** revisit once Conservatory's real critter/
+  mascot art is in place and the backdrop-only critters feel too contained. **Scope
+  when revisited:** its own content-layer mount with an occlusion/AA guard so critters
+  never sit over text, and an ADR amendment recording the placement rules — not a free
+  extension of `CRITTER_SPOTS`. (Adding more *backdrop* peek-spots stays in-bounds and
+  needs no ADR change — that's just more `CRITTER_SPOTS` lines.)
 
 ## Related
 

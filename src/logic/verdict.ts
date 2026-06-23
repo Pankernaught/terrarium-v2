@@ -41,7 +41,11 @@ export function summarizeVerdict(report: GroupReport, plantCount: number): Verdi
   const band = ecoBand(report.overallScore);
 
   if (plantCount === 0) {
-    return { band, sentence: 'No plants yet — add a few to see how they balance.', issueCount: 0 };
+    return {
+      band,
+      sentence: 'No plants yet — add a few and see how your ecosystem balances.',
+      issueCount: 0,
+    };
   }
 
   const conflicts = allConflicts(report);
@@ -51,7 +55,7 @@ export function summarizeVerdict(report: GroupReport, plantCount: number): Verdi
   if (critical.length > 0) {
     return {
       band,
-      sentence: `At risk — ${critical[0].message}`,
+      sentence: `Needs attention — ${critical[0].message}`,
       issueCount: conflicts.length,
     };
   }
@@ -68,5 +72,5 @@ export function summarizeVerdict(report: GroupReport, plantCount: number): Verdi
     };
   }
 
-  return { band, sentence: 'Thriving balance — every plant suits this setup.', issueCount: 0 };
+  return { band, sentence: 'A thriving ecosystem — every plant suits this setup.', issueCount: 0 };
 }

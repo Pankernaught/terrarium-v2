@@ -7,9 +7,8 @@
  * their `placements` riding *inside* each row) and `care_marks`. **Photos are
  * excluded** (binary; documented gap): a restored build keeps its `primaryPhotoId`,
  * but the photo rows are gone, so `getPrimary` falls back to its placeholder hero
- * (the graceful-degrade, never a crash). Seed/reference tables
- * (`plants`/`containers`/`presets`) are regenerable from the bundle and **never**
- * enter a backup.
+ * (the graceful-degrade, never a crash). The seed/reference table (`plants`) is
+ * regenerable from the bundle and **never** enters a backup.
  *
  * **Import pipeline:** read `envelope.schemaVersion` → `migratePayload()` up to
  * `STORE_SCHEMA_VERSION` → **zod-validate the migrated payload against the current

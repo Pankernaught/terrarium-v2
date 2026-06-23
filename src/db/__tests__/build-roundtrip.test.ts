@@ -9,7 +9,7 @@
 import { beforeEach, describe, expect, it } from 'vitest';
 
 import { type BuildRepository, createBuildRepository } from '../builds-repo';
-import { type Placement } from '../../data/presets';
+import { type Placement } from '../../logic/placement';
 import { type TerrariumDb } from '../schema';
 import { makeTestDb } from './helpers';
 

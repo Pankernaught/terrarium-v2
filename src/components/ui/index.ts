@@ -9,6 +9,7 @@ export { CollapsibleCard, type CollapsibleCardProps } from './collapsible-card';
 export { Chip, type ChipTone } from './chip';
 export { EcoChip } from './eco-chip';
 export { EcoMeter } from './eco-meter';
+export { EmptyState, type EmptyStateProps } from './empty-state';
 export { GlanceHeader } from './glance-header';
 export { haptics } from './haptics';
 export { Meter } from './meter';

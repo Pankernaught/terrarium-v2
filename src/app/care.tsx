@@ -18,9 +18,9 @@ import { type Href, useFocusEffect, useRouter } from 'expo-router';
 import { useCallback, useEffect, useState } from 'react';
 import { Alert, Pressable, ScrollView, StyleSheet, Switch, View } from 'react-native';
 
-import { Card, Collapse, GlanceHeader, haptics, Screen, SectionLabel, Text } from '@/components/ui';
+import { Card, Collapse, EmptyState, GlanceHeader, haptics, Screen, Text } from '@/components/ui';
 import { MaxContentWidth, Radii, Spacing } from '@/constants/theme';
-import { loadContainers, loadPlants } from '@/data';
+import { loadPlants } from '@/data';
 import { type Repos, useDbState } from '@/db/provider';
 import type { Build, CareMark } from '@/db/schema';
 import { useTokens } from '@/hooks/use-tokens';
@@ -85,13 +85,12 @@ function Care({ repos }: { repos: Repos }) {
   /** Build every row's derived schedule + pending state from the store. */
   const fetchRows = useCallback(async (): Promise<CareRow[]> => {
     const plants = loadPlants();
-    const containers = loadContainers();
     const bySlug = new Map(plants.map((p) => [p.slug, p]));
     const builds = await repos.builds.list();
 
     return Promise.all(
       builds.map(async (build): Promise<CareRow> => {
-        const container = resolveBuildContainer(build, containers);
+        const container = resolveBuildContainer(build);
         const buildPlants = build.plantSlugs
           .map((slug) => bySlug.get(slug))
           .filter((p): p is NonNullable<typeof p> => !!p);
@@ -278,7 +277,15 @@ function Care({ repos }: { repos: Repos }) {
           {plan && plan.deferredBuildCount > 0 ? <OverflowNotice plan={plan} /> : null}
 
           {schedulable.length === 0 ? (
-            <EmptyState hasBuilds={rows.length > 0} />
+            <EmptyState
+              pose="default"
+              title="All quiet for now"
+              body={
+                rows.length > 0
+                  ? 'Add a container and at least one plant, and a custom care schedule will appear here.'
+                  : 'Save your first terrarium and custom care reminders will show up here.'
+              }
+            />
           ) : (
             schedulable.map((row) => (
               <CareBuildCard
@@ -678,19 +685,6 @@ function OverflowNotice({ plan }: { plan: BudgetPlan }) {
   );
 }
 
-function EmptyState({ hasBuilds }: { hasBuilds: boolean }) {
-  return (
-    <Card style={styles.card}>
-      <SectionLabel>Nothing to tend yet</SectionLabel>
-      <Text variant="body" role="textMuted" style={styles.emptyBody}>
-        {hasBuilds
-          ? 'Add a container and at least one plant to a terrarium and its care schedule will appear here.'
-          : 'Save your first terrarium in the planner and gentle care reminders will appear here.'}
-      </Text>
-    </Card>
-  );
-}
-
 function CareMessage({ title, body, accent }: { title: string; body: string; accent?: boolean }) {
   return (
     <Screen>
@@ -807,5 +801,4 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     overflow: 'hidden',
   },
-  emptyBody: { lineHeight: 22 },
 });

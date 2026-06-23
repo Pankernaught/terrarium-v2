@@ -18,7 +18,7 @@ describe('ecoBand — v1 badge thresholds', () => {
   it('labels each band', () => {
     expect(ecoBandLabel('healthy')).toBe('Healthy');
     expect(ecoBandLabel('caution')).toBe('Caution');
-    expect(ecoBandLabel('critical')).toBe('At risk');
+    expect(ecoBandLabel('critical')).toBe('Needs attention');
   });
 });
 

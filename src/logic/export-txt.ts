@@ -6,10 +6,9 @@
  *
  * `resolveBuildSummary` shapes a saved build into the flat `BuildSummaryData` the
  * formatter (and the PDF HTML template) consume, using the same dependency-inverted
- * `scoreBuild` / `resolveBuildContainer` the screens use — seed `plants` /
- * `containers` are passed in, never imported, so engine purity holds.
+ * `scoreBuild` / `resolveBuildContainer` the screens use — seed `plants` are
+ * passed in, never imported, so engine purity holds.
  */
-import type { Container } from '@/types/container';
 import type { Plant } from '@/types/plant';
 
 import { type BuildContainerSnapshot, resolveBuildContainer } from './containers';
@@ -62,10 +61,9 @@ export function formatExportDate(value: string | number | Date | null | undefine
 export function resolveBuildSummary(
   build: SummarizableBuild,
   plants: readonly Plant[],
-  containers: readonly Container[],
 ): BuildSummaryData {
-  const container = resolveBuildContainer(build, containers);
-  const scored = scoreBuild({ ...build, plantSlugs: build.plantSlugs }, plants, containers);
+  const container = resolveBuildContainer(build);
+  const scored = scoreBuild({ ...build, plantSlugs: build.plantSlugs }, plants);
   const bySlug = new Map(plants.map((p) => [p.slug, p]));
   const plantNames = build.plantSlugs.map((slug) => bySlug.get(slug)?.commonName ?? slug);
   return {

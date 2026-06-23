@@ -102,6 +102,16 @@ describe('checkPair — humidity', () => {
     expect(humidity[0].severity).toBe('incompatible');
   });
 
+  it('treats non-overlapping humidity as survival-critical (ADR 0008)', () => {
+    // Differ only in humidity, so this isolates the humidity survival tier.
+    const dryAir = makePlant({ slug: 'dry-air', humidityPctRange: [10, 30] });
+    const wetAir = makePlant({ slug: 'wet-air', humidityPctRange: [60, 85] });
+    const result = checkPair(dryAir, wetAir);
+    expect(result.survivalCritical).toBe(true);
+    expect(result.verdict).toBe('incompatible');
+    expect(result.score).toBeLessThanOrEqual(40);
+  });
+
   it('produces no humidity conflict when ranges overlap', () => {
     const result = checkPair(fittonia(), peperomia());
     expect(byFactor(result.conflicts, 'humidity')).toEqual([]);
@@ -136,6 +146,10 @@ describe('checkPair — temperature', () => {
     const temp = byFactor(result.conflicts, 'temperature');
     expect(temp).toHaveLength(1);
     expect(temp[0].severity).toBe('incompatible');
+    // ADR 0008: a non-overlapping range is survival-critical, not a soft -15.
+    expect(result.survivalCritical).toBe(true);
+    expect(result.verdict).toBe('incompatible');
+    expect(result.score).toBeLessThanOrEqual(40);
   });
 });
 
@@ -222,28 +236,51 @@ describe('checkGroup', () => {
   });
 });
 
-// --- crowding ---------------------------------------------------------------
+// --- crowding (floor area, not volume; ADR 0008) ----------------------------
 describe('checkGroup — crowding', () => {
-  it('cautions 3 plants in a 1.0 L container', () => {
+  // ⌀10 cm cylinder → ~79 cm² of floor, regardless of how tall (= how many litres).
+  const smallFloor = () =>
+    makeContainerSpec({ shape: 'cylindrical', dimensionsCm: '10x10x12', volumeL: 1, opening: 'sealed' });
+
+  it('cautions 3 plants sharing a small (~79 cm²) floor', () => {
     const plants = [0, 1, 2].map((i) => makePlant({ slug: `plant-${i}` }));
-    const report = checkGroup(plants, makeContainerSpec({ volumeL: 1.0, opening: 'sealed' }));
-    const crowding = byFactor(report.containerFitIssues, 'crowding');
+    const crowding = byFactor(checkGroup(plants, smallFloor()).containerFitIssues, 'crowding');
     expect(crowding).toHaveLength(1);
     expect(crowding[0].severity).toBe('caution');
     expect(crowding[0].affectedPlants).toHaveLength(3);
   });
 
-  it('marks 5 plants in a 1.0 L container incompatible', () => {
+  it('marks 5 plants on the same floor incompatible', () => {
     const plants = [0, 1, 2, 3, 4].map((i) => makePlant({ slug: `plant-${i}` }));
-    const report = checkGroup(plants, makeContainerSpec({ volumeL: 1.0, opening: 'sealed' }));
-    const crowding = byFactor(report.containerFitIssues, 'crowding');
+    const crowding = byFactor(checkGroup(plants, smallFloor()).containerFitIssues, 'crowding');
     expect(crowding).toHaveLength(1);
     expect(crowding[0].severity).toBe('incompatible');
   });
 
-  it('does not flag crowding in a larger 5.0 L container', () => {
+  it('does not flag a roomy footprint (40×25 cm = 1000 cm²)', () => {
     const plants = [0, 1, 2, 3, 4].map((i) => makePlant({ slug: `plant-${i}` }));
-    const report = checkGroup(plants, makeContainerSpec({ volumeL: 5.0, opening: 'sealed' }));
+    const report = checkGroup(
+      plants,
+      makeContainerSpec({ shape: 'rectangular', dimensionsCm: '40x25x25', volumeL: 20, opening: 'sealed' }),
+    );
+    expect(byFactor(report.containerFitIssues, 'crowding')).toHaveLength(0);
+  });
+
+  it('flags a tall narrow jar the old volume rule missed (4.5 L but only ⌀12 cm floor)', () => {
+    // 4.5 L cleared the old 2 L gate, so volume-based crowding never fired — yet
+    // the ⌀12 cm floor (~113 cm²) is genuinely tight for six plants.
+    const plants = [0, 1, 2, 3, 4, 5].map((i) => makePlant({ slug: `plant-${i}` }));
+    const report = checkGroup(
+      plants,
+      makeContainerSpec({ shape: 'cylindrical', dimensionsCm: '12x12x40', volumeL: 4.5, opening: 'sealed' }),
+    );
+    const crowding = byFactor(report.containerFitIssues, 'crowding');
+    expect(crowding).toHaveLength(1);
+    expect(crowding[0].severity).toBe('caution');
+  });
+
+  it('never crowds a single plant', () => {
+    const report = checkGroup([makePlant({ slug: 'solo' })], smallFloor());
     expect(byFactor(report.containerFitIssues, 'crowding')).toHaveLength(0);
   });
 });
@@ -367,44 +404,47 @@ describe('checkGroup — survival clamp', () => {
   });
 });
 
-// --- global environmental collapse (issue #2) -------------------------------
-describe('checkGroup — global envelope collapse', () => {
-  it('clamps and names the two extreme plants when no shared temperature exists', () => {
-    // A–B overlap and B–C overlap (each pair fine), but there is no single
-    // temperature all three survive at. Pairwise averaging alone scored this ~95
-    // ("Healthy"); the envelope clamp now drops it to "At risk".
+// --- no shared temperature/humidity: caught pairwise, clamps group (ADR 0008) --
+// Replaces the old group-level "envelope collapse" check. By Helly's theorem in
+// 1-D, a group with no common temperature/humidity always contains a disjoint
+// pair, which checkPair now flags as survival-critical — so the group clamps via
+// `pairSurvival`, with no separate (double-counting) group check.
+describe('checkGroup — no shared temperature/humidity', () => {
+  it('clamps when no single temperature suits all plants, naming the disjoint pair', () => {
+    // cool–mid and mid–warm overlap, but cool–warm are disjoint: the empty group
+    // intersection surfaces as that one survival-critical pair.
     const a = makePlant({ slug: 'cool', commonName: 'Cool Fern', tempCRange: [10, 20] });
     const b = makePlant({ slug: 'mid', commonName: 'Mid Pothos', tempCRange: [18, 25] });
     const c = makePlant({ slug: 'warm', commonName: 'Warm Cactus', tempCRange: [23, 35] });
     const report = checkGroup([a, b, c], makeContainerSpec({ volumeL: 10 }));
 
-    const temp = byFactor(report.containerFitIssues, 'temperature');
+    const pair = report.pairMatrix['cool']['warm'];
+    expect(pair.survivalCritical).toBe(true);
+    const temp = byFactor(pair.conflicts, 'temperature');
     expect(temp).toHaveLength(1);
     expect(temp[0].severity).toBe('incompatible');
-    expect(temp[0].message).toContain('Warm Cactus'); // sets the floor (highest min)
-    expect(temp[0].message).toContain('Cool Fern'); // sets the ceiling (lowest max)
-    expect(temp[0].affectedPlants).toEqual(expect.arrayContaining(['warm', 'cool']));
+    expect(temp[0].message).toContain('Cool Fern');
+    expect(temp[0].message).toContain('Warm Cactus');
     expect(report.overallScore).toBeLessThanOrEqual(40);
   });
 
-  it('clamps and names the two extreme plants when no shared humidity exists', () => {
+  it('clamps when no single humidity suits all plants', () => {
     const a = makePlant({ slug: 'dryish', commonName: 'Dry Plant', humidityPctRange: [10, 30] });
     const b = makePlant({ slug: 'midh', commonName: 'Mid Plant', humidityPctRange: [25, 50] });
     const c = makePlant({ slug: 'humid', commonName: 'Humid Plant', humidityPctRange: [45, 80] });
     const report = checkGroup([a, b, c], makeContainerSpec({ volumeL: 10 }));
 
-    const hum = byFactor(report.containerFitIssues, 'humidity');
-    expect(hum).toHaveLength(1);
-    expect(hum[0].severity).toBe('incompatible');
-    expect(hum[0].message).toContain('Humid Plant'); // floor (highest min)
-    expect(hum[0].message).toContain('Dry Plant'); // ceiling (lowest max)
+    const pair = report.pairMatrix['dryish']['humid'];
+    expect(pair.survivalCritical).toBe(true);
+    expect(byFactor(pair.conflicts, 'humidity')).toHaveLength(1);
     expect(report.overallScore).toBeLessThanOrEqual(40);
   });
 
-  it('does not flag collapse when a shared range exists', () => {
+  it('does not clamp when a shared range exists', () => {
     const a = makePlant({ slug: 'a', tempCRange: [15, 25] });
     const b = makePlant({ slug: 'b', tempCRange: [18, 28] });
     const report = checkGroup([a, b], makeContainerSpec({ volumeL: 10 }));
+    expect(report.pairMatrix['a']['b'].survivalCritical).toBe(false);
     expect(byFactor(report.containerFitIssues, 'temperature')).toHaveLength(0);
     expect(byFactor(report.containerFitIssues, 'humidity')).toHaveLength(0);
   });

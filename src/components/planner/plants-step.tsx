@@ -19,7 +19,7 @@ import Animated, { Easing, useAnimatedStyle, useSharedValue, withSequence, withT
 import { Card, Chip, EcoMeter, haptics, SectionLabel, Text } from '@/components/ui';
 import { PlantSheet, type PlantConflict } from '@/components/plant-sheet';
 import { Radii, Spacing } from '@/constants/theme';
-import { loadContainers, loadPlants } from '@/data';
+import { loadPlants } from '@/data';
 import { useTokens } from '@/hooks/use-tokens';
 import { resolveBuildContainer } from '@/logic/containers';
 import { ecoBandLabel, ecoColor } from '@/logic/eco';
@@ -39,7 +39,7 @@ type CatalogSort = 'fit' | BrowseSort;
 const CATALOG_SORTS: { value: CatalogSort; label: string }[] = [
   { value: 'fit', label: 'Best fit' },
   { value: 'name', label: 'Name' },
-  { value: 'difficulty', label: 'Difficulty' },
+  { value: 'difficulty', label: 'Care level' },
   { value: 'height', label: 'Height' },
 ];
 const DIFFICULTIES = [1, 2, 3, 4, 5];
@@ -80,8 +80,7 @@ export function PlantsStep({ draft, plants, update }: StepProps) {
   updateRef.current = update;
 
   const catalog = useMemo(() => loadPlants(), []);
-  const containers = useMemo(() => loadContainers(), []);
-  const container = useMemo(() => resolveBuildContainer(draft, containers), [draft, containers]);
+  const container = useMemo(() => resolveBuildContainer(draft), [draft]);
 
   // --- Filter / sort state (mirrors Browse) ---
   const [query, setQuery] = useState('');
@@ -157,10 +156,7 @@ export function PlantsStep({ draft, plants, update }: StepProps) {
   const selectedSlugs = new Set(draft.plantSlugs);
 
   // --- Live eco-balance ---
-  const scored = useMemo(
-    () => scoreBuild(draft, catalog, containers),
-    [draft, catalog, containers],
-  );
+  const scored = useMemo(() => scoreBuild(draft, catalog), [draft, catalog]);
   const survivalCritical = scored.report ? hasSurvivalCritical(scored.report) : false;
 
   const pulse = useSharedValue(0);
@@ -327,7 +323,7 @@ export function PlantsStep({ draft, plants, update }: StepProps) {
             <FacetGroup label="Biome" options={NATIVE_BIOMES} selected={biomes} onToggle={(v) => toggleFilter(biomes, setBiomes, v)} />
             <FacetGroup label="Light" options={LIGHT_LEVELS} selected={lights} onToggle={(v) => toggleFilter(lights, setLights, v)} />
             <View style={styles.facet}>
-              <SectionLabel>Difficulty</SectionLabel>
+              <SectionLabel>Care level</SectionLabel>
               <View style={styles.chipWrap}>
                 {DIFFICULTIES.map((d) => (
                   <Chip

@@ -1,7 +1,7 @@
 /**
- * Seed data loader — the single validated entry point to the bundled plants /
- * containers / presets. Every shipped record is re-validated against the zod
- * schemas here, so a malformed row fails the build/CI, not the device.
+ * Seed data loader — the single validated entry point to the bundled plants and
+ * glossary terms. Every shipped record is re-validated against the zod schemas
+ * here, so a malformed row fails the build/CI, not the device.
  *
  * **Base schema vs. seed schema.** `plantSchema` (in `src/types`) keeps some
  * fields optional so engine fixtures need not carry them. `seedPlantSchema`
@@ -16,17 +16,13 @@
 import { z } from 'zod';
 
 import {
-  containerSchema,
   glossaryEntrySchema,
   plantSchema,
-  type Container,
   type GlossaryEntry,
   type Plant,
 } from '../types';
-import containersJson from './containers.json';
 import glossaryJson from './glossary.json';
 import plantsJson from './plants.json';
-import { PRESETS, presetSchema, type Preset } from './presets';
 import { isSubstrateComponentId } from './substrate-components';
 import { glossaryMarkupSlugs } from '../logic/glossary-markup';
 
@@ -44,7 +40,7 @@ export const seedPlantSchema = plantSchema.extend({
 
 function versioned<T>(
   raw: unknown,
-  key: 'plants' | 'containers' | 'terms',
+  key: 'plants' | 'terms',
   file = `${key}.json`,
 ): T[] {
   const obj = raw as { schemaVersion?: number; [k: string]: unknown };
@@ -57,16 +53,6 @@ function versioned<T>(
 /** All seed plants, validated. Throws (fails CI) on any malformed record. */
 export function loadPlants(): Plant[] {
   return z.array(seedPlantSchema).parse(versioned(plantsJson, 'plants'));
-}
-
-/** All 16 seed containers, validated. */
-export function loadContainers(): Container[] {
-  return z.array(containerSchema).parse(versioned(containersJson, 'containers'));
-}
-
-/** The 3–5 onboarding presets, validated. */
-export function loadPresets(): Preset[] {
-  return z.array(presetSchema).parse(PRESETS);
 }
 
 /** All glossary terms, validated. Throws (fails CI) on any malformed record. */
@@ -89,25 +75,8 @@ export function lookupTerm(slug: string): GlossaryEntry | undefined {
 export function loadSeed(): {
   schemaVersion: number;
   plants: Plant[];
-  containers: Container[];
-  presets: Preset[];
 } {
   const plants = loadPlants();
-  const containers = loadContainers();
-  const presets = loadPresets();
-
-  const plantSlugs = new Set(plants.map((p) => p.slug));
-  const containerSlugs = new Set(containers.map((c) => c.slug));
-  for (const preset of presets) {
-    if (!containerSlugs.has(preset.containerSlug)) {
-      throw new Error(`preset ${preset.slug}: unknown container ${preset.containerSlug}`);
-    }
-    for (const placement of preset.placements) {
-      if (!plantSlugs.has(placement.slug)) {
-        throw new Error(`preset ${preset.slug}: unknown plant ${placement.slug}`);
-      }
-    }
-  }
 
   // Inline glossary links in care prose must resolve (ADR 0006) — a typo'd
   // `[[slug]]` fails the build here instead of dead-linking on the device.
@@ -122,8 +91,7 @@ export function loadSeed(): {
     }
   }
 
-  return { schemaVersion: SEED_SCHEMA_VERSION, plants, containers, presets };
+  return { schemaVersion: SEED_SCHEMA_VERSION, plants };
 }
 
-export { PRESETS, presetSchema, type Preset } from './presets';
 export * from './substrate-components';

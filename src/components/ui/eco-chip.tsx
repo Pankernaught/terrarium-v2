@@ -3,8 +3,8 @@
  * + the score % + a short band word. Colour is *never* the only signal — the dot
  * is always paired with the number and the band label (never colour alone).
  *
- * When a build can't be scored, the chip falls back to a neutral "Needs review"
- * with a warning glyph — a real, legible state, not v1's silent grey "⚠".
+ * When a build can't be scored, the chip falls back to a neutral "Needs a look"
+ * — a real, legible state, not v1's silent grey "⚠".
  */
 import { StyleSheet, View } from 'react-native';
 
@@ -38,7 +38,7 @@ export function EcoChip({ score, empty }: EcoChipProps) {
     return (
       <View style={[styles.chip, { backgroundColor: c.surfaceSunken }]}>
         <Text variant="caption" style={{ color: c.textMuted }}>
-          ⚠ Needs review
+          Needs a look
         </Text>
       </View>
     );

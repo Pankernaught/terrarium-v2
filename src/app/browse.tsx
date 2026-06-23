@@ -18,7 +18,7 @@
 import { memo, useCallback, useMemo, useState } from 'react';
 import { FlatList, Linking, Pressable, StyleSheet, TextInput, View } from 'react-native';
 
-import { Card, Chip, GlanceHeader, Screen, SectionLabel, Text } from '@/components/ui';
+import { Card, Chip, EmptyState, GlanceHeader, Screen, SectionLabel, Text } from '@/components/ui';
 import { PlantSheet } from '@/components/plant-sheet';
 import { TermSheet } from '@/components/term-sheet';
 import { MaxContentWidth, Radii, Spacing } from '@/constants/theme';
@@ -36,7 +36,7 @@ const SUGGEST_EMAIL = 'pankernaught@gmail.com';
 const DIFFICULTIES = [1, 2, 3, 4, 5];
 const SORTS: { value: BrowseSort; label: string }[] = [
   { value: 'name', label: 'Name' },
-  { value: 'difficulty', label: 'Difficulty' },
+  { value: 'difficulty', label: 'Care level' },
   { value: 'height', label: 'Height' },
 ];
 
@@ -162,12 +162,11 @@ export default function BrowseScreen() {
             </View>
           }
           ListEmptyComponent={
-            <Card style={styles.empty}>
-              <Text variant="subhead">No terms match</Text>
-              <Text variant="body" role="textMuted">
-                Try a different search or clear a category.
-              </Text>
-            </Card>
+            <EmptyState
+              pose="sad"
+              title="No terms match"
+              body="Try a different search or clear a category."
+            />
           }
         />
       ) : (
@@ -225,7 +224,7 @@ export default function BrowseScreen() {
                   <FacetGroup label="Biome" options={NATIVE_BIOMES} selected={biomes} onToggle={(v) => toggle(biomes, setBiomes, v)} />
                   <FacetGroup label="Light" options={LIGHT_LEVELS} selected={lights} onToggle={(v) => toggle(lights, setLights, v)} />
                   <View style={styles.facet}>
-                    <SectionLabel>Difficulty</SectionLabel>
+                    <SectionLabel>Care level</SectionLabel>
                     <View style={styles.chipWrap}>
                       {DIFFICULTIES.map((d) => (
                         <Chip
@@ -250,12 +249,11 @@ export default function BrowseScreen() {
             </View>
           }
           ListEmptyComponent={
-            <Card style={styles.empty}>
-              <Text variant="subhead">No plants match</Text>
-              <Text variant="body" role="textMuted">
-                Try broadening your search or clearing a filter.
-              </Text>
-            </Card>
+            <EmptyState
+              pose="sad"
+              title="No plants match"
+              body="Try broadening your search or clearing a filter."
+            />
           }
           ListFooterComponent={
             /* Suggest a plant — opens a mailto. */
@@ -343,7 +341,7 @@ const PlantRow = memo(function PlantRow({
         <View style={styles.rowChips}>
           <Chip label={humanize(plant.light.primary)} tone="neutral" />
           <Chip label={humanize(plant.soilMoisture.primary)} tone="neutral" />
-          <Chip label={`Difficulty ${plant.difficulty}`} tone="neutral" />
+          <Chip label={`Care level ${plant.difficulty}`} tone="neutral" />
         </View>
         <Text variant="caption" role="textMuted">
           {plant.humidityPctRange[0]}–{plant.humidityPctRange[1]}% RH · {plant.tempCRange[0]}–{plant.tempCRange[1]}°C · ≤{plant.maxHeightCm} cm
@@ -400,7 +398,6 @@ const styles = StyleSheet.create({
   facet: { gap: Spacing.sm },
   chipWrap: { flexDirection: 'row', flexWrap: 'wrap', gap: Spacing.sm },
   clear: { alignSelf: 'flex-start', paddingTop: Spacing.xs },
-  empty: { padding: Spacing.lg, gap: Spacing.sm },
   row: { padding: Spacing.md, gap: Spacing.sm },
   rowHead: { flexDirection: 'row', alignItems: 'flex-start', justifyContent: 'space-between', gap: Spacing.sm },
   rowTitle: { flexShrink: 1, gap: 2 },

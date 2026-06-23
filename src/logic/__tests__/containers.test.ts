@@ -13,6 +13,7 @@ import {
   containerProfile,
   defaultLayerDepths,
   dimensionsToStr,
+  floorAreaCm2,
   makeContainer,
   parseDimensionsStr,
   recommendContainerDimensions,
@@ -73,6 +74,36 @@ describe('parseDimensionsStr', () => {
       diameter: 12.0,
       height: 40.0,
     });
+  });
+
+  it('round-trips the decorated dimensionsToStr form (⌀, ×, unit suffix)', () => {
+    // dimensionsToStr emits e.g. "⌀12×40 cm"; the parser must read it back.
+    expect(parseDimensionsStr('cylindrical', dimensionsToStr('cylindrical', { diameter: 12, height: 40 }))).toEqual({
+      diameter: 12,
+      height: 40,
+    });
+    expect(parseDimensionsStr('rectangular', dimensionsToStr('rectangular', { length: 30, width: 20, height: 25 }))).toEqual({
+      length: 30,
+      width: 20,
+      height: 25,
+    });
+  });
+});
+
+// --- floorAreaCm2 ----------------------------------------------------------
+
+describe('floorAreaCm2', () => {
+  it('computes a rectangular footprint (40×25 = 1000 cm²; height ignored)', () => {
+    expect(floorAreaCm2('rectangular', { length: 40, width: 25, height: 25 })).toBe(1000);
+  });
+
+  it('computes a cylindrical footprint (⌀12 → π·6²)', () => {
+    expect(floorAreaCm2('cylindrical', { diameter: 12, height: 40 })).toBeCloseTo(Math.PI * 36, 5);
+  });
+
+  it('rejects an invalid shape and a non-positive footprint dimension', () => {
+    expect(() => floorAreaCm2('triangle', { length: 1, width: 1 })).toThrow(/Shape must be one of/);
+    expect(() => floorAreaCm2('cylindrical', { diameter: 0, height: 10 })).toThrow(/positive/);
   });
 });
 
@@ -203,15 +234,7 @@ describe('resolveBuildContainer', () => {
     expect(c?.opening).toBe('lidded');
   });
 
-  it('resolves from a preset slug against the supplied candidates', () => {
-    const demoJar = makeContainer('cylindrical', { diameter: 10, height: 12 }, 'sealed', 'demo-jar', 'Demo Jar');
-    const c = resolveBuildContainer({ containerSlug: 'demo-jar' }, [demoJar]);
-    expect(c).not.toBeNull();
-    expect(c?.name).toBe('Demo Jar');
-    expect(c?.shape).toBe('cylindrical');
-  });
-
-  it('returns null when neither a snapshot nor a known slug is present', () => {
+  it('returns null when the geometry snapshot is incomplete', () => {
     expect(resolveBuildContainer({ containerSlug: null })).toBeNull();
   });
 });

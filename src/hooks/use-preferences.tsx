@@ -5,7 +5,9 @@ import { Colors, type VibeId } from '@/constants/theme';
 
 export type ColorSchemePref = 'system' | 'light' | 'dark';
 
-const DEFAULT_VIBE: VibeId = 'glasshouse';
+// Conservatory is the flagship — it ships the character art, so new users land in
+// it (ADR 0007 A10). Glasshouse is the opt-in "classic." Fully reversible.
+const DEFAULT_VIBE: VibeId = 'conservatory';
 
 interface Preferences {
   colorScheme: ColorSchemePref;

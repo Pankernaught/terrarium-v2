@@ -6,13 +6,11 @@ import {
   generateTextSummary,
   resolveBuildSummary,
 } from '../export-txt';
-import { makeContainerSpec, makePlant } from './factories';
+import { makePlant } from './factories';
 
 const fittonia = makePlant({ slug: 'fittonia', commonName: 'Nerve Plant' });
 const moss = makePlant({ slug: 'moss', commonName: 'Cushion Moss', closedTerrariumOk: true, openTerrariumOk: true });
 const PLANTS = [fittonia, moss];
-const sealedJar = makeContainerSpec({ slug: 'nano-sealed', name: 'Nano Sealed Jar', opening: 'sealed' });
-const CONTAINERS = [sealedJar];
 
 const SNAPSHOT = {
   containerShape: 'rectangular' as const,
@@ -81,7 +79,6 @@ describe('resolveBuildSummary — wires the engine honestly', () => {
     const data = resolveBuildSummary(
       { name: 'Mossy Jar', plantSlugs: ['fittonia', 'moss'], tags: ['sealed'], ...SNAPSHOT },
       PLANTS,
-      CONTAINERS,
     );
     expect(data.containerName).toBe('Custom Rectangular (4.5 L)');
     expect(data.score).not.toBeNull();
@@ -89,8 +86,8 @@ describe('resolveBuildSummary — wires the engine honestly', () => {
   });
 
   it('exports score N/A (not a fabricated number) when scoring cannot run', () => {
-    // No container snapshot and no slug → scoreBuild surfaces a diagnostic, score null.
-    const data = resolveBuildSummary({ name: 'Broken', plantSlugs: ['fittonia'] }, PLANTS, CONTAINERS);
+    // No container snapshot → scoreBuild surfaces a diagnostic, score null.
+    const data = resolveBuildSummary({ name: 'Broken', plantSlugs: ['fittonia'] }, PLANTS);
     expect(data.score).toBeNull();
     expect(generateTextSummary(data)).toContain('Score:        N/A');
   });
@@ -99,7 +96,6 @@ describe('resolveBuildSummary — wires the engine honestly', () => {
     const data = resolveBuildSummary(
       { name: 'Mystery', plantSlugs: ['ghost-plant'], ...SNAPSHOT },
       PLANTS,
-      CONTAINERS,
     );
     expect(data.plantNames).toEqual(['ghost-plant']);
   });

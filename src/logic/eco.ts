@@ -38,7 +38,7 @@ export function ecoBandLabel(band: EcoBand): string {
     case 'caution':
       return 'Caution';
     case 'critical':
-      return 'At risk';
+      return 'Needs attention';
   }
 }
 

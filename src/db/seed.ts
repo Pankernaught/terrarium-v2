@@ -2,7 +2,7 @@
  * First-launch seed load — mirrors v1 `db/loader.py::load_seed_data`.
  *
  * The bundle (`src/data`) is the source of truth; this syncs it
- * into the store's **reference tables** (`plants` / `containers` / `presets`) so
+ * into the store's **reference table** (`plants`) so
  * the rows are queryable alongside user data. On every call each record is
  * **upserted by slug** and any reference row whose slug no longer ships is
  * **pruned** — so the function is idempotent and safe to run on every launch
@@ -18,7 +18,7 @@ import { notInArray, sql } from 'drizzle-orm';
 import type { SQLiteTable } from 'drizzle-orm/sqlite-core';
 
 import { loadSeed } from '../data';
-import { containers, plants, presets, type TerrariumDb } from './schema';
+import { plants, type TerrariumDb } from './schema';
 
 interface Slugged {
   slug: string;
@@ -46,23 +46,15 @@ async function syncBySlug<T extends Slugged>(
 
 export interface SeedCounts {
   plants: number;
-  containers: number;
-  presets: number;
 }
 
 /**
  * Load (or refresh) the bundled seed into the store's reference tables. Idempotent
  * — call it once on first launch and harmlessly on every launch thereafter.
  * Returns the row counts actually shipped (the validated bundle), so the caller /
- * tests can assert the 92 / 16 / presets gate.
+ * tests can assert the plant-count gate.
  */
 export async function seedStore(db: TerrariumDb, seed = loadSeed()): Promise<SeedCounts> {
   await syncBySlug(db, plants, seed.plants);
-  await syncBySlug(db, containers, seed.containers);
-  await syncBySlug(db, presets, seed.presets);
-  return {
-    plants: seed.plants.length,
-    containers: seed.containers.length,
-    presets: seed.presets.length,
-  };
+  return { plants: seed.plants.length };
 }

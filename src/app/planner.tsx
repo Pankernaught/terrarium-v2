@@ -75,7 +75,7 @@ interface Step {
 const STEPS: Step[] = [
   { key: 'container', label: 'Container', blurb: 'Pick a shape, size, and opening — sealed, lidded, or open.' },
   { key: 'substrate', label: 'Substrate', blurb: 'Layer drainage and substrate depths for the volume.' },
-  { key: 'plants', label: 'Plants', blurb: 'Add plants and watch the Eco-balance settle, live.' },
+  { key: 'plants', label: 'Plants', blurb: 'Add plants and watch your ecosystem settle into equilibrium.' },
   { key: 'final', label: 'Final', blurb: 'Name it, review the verdict, and save.' },
 ];
 

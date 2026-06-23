@@ -40,9 +40,12 @@ export const PH_CAUTION_PENALTY = 7; // one pH band apart
 export const WORST_PAIR_FLOOR_BUFFER = 20;
 
 // --- Small-container safety thresholds ------------------------------------
-export const CROWDING_VOLUME_THRESHOLD_L = 2.0;
-export const CROWDING_MAX_PLANTS_WARNING = 2; // > this count triggers caution
-export const CROWDING_MAX_PLANTS_ERROR = 4; // > this count triggers incompatible
+// Crowding is a 2-D problem: plants compete for the planting *surface*, not the
+// volume — a tall narrow jar has the litres but not the floor. Thresholds are
+// floor area (cm²) per plant. ponytail: tune these two if real builds over- or
+// under-warn; they're the only calibration knob here.
+export const CROWDING_AREA_CAUTION_CM2 = 30; // < this cm²/plant → tight (caution)
+export const CROWDING_AREA_ERROR_CM2 = 18; // < this cm²/plant → overcrowded (incompatible)
 export const GAS_EXCHANGE_SEALED_THRESHOLD_L = 1.0;
 
 // --- Survival-critical tier (above the graduated scale) -------------------

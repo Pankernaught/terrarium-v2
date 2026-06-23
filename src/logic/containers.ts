@@ -3,11 +3,9 @@
  * (port of the pure functions in `engine/containers.py`).
  *
  * **DB-free by design.** v1's `resolve_build_container` was DB-coupled (it imported
- * `db.loader` / `ContainerModel` / a SQLAlchemy `Session`). It is a **pure**
- * function here that takes the candidate containers as an argument (the same
- * dependency-inversion `recommend()` uses) — so this module still imports nothing
- * from `src/db`/`src/data`. The repo / UI layer passes the bundled seed containers
- * (`loadContainers()`).
+ * `db.loader` / `ContainerModel` / a SQLAlchemy `Session`). Here it is a **pure**
+ * function that rebuilds the container from the build's geometry snapshot, so this
+ * module imports nothing from `src/db`/`src/data`.
  *
  * **Dimension dicts (preserved exactly from v1):** rectangular shapes carry
  * `length`/`width`/`height`; cylindrical shapes carry `diameter`/`height`.
@@ -73,6 +71,34 @@ export function computeVolumeL(shape: string, dimensions: Dimensions): number {
 }
 
 /**
+ * Interior floor (footprint) area in cm² — the planting surface plants actually
+ * compete for. Unlike volume, this separates a tall narrow jar from a wide
+ * shallow bowl of the same litres. Rectangular: `length` × `width`; cylindrical:
+ * π·(`diameter`/2)². Height is irrelevant.
+ *
+ * @throws on an unknown shape or a missing/non-positive footprint dimension.
+ */
+export function floorAreaCm2(shape: string, dimensions: Dimensions): number {
+  if (shape === 'rectangular') {
+    const { length, width } = dimensions;
+    if (![length, width].every(isPositiveNumber)) {
+      throw new Error('Rectangular container needs positive length/width.');
+    }
+    return (length as number) * (width as number);
+  }
+  if (shape === 'cylindrical') {
+    const { diameter } = dimensions;
+    if (!isPositiveNumber(diameter)) {
+      throw new Error('Cylindrical container needs a positive diameter.');
+    }
+    return Math.PI * ((diameter as number) / 2) ** 2;
+  }
+  throw new Error(
+    `Shape must be one of ${JSON.stringify(VALID_SHAPES)}, got ${JSON.stringify(shape)}.`,
+  );
+}
+
+/**
  * Render a dimension without a trailing `.0` (v1 `_clean`). In JS a numeric `12.0`
  * already stringifies to `"12"` and `12.5` to `"12.5"`, so `String(value)` alone
  * reproduces v1's int-vs-float branching.
@@ -93,17 +119,19 @@ export function dimensionsToStr(shape: string, dimensions: Dimensions): string {
 }
 
 /**
- * Parse a preset `dimensionsCm` string (`LxWxH`) into a dimension bag by shape.
+ * Parse a `dimensionsCm` string (`LxWxH`) into a dimension bag by shape.
  *
  * Cylindrical presets store diameter as the first value and height as the last;
- * the middle value (duplicate diameter) is ignored.
+ * the middle value (duplicate diameter) is ignored. Tolerant of the decorated
+ * form `dimensionsToStr` emits (`⌀12×40 cm`) so the two round-trip — each part is
+ * stripped to its number, dropping `⌀`, the `×` separator, and any unit suffix.
  */
 export function parseDimensionsStr(shape: string, dimensionsCm: string): Dimensions {
   const parts = dimensionsCm
     .toLowerCase()
     .replace(/×/g, 'x')
     .split('x')
-    .map((p) => Number(p));
+    .map((p) => Number(p.replace(/[^0-9.]/g, '')));
   if (shape === 'cylindrical') {
     return { diameter: parts[0], height: parts[parts.length - 1] };
   }
@@ -157,33 +185,19 @@ export interface BuildContainerSnapshot {
 }
 
 /**
- * Resolve the `Container` for a build, from its geometry snapshot or its preset
- * slug (port of v1 `engine/containers.resolve_build_container`).
+ * Resolve the `Container` for a build from its geometry snapshot. A full snapshot
+ * (`shape` + `dimensions` + `opening`) rebuilds the container with the pure
+ * constructor; `containerSlug` rides through as provenance only. An incomplete
+ * snapshot → `null`.
  *
- * - A full snapshot (`shape` + `dimensions` + `opening`) is **authoritative** —
- *   it rebuilds the container with the pure constructor, no lookup needed.
- * - Otherwise a `slug` is resolved against the supplied `candidates` (the seed
- *   containers, passed in by the caller — the engine never reaches the DB/bundle).
- * - Neither present → `null`.
- *
- * v2 note: v1 looked the slug up in the `ContainerModel` table; here the caller
- * passes `loadContainers()` so this stays pure and mostly collapses into
- * `makeContainer`.
+ * ponytail: geometry-only — every saved build carries a full snapshot. The old
+ * `slug → candidates.find()` lookup path was never reachable (nothing produced a
+ * slug-without-geometry build) and was removed with the container seed bundle.
  */
-export function resolveBuildContainer(
-  build: BuildContainerSnapshot,
-  candidates: readonly Container[] = [],
-): Container | null {
-  const shape = build.containerShape;
-  const dimensions = build.containerDimensions;
-  const opening = build.containerOpening;
-  const slug = build.containerSlug;
-
+export function resolveBuildContainer(build: BuildContainerSnapshot): Container | null {
+  const { containerShape: shape, containerDimensions: dimensions, containerOpening: opening } = build;
   if (shape && dimensions && opening) {
-    return makeContainer(shape, dimensions, opening, slug ?? 'custom');
-  }
-  if (slug) {
-    return candidates.find((c) => c.slug === slug) ?? null;
+    return makeContainer(shape, dimensions, opening, build.containerSlug ?? 'custom');
   }
   return null;
 }

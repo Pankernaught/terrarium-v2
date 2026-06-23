@@ -26,9 +26,8 @@ import {
 import {
   CONTAINER_TYPE_OPEN_PENALTY,
   CONTAINER_TYPE_SURVIVAL_PENALTY,
-  CROWDING_MAX_PLANTS_ERROR,
-  CROWDING_MAX_PLANTS_WARNING,
-  CROWDING_VOLUME_THRESHOLD_L,
+  CROWDING_AREA_CAUTION_CM2,
+  CROWDING_AREA_ERROR_CM2,
   GAS_EXCHANGE_SEALED_THRESHOLD_L,
   HUMIDITY_PENALTY,
   LIGHT_CAUTION_PENALTY,
@@ -51,6 +50,7 @@ import {
   VERDICT_COMPATIBLE_MIN,
   WORST_PAIR_FLOOR_BUFFER,
 } from './constants';
+import { floorAreaCm2, parseDimensionsStr } from './containers';
 import { deriveEnvelope } from './environment';
 
 /** True if the two closed intervals share any common point. */
@@ -93,11 +93,12 @@ function annotate(viaSecondary: boolean): { viaSecondary?: true } {
 /**
  * Check pairwise compatibility between two plants.
  *
- * Graduated weights: light up to 30, humidity 25, soil moisture up to 14,
- * temperature 15, substrate pH 7 (caution). Survival-critical tier (35, clamps
- * to 40): extreme light gap (direct + low/medium primaries) and extreme watering
- * gap (dry + wet primaries), plus acidic + alkaline pH. Verdict: >= 80 compatible,
- * >= 50 caution, < 50 incompatible.
+ * Graduated weights: light up to 30, soil moisture up to 14, substrate pH 7
+ * (caution). Survival-critical tier (clamps to 40): extreme light gap (direct +
+ * low/medium primaries), extreme watering gap (dry + wet primaries), acidic +
+ * alkaline pH, and any non-overlapping temperature or humidity range (no shared
+ * value is survivable — see ADR 0008). Verdict: >= 80 compatible, >= 50 caution,
+ * < 50 incompatible.
  */
 export function checkPair(a: Plant, b: Plant): CompatibilityResult {
   let score = 100;
@@ -164,9 +165,9 @@ export function checkPair(a: Plant, b: Plant): CompatibilityResult {
       // a -30 caution-to-incompatible that the survival ceiling never clamps.
       const message = involvesDirect
         ? `${a.commonName} needs ${aLight} light; ${b.commonName} needs ${bLight} — ` +
-          'two steps apart, a significant mismatch.'
+          'light needs are two steps apart — a risky mismatch.'
         : `${a.commonName} needs ${aLight} light but ${b.commonName} needs ${bLight} — ` +
-          'requirements too far apart.';
+          'their light needs are too far apart.';
       conflicts.push({
         factor: 'light',
         severity: 'incompatible',
@@ -177,7 +178,7 @@ export function checkPair(a: Plant, b: Plant): CompatibilityResult {
     }
   }
 
-  // --- Humidity (25 pts) --------------------------------------------------
+  // --- Humidity (survival: no shared humidity range is survivable) --------
   if (
     !rangesOverlap(
       a.humidityPctRange[0],
@@ -187,12 +188,13 @@ export function checkPair(a: Plant, b: Plant): CompatibilityResult {
     )
   ) {
     score -= HUMIDITY_PENALTY;
+    survivalCritical = true;
     conflicts.push({
       factor: 'humidity',
       severity: 'incompatible',
       message:
         `${a.commonName} needs ${a.humidityPctRange[0]}–${a.humidityPctRange[1]}% humidity; ` +
-        `${b.commonName} needs ${b.humidityPctRange[0]}–${b.humidityPctRange[1]}% — no overlap.`,
+        `${b.commonName} needs ${b.humidityPctRange[0]}–${b.humidityPctRange[1]}% — humidity needs don't overlap, incompatible.`,
       affectedPlants: [a.slug, b.slug],
     });
   }
@@ -209,9 +211,8 @@ export function checkPair(a: Plant, b: Plant): CompatibilityResult {
       factor: 'soil_moisture',
       severity: 'incompatible',
       message:
-        `Severe moisture conflict: ${a.commonName} (${aMoist}) vs ${b.commonName} (${bMoist}) — ` +
-        "matching a plant's moisture preference is essential; plants thrive in a terrarium " +
-        'that mimics their native environment.',
+        `${a.commonName} likes it ${aMoist} soil but ${b.commonName} prefers ${bMoist} — ` +
+        'in one shared substrate, one plant will struggle.',
       affectedPlants: [a.slug, b.slug],
     });
   } else {
@@ -251,15 +252,15 @@ export function checkPair(a: Plant, b: Plant): CompatibilityResult {
         factor: 'soil_moisture',
         severity: 'caution',
         message:
-          `Moisture mismatch: ${a.commonName} (${aMoist}) vs ${b.commonName} (${bMoist}) — ` +
-          'two steps apart.',
+          `${a.commonName} prefers ${aMoist} soil but ${b.commonName} prefers ${bMoist} — ` +
+          'one plant may struggle.',
         affectedPlants: [a.slug, b.slug],
         ...annotate(viaSecondary),
       });
     }
   }
 
-  // --- Temperature (15 pts) -----------------------------------------------
+  // --- Temperature (survival: no shared temperature range is survivable) --
   if (
     !rangesOverlap(
       a.tempCRange[0],
@@ -269,13 +270,14 @@ export function checkPair(a: Plant, b: Plant): CompatibilityResult {
     )
   ) {
     score -= TEMPERATURE_PENALTY;
+    survivalCritical = true;
     conflicts.push({
       factor: 'temperature',
       severity: 'incompatible',
       message:
         `${a.commonName}: ${a.tempCRange[0]}–${a.tempCRange[1]}°C; ` +
         `${b.commonName}: ${b.tempCRange[0]}–${b.tempCRange[1]}°C — ` +
-        'temperature ranges do not overlap.',
+        "their temperature ranges don't overlap, incompatible.",
       affectedPlants: [a.slug, b.slug],
     });
   }
@@ -292,8 +294,8 @@ export function checkPair(a: Plant, b: Plant): CompatibilityResult {
         severity: 'incompatible',
         message:
           `${a.commonName} needs ${a.phPreference} substrate and ${b.commonName} needs ` +
-          `${b.phPreference} — a single shared substrate cannot be both acidic and alkaline; ` +
-          'one plant will decline regardless of care.',
+          `${b.phPreference} — no single substrate can be both acidic and alkaline — ` +
+          'one plant will struggle regardless of care.',
         affectedPlants: [a.slug, b.slug],
       });
     } else if (phDiff === 1) {
@@ -397,7 +399,7 @@ export function checkGroup(plants: Plant[], container: Container): GroupReport {
       containerFitIssues.push({
         factor: 'container_type',
         severity: 'incompatible',
-        message: `${plant.commonName} is not suitable for closed/lidded terrariums.`,
+        message: `${plant.commonName} needs airflow, so it is not suitable for a closed or lidded terrarium.`,
         affectedPlants: [plant.slug],
       });
     } else if (container.opening === 'open' && !plant.openTerrariumOk) {
@@ -410,20 +412,28 @@ export function checkGroup(plants: Plant[], container: Container): GroupReport {
     }
   }
 
-  // --- Crowding (volume vs. plant count) ---------------------------------
-  if (container.volumeL < CROWDING_VOLUME_THRESHOLD_L) {
-    if (plants.length > CROWDING_MAX_PLANTS_ERROR) {
+  // --- Crowding (floor area per plant, not volume) -----------------------
+  // Plants compete for the planting *surface*, so measure cm² of floor per plant
+  // from the real footprint — a tall narrow jar has the litres but not the floor
+  // (e.g. a 4.5 L ⌀12 cm cylinder). A single plant never crowds. See ADR 0008.
+  if (plants.length >= 2) {
+    const floorArea = floorAreaCm2(
+      container.shape,
+      parseDimensionsStr(container.shape, container.dimensionsCm),
+    );
+    const areaPerPlant = floorArea / plants.length;
+    if (areaPerPlant < CROWDING_AREA_ERROR_CM2) {
       containerFitIssues.push({
         factor: 'crowding',
         severity: 'incompatible',
-        message: `${plants.length} plants in ${container.volumeL}L is too many — severe overcrowding likely.`,
+        message: `${plants.length} plants share only ${Math.round(floorArea)} cm² of floor — overcrowded, they'll compete for root space.`,
         affectedPlants: plants.map((p) => p.slug),
       });
-    } else if (plants.length > CROWDING_MAX_PLANTS_WARNING) {
+    } else if (areaPerPlant < CROWDING_AREA_CAUTION_CM2) {
       containerFitIssues.push({
         factor: 'crowding',
         severity: 'caution',
-        message: `${plants.length} plants in ${container.volumeL}L is tight — monitor for overcrowding.`,
+        message: `${plants.length} plants share ${Math.round(floorArea)} cm² of floor — tight, monitor for overcrowding.`,
         affectedPlants: plants.map((p) => p.slug),
       });
     }
@@ -446,42 +456,13 @@ export function checkGroup(plants: Plant[], container: Container): GroupReport {
     }
   }
 
-  // --- Environmental envelope --------------------------------------------
+  // --- Environmental envelope (derived for display/return only) ----------
+  // No group-level collapse check here: a group with no shared temperature or
+  // humidity always contains a disjoint pair (Helly's theorem, 1-D), which
+  // checkPair already flags as survival-critical and carries to the group via
+  // `pairSurvival` below. A separate group check would only double-count it.
+  // See ADR 0008.
   const envEnvelope = deriveEnvelope(plants);
-
-  // Global collapse: pairwise overlap can hold for every pair while no single
-  // value satisfies all plants at once (an inverted intersection). Pairwise
-  // scoring can't see this, so surface it as a group-level survival conflict
-  // naming the two plants whose opposing limits make the group impossible.
-  if (envEnvelope.tempMin > envEnvelope.tempMax) {
-    const floor = plants.reduce((hi, p) => (p.tempCRange[0] > hi.tempCRange[0] ? p : hi));
-    const ceil = plants.reduce((lo, p) => (p.tempCRange[1] < lo.tempCRange[1] ? p : lo));
-    containerFitIssues.push({
-      factor: 'temperature',
-      severity: 'incompatible',
-      message:
-        `No shared temperature range — ${floor.commonName} needs at least ${floor.tempCRange[0]}°C ` +
-        `but ${ceil.commonName} tops out at ${ceil.tempCRange[1]}°C. Remove one to fix this group.`,
-      affectedPlants: [floor.slug, ceil.slug],
-    });
-  }
-
-  if (envEnvelope.humidityMin > envEnvelope.humidityMax) {
-    const floor = plants.reduce((hi, p) =>
-      p.humidityPctRange[0] > hi.humidityPctRange[0] ? p : hi,
-    );
-    const ceil = plants.reduce((lo, p) =>
-      p.humidityPctRange[1] < lo.humidityPctRange[1] ? p : lo,
-    );
-    containerFitIssues.push({
-      factor: 'humidity',
-      severity: 'incompatible',
-      message:
-        `No shared humidity range — ${floor.commonName} needs at least ${floor.humidityPctRange[0]}% ` +
-        `but ${ceil.commonName} caps at ${ceil.humidityPctRange[1]}%. Remove one to fix this group.`,
-      affectedPlants: [floor.slug, ceil.slug],
-    });
-  }
 
   // --- Overall score -----------------------------------------------------
   let baseScore = 100;

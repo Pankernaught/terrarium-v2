@@ -74,7 +74,7 @@ describe('summarizeVerdict', () => {
       report(35, { containerFit: [critical('not suitable for sealed terrariums')], pair: [caution('also this')] }),
       2,
     );
-    expect(v.sentence).toMatch(/^At risk — not suitable/);
+    expect(v.sentence).toMatch(/^Needs attention — not suitable/);
     expect(v.band).toBe('critical');
   });
 });

@@ -4,12 +4,11 @@
  * failure to a silent grey "⚠". Here a resolution failure or a `checkGroup` throw
  * becomes a **surfaced `diagnostic` string**, never a swallowed exception.
  *
- * Pure + dependency-inverted (the seed `plants` / `containers` are passed in, like
+ * Pure + dependency-inverted (the seed `plants` are passed in, like
  * `recommend()` / `resolveBuildContainer`), so it imports nothing from `src/db` or
  * `src/data` and unit-tests in the node runner. The `build` argument is typed
  * **structurally** (no `Build` import) to keep the engine-purity invariant intact.
  */
-import type { Container } from '@/types/container';
 import type { Plant } from '@/types/plant';
 import type { GroupReport } from '@/types/results';
 
@@ -47,11 +46,7 @@ export interface ScoredBuild {
  *  - a missing container, a missing plant record, or a `checkGroup` throw each
  *    return `score: null` plus a specific `diagnostic`.
  */
-export function scoreBuild(
-  build: ScorableBuild,
-  plants: readonly Plant[],
-  containers: readonly Container[],
-): ScoredBuild {
+export function scoreBuild(build: ScorableBuild, plants: readonly Plant[]): ScoredBuild {
   const failed: Omit<ScoredBuild, 'diagnostic'> = {
     score: null,
     band: null,
@@ -72,7 +67,7 @@ export function scoreBuild(
     };
   }
 
-  const container = resolveBuildContainer(build, containers);
+  const container = resolveBuildContainer(build);
   if (!container) {
     return { ...failed, diagnostic: 'This build has no container, so it can’t be scored yet.' };
   }

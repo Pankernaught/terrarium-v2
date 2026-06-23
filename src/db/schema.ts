@@ -10,13 +10,12 @@
  *    static seed `image` path, not DB rows.
  *
  * 2. **Seed reference data — derived from the bundle (mirrors v1 `db/loader.py`).**
- *    `plants`, `containers`, `presets`. The engine reads the *bundle JSON*
- *    (`src/data`, zero DB round-trip), so these tables are a queryable mirror
- *    seeded idempotently by `seedStore()` (upsert-by-slug), not the engine's read
- *    path. They are **regenerable from the bundle and never enter the backup
- *    payload**. Stored as `{ slug, data }` JSON blobs — the validated record is
- *    the source of truth in `src/data`, so we do not re-model 30+ plant columns
- *    in SQL.
+ *    `plants`. The engine reads the *bundle JSON* (`src/data`, zero DB round-trip),
+ *    so this table is a queryable mirror seeded idempotently by `seedStore()`
+ *    (upsert-by-slug), not the engine's read path. It is **regenerable from the
+ *    bundle and never enters the backup payload**. Stored as `{ slug, data }` JSON
+ *    blobs — the validated record is the source of truth in `src/data`, so we do not
+ *    re-model 30+ plant columns in SQL.
  *
  * **UUID primary keys on every row.** `builds` (and, for consistency +
  * restore-safety, photos and care-marks) use a generated UUID, not v1's integer
@@ -32,7 +31,7 @@
 import type { BaseSQLiteDatabase } from 'drizzle-orm/sqlite-core';
 import { index, integer, real, sqliteTable, text } from 'drizzle-orm/sqlite-core';
 
-import type { Placement } from '../data/presets';
+import type { Placement } from '../logic/placement';
 import type { CareOverrides } from '../logic/careSchedule';
 import type { Dimensions } from '../logic/containers';
 import type { SubstrateMix } from '../logic/substrateMixer';
@@ -44,10 +43,10 @@ export const builds = sqliteTable('builds', {
   id: text('id').primaryKey(),
   name: text('name').notNull(),
   /**
-   * Provenance only: the preset slug a container was based on, or `null` for a
-   * fully-custom container. The container snapshot below is the authoritative
-   * geometry. (v1 forced a `"custom"` sentinel for a legacy NOT NULL; the fresh
-   * v2 column is simply nullable.)
+   * Vestigial provenance column — nullable, and always `null` in practice since the
+   * named-container presets were removed. The container snapshot below is the
+   * authoritative geometry. Kept (not dropped) so existing stores and backups need no
+   * migration for a harmless empty column.
    */
   containerSlug: text('container_slug'),
   // Container builder snapshot — authoritative geometry when present.
@@ -137,16 +136,6 @@ export const plants = sqliteTable('plants', {
   data: text('data', { mode: 'json' }).notNull(),
 });
 
-export const containers = sqliteTable('containers', {
-  slug: text('slug').primaryKey(),
-  data: text('data', { mode: 'json' }).notNull(),
-});
-
-export const presets = sqliteTable('presets', {
-  slug: text('slug').primaryKey(),
-  data: text('data', { mode: 'json' }).notNull(),
-});
-
 // --- Inferred row types ------------------------------------------------------
 
 export type Build = typeof builds.$inferSelect;
@@ -217,16 +206,6 @@ CREATE TABLE IF NOT EXISTS care_marks (
 CREATE INDEX IF NOT EXISTS idx_care_marks_build_id ON care_marks (build_id);
 
 CREATE TABLE IF NOT EXISTS plants (
-  slug TEXT PRIMARY KEY NOT NULL,
-  data TEXT NOT NULL
-);
-
-CREATE TABLE IF NOT EXISTS containers (
-  slug TEXT PRIMARY KEY NOT NULL,
-  data TEXT NOT NULL
-);
-
-CREATE TABLE IF NOT EXISTS presets (
   slug TEXT PRIMARY KEY NOT NULL,
   data TEXT NOT NULL
 );

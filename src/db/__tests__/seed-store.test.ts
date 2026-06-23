@@ -8,7 +8,7 @@ import { eq } from 'drizzle-orm';
 import { beforeEach, describe, expect, it } from 'vitest';
 
 import { loadSeed } from '../../data';
-import { builds, containers, plants, presets, type TerrariumDb } from '../schema';
+import { builds, plants, type TerrariumDb } from '../schema';
 import { seedStore } from '../seed';
 import { makeTestDb } from './helpers';
 
@@ -20,25 +20,17 @@ beforeEach(() => {
 });
 
 describe('seedStore', () => {
-  it('loads all plants / containers / presets into the store', async () => {
+  it('loads all plants into the store', async () => {
     const counts = await seedStore(db, seed);
-    expect(counts).toEqual({
-      plants: seed.plants.length,
-      containers: seed.containers.length,
-      presets: seed.presets.length,
-    });
+    expect(counts).toEqual({ plants: seed.plants.length });
 
     expect(await db.select().from(plants)).toHaveLength(seed.plants.length);
-    expect(await db.select().from(containers)).toHaveLength(seed.containers.length);
-    expect(await db.select().from(presets)).toHaveLength(seed.presets.length);
   });
 
   it('is idempotent — re-running keeps the same counts', async () => {
     await seedStore(db, seed);
     await seedStore(db, seed);
     expect(await db.select().from(plants)).toHaveLength(seed.plants.length);
-    expect(await db.select().from(containers)).toHaveLength(seed.containers.length);
-    expect(await db.select().from(presets)).toHaveLength(seed.presets.length);
   });
 
   it('round-trips a record through JSON storage', async () => {

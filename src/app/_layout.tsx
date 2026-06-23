@@ -68,6 +68,7 @@ function RootLayoutInner() {
           />
           {/* Non-tab routes: navigable, but hidden from the bar. */}
           <Tabs.Screen name="build/[id]" options={{ href: null }} />
+          <Tabs.Screen name="build/[id]/guide" options={{ href: null }} />
           <Tabs.Screen name="plant/[slug]" options={{ href: null }} />
           {/* Planner is a focused full-screen flow — hide the tab bar entirely
               while it's open (its own Back/Next bar handles navigation). */}

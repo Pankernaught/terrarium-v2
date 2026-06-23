@@ -47,14 +47,26 @@ never be mistaken for final art.
 
 ### Conservatory (flagship / proof-of-concept)
 
+Two roles (ADR 0007 A6): **ambient critters** live in the backdrop on every screen;
+the **featured mascot** greets in empty states. Both are open/expandable sets — a new
+critter or pose is one `require()` line in `art.ts` + one PNG at the path + a row here.
+
 | Slot | Path | Dimensions | Purpose | Status |
 | --- | --- | --- | --- | --- |
-| `mascot` | `assets/vibes/conservatory/mascot.png` | 600×600 | per-vibe mascot (rendered `contain`) | Placeholder |
 | `foliageBack` | `assets/vibes/conservatory/foliage-back.png` | 1400×900 | far parallax layer (slow drift), bottom-anchored `cover` | Placeholder |
 | `foliageFront` | `assets/vibes/conservatory/foliage-front.png` | 1400×700 | near parallax layer (fast drift), bottom-anchored `cover` | Placeholder |
+| `critters.snail` | `assets/vibes/conservatory/critters/snail.png` | 600×600 | ambient critter, hand-placed in the foliage band (rendered `contain`, ~50–64px) | Placeholder |
+| `mascot.default` | `assets/vibes/conservatory/mascot/default.png` | 600×600 | featured mascot — welcoming pose, first-run empty states (rendered `contain`, ~100px) | Placeholder |
+| `mascot.sad` | `assets/vibes/conservatory/mascot/sad.png` | 600×600 | featured mascot — commiserating pose, search-no-match (rendered `contain`, ~100px) | Placeholder |
 
 > Dimensions are the placeholder's pixel size — final art must match them (the swap is
 > a same-name, same-size overwrite). Foliage layers are bottom-anchored and `cover`, so
-> art should read as foliage growing up from the bottom edge.
+> art should read as foliage growing up from the bottom edge. Critters and mascot poses
+> are transparent PNGs rendered `contain` — design each to read on both Conservatory
+> schemes on its own value contrast (A11); add a `<name>-dark.png` only if one fails.
+
+> **Expanding:** drop `critters/<name>.png` and add a `require()` line (+ a
+> `CRITTER_SPOTS` entry in `conservatory-background.tsx` to place it); drop
+> `mascot/<pose>.png` and add the pose to the `MascotPose` union + a `require()` line.
 
 <!-- Cottagecore / Field guide: add sections + slots when those vibes are built. -->

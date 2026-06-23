@@ -14,10 +14,10 @@ import { type Href, useFocusEffect, useRouter } from 'expo-router';
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { Alert, Pressable, ScrollView, StyleSheet, TextInput, useWindowDimensions, View } from 'react-native';
 
-import { ActionSheet, BottomSheet, Card, GlanceHeader, haptics, Screen, Text } from '@/components/ui';
+import { ActionSheet, BottomSheet, Card, EmptyState, GlanceHeader, haptics, Screen, Text } from '@/components/ui';
 import { BuildCard } from '@/components/build-card';
 import { MaxContentWidth, Radii, Spacing } from '@/constants/theme';
-import { loadContainers, loadPlants } from '@/data';
+import { loadPlants } from '@/data';
 import { type Repos, useDbState } from '@/db/provider';
 import type { Build } from '@/db/schema';
 import { shareBuildPdf, shareBuildTxt } from '@/lib/export';
@@ -50,7 +50,6 @@ function Dashboard({ repos }: { repos: Repos }) {
 
   // Seed catalogs are static — load once and reuse for every build's score.
   const plants = useMemo(() => loadPlants(), []);
-  const containers = useMemo(() => loadContainers(), []);
 
   const [rows, setRows] = useState<Row[] | null>(null);
   const [overflowFor, setOverflowFor] = useState<Row | null>(null);
@@ -68,12 +67,12 @@ function Dashboard({ repos }: { repos: Repos }) {
         const primary = await repos.photos.getPrimary(build.id);
         return {
           build,
-          scored: scoreBuild(build, plants, containers),
+          scored: scoreBuild(build, plants),
           heroUri: primary?.filePath ?? null,
         };
       }),
     );
-  }, [repos, plants, containers]);
+  }, [repos, plants]);
 
   const reload = useCallback(async () => setRows(await fetchRows()), [fetchRows]);
 
@@ -109,7 +108,7 @@ function Dashboard({ repos }: { repos: Repos }) {
   }
 
   function onExport(row: Row) {
-    const data = resolveBuildSummary(row.build, plants, containers);
+    const data = resolveBuildSummary(row.build, plants);
     Alert.alert('Export', `Choose a format for “${row.build.name}”.`, [
       { text: 'Text (.txt)', onPress: () => shareBuildTxt(data).catch(reportExportError) },
       { text: 'PDF', onPress: () => shareBuildPdf(data).catch(reportExportError) },
@@ -155,7 +154,12 @@ function Dashboard({ repos }: { repos: Repos }) {
           />
 
           {rows.length === 0 ? (
-            <EmptyState onCreate={() => router.push('/planner' as Href)} />
+            <EmptyState
+              pose="default"
+              title="No terrariums yet"
+              body="Press new to grow your first ecosystem"
+              cta={{ label: 'New terrarium', onPress: () => router.push('/planner' as Href) }}
+            />
           ) : (
             <View style={[styles.grid, { columnGap: GRID_GAP, rowGap: GRID_GAP }]}>
               {rows.map((row) => (
@@ -229,27 +233,6 @@ function NewButton({ onPress }: { onPress: () => void }) {
         + New
       </Text>
     </Pressable>
-  );
-}
-
-function EmptyState({ onCreate }: { onCreate: () => void }) {
-  const { c } = useTokens();
-  return (
-    <Card style={styles.empty}>
-      <Text variant="subhead">No terrariums yet</Text>
-      <Text variant="body" role="textMuted" style={styles.emptyBody}>
-        Build your first terrarium in the planner — pick a container, add plants, and watch the
-        Eco-balance settle.
-      </Text>
-      <Pressable
-        onPress={onCreate}
-        accessibilityRole="button"
-        style={[styles.emptyCta, { backgroundColor: c.primary }]}>
-        <Text variant="body" style={{ color: c.onPrimary, fontWeight: '600' }}>
-          New terrarium
-        </Text>
-      </Pressable>
-    </Card>
   );
 }
 
@@ -368,7 +351,6 @@ const styles = StyleSheet.create({
   grid: { flexDirection: 'row', flexWrap: 'wrap' },
   empty: { padding: Spacing.lg, gap: Spacing.sm },
   emptyBody: { lineHeight: 22 },
-  emptyCta: { alignSelf: 'flex-start', marginTop: Spacing.xs, paddingHorizontal: Spacing.lg, paddingVertical: Spacing.sm, borderRadius: Radii.md },
   newBtn: { paddingHorizontal: Spacing.md, paddingVertical: Spacing.xs + 2, borderRadius: Radii.pill },
   renameInput: {
     borderWidth: 1,
