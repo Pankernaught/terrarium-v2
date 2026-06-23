@@ -8,18 +8,19 @@
  */
 import { useColorScheme } from 'react-native';
 
-import { Colors, type Palette } from '@/constants/theme';
+import { Colors, type Palette, type VibeId } from '@/constants/theme';
 import { usePreferences } from '@/hooks/use-preferences';
 
 export interface Tokens {
   c: Palette;
   scheme: 'light' | 'dark';
   isDark: boolean;
+  vibe: VibeId;
 }
 
 export function useTokens(): Tokens {
-  const { colorScheme: pref } = usePreferences();
+  const { colorScheme: pref, vibe } = usePreferences();
   const os = useColorScheme();
   const scheme: 'light' | 'dark' = pref === 'system' ? (os === 'dark' ? 'dark' : 'light') : pref;
-  return { c: Colors[scheme], scheme, isDark: scheme === 'dark' };
+  return { c: Colors[vibe][scheme], scheme, isDark: scheme === 'dark', vibe };
 }

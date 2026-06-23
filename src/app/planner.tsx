@@ -273,7 +273,8 @@ export default function PlannerScreen() {
   const stepProps: StepProps = { draft, plants, update };
 
   return (
-    <Screen edges={{ bottom: true }}>
+    // Same `scrollY` that collapses the header also parallaxes the vibe backdrop.
+    <Screen edges={{ bottom: true }} scrollY={scrollY}>
       {/* KeyboardAvoidingView so the Back/Next/Save bar (and a focused input) are
           never hidden behind the iOS keyboard; it carries the stage's flex + relative
           positioning so no extra nesting is introduced. */}

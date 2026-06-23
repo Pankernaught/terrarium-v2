@@ -12,51 +12,92 @@
 import { Platform } from 'react-native';
 
 /**
- * Two resolved palettes off one lightness ladder: shift lightness, hold the mood.
- * `light` and `dark` MUST share keys so `ThemeColor` stays sound.
+ * Palettes nested by **vibe**, then scheme: `Colors[vibe][scheme]`. `useTokens`
+ * resolves the active vibe + scheme, so recoloring the whole app is just adding a
+ * vibe here — every screen flows through the hook (ADR 0007). Within a vibe, `light`
+ * and `dark` MUST share keys so `ThemeColor`/`Palette` stay sound; across vibes the
+ * keys MUST match too (same roles, different mood).
  *
- * Keys are the semantic *roles*. The trailing aliases (`backgroundElement`,
- * `backgroundSelected`, `textSecondary`) preserve the `themed-text` /
- * `themed-view` contract so those generic components keep working unchanged.
+ * `glasshouse` is the original earth-modern look — the default "classic" vibe.
+ * `conservatory` is the dense-jungle flagship: deeper greens + a gold sunbeam accent.
+ *
+ * Keys are the semantic *roles*.
  */
 export const Colors = {
-  light: {
-    background: '#F6F4EC', // warm off-white
-    surface: '#FCFBF6', // card
-    surfaceSunken: '#EFEDE2', // inset / selected surface
-    primary: '#2E5D3A', // forest
-    onPrimary: '#FCFBF6', // text/icon on a primary fill
-    sage: '#5E7A52', // secondary
-    accent: '#A55A3A', // terracotta — one per screen
-    text: '#232826',
-    textMuted: '#6B7268',
-    border: 'rgba(46,93,58,0.12)', // hairline, forest-tinted
-    // --- back-compat aliases (themed-* components) ---
-    backgroundElement: '#FCFBF6',
-    backgroundSelected: '#EFEDE2',
-    textSecondary: '#6B7268',
+  glasshouse: {
+    light: {
+      background: '#F6F4EC', // warm off-white
+      surface: '#FCFBF6', // card
+      surfaceSunken: '#EFEDE2', // inset / selected surface
+      primary: '#2E5D3A', // forest
+      onPrimary: '#FCFBF6', // text/icon on a primary fill
+      sage: '#5E7A52', // secondary
+      accent: '#A55A3A', // terracotta — one per screen
+      text: '#232826',
+      textMuted: '#6B7268',
+      border: 'rgba(46,93,58,0.12)', // hairline, forest-tinted
+      // --- back-compat aliases (themed-* components) ---
+      backgroundElement: '#FCFBF6',
+      backgroundSelected: '#EFEDE2',
+      textSecondary: '#6B7268',
+    },
+    dark: {
+      background: '#14201A', // deep charcoal-green
+      surface: '#1C2A22',
+      surfaceSunken: '#243528',
+      primary: '#5FAE74', // raised L so it doesn't go flat
+      onPrimary: '#14201A',
+      sage: '#8FB07F',
+      accent: '#C8825F',
+      text: '#ECEFE7',
+      textMuted: '#9AA59A',
+      border: 'rgba(143,176,127,0.16)',
+      // --- back-compat aliases ---
+      backgroundElement: '#1C2A22',
+      backgroundSelected: '#243528',
+      textSecondary: '#9AA59A',
+    },
   },
-  dark: {
-    background: '#14201A', // deep charcoal-green
-    surface: '#1C2A22',
-    surfaceSunken: '#243528',
-    primary: '#5FAE74', // raised L so it doesn't go flat
-    onPrimary: '#14201A',
-    sage: '#8FB07F',
-    accent: '#C8825F',
-    text: '#ECEFE7',
-    textMuted: '#9AA59A',
-    border: 'rgba(143,176,127,0.16)',
-    // --- back-compat aliases ---
-    backgroundElement: '#1C2A22',
-    backgroundSelected: '#243528',
-    textSecondary: '#9AA59A',
+  // ponytail: hand-picked, AA-aimed against deep palettes — tune against device.
+  conservatory: {
+    light: {
+      background: '#EEF1E6', // sunlit, green-tinted off-white
+      surface: '#F7F9F0',
+      surfaceSunken: '#E3E8D6',
+      primary: '#1F4D2E', // deep jungle
+      onPrimary: '#F7F9F0',
+      sage: '#4E6B43',
+      accent: '#8C6A1B', // gold sunbeam — darkened so it holds AA on light
+      text: '#1C231C',
+      textMuted: '#5F6B59',
+      border: 'rgba(31,77,46,0.14)',
+      backgroundElement: '#F7F9F0',
+      backgroundSelected: '#E3E8D6',
+      textSecondary: '#5F6B59',
+    },
+    dark: {
+      background: '#0E1A12', // deep jungle night
+      surface: '#152217',
+      surfaceSunken: '#1D2D1F',
+      primary: '#5BB873', // raised leaf so it doesn't go flat
+      onPrimary: '#0E1A12',
+      sage: '#86A877',
+      accent: '#E0B94E', // bright gold sunbeam on near-black
+      text: '#E8EFE0',
+      textMuted: '#94A38E',
+      border: 'rgba(91,184,115,0.18)',
+      backgroundElement: '#152217',
+      backgroundSelected: '#1D2D1F',
+      textSecondary: '#94A38E',
+    },
   },
 } as const;
 
-export type ThemeColor = keyof typeof Colors.light & keyof typeof Colors.dark;
-/** Resolved palette — same keys in both schemes, values widened to `string`. */
-export type Palette = { [K in keyof typeof Colors.light]: string };
+/** The vibe id — the outer key of `Colors`. Add a vibe → add a `Colors` entry. */
+export type VibeId = keyof typeof Colors;
+export type ThemeColor = keyof typeof Colors.glasshouse.light & keyof typeof Colors.glasshouse.dark;
+/** Resolved palette — same keys in every scheme/vibe, values widened to `string`. */
+export type Palette = { [K in keyof typeof Colors.glasshouse.light]: string };
 
 /**
  * Spacing scale: 4 · 8 · 16 · 24 · 32 · 48 — never an off-scale value.

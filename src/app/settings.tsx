@@ -9,6 +9,7 @@ import { useState } from 'react';
 import { Alert, Linking, Pressable, ScrollView, StyleSheet, View } from 'react-native';
 
 import { Card, GlanceHeader, Screen, SectionLabel, Text } from '@/components/ui';
+import { VIBES } from '@/components/vibes';
 import { Radii, Spacing } from '@/constants/theme';
 import { type Repos, useDbState } from '@/db/provider';
 import { backupToFile, restoreFromFile } from '@/lib/backup-io';
@@ -49,11 +50,16 @@ const SCHEME_OPTIONS: { label: string; value: ColorSchemePref }[] = [
 ];
 
 function AppearanceSection() {
-  const { colorScheme, setColorScheme } = usePreferences();
+  const { colorScheme, setColorScheme, vibe, setVibe } = usePreferences();
   return (
     <View style={styles.section}>
       <SectionLabel>Appearance</SectionLabel>
       <Card style={styles.card}>
+        <Text variant="body" role="textMuted">
+          Vibe
+        </Text>
+        <SegmentedControl options={VIBES} value={vibe} onChange={setVibe} />
+        <Divider />
         <Text variant="body" role="textMuted">
           Color scheme
         </Text>
@@ -63,14 +69,14 @@ function AppearanceSection() {
   );
 }
 
-function SegmentedControl({
+function SegmentedControl<T extends string>({
   options,
   value,
   onChange,
 }: {
-  options: { label: string; value: ColorSchemePref }[];
-  value: ColorSchemePref;
-  onChange: (v: ColorSchemePref) => void;
+  options: { label: string; value: T }[];
+  value: T;
+  onChange: (v: T) => void;
 }) {
   const { c } = useTokens();
   return (
