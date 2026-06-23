@@ -10,6 +10,10 @@ A mobile app for planning, building, and caring for terrariums. The planner guid
 A saved terrarium configuration: a named container, its layer stack, selected plants, hardscape placements, and substrate mix.
 _Avoid_: Project, setup, design
 
+**Build Guide**:
+The ordered, one-time physical-assembly steps for constructing a Build — derived live from the saved Build (never stored), worked through as an ephemeral checklist on its own sub-screen. Distinct from the ongoing Care cycle: the Build Guide is how you assemble the terrarium once; Care is how you keep it alive.
+_Avoid_: Setup guide, assembly guide, instructions
+
 **Draft**:
 The in-progress, unsaved Build being configured in the Planner. Converted to a Build on save.
 _Avoid_: Config, form state

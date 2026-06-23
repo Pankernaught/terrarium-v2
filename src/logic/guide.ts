@@ -8,6 +8,10 @@
  * `light` and `soilMoisture` are `{ primary, secondary? }` objects rather than
  * scalars. The primary is the v1-scalar analog, so each of those reads becomes
  * `.light.primary` / `.soilMoisture.primary`. pH is untouched (and unused here).
+ *
+ * Instruction strings carry inline glossary markup (the bracketed slug form from
+ * ADR 0006/0009) for the jargon terms; render them through `<GlossaryText>`, not
+ * a plain `<Text>`.
  */
 import type { Container, Plant } from '../types';
 
@@ -87,7 +91,7 @@ export function generateBuildGuide(
     substrateDepth,
     drainageDepth,
     charcoalDepth,
-    drainageMaterial = 'pebbles or LECA',
+    drainageMaterial = 'pebbles or [[leca|LECA]]',
     substrateMix,
   } = opts;
 
@@ -129,7 +133,7 @@ export function generateBuildGuide(
     stepsData.push({
       title: 'Separation Layer',
       instruction:
-        'Add a thin layer of sphagnum moss or fine mesh over the drainage layer to prevent substrate mixing.',
+        'Add a thin layer of [[sphagnum|sphagnum moss]] or fine mesh over the [[drainage-layer|drainage layer]] to prevent substrate mixing.',
     });
   }
 
@@ -138,7 +142,7 @@ export function generateBuildGuide(
   if (charcoalDepth != null && charcoalDepth > 0) {
     stepsData.push({
       title: 'Charcoal Layer',
-      instruction: `Add ${fmtCm(charcoalDepth)} of horticultural charcoal over the separation layer to keep the build fresh.`,
+      instruction: `Add ${fmtCm(charcoalDepth)} of [[horticultural-charcoal|horticultural charcoal]] over the separation layer to keep the build fresh.`,
     });
   }
 
@@ -197,7 +201,7 @@ export function generateBuildGuide(
     ventInstr =
       'Close the lid, but crack it open briefly each day for the first week to allow gas exchange.';
   } else {
-    ventInstr = 'No sealing needed. Monitor humidity closely during the first week.';
+    ventInstr = 'No sealing needed. Monitor [[humidity]] closely during the first week.';
   }
 
   stepsData.push({ title: 'Sealing / Ventilation Setup', instruction: ventInstr });
@@ -213,13 +217,13 @@ export function generateBuildGuide(
     if (other.has('low') || other.has('medium')) {
       lightInstr =
         'Conflicting light needs: some plants need direct sun, others prefer low or medium light. ' +
-        'Place in bright indirect light as a compromise — watch sun-lovers for etiolation ' +
+        'Place in [[bright-indirect|bright indirect light]] as a compromise — watch sun-lovers for [[etiolation]] ' +
         'and shade plants for bleaching.';
     } else {
       // direct + bright-indirect
       lightInstr =
-        'Direct and bright-indirect light requirements conflict. Place in bright indirect light. ' +
-        'Direct sun through glass creates dangerous heat buildup in enclosed containers.';
+        'Direct and bright-indirect light requirements conflict. Place in [[bright-indirect|bright indirect light]]. ' +
+        'Direct sun through glass can trap dangerous heat in an enclosed container.';
     }
   } else if (lights.has('bright-indirect') && (lights.has('low') || lights.has('medium'))) {
     lightInstr =

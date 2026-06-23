@@ -1,6 +1,10 @@
 /** Port of `tests/test_guide.py` (decision-15 `.primary` scalar analog). */
+import { readFileSync } from 'node:fs';
+
 import { describe, expect, it } from 'vitest';
 
+import { lookupTerm } from '../../data';
+import { glossaryMarkupSlugs } from '../glossary-markup';
 import { generateBuildGuide } from '../guide';
 import { makeContainerSpec, makePlant } from './factories';
 
@@ -165,5 +169,18 @@ describe('generateBuildGuide', () => {
 
     // Check fast-grower mention.
     expect(instruction).toContain('Tall Fast Plant grow fast');
+  });
+
+  // Guide instructions carry inline `[[slug]]` glossary markup (ADR 0009). The
+  // seed-time integrity check only scans plant notes/nativeContext, so a typo'd
+  // slug here would ship unguarded. Scan the module source so every authored
+  // slug is covered regardless of which branch produced it.
+  it('every [[slug]] authored in guide.ts resolves to a glossary entry', () => {
+    const source = readFileSync(new URL('../guide.ts', import.meta.url), 'utf8');
+    const slugs = glossaryMarkupSlugs(source);
+    expect(slugs.length).toBeGreaterThan(0);
+    for (const slug of slugs) {
+      expect(lookupTerm(slug), `unknown glossary slug [[${slug}]] in guide.ts`).toBeDefined();
+    }
   });
 });

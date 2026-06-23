@@ -33,11 +33,12 @@ import {
 } from '@/components/ui';
 import { PlantSheet } from '@/components/plant-sheet';
 import { MaxContentWidth, Radii, Spacing } from '@/constants/theme';
-import { loadContainers, loadPlants } from '@/data';
+import { loadPlants } from '@/data';
 import { useDbState, type Repos } from '@/db/provider';
 import type { Build, BuildPhoto } from '@/db/schema';
 import { resolveBuildContainer } from '@/logic/containers';
 import { resolveBuildSummary } from '@/logic/export-txt';
+import { generateBuildGuide } from '@/logic/guide';
 import { shareBuildPdf, shareBuildTxt } from '@/lib/export';
 import { scoreBuild } from '@/logic/score-build';
 import type { CompatibilityResult, Conflict } from '@/types/results';
@@ -65,7 +66,6 @@ function BuildDetail({ repos }: { repos: Repos }) {
   const { c } = useTokens();
 
   const plants = useMemo(() => loadPlants(), []);
-  const containers = useMemo(() => loadContainers(), []);
 
   const [load, setLoad] = useState<LoadState>({ status: 'loading' });
   const [addSheetOpen, setAddSheetOpen] = useState(false);
@@ -154,10 +154,29 @@ function BuildDetail({ repos }: { repos: Repos }) {
     return <DetailMessage title="Build not found" body="This terrarium may have been deleted." />;
 
   const { build, heroUri, photos, primaryId } = load;
-  const scored = scoreBuild(build, plants, containers);
-  const container = resolveBuildContainer(build, containers);
+  const scored = scoreBuild(build, plants);
+  const container = resolveBuildContainer(build);
   const bySlug = new Map(plants.map((p) => [p.slug, p]));
   const buildPlants = build.plantSlugs.map((slug) => bySlug.get(slug)).filter((p): p is Plant => !!p);
+
+  // Step count for the Build-guide entry card. The substrate mix only changes a
+  // step's *text*, never whether the step exists, so we skip the mix-formatting
+  // here and derive the count from depths alone. `generateBuildGuide` throws on
+  // empty plants — guard + try/catch, null hides the card.
+  const guideStepCount =
+    buildPlants.length > 0 && container
+      ? (() => {
+          try {
+            return generateBuildGuide(buildPlants, container, {
+              substrateDepth: build.substrateDepth,
+              drainageDepth: build.drainageDepth,
+              charcoalDepth: build.charcoalDepth,
+            }).length;
+          } catch {
+            return null;
+          }
+        })()
+      : null;
 
   function onEdit() {
     // "Edit" re-opens the planner on this build (shell this phase; interactive in 6).
@@ -165,7 +184,7 @@ function BuildDetail({ repos }: { repos: Repos }) {
   }
 
   function onExport() {
-    const data = resolveBuildSummary(build, plants, containers);
+    const data = resolveBuildSummary(build, plants);
     Alert.alert('Export', `Choose a format for “${build.name}”.`, [
       { text: 'Text (.txt)', onPress: () => shareBuildTxt(data).catch(reportExportError) },
       { text: 'PDF', onPress: () => shareBuildPdf(data).catch(reportExportError) },
@@ -215,6 +234,24 @@ function BuildDetail({ repos }: { repos: Repos }) {
 
           {/* Tier 1 — the verdict band (meter + plain-English sentence, or diagnostic). */}
           <VerdictBand scored={scored} />
+
+          {/* Build guide — the one-time assembly checklist, its own sub-screen (ADR 0009). */}
+          {guideStepCount != null ? (
+            <View style={styles.section}>
+              <SectionLabel>Build guide</SectionLabel>
+              <Pressable
+                onPress={() => router.push(`/build/${build.id}/guide` as Href)}
+                accessibilityRole="button"
+                accessibilityLabel={`Open build guide, ${guideStepCount} steps`}>
+                <Card style={styles.guideCard}>
+                  <Text variant="body">{`Step-by-step assembly · ${guideStepCount} steps`}</Text>
+                  <Text variant="body" role="primary">
+                    ›
+                  </Text>
+                </Card>
+              </Pressable>
+            </View>
+          ) : null}
 
           {/* Tier 2 — container facts + plant chips. */}
           <View style={styles.section}>
@@ -531,6 +568,12 @@ const styles = StyleSheet.create({
   editBtn: { paddingHorizontal: Spacing.md, paddingVertical: Spacing.xs + 2, borderRadius: Radii.pill, borderWidth: 1 },
   section: { gap: Spacing.sm },
   card: { padding: Spacing.lg },
+  guideCard: {
+    padding: Spacing.lg,
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+  },
   chips: { flexDirection: 'row', flexWrap: 'wrap', gap: Spacing.sm },
   tier3Head: { flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' },
   timelineDays: { gap: Spacing.md },

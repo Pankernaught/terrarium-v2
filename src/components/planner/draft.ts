@@ -19,12 +19,6 @@ import type { Placement } from '@/logic/placement';
 import type { SubstrateMix } from '@/logic/substrateMixer';
 import type { ContainerOpening, ContainerShape } from '@/types';
 
-/**
- * Drainage *material* is not a user-controlled field in v2.0; the Substrate step
- * shows this default and the v2.1 substrate mixer will own material choice.
- */
-export const DEFAULT_DRAINAGE_MATERIAL = 'pebbles or LECA';
-
 /** The editable fields of a build, as plain step-driven state. */
 export interface PlannerDraft {
   /** Present only when editing an existing build (drives save vs. update). */

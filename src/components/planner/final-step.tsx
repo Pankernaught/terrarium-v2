@@ -1,14 +1,17 @@
 /**
  * Final step — the planner's review screen (Container · Substrate · Plants ·
- * **Final**). The owner names the build, reads the Eco-balance verdict,
- * scans the chosen plants, and previews a static, read-only **build guide
- * projection** of what the saved build will look like.
+ * **Final**). The owner names the build, reads the Eco-balance verdict, and
+ * scans the chosen plants before saving.
+ *
+ * The build guide no longer lives here (ADR 0009): it's a derived, interactive
+ * checklist on its own sub-screen (`/build/[id]/guide`), reached from Build
+ * Detail after saving. The Save hint sets that expectation.
  *
  * Strictly presentational and side-effect-light: it neither saves nor navigates —
  * the planner screen's nav button owns the save. The only `update` here is the
- * name field. Scoring + guide are derived live off the pure `@/logic` modules over
- * the seed bundle (`loadPlants` / `loadContainers` — no DB round-trip); nothing
- * from `@/db` is imported.
+ * name field. Scoring is derived live off the pure `@/logic` modules over the
+ * seed bundle (`loadPlants` — no DB round-trip); nothing from
+ * `@/db` is imported.
  */
 import { useMemo } from 'react';
 import { StyleSheet, TextInput, View } from 'react-native';
@@ -16,73 +19,19 @@ import { StyleSheet, TextInput, View } from 'react-native';
 import { Card, Chip, SectionLabel, Text, VerdictBand } from '@/components/ui';
 import { Radii, Spacing } from '@/constants/theme';
 import { useTokens } from '@/hooks/use-tokens';
-import { loadContainers, loadPlants } from '@/data';
-import { componentLabel } from '@/data/substrate-components';
-import { resolveBuildContainer } from '@/logic/containers';
-import { generateBuildGuide, type BuildStep, type SubstrateMixGuide } from '@/logic/guide';
+import { loadPlants } from '@/data';
 import { scoreBuild } from '@/logic/score-build';
-import { describeMix, formatMixRecipe, mixSubstrate } from '@/logic/substrateMixer';
 
-import { DEFAULT_DRAINAGE_MATERIAL } from './draft';
 import type { StepProps } from './step';
 
 export function FinalStep({ draft, plants, update }: StepProps) {
   const { c } = useTokens();
 
-  // Seed bundle: one read each, memoised — no DB round-trip.
+  // Seed bundle: one read, memoised — no DB round-trip.
   const seedPlants = useMemo(() => loadPlants(), []);
-  const seedContainers = useMemo(() => loadContainers(), []);
 
   // The draft is structurally a valid `ScorableBuild` (snapshot fields + plantSlugs).
-  const scored = useMemo(
-    () => scoreBuild(draft, seedPlants, seedContainers),
-    [draft, seedPlants, seedContainers],
-  );
-
-  const container = useMemo(
-    () => resolveBuildContainer(draft, seedContainers),
-    [draft, seedContainers],
-  );
-
-  // A custom substrate-mixer recipe → the concrete recipe + soft character for the
-  // guide's Substrate-Layer line. Pre-formatted here (labels live in src/data) so
-  // `@/logic/guide` stays import-pure. Null mix → undefined → the guide keeps its
-  // generic substrateTags sentence.
-  const substrateMix = useMemo<SubstrateMixGuide | undefined>(() => {
-    const mix = draft.substrateMix;
-    if (!mix) return undefined;
-    const recipe = formatMixRecipe(mix, componentLabel);
-    if (!recipe) return undefined;
-    return { recipe, character: describeMix(mixSubstrate(mix)) };
-  }, [draft.substrateMix]);
-
-  // Build the read-only guide projection. `generateBuildGuide` THROWS on empty
-  // plants, so only call it with plants + a resolved container, wrapped in try/catch.
-  // Pass the draft's real numeric depths so the guide describes the substrate
-  // actually built in the container (depths default to a preset only when null).
-  const guide = useMemo<BuildStep[] | null>(() => {
-    if (plants.length === 0 || !container) return null;
-    try {
-      return generateBuildGuide(plants, container, {
-        substrateDepth: draft.substrateDepth,
-        drainageDepth: draft.drainageDepth,
-        charcoalDepth: draft.charcoalDepth,
-        drainageMaterial: DEFAULT_DRAINAGE_MATERIAL,
-        substrateMix,
-      });
-    } catch {
-      return null;
-    }
-  }, [
-    plants,
-    container,
-    draft.substrateDepth,
-    draft.drainageDepth,
-    draft.charcoalDepth,
-    substrateMix,
-  ]);
-
-  const canGuide = plants.length > 0 && container != null;
+  const scored = useMemo(() => scoreBuild(draft, seedPlants), [draft, seedPlants]);
 
   return (
     <View style={styles.root}>
@@ -92,7 +41,7 @@ export function FinalStep({ draft, plants, update }: StepProps) {
         <TextInput
           value={draft.name}
           onChangeText={(text) => update({ name: text })}
-          placeholder="Untitled terrarium"
+          placeholder="Name your terrarium"
           placeholderTextColor={c.textMuted}
           autoCorrect={false}
           autoCapitalize="words"
@@ -124,46 +73,9 @@ export function FinalStep({ draft, plants, update }: StepProps) {
         )}
       </Card>
 
-      {/* 4. Build guide projection (static, read-only) */}
-      <Card style={styles.card}>
-        <SectionLabel>Build guide</SectionLabel>
-        {canGuide ? (
-          guide ? (
-            <View style={styles.steps}>
-              {guide.map((s) => (
-                <View key={s.step} style={styles.stepRow}>
-                  <View style={[styles.stepNum, { backgroundColor: c.surfaceSunken }]}>
-                    <Text variant="caption" role="sage">
-                      {s.step}
-                    </Text>
-                  </View>
-                  <View style={styles.stepBody}>
-                    <Text variant="body" style={styles.stepTitle}>
-                      {s.title}
-                    </Text>
-                    <Text variant="caption" role="textMuted">
-                      {s.instruction}
-                    </Text>
-                  </View>
-                </View>
-              ))}
-            </View>
-          ) : (
-            <Text variant="caption" role="textMuted">
-              The build guide can’t be generated for this build just yet.
-            </Text>
-          )
-        ) : (
-          <Text variant="caption" role="textMuted">
-            Finish the earlier steps — pick a container and at least one plant — to
-            preview the build guide here.
-          </Text>
-        )}
-      </Card>
-
-      {/* 5. Save hint */}
+      {/* 4. Save hint — the step-by-step build guide is next, on the saved build. */}
       <Text variant="caption" role="textMuted" style={styles.saveHint}>
-        Tapping Save below finishes the build.
+        Save to finish — your step-by-step build guide is next.
       </Text>
     </View>
   );
@@ -180,16 +92,5 @@ const styles = StyleSheet.create({
     fontSize: 16,
   },
   chipRow: { flexDirection: 'row', flexWrap: 'wrap', gap: Spacing.sm },
-  steps: { gap: Spacing.md },
-  stepRow: { flexDirection: 'row', gap: Spacing.md, alignItems: 'flex-start' },
-  stepNum: {
-    width: 28,
-    height: 28,
-    borderRadius: Radii.pill,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  stepBody: { flex: 1, gap: Spacing.xs },
-  stepTitle: { fontWeight: '600' },
   saveHint: { textAlign: 'center' },
 });
