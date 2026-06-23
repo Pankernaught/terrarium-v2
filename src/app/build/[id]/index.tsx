@@ -32,6 +32,7 @@ import {
   VerdictBand,
 } from '@/components/ui';
 import { PlantSheet } from '@/components/plant-sheet';
+import { TermSheet } from '@/components/term-sheet';
 import { MaxContentWidth, Radii, Spacing } from '@/constants/theme';
 import { loadPlants } from '@/data';
 import { useDbState, type Repos } from '@/db/provider';
@@ -43,6 +44,7 @@ import { shareBuildPdf, shareBuildTxt } from '@/lib/export';
 import { scoreBuild } from '@/logic/score-build';
 import type { CompatibilityResult, Conflict } from '@/types/results';
 import type { Plant } from '@/types/plant';
+import { vocabSlug, type EnvEnvelope } from '@/types';
 import { humanize } from '@/lib/labels';
 import { useTokens } from '@/hooks/use-tokens';
 
@@ -70,6 +72,7 @@ function BuildDetail({ repos }: { repos: Repos }) {
   const [load, setLoad] = useState<LoadState>({ status: 'loading' });
   const [addSheetOpen, setAddSheetOpen] = useState(false);
   const [sheetPlant, setSheetPlant] = useState<Plant | null>(null);
+  const [termSlug, setTermSlug] = useState<string | null>(null);
 
   // Pure fetch (no setState) — adding/changing photos can change the primary, so
   // we refresh the hero, the list, and the primary pointer together.
@@ -235,6 +238,28 @@ function BuildDetail({ repos }: { repos: Repos }) {
           {/* Tier 1 — the verdict band (meter + plain-English sentence, or diagnostic). */}
           <VerdictBand scored={scored} />
 
+          {/* Tier 1 — the build's environmental envelope, at a glance. Reads the
+              already-derived `report.envEnvelope`; Light/Soil tokens link to the
+              glossary. Hidden when plants exist but the build can't be scored — the
+              verdict band + Container section already explain that. */}
+          {buildPlants.length === 0 ? (
+            <View style={styles.section}>
+              <SectionLabel>Environment</SectionLabel>
+              <Card style={styles.card}>
+                <Text variant="body" role="textMuted">
+                  Add plants to your build to see environmental conditions.
+                </Text>
+              </Card>
+            </View>
+          ) : scored.report ? (
+            <View style={styles.section}>
+              <SectionLabel>Environment</SectionLabel>
+              <Card style={styles.card}>
+                <StatStrip items={environmentStats(scored.report.envEnvelope)} onPressTerm={setTermSlug} />
+              </Card>
+            </View>
+          ) : null}
+
           {/* Build guide — the one-time assembly checklist, its own sub-screen (ADR 0009). */}
           {guideStepCount != null ? (
             <View style={styles.section}>
@@ -320,6 +345,9 @@ function BuildDetail({ repos }: { repos: Repos }) {
         onClose={() => setSheetPlant(null)}
         context="browse"
       />
+
+      {/* Glossary term sheet — opened from the Environment strip's Light/Soil links. */}
+      <TermSheet slug={termSlug} onClose={() => setTermSlug(null)} />
     </Screen>
   );
 }
@@ -331,6 +359,31 @@ function reportExportError(err: unknown) {
 function subtitle(plantCount: number, containerName?: string): string {
   const plantPart = plantCount === 1 ? '1 plant' : `${plantCount} plants`;
   return containerName ? `${plantPart} · ${containerName}` : plantPart;
+}
+
+/**
+ * The build's environment as a 4-stat strip from the derived envelope. Light/Soil
+ * are the plant union, each value an independent glossary link; Humidity/Temp are
+ * numeric ranges. An inverted range (no shared band — a survival conflict the
+ * verdict band already flags) reads "No shared range" rather than a backwards span.
+ */
+function environmentStats(env: EnvEnvelope): Stat[] {
+  const range = (min: number, max: number, unit: string) =>
+    min > max ? 'No shared range' : `${min}–${max}${unit}`;
+  return [
+    {
+      label: 'Light',
+      value: env.compatibleLights.map(humanize).join(' / '),
+      parts: env.compatibleLights.map((v) => ({ text: humanize(v), slug: vocabSlug('light', v) })),
+    },
+    { label: 'Humidity', value: range(env.humidityMin, env.humidityMax, '%') },
+    { label: 'Temperature', value: range(env.tempMin, env.tempMax, '°C') },
+    {
+      label: 'Soil',
+      value: env.compatibleMoisture.map(humanize).join(' / '),
+      parts: env.compatibleMoisture.map((v) => ({ text: humanize(v), slug: vocabSlug('moisture', v) })),
+    },
+  ];
 }
 
 function containerStats(container: ReturnType<typeof resolveBuildContainer>): Stat[] {
