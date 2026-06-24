@@ -144,6 +144,8 @@ export function ArrangeOverlay({ draft, plants, onCommit, onClose }: ArrangeOver
           Drag a plant left or right to position it. Tap Done when you’re happy.
         </Text>
 
+        <HeightLegend />
+
         {/* Canvas (flex: 1 pushes the button below it to the bottom) */}
         <View style={styles.arrangeStage}>
           <TerrariumCrossSection
@@ -172,6 +174,33 @@ export function ArrangeOverlay({ draft, plants, onCommit, onClose }: ArrangeOver
   );
 }
 
+/**
+ * Reads the height bars in the cross-section: a solid bar is the plant's *typical*
+ * cultivation height, the faint extension reaches its mature *max*. Plants are also
+ * tinted slightly apart so same-type neighbours stay distinct.
+ */
+function HeightLegend() {
+  const { c } = useTokens();
+  return (
+    <View style={styles.legend}>
+      <View style={styles.legendItem}>
+        <View style={[styles.legendBar, { backgroundColor: c.sage }]} />
+        <Text variant="caption" role="textMuted">Typical height</Text>
+      </View>
+      <View style={styles.legendItem}>
+        <View
+          style={[
+            styles.legendBar,
+            styles.legendBarGhost,
+            { backgroundColor: c.sage, borderTopColor: c.sage },
+          ]}
+        />
+        <Text variant="caption" role="textMuted">Up to mature max</Text>
+      </View>
+    </View>
+  );
+}
+
 const styles = StyleSheet.create({
   // Transparent clip window — the inner planes carry the card frame; bottom-anchored
   // so the height shrink reveals/hides from the top, keeping the vessel base put.
@@ -187,9 +216,18 @@ const styles = StyleSheet.create({
     paddingBottom: Spacing.sm,
   },
   arrangeHint: {
-    paddingBottom: Spacing.md,
+    paddingBottom: Spacing.sm,
     textAlign: 'center' // Centers the helper text
   },
+  legend: {
+    flexDirection: 'row',
+    justifyContent: 'center',
+    gap: Spacing.lg,
+    paddingBottom: Spacing.md,
+  },
+  legendItem: { flexDirection: 'row', alignItems: 'center', gap: Spacing.xs },
+  legendBar: { width: 4, height: 18, borderRadius: 2 },
+  legendBarGhost: { opacity: 0.3, borderTopWidth: 1, borderStyle: 'dashed' },
   arrangeStage: {
     flex: 1,
     justifyContent: 'center'

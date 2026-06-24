@@ -122,7 +122,12 @@ export default function PlannerScreen() {
   // store loads the row for an edit).
   const [draft, setDraft] = useState<PlannerDraft | null>(isEdit ? null : emptyDraft());
   const [loadError, setLoadError] = useState<string | null>(null);
-  const hydrated = useRef(!isEdit);
+  // The build id the current draft was hydrated from. The planner is a persistent
+  // hidden Tabs screen (href:null), so its instance survives a Cancel — a one-shot
+  // "hydrated" boolean would cling to the previous session's draft when the tab is
+  // reopened for a different build (Cancel a new build, then open an existing one,
+  // and you'd still see the cancelled draft). Keying on the id re-hydrates instead.
+  const hydratedId = useRef<string | null>(null);
 
   // Reset to a blank slate every time the new-build planner gains focus so a
   // cached navigation instance never shows a stale half-finished draft.
@@ -132,6 +137,7 @@ export default function PlannerScreen() {
       setActive(0);
       setArranging(false);
       scrollY.value = 0;
+      hydratedId.current = null;
       setDraft(emptyDraft());
       // scrollY is a stable shared-value ref — mutated here, never a dependency.
       // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -139,9 +145,12 @@ export default function PlannerScreen() {
   );
 
   // Edit path: hydrate the draft from the saved build once the store is ready.
+  // Re-runs whenever the tab is reopened for a *different* build (id mismatch).
   useEffect(() => {
-    if (hydrated.current || db.status !== 'ready' || !isEdit) return;
-    hydrated.current = true;
+    if (!isEdit || db.status !== 'ready' || hydratedId.current === build) return;
+    hydratedId.current = build as string;
+    setActive(0);
+    setDraft(null); // show the loading gate, not the reused tab's previous draft
     let cancelled = false;
     (async () => {
       try {

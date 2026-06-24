@@ -73,6 +73,9 @@ function RootLayoutInner() {
           {/* Planner is a focused full-screen flow — hide the tab bar entirely
               while it's open (its own Back/Next bar handles navigation). */}
           <Tabs.Screen name="planner" options={{ href: null, tabBarStyle: { display: 'none' } }} />
+          {/* Design harness for the stylized plant render (ADR 0012) — dev tool,
+              reachable by URL/deep link only. */}
+          <Tabs.Screen name="glyph-lab" options={{ href: null, tabBarStyle: { display: 'none' } }} />
         </Tabs>
       </DbProvider>
     </ThemeProvider>

@@ -21,6 +21,8 @@ import { TermSheet } from '@/components/term-sheet';
 import { Radii, Spacing } from '@/constants/theme';
 import { humanize, lightLabel, moistureLabel, suitabilityLabel } from '@/lib/labels';
 import { useTokens } from '@/hooks/use-tokens';
+import { usePreferences } from '@/hooks/use-preferences';
+import { fmtLength, fmtLengthRange, fmtTempRange, type Units } from '@/logic/units';
 import { vocabSlug } from '@/types';
 import type { Plant, PlantSource } from '@/types/plant';
 
@@ -39,6 +41,8 @@ export interface PlantConflict {
   withPlantName: string;
   message: string;
   severity: 'caution' | 'incompatible';
+  /** Other plants hit by the identical concern, collapsed into this one row. */
+  alsoPlantNames?: string[];
 }
 
 export interface PlantSheetProps {
@@ -72,6 +76,7 @@ export function PlantSheet({ plant, onClose, context, isSelected, onToggle, conf
   const [tier3Open, setTier3Open] = useState(false);
   const { height } = useWindowDimensions();
   const { c } = useTokens();
+  const { units } = usePreferences();
 
   // Glossary term sheet opened from inline chip / stat / prose links — stacks over
   // this sheet and shares the single TermSheet component (ADR 0006).
@@ -144,6 +149,7 @@ export function PlantSheet({ plant, onClose, context, isSelected, onToggle, conf
                     <View style={[styles.dot, { backgroundColor: cf.severity === 'incompatible' ? c.accent : c.sage }]} />
                     <Text variant="caption" role="textMuted" style={styles.conflictMsg}>
                       <Text variant="caption">{cf.withPlantName}</Text> — {cf.message}
+                      {cf.alsoPlantNames?.length ? ` Also affects: ${cf.alsoPlantNames.join(', ')}.` : ''}
                     </Text>
                   </View>
                 ))}
@@ -152,7 +158,7 @@ export function PlantSheet({ plant, onClose, context, isSelected, onToggle, conf
 
             {/* Tier 2 — care requirements (always visible) */}
             <SectionLabel>Care requirements</SectionLabel>
-            <StatStrip items={tier2Stats(plant)} onPressTerm={setTermSlug} />
+            <StatStrip items={tier2Stats(plant, units)} onPressTerm={setTermSlug} />
 
             {/* Tier 3 toggle */}
             <Pressable
@@ -167,10 +173,10 @@ export function PlantSheet({ plant, onClose, context, isSelected, onToggle, conf
             {/* Tier 3 — expanded detail */}
             {tier3Open ? (
               <View style={styles.tier3}>
-                {tier3Stats(plant).length > 0 ? (
+                {tier3Stats(plant, units).length > 0 ? (
                   <>
                     <SectionLabel>Full profile</SectionLabel>
-                    <StatStrip items={tier3Stats(plant)} onPressTerm={setTermSlug} />
+                    <StatStrip items={tier3Stats(plant, units)} onPressTerm={setTermSlug} />
                   </>
                 ) : null}
 
@@ -251,19 +257,19 @@ export function PlantSheet({ plant, onClose, context, isSelected, onToggle, conf
   );
 }
 
-function tier2Stats(plant: Plant): Stat[] {
+function tier2Stats(plant: Plant, units: Units): Stat[] {
   return [
     { label: 'Light', value: lightLabel(plant.light), slug: vocabSlug('light', plant.light.primary) },
     { label: 'Soil', value: moistureLabel(plant.soilMoisture), slug: vocabSlug('moisture', plant.soilMoisture.primary) },
     { label: 'Humidity', value: `${plant.humidityPctRange[0]}–${plant.humidityPctRange[1]}%` },
-    { label: 'Temperature', value: `${plant.tempCRange[0]}–${plant.tempCRange[1]}°C` },
-    { label: 'Max height', value: `${plant.maxHeightCm} cm` },
+    { label: 'Temperature', value: fmtTempRange(plant.tempCRange[0], plant.tempCRange[1], units) },
+    { label: 'Max height', value: fmtLength(plant.maxHeightCm, units) },
     { label: 'Growth rate', value: humanize(plant.growthRate), slug: vocabSlug('growthRate', plant.growthRate) },
     { label: 'Suitability', value: suitabilityLabel(plant.closedTerrariumOk, plant.openTerrariumOk) },
   ];
 }
 
-function tier3Stats(plant: Plant): Stat[] {
+function tier3Stats(plant: Plant, units: Units): Stat[] {
   const stats: Stat[] = [];
   if (plant.phPreference) {
     const range =
@@ -273,7 +279,7 @@ function tier3Stats(plant: Plant): Stat[] {
     stats.push({ label: 'pH', value: `${humanize(plant.phPreference)}${range}`, slug: vocabSlug('ph', plant.phPreference) });
   }
   if (plant.rootDepthMinCm != null && plant.rootDepthMaxCm != null) {
-    stats.push({ label: 'Root depth', value: `${plant.rootDepthMinCm}–${plant.rootDepthMaxCm} cm` });
+    stats.push({ label: 'Root depth', value: fmtLengthRange(plant.rootDepthMinCm, plant.rootDepthMaxCm, units) });
   }
   if (plant.growthHabit) {
     stats.push({ label: 'Habit', value: humanize(plant.growthHabit), slug: vocabSlug('growthHabit', plant.growthHabit) });
@@ -282,7 +288,7 @@ function tier3Stats(plant: Plant): Stat[] {
   if (plant.spreadMinCm != null || plant.spreadMaxCm != null) {
     const min = plant.spreadMinCm ?? '?';
     const max = plant.spreadMaxCm ?? '?';
-    stats.push({ label: 'Spread', value: `${min}–${max} cm` });
+    stats.push({ label: 'Spread', value: fmtLengthRange(min, max, units) });
   }
   return stats;
 }

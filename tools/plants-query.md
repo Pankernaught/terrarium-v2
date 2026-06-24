@@ -138,6 +138,6 @@ plant include `slug`, `commonName`, `scientificName`, `light`, `soilMoisture`,
 `phPreference`, `growthRate`, `growthHabit`, `substrateTags`, `closedTerrariumOk`,
 `openTerrariumOk`, `difficulty`, `notes`, `nativeContext`, `nativeBiome`,
 `rarity`, `image`, and `sources`. Sparsely populated: `toxicity`,
-`plantType`, `heightMinCm`, `spreadMin/MaxCm`, `soilPhMin/Max`. The canonical
+`plantType`, `typicalHeightCm`, `spreadMin/MaxCm`, `soilPhMin/Max`. The canonical
 schema and controlled vocabularies live in
 [`src/types/plant.ts`](../src/types/plant.ts).

@@ -13,6 +13,7 @@ export { EmptyState, type EmptyStateProps } from './empty-state';
 export { GlanceHeader } from './glance-header';
 export { haptics } from './haptics';
 export { Meter } from './meter';
+export { RangeSlider } from './range-slider';
 export { Screen } from './screen';
 export { SectionLabel } from './section-label';
 export { StatStrip, type Stat } from './stat-strip';

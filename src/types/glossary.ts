@@ -85,9 +85,11 @@ export const glossaryEntrySchema = z.object({
   term: z.string().min(1),
   category: z.enum(GLOSSARY_CATEGORIES),
   /** 2–4 sentences: a plain definition + a terrarium-specific "why it matters". */
-  definition: z.string().min(1),
+  definition: z.string().min(1).optional(),
   /** Cross-links to other entries, by slug. Powers the `seeAlso` swap in `TermSheet`. */
   seeAlso: z.array(z.string()).default([]),
+  /** Wikipedia URL used as the source reference, rendered in `TermSheet`. */
+  wikiUrl: z.string().url().optional(),
 });
 export type GlossaryEntry = z.infer<typeof glossaryEntrySchema>;
 

@@ -226,6 +226,9 @@ export const SUBSTRATE_SHADOW_FILTER_ID = 'xs-substrate-shadow';
 /** Horizontal ambient-occlusion gradient — darkens where soil meets the glass walls. */
 export const AO_GRADIENT_ID = 'xs-ao-sides';
 
+/** Diagonal specular sheen — a soft light streak across the upper glass. */
+export const SPECULAR_GRADIENT_ID = 'xs-glass-sheen';
+
 /** Vertical moisture gradient — soil reads damper / darker toward the bottom. */
 export const MOISTURE_GRADIENT_ID = 'xs-moisture';
 
@@ -296,6 +299,14 @@ export function SubstratePatternDefs() {
       <LinearGradient id={MOISTURE_GRADIENT_ID} gradientUnits="objectBoundingBox" x1="0" y1="1" x2="0" y2="0">
         <Stop offset="0" stopColor="#140d06" stopOpacity={0.25} />
         <Stop offset="1" stopColor="#140d06" stopOpacity={0} />
+      </LinearGradient>
+
+      {/* Glass sheen — a diagonal light streak, brightest near the top-left, fading
+          out before mid-glass. The AO does the dark side; this does the bright side. */}
+      <LinearGradient id={SPECULAR_GRADIENT_ID} gradientUnits="objectBoundingBox" x1="0" y1="0" x2="1" y2="1">
+        <Stop offset="0" stopColor="#FFFFFF" stopOpacity={0.1} />
+        <Stop offset="0.35" stopColor="#FFFFFF" stopOpacity={0.03} />
+        <Stop offset="0.6" stopColor="#FFFFFF" stopOpacity={0} />
       </LinearGradient>
     </>
   );

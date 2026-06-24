@@ -16,7 +16,7 @@
 import type { VibeId } from '@/constants/theme';
 
 /** Mascot poses — named, expandable (add a pose: extend this union + a `require`). */
-export type MascotPose = 'default' | 'sad';
+export type MascotPose = 'default' | 'sad' | 'pensive';
 
 export interface VibeArtBundle {
   foliageBack?: number;
@@ -37,6 +37,7 @@ export const VibeArt: Partial<Record<VibeId, VibeArtBundle>> = {
     mascot: {
       default: require('@/assets/vibes/conservatory/mascot/default.png'),
       sad: require('@/assets/vibes/conservatory/mascot/sad.png'),
+      pensive: require('@/assets/vibes/conservatory/mascot/pensive.png'),
     },
   },
 };

@@ -33,11 +33,16 @@ import {
 } from '@/components/ui';
 import { PlantSheet } from '@/components/plant-sheet';
 import { TermSheet } from '@/components/term-sheet';
+import { TerrariumCrossSection } from '@/components/planner/cross-section';
+import { draftFromBuild } from '@/components/planner/draft';
+import { vibeMascot } from '@/components/vibes/art';
 import { MaxContentWidth, Radii, Spacing } from '@/constants/theme';
 import { loadPlants } from '@/data';
 import { useDbState, type Repos } from '@/db/provider';
 import type { Build, BuildPhoto } from '@/db/schema';
-import { resolveBuildContainer } from '@/logic/containers';
+import { parseDimensionsStr, resolveBuildContainer } from '@/logic/containers';
+import { fmtDimensions, fmtTempRange, fmtVolume, type Units } from '@/logic/units';
+import { usePreferences } from '@/hooks/use-preferences';
 import { resolveBuildSummary } from '@/logic/export-txt';
 import { generateBuildGuide } from '@/logic/guide';
 import { copy } from '@/lib/copy';
@@ -66,7 +71,8 @@ type LoadState =
 function BuildDetail({ repos }: { repos: Repos }) {
   const { id } = useLocalSearchParams<{ id: string }>();
   const router = useRouter();
-  const { c } = useTokens();
+  const { c, vibe } = useTokens();
+  const { units } = usePreferences();
 
   const plants = useMemo(() => loadPlants(), []);
 
@@ -151,6 +157,11 @@ function BuildDetail({ repos }: { repos: Repos }) {
     }
   }
 
+  // Schematic cross-section for the photo-less hero. Memoized on the loaded build so
+  // opening a plant/term sheet (which re-renders this screen) never rebuilds the SVG scene.
+  const readyBuild = load.status === 'ready' ? load.build : null;
+  const xsDraft = useMemo(() => (readyBuild ? draftFromBuild(readyBuild) : null), [readyBuild]);
+
   if (load.status === 'loading') return <DetailMessage title={copy('build.loading.title')} />;
   if (load.status === 'missing')
     return <DetailMessage title={copy('build.notFound.title')} body={copy('build.notFound.body')} />;
@@ -160,6 +171,8 @@ function BuildDetail({ repos }: { repos: Repos }) {
   const container = resolveBuildContainer(build);
   const bySlug = new Map(plants.map((p) => [p.slug, p]));
   const buildPlants = build.plantSlugs.map((slug) => bySlug.get(slug)).filter((p): p is Plant => !!p);
+  // Mascot for the photo-less, container-less hero (undefined → 🌿 fallback below).
+  const heroMascot = vibeMascot(vibe, 'pensive');
 
   // Step count for the Build-guide entry card. The substrate mix only changes a
   // step's *text*, never whether the step exists, so we skip the mix-formatting
@@ -204,14 +217,27 @@ function BuildDetail({ repos }: { repos: Repos }) {
             </Text>
           </Pressable>
 
-          {/* Hero */}
+          {/* Hero — real photo, else a schematic cross-section, else the mascot. */}
           {heroUri ? (
             <Image source={{ uri: heroUri }} style={styles.hero} contentFit="cover" transition={150} />
+          ) : xsDraft && build.containerShape && build.containerDimensions ? (
+            <TerrariumCrossSection
+              draft={xsDraft}
+              plants={buildPlants}
+              draggableKind={null}
+              onCommit={noop}
+              height={280}
+              textScale={2}
+            />
           ) : (
             <View style={[styles.hero, styles.heroFallback, { backgroundColor: c.surfaceSunken }]}>
-              <Text variant="display" role="textMuted">
-                🌿
-              </Text>
+              {heroMascot != null ? (
+                <Image source={heroMascot} style={styles.heroMascot} contentFit="contain" />
+              ) : (
+                <Text variant="display" role="textMuted">
+                  🌿
+                </Text>
+              )}
             </View>
           )}
 
@@ -254,7 +280,7 @@ function BuildDetail({ repos }: { repos: Repos }) {
             <View style={styles.section}>
               <SectionLabel>Environment</SectionLabel>
               <Card style={styles.card}>
-                <StatStrip items={environmentStats(scored.report.envEnvelope)} onPressTerm={setTermSlug} />
+                <StatStrip items={environmentStats(scored.report.envEnvelope, units)} onPressTerm={setTermSlug} />
               </Card>
             </View>
           ) : null}
@@ -282,7 +308,7 @@ function BuildDetail({ repos }: { repos: Repos }) {
             <SectionLabel>Container</SectionLabel>
             {container ? (
               <Card style={styles.card}>
-                <StatStrip items={containerStats(container)} />
+                <StatStrip items={containerStats(container, units)} />
               </Card>
             ) : (
               <Card style={styles.card}>
@@ -351,6 +377,9 @@ function BuildDetail({ repos }: { repos: Repos }) {
   );
 }
 
+/** Stable no-op — the detail-page cross-section is view-only (no drag commits). */
+function noop() {}
+
 function reportExportError(err: unknown) {
   Alert.alert(copy('export.failedTitle'), err instanceof Error ? err.message : String(err));
 }
@@ -366,7 +395,7 @@ function subtitle(plantCount: number, containerName?: string): string {
  * numeric ranges. An inverted range (no shared band — a survival conflict the
  * verdict band already flags) reads "No shared range" rather than a backwards span.
  */
-function environmentStats(env: EnvEnvelope): Stat[] {
+function environmentStats(env: EnvEnvelope, units: Units): Stat[] {
   const range = (min: number, max: number, unit: string) =>
     min > max ? 'No shared range' : `${min}–${max}${unit}`;
   return [
@@ -376,7 +405,10 @@ function environmentStats(env: EnvEnvelope): Stat[] {
       parts: env.compatibleLights.map((v) => ({ text: humanize(v), slug: vocabSlug('light', v) })),
     },
     { label: 'Humidity', value: range(env.humidityMin, env.humidityMax, '%') },
-    { label: 'Temperature', value: range(env.tempMin, env.tempMax, '°C') },
+    {
+      label: 'Temperature',
+      value: env.tempMin > env.tempMax ? 'No shared range' : fmtTempRange(env.tempMin, env.tempMax, units),
+    },
     {
       label: 'Soil',
       value: env.compatibleMoisture.map(humanize).join(' / '),
@@ -385,13 +417,16 @@ function environmentStats(env: EnvEnvelope): Stat[] {
   ];
 }
 
-function containerStats(container: ReturnType<typeof resolveBuildContainer>): Stat[] {
+function containerStats(container: ReturnType<typeof resolveBuildContainer>, units: Units): Stat[] {
   if (!container) return [];
   return [
     { label: 'Shape', value: humanize(container.shape) },
     { label: 'Opening', value: humanize(container.opening) },
-    { label: 'Volume', value: `${container.volumeL.toFixed(1)} L` },
-    { label: 'Dimensions', value: container.dimensionsCm },
+    { label: 'Volume', value: fmtVolume(container.volumeL, units) },
+    {
+      label: 'Dimensions',
+      value: fmtDimensions(container.shape, parseDimensionsStr(container.shape, container.dimensionsCm), units),
+    },
   ];
 }
 
@@ -616,6 +651,7 @@ const styles = StyleSheet.create({
   back: { alignSelf: 'flex-start' },
   hero: { width: '100%', height: 200, borderRadius: Radii.lg },
   heroFallback: { alignItems: 'center', justifyContent: 'center' },
+  heroMascot: { width: 120, height: 120 },
   headerActions: { flexDirection: 'row', gap: Spacing.sm },
   editBtn: { paddingHorizontal: Spacing.md, paddingVertical: Spacing.xs + 2, borderRadius: Radii.pill, borderWidth: 1 },
   section: { gap: Spacing.sm },

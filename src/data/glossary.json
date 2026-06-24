@@ -5,29 +5,33 @@
       "slug": "low",
       "term": "Low light",
       "category": "light",
-      "definition": "Light well back from a window or in a shaded corner — enough to read by, but no direct sun and little bright sky in view. In a terrarium it suits forest-floor plants like many ferns and mosses; most variegated or flowering plants etch and stretch toward the glass here.",
-      "seeAlso": ["medium", "bright-indirect"]
+      "definition": "Light well back from a window or in a shaded corner, with no direct sun and little bright sky visible. In a terrarium it suits forest-floor plants like many ferns and mosses; most variegated or flowering plants etiolate and stretch toward the light here.",
+      "seeAlso": ["medium", "bright-indirect"],
+      "wikiUrl": "https://en.wikipedia.org/wiki/Shade_tolerance"
     },
     {
       "slug": "medium",
       "term": "Medium light",
       "category": "light",
       "definition": "Bright ambient light with little or no direct sun — typically a few feet back from a window. It is the middle band most foliage terrarium plants tolerate comfortably.",
-      "seeAlso": ["low", "bright-indirect"]
+      "seeAlso": ["low", "bright-indirect"],
+      "wikiUrl": "https://en.wikipedia.org/wiki/Shade_tolerance"
     },
     {
       "slug": "bright-indirect",
       "term": "Bright indirect light",
       "category": "light",
-      "definition": "Strong, even light without the sun's rays landing directly on the leaves — beside a bright window or behind a sheer curtain. It is the sweet spot for most terrarium foliage: enough energy for compact growth and color without the leaf scorch a glass container amplifies.",
-      "seeAlso": ["medium", "direct"]
+      "definition": "Strong, even light without the sun's rays landing directly on the leaves — beside a bright window or behind a sheer curtain. It supports compact growth and color in most terrarium foliage without the leaf scorch that direct sun through glass causes.",
+      "seeAlso": ["medium", "direct"],
+      "wikiUrl": "https://en.wikipedia.org/wiki/Sunlight"
     },
     {
       "slug": "direct",
       "term": "Direct light",
       "category": "light",
       "definition": "Unfiltered sunlight striking the leaves for part of the day. In a closed terrarium it is usually a hazard — glass magnifies it, the air overheats, and tender foliage cooks — so only sun-adapted succulents and a few tough plants tolerate it.",
-      "seeAlso": ["bright-indirect", "succulent"]
+      "seeAlso": ["bright-indirect", "succulent"],
+      "wikiUrl": "https://en.wikipedia.org/wiki/Sunlight"
     },
 
     {
@@ -35,28 +39,32 @@
       "term": "Dry soil",
       "category": "moisture",
       "definition": "Substrate kept barely damp and allowed to dry out between waterings. It suits succulents and arid-climate plants whose roots rot if they sit in standing moisture.",
-      "seeAlso": ["moderate-moisture", "succulent"]
+      "seeAlso": ["moderate-moisture", "succulent"],
+      "wikiUrl": "https://en.wikipedia.org/wiki/Soil_moisture"
     },
     {
       "slug": "moderate-moisture",
       "term": "Moderate moisture",
       "category": "moisture",
-      "definition": "Substrate kept evenly damp but never soggy — moist to the touch with no water pooling. It is the safe default for most foliage plants and for mixed plantings.",
-      "seeAlso": ["dry", "moist"]
+      "definition": "Substrate kept evenly damp but never soggy — moist to the touch with no water pooling. It suits most foliage plants and mixed plantings.",
+      "seeAlso": ["dry", "moist"],
+      "wikiUrl": "https://en.wikipedia.org/wiki/Soil_moisture"
     },
     {
       "slug": "moist",
       "term": "Moist soil",
       "category": "moisture",
       "definition": "Substrate kept consistently damp and never drying out fully. This is typical of tropical-forest plants and most closed-terrarium foliage, where the sealed environment holds the moisture in.",
-      "seeAlso": ["moderate-moisture", "wet"]
+      "seeAlso": ["moderate-moisture", "wet"],
+      "wikiUrl": "https://en.wikipedia.org/wiki/Soil_moisture"
     },
     {
       "slug": "wet",
       "term": "Wet soil",
       "category": "moisture",
-      "definition": "Substrate kept saturated, often with standing water at the base. It is reserved for bog and marginal plants such as carnivores and some mosses; for most plants it suffocates the roots.",
-      "seeAlso": ["moist", "false-bottom"]
+      "definition": "Substrate kept saturated, often with standing water at the base. It is reserved for bog and marginal plants such as carnivores and some mosses; for most plants the oxygen-depleted conditions cause root suffocation.",
+      "seeAlso": ["moist", "false-bottom"],
+      "wikiUrl": "https://en.wikipedia.org/wiki/Soil_moisture"
     },
 
     {
@@ -64,43 +72,49 @@
       "term": "Acidic",
       "category": "ph",
       "definition": "A substrate pH below about 6.5. Peat- and sphagnum-based mixes trend acidic, which suits carnivorous plants, many ferns, and other acid-loving species.",
-      "seeAlso": ["neutral", "peat"]
+      "seeAlso": ["neutral", "peat"],
+      "wikiUrl": "https://en.wikipedia.org/wiki/Soil_pH"
     },
     {
       "slug": "neutral",
       "term": "Neutral",
       "category": "ph",
-      "definition": "A substrate pH around 6.5–7.5, neither strongly acidic nor alkaline. It is the broad comfort zone for the majority of terrarium plants.",
-      "seeAlso": ["acidic", "alkaline"]
+      "definition": "A substrate pH around 6.5–7.5, neither strongly acidic nor alkaline. Most terrarium plants fall within this range.",
+      "seeAlso": ["acidic", "alkaline"],
+      "wikiUrl": "https://en.wikipedia.org/wiki/Soil_pH"
     },
     {
       "slug": "alkaline",
       "term": "Alkaline",
       "category": "ph",
       "definition": "A substrate pH above about 7.5. Few terrarium plants prefer it; it suits certain lithophytes and plants native to limestone regions.",
-      "seeAlso": ["neutral", "lithophyte"]
+      "seeAlso": ["neutral", "lithophyte"],
+      "wikiUrl": "https://en.wikipedia.org/wiki/Soil_pH"
     },
 
     {
       "slug": "slow",
       "term": "Slow growth",
       "category": "growthRate",
-      "definition": "Adds little size in a season and takes years to fill a container. Slow growers are prized in terrariums because the planting holds its composition without constant pruning.",
-      "seeAlso": ["moderate-growth"]
+      "definition": "Adds little size in a season and takes years to fill a container. Slow growers are well suited to terrariums because the planting holds its composition without constant pruning.",
+      "seeAlso": ["moderate-growth"],
+      "wikiUrl": "https://en.wikipedia.org/wiki/Plant_growth"
     },
     {
       "slug": "moderate-growth",
       "term": "Moderate growth",
       "category": "growthRate",
-      "definition": "A steady but manageable pace — filling in over months without overrunning its neighbors. A reliable middle ground for a mixed planting.",
-      "seeAlso": ["slow", "fast"]
+      "definition": "A steady but manageable pace — filling in over months without overrunning its neighbors. A moderate pace that works well in mixed plantings.",
+      "seeAlso": ["slow", "fast"],
+      "wikiUrl": "https://en.wikipedia.org/wiki/Plant_growth"
     },
     {
       "slug": "fast",
       "term": "Fast growth",
       "category": "growthRate",
       "definition": "Puts on size quickly and needs regular pruning to stay in scale. Useful for filling a new layout fast, but it can smother slower neighbors in a sealed container.",
-      "seeAlso": ["moderate-growth"]
+      "seeAlso": ["moderate-growth"],
+      "wikiUrl": "https://en.wikipedia.org/wiki/Plant_growth"
     },
 
     {
@@ -108,155 +122,185 @@
       "term": "Trailing",
       "category": "growthHabit",
       "definition": "Stems that hang or spill downward rather than standing upright. Good for softening a container's edges and cascading from height.",
-      "seeAlso": ["climbing", "creeping"]
+      "seeAlso": ["climbing", "creeping"],
+      "wikiUrl": "https://en.wikipedia.org/wiki/Growth_habit"
     },
     {
       "slug": "upright",
       "term": "Upright",
       "category": "growthHabit",
-      "definition": "Grows vertically on self-supporting stems. It provides height and vertical structure in a planting.",
-      "seeAlso": ["rosette", "mounding"]
+      "definition": "Grows vertically on self-supporting stems. Provides height and vertical structure in a planting.",
+      "seeAlso": ["rosette", "mounding"],
+      "wikiUrl": "https://en.wikipedia.org/wiki/Growth_habit"
     },
     {
       "slug": "rosette",
       "term": "Rosette",
       "category": "growthHabit",
       "definition": "Leaves radiating from a single central point at the base, like a star or a cup. Many bromeliads and succulents grow this way; the form often channels water to — or away from — the center.",
-      "seeAlso": ["mounding", "bromeliad"]
+      "seeAlso": ["mounding", "bromeliad"],
+      "wikiUrl": "https://en.wikipedia.org/wiki/Rosette_(botany)"
     },
     {
       "slug": "creeping",
       "term": "Creeping",
       "category": "growthHabit",
-      "definition": "Spreads horizontally across the surface, rooting as it goes. It forms a living groundcover that knits a planting together.",
-      "seeAlso": ["ground-cover", "stolon"]
+      "definition": "Spreads horizontally across the surface, rooting as it goes. Forms a low groundcover between taller plants.",
+      "seeAlso": ["ground-cover", "stolon"],
+      "wikiUrl": "https://en.wikipedia.org/wiki/Creeping_plant"
     },
     {
       "slug": "climbing",
       "term": "Climbing",
       "category": "growthHabit",
       "definition": "Ascends a surface using aerial roots or tendrils. In a terrarium it can be trained up a wood or cork background.",
-      "seeAlso": ["trailing", "epiphyte"]
+      "seeAlso": ["trailing", "epiphyte"],
+      "wikiUrl": "https://en.wikipedia.org/wiki/Climbing_plant"
     },
     {
       "slug": "mounding",
       "term": "Mounding",
       "category": "growthHabit",
-      "definition": "Forms a compact, rounded clump. It holds a tidy shape with little intervention.",
-      "seeAlso": ["rosette", "upright"]
+      "definition": "Forms a compact, rounded clump. Holds a tidy shape with little intervention.",
+      "seeAlso": ["rosette", "upright"],
+      "wikiUrl": "https://en.wikipedia.org/wiki/Growth_habit"
     },
     {
       "slug": "shingling",
       "term": "Shingling",
       "category": "growthHabit",
       "definition": "A growth form in which leaves press flat against a vertical surface — a tree trunk, cork panel, or plank — and overlap like roof shingles as the stem climbs toward the light. Shingling species (such as Rhaphidophora and Marcgravia) produce small, flat juvenile leaves in this phase; given consistent vertical contact, the leaves enlarge and change shape at maturity. In a terrarium, mount them on cork bark rather than planting in substrate.",
-      "seeAlso": ["climbing", "epiphyte"]
+      "seeAlso": ["climbing", "epiphyte"],
+      "wikiUrl": "https://en.wikipedia.org/wiki/Rhaphidophora"
     },
     {
       "slug": "rosettes",
       "term": "Rosettes",
       "category": "growthHabit",
       "definition": "The plural of [[rosette]] — leaves radiating from a single central point at the base, like a star or cup.",
-      "seeAlso": ["rosette"]
+      "seeAlso": ["rosette"],
+      "wikiUrl": "https://en.wikipedia.org/wiki/Rosette_(botany)"
     },
 
     {
       "slug": "fern",
       "term": "Fern",
       "category": "plantType",
-      "definition": "A non-flowering plant that reproduces by spores, usually with divided fronds and a liking for humidity and shade. Ferns are terrarium staples because a closed, damp container mimics their forest-floor home.",
-      "seeAlso": ["fern-ally", "frond", "moss"]
+      "definition": "A non-flowering plant that reproduces by spores, usually with divided fronds and a preference for humidity and shade. Ferns are well suited to closed terrariums, which replicate their humid forest-floor habitat.",
+      "seeAlso": ["fern-ally", "frond", "moss"],
+      "wikiUrl": "https://en.wikipedia.org/wiki/Fern"
     },
     {
       "slug": "fern-ally",
       "term": "Fern ally",
       "category": "plantType",
       "definition": "A spore-reproducing plant related to ferns but not a true fern — clubmosses, spikemosses (Selaginella), and horsetails. They thrive in the same humid, shaded terrarium conditions.",
-      "seeAlso": ["fern", "moss"]
+      "seeAlso": ["fern", "moss"],
+      "wikiUrl": "https://en.wikipedia.org/wiki/Pteridophyte"
+    },
+    {
+      "slug": "gesneriad",
+      "term": "Gesneriad",
+      "category": "plantType",
+      "definition": "A member of the family Gesneriaceae — a large group of mostly tropical plants that includes African violets, Episcia, Streptocarpus, Sinningia, and Primulina. Most are compact, shade-tolerant, and humidity-loving, which makes them well suited to closed terrariums where the stable warmth and moisture mirror their forest-floor origins.",
+      "seeAlso": ["tropical", "closed-terrarium"],
+      "wikiUrl": "https://en.wikipedia.org/wiki/Gesneriaceae"
     },
     {
       "slug": "moss",
       "term": "Moss",
       "category": "plantType",
-      "definition": "A small, rootless non-vascular plant that absorbs water through its leaves and forms soft carpets. Mosses are the classic terrarium groundcover, thriving in the high humidity that glass provides.",
-      "seeAlso": ["fern", "closed-terrarium"]
+      "definition": "A small, rootless non-vascular plant that absorbs water through its leaves and forms soft carpets. Mosses are a common terrarium groundcover that thrive in the high humidity a closed container maintains.",
+      "seeAlso": ["fern", "closed-terrarium"],
+      "wikiUrl": "https://en.wikipedia.org/wiki/Moss"
     },
     {
       "slug": "succulent",
       "term": "Succulent",
       "category": "plantType",
       "definition": "A plant with thick, water-storing leaves or stems adapted to drought. Most want bright light and dry, gritty soil — usually a poor match for a closed, humid terrarium and far better in an open one.",
-      "seeAlso": ["arid", "open-terrarium", "dry"]
+      "seeAlso": ["arid", "open-terrarium", "dry"],
+      "wikiUrl": "https://en.wikipedia.org/wiki/Succulent_plant"
     },
     {
       "slug": "carnivorous",
       "term": "Carnivorous plant",
       "category": "plantType",
-      "definition": "A plant that traps and digests insects to supplement nutrients from poor soil — sundews, pitcher plants, Venus flytraps. They demand wet, acidic, nutrient-free media and bright light, a specialised bog setup.",
-      "seeAlso": ["wet", "acidic", "sphagnum"]
+      "definition": "A plant that traps and digests insects to supplement nutrients from poor soil — sundews, pitcher plants, Venus flytraps. They demand wet, acidic, nutrient-free media and bright light, requiring a specialised bog setup.",
+      "seeAlso": ["wet", "acidic", "sphagnum"],
+      "wikiUrl": "https://en.wikipedia.org/wiki/Carnivorous_plant"
     },
     {
       "slug": "aroid",
       "term": "Aroid",
       "category": "plantType",
       "definition": "A member of the arum family (Araceae) — philodendrons, anthuriums, pothos, Monstera — recognised by a spathe-and-spadix flower. Many are humidity-loving climbers well suited to terrariums.",
-      "seeAlso": ["climbing", "epiphyte"]
+      "seeAlso": ["climbing", "epiphyte"],
+      "wikiUrl": "https://en.wikipedia.org/wiki/Araceae"
     },
     {
       "slug": "begonia",
       "term": "Begonia",
       "category": "plantType",
-      "definition": "A large genus of foliage and flowering plants, many with strikingly patterned or textured leaves. Compact, humidity-loving species are terrarium favorites, often grown from a creeping rhizome.",
-      "seeAlso": ["rhizome", "foliage"]
+      "definition": "A large genus of foliage and flowering plants, many with strikingly patterned or textured leaves. Compact, humidity-loving species are well suited to terrariums, often grown from a creeping rhizome.",
+      "seeAlso": ["rhizome", "foliage"],
+      "wikiUrl": "https://en.wikipedia.org/wiki/Begonia"
     },
     {
       "slug": "bromeliad",
       "term": "Bromeliad",
       "category": "plantType",
-      "definition": "A member of the pineapple family, often a rosette that holds water in a central cup, or tank. Many are epiphytes and bring bold color to vivariums and paludariums.",
-      "seeAlso": ["rosette", "epiphyte"]
+      "definition": "A member of the pineapple family, often a rosette that holds water in a central cup, or tank. Many are epiphytes found in vivariums and paludariums.",
+      "seeAlso": ["rosette", "epiphyte"],
+      "wikiUrl": "https://en.wikipedia.org/wiki/Bromeliaceae"
     },
     {
       "slug": "orchid",
       "term": "Orchid",
       "category": "plantType",
       "definition": "A member of the orchid family; terrarium-suited types are usually compact, humidity-loving epiphytes such as miniature Pleurothallids. The stable humidity of an enclosure suits them well.",
-      "seeAlso": ["epiphyte", "orchid-bark"]
+      "seeAlso": ["epiphyte", "orchid-bark"],
+      "wikiUrl": "https://en.wikipedia.org/wiki/Orchidaceae"
     },
     {
       "slug": "vine",
       "term": "Vine",
       "category": "plantType",
-      "definition": "A plant with long, flexible stems that climb or trail rather than self-support. It is used to add vertical lines or to cascade over hardscape.",
-      "seeAlso": ["climbing", "trailing"]
+      "definition": "A plant with long, flexible stems that climb or trail rather than self-support. Used to add vertical lines or to cascade over hardscape.",
+      "seeAlso": ["climbing", "trailing"],
+      "wikiUrl": "https://en.wikipedia.org/wiki/Vine"
     },
     {
       "slug": "ground-cover",
       "term": "Ground cover",
       "category": "plantType",
-      "definition": "A low, spreading plant that carpets the substrate surface. It knits a planting together visually and helps hold moisture at the soil line.",
-      "seeAlso": ["creeping", "moss"]
+      "definition": "A low, spreading plant that carpets the substrate surface. Covers ground between taller plants and helps retain moisture at the substrate surface.",
+      "seeAlso": ["creeping", "moss"],
+      "wikiUrl": "https://en.wikipedia.org/wiki/Ground_cover"
     },
     {
       "slug": "foliage",
       "term": "Foliage plant",
       "category": "plantType",
-      "definition": "A plant grown chiefly for its leaves rather than its flowers. Foliage plants are the backbone of most terrarium plantings, valued for color, pattern, and texture.",
-      "seeAlso": ["aroid", "begonia"]
+      "definition": "A plant grown chiefly for its leaves rather than its flowers. Foliage plants make up the primary planting layer in most terrariums, valued for color, pattern, and texture.",
+      "seeAlso": ["aroid", "begonia"],
+      "wikiUrl": "https://en.wikipedia.org/wiki/Leaf"
     },
     {
       "slug": "saxifrage",
       "term": "Saxifrage",
       "category": "plantType",
-      "definition": "A member of the genus Saxifraga: compact, cushion- or rosette-forming plants native to rocky, shaded, and alpine habitats. Several species suit cool, humid terrariums where they creep across stone as low groundcover; they need good airflow and are poorly suited to the stagnant warmth of a sealed tropical build.",
-      "seeAlso": ["lithophyte", "creeping", "rosette"]
+      "definition": "A member of the genus Saxifraga: compact, cushion- or rosette-forming plants native to rocky, shaded, and alpine habitats. Several species suit cool, humid terrariums where they creep across stone as low groundcover; they need good airflow and are poorly suited to the static warmth of a sealed tropical container.",
+      "seeAlso": ["lithophyte", "creeping", "rosette"],
+      "wikiUrl": "https://en.wikipedia.org/wiki/Saxifraga"
     },
     {
       "slug": "carnivore",
       "term": "Carnivore",
       "category": "plantType",
       "definition": "Common shorthand for [[carnivorous|carnivorous plant]] — a plant that supplements poor-soil nutrients by trapping and digesting insects. Sundews, pitcher plants, and Venus flytraps are the most common examples in cultivation.",
-      "seeAlso": ["carnivorous", "wet", "acidic"]
+      "seeAlso": ["carnivorous", "wet", "acidic"],
+      "wikiUrl": "https://en.wikipedia.org/wiki/Carnivorous_plant"
     },
 
     {
@@ -264,141 +308,161 @@
       "term": "Tropical",
       "category": "biome",
       "definition": "Warm, humid lowland regions with little seasonal change. Most classic terrarium plants come from here, which is why a warm, humid, stable enclosure suits them so well.",
-      "seeAlso": ["subtropical", "montane"]
+      "seeAlso": ["subtropical", "montane"],
+      "wikiUrl": "https://en.wikipedia.org/wiki/Tropics"
     },
     {
       "slug": "subtropical",
       "term": "Subtropical",
       "category": "biome",
       "definition": "Regions bordering the tropics, with warm summers and mild, cooler winters. Plants from here tolerate a wider temperature swing than strictly tropical species.",
-      "seeAlso": ["tropical", "temperate"]
+      "seeAlso": ["tropical", "temperate"],
+      "wikiUrl": "https://en.wikipedia.org/wiki/Subtropics"
     },
     {
       "slug": "temperate",
       "term": "Temperate",
       "category": "biome",
-      "definition": "Regions with distinct warm and cold seasons. Temperate plants — some ferns and mosses — may want a cool winter rest and can struggle in a constantly warm enclosure.",
-      "seeAlso": ["subtropical", "montane"]
+      "definition": "Regions with distinct warm and cold seasons. Temperate plants — some ferns and mosses — may require a cool winter rest period and can struggle in a constantly warm enclosure.",
+      "seeAlso": ["subtropical", "montane"],
+      "wikiUrl": "https://en.wikipedia.org/wiki/Temperate_climate"
     },
     {
       "slug": "montane",
       "term": "Montane",
       "category": "biome",
-      "definition": "Cool, humid mountain-forest habitats, often bathed in cloud. Montane plants want high humidity but cooler temperatures, so they suit an enclosure kept on the cool side.",
-      "seeAlso": ["tropical", "humidity"]
+      "definition": "Cool, humid mountain-forest habitats, frequently mist-covered. Montane plants want high humidity but cooler temperatures, so they suit an enclosure kept on the cool side.",
+      "seeAlso": ["tropical", "humidity"],
+      "wikiUrl": "https://en.wikipedia.org/wiki/Montane_ecosystem"
     },
     {
       "slug": "arid",
       "term": "Arid",
       "category": "biome",
-      "definition": "Dry desert and semi-desert regions with scarce, irregular rain. Arid plants such as succulents and cacti need dry, fast-draining conditions and resent a humid, closed terrarium.",
-      "seeAlso": ["succulent", "dry", "mediterranean"]
+      "definition": "Dry desert and semi-desert regions with scarce, irregular rain. Arid plants such as succulents and cacti need dry, fast-draining conditions and do poorly in a humid, closed terrarium.",
+      "seeAlso": ["succulent", "dry", "mediterranean"],
+      "wikiUrl": "https://en.wikipedia.org/wiki/Arid"
     },
     {
       "slug": "mediterranean",
       "term": "Mediterranean",
       "category": "biome",
       "definition": "Regions with hot, dry summers and mild, wet winters. These plants tolerate drought and dislike constant moisture, so they are better suited to open containers.",
-      "seeAlso": ["arid", "open-terrarium"]
+      "seeAlso": ["arid", "open-terrarium"],
+      "wikiUrl": "https://en.wikipedia.org/wiki/Mediterranean_climate"
     },
     {
       "slug": "aquatic",
       "term": "Aquatic",
       "category": "biome",
       "definition": "Living in or at the edge of water. Aquatic and marginal plants belong in the water feature or saturated zone of a paludarium, not in ordinary substrate.",
-      "seeAlso": ["paludarium", "wet"]
+      "seeAlso": ["paludarium", "wet"],
+      "wikiUrl": "https://en.wikipedia.org/wiki/Aquatic_plant"
     },
 
     {
       "slug": "perlite",
       "term": "Perlite",
       "category": "substrate",
-      "definition": "Lightweight white granules of puffed volcanic glass. Mixed into substrate it opens the mix up — improving drainage and aeration so roots get oxygen instead of sitting wet.",
-      "seeAlso": ["pumice", "vermiculite"]
+      "definition": "Lightweight white granules of puffed volcanic glass. Mixed into substrate it improves drainage and aeration, keeping roots from sitting in wet conditions.",
+      "seeAlso": ["pumice", "vermiculite"],
+      "wikiUrl": "https://en.wikipedia.org/wiki/Perlite"
     },
     {
       "slug": "peat",
       "term": "Peat",
       "category": "substrate",
       "definition": "Partially decomposed sphagnum, dark and moisture-retentive with an acidic pH. A traditional base for moisture- and acid-loving plants, though increasingly replaced by coco coir for sustainability.",
-      "seeAlso": ["coco-coir", "sphagnum", "acidic"]
+      "seeAlso": ["coco-coir", "sphagnum", "acidic"],
+      "wikiUrl": "https://en.wikipedia.org/wiki/Peat"
     },
     {
       "slug": "sphagnum",
       "term": "Sphagnum moss",
       "category": "substrate",
       "definition": "Dried (or living) bog moss that holds many times its weight in water while staying airy. It is used as a mix component, a top dressing, or to wrap epiphyte roots; it is naturally acidic and nearly sterile.",
-      "seeAlso": ["peat", "epiphyte"]
+      "seeAlso": ["peat", "epiphyte"],
+      "wikiUrl": "https://en.wikipedia.org/wiki/Sphagnum"
     },
     {
       "slug": "sand",
       "term": "Sand",
       "category": "substrate",
       "definition": "Coarse mineral grit that adds weight and sharp drainage. A small proportion keeps a mix open for succulents and arid plants.",
-      "seeAlso": ["grit", "succulent"]
+      "seeAlso": ["grit", "succulent"],
+      "wikiUrl": "https://en.wikipedia.org/wiki/Sand"
     },
     {
       "slug": "coco-coir",
       "term": "Coco coir",
       "category": "substrate",
       "definition": "Coconut-husk fibre, a renewable peat substitute. It holds moisture while staying loose and near-neutral in pH — a versatile base for most terrarium mixes.",
-      "seeAlso": ["peat", "neutral"]
+      "seeAlso": ["peat", "neutral"],
+      "wikiUrl": "https://en.wikipedia.org/wiki/Coir"
     },
     {
       "slug": "grit",
       "term": "Grit",
       "category": "substrate",
       "definition": "Fine gravel or coarse sand that sharpens drainage and adds weight low in a mix. It helps keep arid-plant roots from staying wet.",
-      "seeAlso": ["sand", "pumice"]
+      "seeAlso": ["sand", "pumice"],
+      "wikiUrl": "https://en.wikipedia.org/wiki/Gravel"
     },
     {
       "slug": "orchid-bark",
       "term": "Orchid bark",
       "category": "substrate",
       "definition": "Chunky pieces of fir or pine bark that create large air pockets. It is used for epiphytes and aroids whose roots need air and a coarse, fast-draining footing.",
-      "seeAlso": ["orchid", "epiphyte", "aroid"]
+      "seeAlso": ["orchid", "epiphyte", "aroid"],
+      "wikiUrl": "https://en.wikipedia.org/wiki/Bark_mulch"
     },
     {
       "slug": "pumice",
       "term": "Pumice",
       "category": "substrate",
-      "definition": "Porous volcanic rock, like a heavier perlite. It adds drainage and air while holding a little moisture, and unlike perlite it does not float to the surface.",
-      "seeAlso": ["perlite", "grit"]
+      "definition": "Porous volcanic rock used to add drainage and aeration while retaining a small amount of moisture. Denser than perlite, it does not float to the substrate surface.",
+      "seeAlso": ["perlite", "grit"],
+      "wikiUrl": "https://en.wikipedia.org/wiki/Pumice"
     },
     {
       "slug": "mud",
       "term": "Mud",
       "category": "substrate",
       "definition": "A dense, water-retentive substrate for bog and paludarium margins. It is used where saturated, low-oxygen conditions are wanted — the opposite of a free-draining mix.",
-      "seeAlso": ["wet", "paludarium"]
+      "seeAlso": ["wet", "paludarium"],
+      "wikiUrl": "https://en.wikipedia.org/wiki/Mud"
     },
     {
       "slug": "potting-soil",
       "term": "Potting soil",
       "category": "substrate",
       "definition": "A general bagged growing medium of composted organic matter. It is nutrient-rich but can pack down and stay wet, so it is usually lightened with perlite or bark for terrarium use.",
-      "seeAlso": ["perlite", "worm-castings"]
+      "seeAlso": ["perlite", "worm-castings"],
+      "wikiUrl": "https://en.wikipedia.org/wiki/Potting_soil"
     },
     {
       "slug": "worm-castings",
       "term": "Worm castings",
       "category": "substrate",
-      "definition": "Worm-digested organic matter — a mild, slow-release fertiliser. A small amount enriches a terrarium mix without the burn risk of synthetic feed.",
-      "seeAlso": ["potting-soil"]
+      "definition": "Worm-digested organic matter — a mild, slow-release fertiliser. A small amount enriches a terrarium mix without the fertilizer-burn risk of synthetic nutrients.",
+      "seeAlso": ["potting-soil"],
+      "wikiUrl": "https://en.wikipedia.org/wiki/Vermicompost"
     },
     {
       "slug": "vermiculite",
       "term": "Vermiculite",
       "category": "substrate",
-      "definition": "Expanded mica flakes that hold water and nutrients. It boosts a mix's moisture retention — the counterpart to perlite's drainage.",
-      "seeAlso": ["perlite"]
+      "definition": "Expanded mica flakes that hold water and nutrients. It boosts moisture retention in a mix, in contrast to perlite, which improves drainage.",
+      "seeAlso": ["perlite"],
+      "wikiUrl": "https://en.wikipedia.org/wiki/Vermiculite"
     },
     {
       "slug": "leca",
       "term": "LECA",
       "category": "substrate",
       "definition": "Lightweight Expanded Clay Aggregate: fired clay balls that wick water and hold air. It is used as a drainage layer beneath the substrate (a false bottom) or as a semi-hydroponic medium on its own.",
-      "seeAlso": ["drainage-layer", "false-bottom"]
+      "seeAlso": ["drainage-layer", "false-bottom"],
+      "wikiUrl": "https://en.wikipedia.org/wiki/Expanded_clay_aggregate"
     },
 
     {
@@ -406,252 +470,313 @@
       "term": "Epiphyte",
       "category": "concept",
       "definition": "A plant that grows on another plant or surface rather than in soil, drawing moisture and nutrients from the air, rain, and debris — orchids, many bromeliads, and ferns. In a terrarium they are mounted on wood or cork rather than planted in substrate.",
-      "seeAlso": ["lithophyte", "terrestrial", "hardscape"]
+      "seeAlso": ["lithophyte", "terrestrial", "hardscape"],
+      "wikiUrl": "https://en.wikipedia.org/wiki/Epiphyte"
     },
     {
       "slug": "terrestrial",
       "term": "Terrestrial",
       "category": "concept",
       "definition": "Growing in the ground, rooted in soil or substrate — as opposed to on a tree (epiphyte) or a rock (lithophyte). Most terrarium plants are terrestrial.",
-      "seeAlso": ["epiphyte", "lithophyte"]
+      "seeAlso": ["epiphyte", "lithophyte"],
+      "wikiUrl": "https://en.wikipedia.org/wiki/Terrestrial_plant"
     },
     {
       "slug": "lithophyte",
       "term": "Lithophyte",
       "category": "concept",
       "definition": "A plant that grows on rock, anchoring in crevices and feeding on rain, litter, and its own debris. In a terrarium they suit a stony hardscape.",
-      "seeAlso": ["epiphyte", "terrestrial", "hardscape"]
+      "seeAlso": ["epiphyte", "terrestrial", "hardscape"],
+      "wikiUrl": "https://en.wikipedia.org/wiki/Lithophyte"
     },
     {
       "slug": "false-bottom",
       "term": "False bottom",
       "category": "concept",
       "definition": "A raised drainage void at the base of a terrarium — built on a grate or a layer of LECA — that keeps the substrate above any standing water. It stops roots from sitting in the runoff that collects in a container with no drainage hole.",
-      "seeAlso": ["drainage-layer", "leca", "horticultural-charcoal"]
+      "seeAlso": ["drainage-layer", "leca", "horticultural-charcoal"],
+      "wikiUrl": "https://en.wikipedia.org/wiki/Terrarium"
     },
     {
       "slug": "drainage-layer",
       "term": "Drainage layer",
       "category": "concept",
       "definition": "A coarse layer of LECA, gravel, or pumice under the substrate that gives excess water somewhere to collect, away from the roots. It is the simplest insurance against overwatering in a container with no drainage hole.",
-      "seeAlso": ["false-bottom", "leca"]
+      "seeAlso": ["false-bottom", "leca"],
+      "wikiUrl": "https://en.wikipedia.org/wiki/Drainage"
     },
     {
       "slug": "paludarium",
       "term": "Paludarium",
       "category": "concept",
       "definition": "An enclosure combining land and water — part terrarium, part aquarium — for marginal and aquatic plants, and sometimes animals. The water feature drives very high humidity.",
-      "seeAlso": ["vivarium", "aquatic", "humidity"]
+      "seeAlso": ["vivarium", "aquatic", "humidity"],
+      "wikiUrl": "https://en.wikipedia.org/wiki/Paludarium"
     },
     {
       "slug": "vivarium",
       "term": "Vivarium",
       "category": "concept",
       "definition": "An enclosure built to house live animals — often amphibians or reptiles — alongside live plants. Plant choices must be non-toxic and tough enough for the inhabitants.",
-      "seeAlso": ["paludarium"]
+      "seeAlso": ["paludarium"],
+      "wikiUrl": "https://en.wikipedia.org/wiki/Vivarium"
     },
     {
       "slug": "closed-terrarium",
       "term": "Closed terrarium",
       "category": "concept",
       "definition": "A sealed or near-sealed glass container that recycles its own moisture, staying warm and very humid. It is ideal for tropical foliage, ferns, and moss, but fatal to succulents and other dry-loving plants.",
-      "seeAlso": ["open-terrarium", "humidity", "condensation"]
+      "seeAlso": ["open-terrarium", "humidity", "condensation"],
+      "wikiUrl": "https://en.wikipedia.org/wiki/Terrarium"
     },
     {
       "slug": "open-terrarium",
       "term": "Open terrarium",
       "category": "concept",
       "definition": "An unsealed container with free airflow and lower humidity. It suits succulents, cacti, and arid plants that would rot in a closed, humid setup.",
-      "seeAlso": ["closed-terrarium", "succulent"]
+      "seeAlso": ["closed-terrarium", "succulent"],
+      "wikiUrl": "https://en.wikipedia.org/wiki/Terrarium"
     },
     {
       "slug": "hardscape",
       "term": "Hardscape",
       "category": "concept",
-      "definition": "The non-living structure of a layout — wood, rock, and cork — that sets the terrain before any plants go in. Beyond looks, it gives epiphytes and climbers something to grow on.",
-      "seeAlso": ["epiphyte", "lithophyte"]
+      "definition": "The non-living structure of a layout — wood, rock, and cork — that sets the terrain before any plants go in. It also provides mounting surfaces for epiphytes and climbers.",
+      "seeAlso": ["epiphyte", "lithophyte"],
+      "wikiUrl": "https://en.wikipedia.org/wiki/Hardscape"
     },
     {
       "slug": "horticultural-charcoal",
       "term": "Horticultural charcoal",
       "category": "concept",
       "definition": "A thin layer of porous carbon set between the drainage layer and the substrate. It helps keep a closed, waterlogged-prone container fresh by adsorbing impurities from the trapped water.",
-      "seeAlso": ["false-bottom", "drainage-layer"]
+      "seeAlso": ["false-bottom", "drainage-layer"],
+      "wikiUrl": "https://en.wikipedia.org/wiki/Biochar"
     },
     {
       "slug": "acclimation",
       "term": "Acclimation",
       "category": "concept",
-      "definition": "The gradual adjustment of a new plant to the terrarium's humidity, light, and temperature. Easing the transition prevents the leaf drop and melt that a sudden change can trigger.",
-      "seeAlso": ["humidity"]
+      "definition": "The gradual adjustment of a new plant to the terrarium's humidity, light, and temperature. Easing the transition reduces leaf drop and tissue collapse that sudden environmental changes can cause.",
+      "seeAlso": ["humidity"],
+      "wikiUrl": "https://en.wikipedia.org/wiki/Acclimatization"
     },
     {
       "slug": "humidity",
       "term": "Humidity",
       "category": "concept",
       "definition": "The amount of water vapour in the air, given as a percentage (relative humidity). A closed terrarium holds it high, which is why moisture-loving plants thrive and dry-loving ones rot.",
-      "seeAlso": ["closed-terrarium", "condensation", "transpiration"]
+      "seeAlso": ["closed-terrarium", "condensation", "transpiration"],
+      "wikiUrl": "https://en.wikipedia.org/wiki/Humidity"
     },
     {
       "slug": "condensation",
       "term": "Condensation",
       "category": "concept",
       "definition": "Water vapour returning to liquid on the cool glass — the visible sign of the terrarium's water cycle. A light, intermittent fog is healthy; constant heavy fogging means it is too wet and needs airing.",
-      "seeAlso": ["humidity", "transpiration"]
+      "seeAlso": ["humidity", "transpiration"],
+      "wikiUrl": "https://en.wikipedia.org/wiki/Condensation"
     },
     {
       "slug": "transpiration",
       "term": "Transpiration",
       "category": "concept",
       "definition": "The release of water vapour from a plant's leaves. In a sealed container this water recondenses and returns to the soil, driving the self-watering cycle.",
-      "seeAlso": ["humidity", "condensation"]
+      "seeAlso": ["humidity", "condensation"],
+      "wikiUrl": "https://en.wikipedia.org/wiki/Transpiration"
     },
     {
       "slug": "etiolation",
       "term": "Etiolation",
       "category": "concept",
       "definition": "Abnormal stem elongation caused by insufficient light — the plant stretches toward the nearest light source, producing spindly, pale, structurally weak growth. The affected section does not recover; prune back the stretched stem and move the plant to a brighter position to prevent recurrence.",
-      "seeAlso": ["bright-indirect", "direct"]
+      "seeAlso": ["bright-indirect", "direct"],
+      "wikiUrl": "https://en.wikipedia.org/wiki/Etiolation"
+    },
+    {
+      "slug": "desiccate",
+      "term": "Desiccate",
+      "category": "concept",
+      "definition": "To dry out completely — losing all available moisture from tissue or substrate. In a terrarium context it describes leaves, moss, or roots that have shrivelled from prolonged drought; most tropical plants cannot recover once fully desiccated.",
+      "seeAlso": ["dry", "moist"],
+      "wikiUrl": "https://en.wikipedia.org/wiki/Desiccation"
     },
     {
       "slug": "pinching",
       "term": "Pinching",
       "category": "concept",
       "definition": "Removing the growing tip of a stem — between finger and thumb, or with clean scissors — to halt upward growth and stimulate branching from the buds below. Used in a terrarium to keep compact plants from bolting and to maintain a full, bushy shape.",
-      "seeAlso": ["node"]
+      "seeAlso": ["node"],
+      "wikiUrl": "https://en.wikipedia.org/wiki/Pruning"
     },
     {
       "slug": "wet-feet",
       "term": "Wet feet",
       "category": "concept",
       "definition": "Roots sitting in standing water or permanently saturated substrate, where oxygen is excluded and decay follows quickly — also called soggy feet. Most terrarium plants cannot tolerate wet feet for long; a drainage layer or false bottom prevents the condition by keeping roots above any standing water.",
-      "seeAlso": ["drainage-layer", "false-bottom", "root-rot"]
+      "seeAlso": ["drainage-layer", "false-bottom", "root-rot"],
+      "wikiUrl": "https://en.wikipedia.org/wiki/Root_rot"
     },
     {
       "slug": "soggy-feet",
       "term": "Soggy feet",
       "category": "concept",
       "definition": "Another name for [[wet-feet|wet feet]] — roots sitting in standing water or saturated substrate.",
-      "seeAlso": ["wet-feet"]
+      "seeAlso": ["wet-feet"],
+      "wikiUrl": "https://en.wikipedia.org/wiki/Root_rot"
     },
     {
       "slug": "epiphytic",
       "term": "Epiphytic",
       "category": "concept",
       "definition": "The adjective form of [[epiphyte]]: growing on another plant or surface rather than in soil, drawing moisture from air, rain, and collected debris.",
-      "seeAlso": ["epiphyte", "terrestrial"]
+      "seeAlso": ["epiphyte", "terrestrial"],
+      "wikiUrl": "https://en.wikipedia.org/wiki/Epiphyte"
+    },
+    {
+      "slug": "cultivar",
+      "term": "Cultivar",
+      "category": "concept",
+      "definition": "A plant variety produced and maintained in cultivation by selective breeding, designated with a cultivar name in single quotes after the species name (e.g., Ficus elastica 'Burgundy'). Cultivars are selected for specific traits — leaf color, compact habit, disease resistance — and are propagated vegetatively to preserve those traits.",
+      "seeAlso": [],
+      "wikiUrl": "https://en.wikipedia.org/wiki/Cultivar"
     },
 
     {
       "slug": "rhizome",
       "term": "Rhizome",
       "category": "anatomy",
-      "definition": "A horizontal stem, usually creeping along or just under the surface, that sends up leaves and down roots as it spreads. Many ferns and begonias grow from one, and you propagate them by dividing it.",
-      "seeAlso": ["stolon", "node", "begonia"]
+      "definition": "A horizontal stem, usually creeping along or just under the surface, that sends up leaves and down roots as it spreads. Many ferns and begonias grow from rhizomes, which can be divided for propagation.",
+      "seeAlso": ["stolon", "node", "begonia"],
+      "wikiUrl": "https://en.wikipedia.org/wiki/Rhizome"
     },
     {
       "slug": "frond",
       "term": "Frond",
       "category": "anatomy",
       "definition": "The leaf of a fern (or a palm). A new frond often unfurls from a coiled tip called a crozier, or fiddlehead.",
-      "seeAlso": ["fern", "crozier"]
+      "seeAlso": ["fern", "crozier"],
+      "wikiUrl": "https://en.wikipedia.org/wiki/Frond"
     },
     {
       "slug": "stolon",
       "term": "Stolon",
       "category": "anatomy",
-      "definition": "A runner — a stem that creeps across the surface and roots at its tip or nodes to form a new plant, the way a strawberry or spider plant spreads. It is a quick way for a plant to fill a terrarium floor.",
-      "seeAlso": ["rhizome", "node", "creeping"]
+      "definition": "A runner — a stem that creeps across the surface and roots at its tip or nodes to form a new plant, the way a strawberry or spider plant spreads. Plants with stolons can fill a terrarium floor quickly.",
+      "seeAlso": ["rhizome", "node", "creeping"],
+      "wikiUrl": "https://en.wikipedia.org/wiki/Stolon"
     },
     {
       "slug": "node",
       "term": "Node",
       "category": "anatomy",
       "definition": "The point on a stem where leaves, roots, or side-shoots emerge. Cuttings are taken just below a node because that is where new roots form most readily.",
-      "seeAlso": ["petiole", "stolon"]
+      "seeAlso": ["petiole", "stolon"],
+      "wikiUrl": "https://en.wikipedia.org/wiki/Node_(botany)"
     },
     {
       "slug": "petiole",
       "term": "Petiole",
       "category": "anatomy",
-      "definition": "The stalk that joins a leaf blade to the stem. Its length and stance shape how a plant fills the space around it.",
-      "seeAlso": ["node"]
+      "definition": "The stalk that joins a leaf blade to the stem. Petiole length and angle influence how a plant occupies space and can be a useful species-identification feature.",
+      "seeAlso": ["node"],
+      "wikiUrl": "https://en.wikipedia.org/wiki/Petiole_(botany)"
     },
     {
       "slug": "crozier",
       "term": "Crozier",
       "category": "anatomy",
       "definition": "The tightly coiled tip of an emerging fern frond, also called a fiddlehead. It unrolls as the frond expands to full size.",
-      "seeAlso": ["frond", "fern"]
+      "seeAlso": ["frond", "fern"],
+      "wikiUrl": "https://en.wikipedia.org/wiki/Fiddlehead_fern"
     },
     {
       "slug": "pup",
       "term": "Pup",
       "category": "anatomy",
-      "definition": "A pup is a vegetative offset — a small daughter plant — produced by a parent plant, typically around its base. In bromeliads, the parent rosette flowers once and then produces pups that become the next generation; in succulents the habit continues indefinitely. Pups can be left in place to form a clump or separated once they reach roughly a third of the parent's size.",
-      "seeAlso": ["offset"]
+      "definition": "A small vegetative offset produced at the base of a parent plant. In bromeliads, the parent rosette flowers once and then produces pups that become the next generation; in succulents the habit continues indefinitely. Pups can be left in place to form a clump or separated once they reach roughly a third of the parent's size.",
+      "seeAlso": ["offset"],
+      "wikiUrl": "https://en.wikipedia.org/wiki/Offset_(botany)"
     },
     {
       "slug": "offset",
       "term": "Offset",
       "category": "anatomy",
-      "definition": "An offset is a vegetative offshoot growing at or near the base of a parent plant, genetically identical and capable of independent life once detached. The term is used broadly for cacti, succulents, and bromeliads where \"pup\" is less common. In a terrarium, offsets can be left to form a colony or removed to control spread.",
-      "seeAlso": ["pup"]
+      "definition": "A vegetative offshoot growing at or near the base of a parent plant, genetically identical and capable of independent life once detached. The term is used broadly for cacti, succulents, and bromeliads where \"pup\" is less common. In a terrarium, offsets can be left to form a colony or removed to control spread.",
+      "seeAlso": ["pup"],
+      "wikiUrl": "https://en.wikipedia.org/wiki/Offset_(botany)"
     },
     {
       "slug": "midrib",
       "term": "Midrib",
       "category": "anatomy",
-      "definition": "The midrib is the prominent central vein running the full length of a leaf, from which secondary veins branch outward. It is the thickest, most rigid part of the leaf blade and provides structural support. In many terrarium aroids and ferns a pale, silver, or contrasting-color midrib is a key ornamental feature and a useful species-ID marker.",
-      "seeAlso": []
+      "definition": "The prominent central vein running the full length of a leaf, from which secondary veins branch outward. It is the thickest, most rigid part of the leaf blade. In many terrarium aroids and ferns, a contrasting midrib color is an ornamental feature and a species-identification marker.",
+      "seeAlso": [],
+      "wikiUrl": "https://en.wikipedia.org/wiki/Leaf"
     },
     {
       "slug": "corm",
       "term": "Corm",
       "category": "anatomy",
-      "definition": "A corm is a compact, solid, swollen stem base — not a bulb (which is layered) — that stores starch and water to carry a plant through dormancy or stress. In corm-forming plants such as Alocasia, the corm sits at or just below the soil surface. Because it stores moisture it is highly prone to rot if the substrate stays waterlogged; always ensure excellent drainage and allow a partial dry-down between waterings.",
-      "seeAlso": ["tuber"]
+      "definition": "A compact, solid, swollen stem base — not a bulb (which is layered) — that stores starch and water to carry a plant through dormancy or stress. In corm-forming plants such as Alocasia, the corm sits at or just below the soil surface. It is prone to rot in waterlogged substrate; ensure good drainage and allow a partial dry-down between waterings.",
+      "seeAlso": ["tuber"],
+      "wikiUrl": "https://en.wikipedia.org/wiki/Corm"
     },
     {
       "slug": "tuber",
       "term": "Tuber",
       "category": "anatomy",
-      "definition": "A tuber is an enlarged, starchy underground storage organ — derived from a modified root or stem — that the plant uses to survive dormancy. Common terrarium examples include Sinningia (gesneriads) and some aroids. Care during dormancy is critical: reduce watering significantly once foliage dies back and resume only when new growth appears, or the tuber will rot from residual moisture.",
-      "seeAlso": ["corm"]
+      "definition": "An enlarged, starchy underground storage organ — derived from a modified root or stem — that the plant uses to survive dormancy. Common terrarium examples include Sinningia (gesneriads) and some aroids. Reduce watering significantly once foliage dies back and resume only when new growth appears, or the tuber will rot from residual moisture.",
+      "seeAlso": ["corm"],
+      "wikiUrl": "https://en.wikipedia.org/wiki/Tuber"
     },
     {
       "slug": "pseudobulb",
       "term": "Pseudobulb",
       "category": "anatomy",
-      "definition": "A pseudobulb is a thickened, above-ground, bulb-like swelling of the stem found in many sympodial orchids, used to store water and carbohydrates between waterings. Unlike true bulbs, pseudobulbs are green, photosynthetically active, and sit exposed at the base of each growth. Healthy pseudobulbs are firm and plump; shrivelled pseudobulbs signal underwatering or root failure — check the mount before increasing watering frequency.",
-      "seeAlso": []
+      "definition": "A thickened, above-ground, bulb-like swelling of the stem found in many sympodial orchids, used to store water and carbohydrates between waterings. Unlike true bulbs, pseudobulbs are green, photosynthetically active, and sit exposed at the base of each growth. Healthy pseudobulbs are firm; shrivelled ones indicate underwatering or root failure — check the mount before increasing watering frequency.",
+      "seeAlso": [],
+      "wikiUrl": "https://en.wikipedia.org/wiki/Pseudobulb"
     },
     {
       "slug": "axil",
       "term": "Axil",
       "category": "anatomy",
-      "definition": "The axil is the upper angle formed between a leaf stalk (or branch) and the stem above the point where they meet. Buds, new stems, and flowers typically emerge from the axil, making it a key site to observe when checking for new growth or blooms. In miniature epiphytic orchids in particular, flowers appear from the leaf axil rather than from a separate scape, so knowing where to look prevents accidentally removing developing flower buds during maintenance.",
-      "seeAlso": []
+      "definition": "The upper angle formed between a leaf stalk (or branch) and the stem above their junction. Buds, new stems, and flowers typically emerge from the axil. In miniature epiphytic orchids, flowers arise from the leaf axil rather than a separate scape — check axils before pruning to avoid removing developing flower buds.",
+      "seeAlso": [],
+      "wikiUrl": "https://en.wikipedia.org/wiki/Axil"
     },
     {
       "slug": "caudex",
       "term": "Caudex",
       "category": "anatomy",
-      "definition": "A caudex (plural caudices) is a swollen, woody stem base that stores water and carbohydrates, found in many succulent vines and xerophytic plants. It functions as a drought reserve, allowing the plant to survive prolonged dry periods by drawing on stored resources. In terrarium care, plants with a caudex need very sharp drainage and a genuine dry-down between waterings — the caudex base is the first place to rot if moisture accumulates around it.",
-      "seeAlso": []
+      "definition": "A swollen, woody stem base that stores water and carbohydrates, found in many succulent vines and xerophytic plants; it allows the plant to survive prolonged dry periods. Plants with a caudex need sharp drainage and a genuine dry-down between waterings — moisture accumulating at the base is the first site of rot.",
+      "seeAlso": [],
+      "wikiUrl": "https://en.wikipedia.org/wiki/Caudex"
     },
     {
       "slug": "plantlet",
       "term": "Plantlet",
       "category": "anatomy",
-      "definition": "A plantlet is a young plant produced on an aerial stem or leaf margin of a mother plant."
+      "definition": "A young plant produced on an aerial stem or leaf margin of a mother plant.",
+      "seeAlso": [],
+      "wikiUrl": "https://en.wikipedia.org/wiki/Vegetative_reproduction"
     },
     {
       "slug": "venation",
       "term": "Venation",
       "category": "anatomy",
       "definition": "The arrangement and branching pattern of veins within a leaf blade. The [[midrib]] is the primary vein; from it, secondary veins branch outward in patterns that vary by species — pinnate (feather-like), palmate (hand-like), or parallel. Contrasting or metallic venation is a key ornamental feature in many terrarium aroids, ferns, and begonias, and a useful species-identification marker.",
-      "seeAlso": ["midrib", "petiole"]
+      "seeAlso": ["midrib", "petiole"],
+      "wikiUrl": "https://en.wikipedia.org/wiki/Leaf"
+    },
+    {
+      "slug": "cilia",
+      "term": "Cilia",
+      "category": "anatomy",
+      "definition": "Fine hair-like outgrowths along the margin of a leaf, bract, or other plant organ (singular: cilium). In the Venus flytrap (Dionaea muscipula), the interlocking marginal cilia of the trap lobes prevent small prey from escaping. In mosses, cilia projecting from the peristome regulate spore dispersal.",
+      "seeAlso": ["carnivorous", "moss"],
+      "wikiUrl": "https://en.wikipedia.org/wiki/Trichome"
     },
 
     {
@@ -659,56 +784,64 @@
       "term": "Fungus gnats",
       "category": "pest-disease",
       "definition": "Tiny flies (family Sciaridae) whose larvae live in moist organic substrate and feed on fine roots and decaying matter. In a sealed terrarium their population can explode rapidly. Adult gnats are harmless but heavy larval populations stunt roots; allow the top substrate layer to dry between waterings, or introduce predatory nematodes (Steinernema feltiae) or Hypoaspis mites.",
-      "seeAlso": ["root-rot", "drainage-layer"]
+      "seeAlso": ["root-rot", "drainage-layer"],
+      "wikiUrl": "https://en.wikipedia.org/wiki/Sciaridae"
     },
     {
       "slug": "root-rot",
       "term": "Root rot",
       "category": "pest-disease",
       "definition": "Decay of roots caused by water-mold pathogens — typically Pythium or Phytophthora — thriving in oxygen-starved, waterlogged substrate. Symptoms appear above ground first: wilting or yellowing despite wet soil. Remove affected roots, drench with a dilute hydrogen peroxide solution, repot into fresh well-draining substrate, and reduce watering. A drainage layer and charcoal layer are the structural prevention.",
-      "seeAlso": ["wet-feet", "drainage-layer", "horticultural-charcoal"]
+      "seeAlso": ["wet-feet", "drainage-layer", "horticultural-charcoal"],
+      "wikiUrl": "https://en.wikipedia.org/wiki/Root_rot"
     },
     {
       "slug": "spider-mites",
       "term": "Spider mites",
       "category": "pest-disease",
       "definition": "Tiny arachnids — not insects — that pierce leaf cells and suck sap, leaving pale stippling on upper leaf surfaces and, in heavy infestations, fine webbing on stems and leaves. They thrive in warm, dry conditions; the high humidity of a closed terrarium suppresses them naturally. Treat with neem oil or insecticidal soap, ensuring coverage of leaf undersides.",
-      "seeAlso": ["mealybugs", "scale"]
+      "seeAlso": ["mealybugs", "scale"],
+      "wikiUrl": "https://en.wikipedia.org/wiki/Spider_mite"
     },
     {
       "slug": "mealybugs",
       "term": "Mealybugs",
       "category": "pest-disease",
       "definition": "Soft-bodied insects coated in white waxy fluff, found in leaf axils, stem joints, and root zones. They weaken plants by sucking sap and excreting sticky honeydew that can host sooty mold. In a terrarium they spread easily; isolate new plants before introduction, and treat infestations with rubbing alcohol on a cotton swab or a neem oil spray.",
-      "seeAlso": ["scale", "spider-mites"]
+      "seeAlso": ["scale", "spider-mites"],
+      "wikiUrl": "https://en.wikipedia.org/wiki/Mealybug"
     },
     {
       "slug": "scale",
       "term": "Scale",
       "category": "pest-disease",
       "definition": "Small sucking insects that anchor to stems and leaves under a protective shell (armored scale) or waxy coating (soft scale). Easy to miss at low numbers. Remove by hand with rubbing alcohol and a soft brush, then follow with a neem oil treatment; check leaf undersides and stem joints carefully.",
-      "seeAlso": ["mealybugs"]
+      "seeAlso": ["mealybugs"],
+      "wikiUrl": "https://en.wikipedia.org/wiki/Scale_insect"
     },
     {
       "slug": "powdery-mildew",
       "term": "Powdery mildew",
       "category": "pest-disease",
-      "definition": "A fungal disease that produces a powdery white coating on leaf surfaces, spreading rapidly in warm, stagnant air with poor circulation. Increase airflow, remove affected leaves, and treat with a dilute solution of baking soda or potassium bicarbonate. More common in open builds or poorly ventilated closed containers.",
-      "seeAlso": ["botrytis", "damping-off"]
+      "definition": "A fungal disease that produces a powdery white coating on leaf surfaces, spreading rapidly in warm, stagnant air with poor circulation. Increase airflow, remove affected leaves, and treat with a dilute solution of baking soda or potassium bicarbonate. More common in open containers or poorly ventilated closed builds.",
+      "seeAlso": ["botrytis", "damping-off"],
+      "wikiUrl": "https://en.wikipedia.org/wiki/Powdery_mildew"
     },
     {
       "slug": "botrytis",
       "term": "Botrytis",
       "category": "pest-disease",
       "definition": "Gray mold — a fungal disease caused by Botrytis cinerea that appears as fuzzy gray growth on dying or damaged plant tissue, spreading rapidly in cool, humid, still air. Remove affected tissue immediately and improve ventilation; avoid splashing water onto foliage, and remove all dead plant matter from the substrate promptly.",
-      "seeAlso": ["powdery-mildew", "damping-off"]
+      "seeAlso": ["powdery-mildew", "damping-off"],
+      "wikiUrl": "https://en.wikipedia.org/wiki/Botrytis_cinerea"
     },
     {
       "slug": "damping-off",
       "term": "Damping off",
       "category": "pest-disease",
       "definition": "A soilborne disease complex — usually Pythium or Rhizoctonia — that rots seedlings at the soil line, causing them to collapse suddenly. Spreads in overcrowded, poorly-ventilated conditions with wet substrate. Prevention: use sterile substrate, avoid overwatering, and provide airflow.",
-      "seeAlso": ["root-rot", "powdery-mildew"]
+      "seeAlso": ["root-rot", "powdery-mildew"],
+      "wikiUrl": "https://en.wikipedia.org/wiki/Damping_off"
     }
   ]
 }
