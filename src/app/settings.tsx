@@ -16,6 +16,7 @@ import { backupToFile, restoreFromFile } from '@/lib/backup-io';
 import { copy } from '@/lib/copy';
 import { type ColorSchemePref, usePreferences } from '@/hooks/use-preferences';
 import { useTokens } from '@/hooks/use-tokens';
+import type { Units } from '@/logic/units';
 
 export default function SettingsScreen() {
   const state = useDbState();
@@ -50,8 +51,13 @@ const SCHEME_OPTIONS: { label: string; value: ColorSchemePref }[] = [
   { label: 'Dark', value: 'dark' },
 ];
 
+const UNIT_OPTIONS: { label: string; value: Units }[] = [
+  { label: 'Metric', value: 'metric' },
+  { label: 'Imperial', value: 'imperial' },
+];
+
 function AppearanceSection() {
-  const { colorScheme, setColorScheme, vibe, setVibe } = usePreferences();
+  const { colorScheme, setColorScheme, vibe, setVibe, units, setUnits } = usePreferences();
   return (
     <View style={styles.section}>
       <SectionLabel>Appearance</SectionLabel>
@@ -65,6 +71,11 @@ function AppearanceSection() {
           Color scheme
         </Text>
         <SegmentedControl options={SCHEME_OPTIONS} value={colorScheme} onChange={setColorScheme} />
+        <Divider />
+        <Text variant="body" role="textMuted">
+          Units
+        </Text>
+        <SegmentedControl options={UNIT_OPTIONS} value={units} onChange={setUnits} />
       </Card>
     </View>
   );

@@ -2,6 +2,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { createContext, useCallback, useContext, useEffect, useState, type ReactNode } from 'react';
 
 import { Colors, type VibeId } from '@/constants/theme';
+import type { Units } from '@/logic/units';
 
 export type ColorSchemePref = 'system' | 'light' | 'dark';
 
@@ -14,10 +15,13 @@ interface Preferences {
   setColorScheme: (v: ColorSchemePref) => void;
   vibe: VibeId;
   setVibe: (v: VibeId) => void;
+  units: Units;
+  setUnits: (v: Units) => void;
 }
 
 const PREF_COLOR_SCHEME = 'pref:colorScheme';
 const PREF_VIBE = 'pref:vibe';
+const PREF_UNITS = 'pref:units';
 
 const isVibe = (v: string): v is VibeId => Object.prototype.hasOwnProperty.call(Colors, v);
 
@@ -26,11 +30,14 @@ const PreferencesContext = createContext<Preferences>({
   setColorScheme: () => {},
   vibe: DEFAULT_VIBE,
   setVibe: () => {},
+  units: 'metric',
+  setUnits: () => {},
 });
 
 export function PreferencesProvider({ children }: { children: ReactNode }) {
   const [colorScheme, setColorSchemeState] = useState<ColorSchemePref>('system');
   const [vibe, setVibeState] = useState<VibeId>(DEFAULT_VIBE);
+  const [units, setUnitsState] = useState<Units>('metric');
 
   useEffect(() => {
     AsyncStorage.getItem(PREF_COLOR_SCHEME).then((stored) => {
@@ -40,6 +47,9 @@ export function PreferencesProvider({ children }: { children: ReactNode }) {
     });
     AsyncStorage.getItem(PREF_VIBE).then((stored) => {
       if (stored && isVibe(stored)) setVibeState(stored);
+    });
+    AsyncStorage.getItem(PREF_UNITS).then((stored) => {
+      if (stored === 'metric' || stored === 'imperial') setUnitsState(stored);
     });
   }, []);
 
@@ -53,8 +63,14 @@ export function PreferencesProvider({ children }: { children: ReactNode }) {
     AsyncStorage.setItem(PREF_VIBE, v);
   }, []);
 
+  const setUnits = useCallback((v: Units) => {
+    setUnitsState(v);
+    AsyncStorage.setItem(PREF_UNITS, v);
+  }, []);
+
   return (
-    <PreferencesContext.Provider value={{ colorScheme, setColorScheme, vibe, setVibe }}>
+    <PreferencesContext.Provider
+      value={{ colorScheme, setColorScheme, vibe, setVibe, units, setUnits }}>
       {children}
     </PreferencesContext.Provider>
   );

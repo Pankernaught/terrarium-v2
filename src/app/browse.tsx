@@ -18,7 +18,7 @@
 import { memo, useCallback, useMemo, useState } from 'react';
 import { FlatList, Linking, Pressable, StyleSheet, TextInput, View } from 'react-native';
 
-import { Card, Chip, EmptyState, GlanceHeader, Screen, SectionLabel, Text } from '@/components/ui';
+import { Card, Chip, EmptyState, GlanceHeader, RangeSlider, Screen, SectionLabel, Text } from '@/components/ui';
 import { PlantSheet } from '@/components/plant-sheet';
 import { TermSheet } from '@/components/term-sheet';
 import { MaxContentWidth, Radii, Spacing } from '@/constants/theme';
@@ -26,23 +26,35 @@ import { loadGlossary, loadPlants } from '@/data';
 import { copy } from '@/lib/copy';
 import { type BrowseSort, filterPlants } from '@/logic/browse-filter';
 import { filterGlossary } from '@/logic/glossary-filter';
-import { LIGHT_LEVELS, NATIVE_BIOMES, PLANT_TYPES, type Plant } from '@/types/plant';
+import { LIGHT_LEVELS, PLANT_TYPES, type Plant } from '@/types/plant';
 import { GLOSSARY_CATEGORIES, GLOSSARY_CATEGORY_LABELS, type GlossaryEntry } from '@/types';
 import { humanize } from '@/lib/labels';
 import { useTokens } from '@/hooks/use-tokens';
+import { usePreferences } from '@/hooks/use-preferences';
+import { fmtLength, fmtTemp, fmtTempRange } from '@/logic/units';
 
 type BrowseMode = 'plants' | 'terms';
 
+const TERRARIUM_STYLES = [
+  { label: 'Tropical', biomes: ['tropical', 'subtropical'] },
+  { label: 'Desert', biomes: ['arid', 'mediterranean'] },
+  { label: 'Woodland', biomes: ['temperate', 'montane'] },
+] as const;
+
 const SUGGEST_EMAIL = 'pankernaught@gmail.com';
 const DIFFICULTIES = [1, 2, 3, 4, 5];
+const TEMP_MIN = 5, TEMP_MAX = 35;
+const HUMID_MIN = 10, HUMID_MAX = 100;
+const HEIGHT_MIN = 0, HEIGHT_MAX = 100;
+
 const SORTS: { value: BrowseSort; label: string }[] = [
   { value: 'name', label: 'Name' },
   { value: 'difficulty', label: 'Care level' },
-  { value: 'height', label: 'Height' },
 ];
 
 export default function BrowseScreen() {
   const { c } = useTokens();
+  const { units } = usePreferences();
   const plants = useMemo(() => loadPlants(), []);
   const glossary = useMemo(() => loadGlossary(), []);
 
@@ -50,10 +62,15 @@ export default function BrowseScreen() {
 
   const [search, setSearch] = useState('');
   const [types, setTypes] = useState<string[]>([]);
-  const [biomes, setBiomes] = useState<string[]>([]);
+  const [terrariumStyles, setTerrariumStyles] = useState<string[]>([]);
+  const [smallTerrarium, setSmallTerrarium] = useState(false);
   const [lights, setLights] = useState<string[]>([]);
   const [difficulties, setDifficulties] = useState<number[]>([]);
   const [sort, setSort] = useState<BrowseSort>('name');
+  const [matchMode, setMatchMode] = useState<'all' | 'any'>('all');
+  const [tempRange, setTempRange] = useState<[number, number]>([TEMP_MIN, TEMP_MAX]);
+  const [humidRange, setHumidRange] = useState<[number, number]>([HUMID_MIN, HUMID_MAX]);
+  const [heightRange, setHeightRange] = useState<[number, number]>([HEIGHT_MIN, HEIGHT_MAX]);
   const [filtersOpen, setFiltersOpen] = useState(false);
   const [sheetPlant, setSheetPlant] = useState<(typeof plants)[0] | null>(null);
 
@@ -62,11 +79,18 @@ export default function BrowseScreen() {
   const [termCats, setTermCats] = useState<string[]>([]);
   const [termSlug, setTermSlug] = useState<string | null>(null);
 
-  const results = useMemo(
-    () => filterPlants(plants, { search, types, biomes, lights, difficulties, sort }),
-    [plants, search, types, biomes, lights, difficulties, sort],
+  const effectiveBiomes = terrariumStyles.flatMap(
+    (s) => TERRARIUM_STYLES.find((ts) => ts.label === s)?.biomes ?? [],
   );
-  const activeFilters = types.length + biomes.length + lights.length + difficulties.length;
+  const results = useMemo(
+    () => filterPlants(plants, { search, types, biomes: effectiveBiomes, lights, difficulties, sort, matchMode, tempRange, humidRange, heightRange, smallTerrariumFriendly: smallTerrarium || undefined }),
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [plants, search, types, terrariumStyles, smallTerrarium, lights, difficulties, sort, matchMode, tempRange, humidRange, heightRange],
+  );
+  const tempActive = tempRange[0] > TEMP_MIN || tempRange[1] < TEMP_MAX;
+  const humidActive = humidRange[0] > HUMID_MIN || humidRange[1] < HUMID_MAX;
+  const heightActive = heightRange[0] > HEIGHT_MIN || heightRange[1] < HEIGHT_MAX;
+  const activeFilters = types.length + terrariumStyles.length + (smallTerrarium ? 1 : 0) + lights.length + difficulties.length + (tempActive ? 1 : 0) + (humidActive ? 1 : 0) + (heightActive ? 1 : 0);
 
   const termResults = useMemo(
     () => filterGlossary(glossary, { search: termSearch, categories: termCats }),
@@ -78,9 +102,13 @@ export default function BrowseScreen() {
   }
   function clearAll() {
     setTypes([]);
-    setBiomes([]);
+    setTerrariumStyles([]);
+    setSmallTerrarium(false);
     setLights([]);
     setDifficulties([]);
+    setTempRange([TEMP_MIN, TEMP_MAX]);
+    setHumidRange([HUMID_MIN, HUMID_MAX]);
+    setHeightRange([HEIGHT_MIN, HEIGHT_MAX]);
   }
 
   function suggestPlant() {
@@ -207,22 +235,47 @@ export default function BrowseScreen() {
                   />
                 </Pressable>
                 <View style={styles.sortGroup}>
-                  {SORTS.map((s) => (
-                    <Chip
-                      key={s.value}
-                      label={s.label}
-                      tone="sage"
-                      selected={sort === s.value}
-                      onPress={() => setSort(s.value)}
-                    />
-                  ))}
+                  {SORTS.map((s) => {
+                    const isActive = sort === s.value || sort === `${s.value}-desc`;
+                    const isDesc = sort === `${s.value}-desc`;
+                    return (
+                      <Chip
+                        key={s.value}
+                        label={isActive ? `${s.label} ${isDesc ? '↓' : '↑'}` : s.label}
+                        tone="sage"
+                        selected={isActive}
+                        onPress={() => setSort(isActive && !isDesc ? `${s.value}-desc` as BrowseSort : s.value)}
+                      />
+                    );
+                  })}
                 </View>
               </View>
 
               {filtersOpen ? (
                 <Card style={styles.filterCard}>
                   <FacetGroup label="Type" options={PLANT_TYPES} selected={types} onToggle={(v) => toggle(types, setTypes, v)} />
-                  <FacetGroup label="Biome" options={NATIVE_BIOMES} selected={biomes} onToggle={(v) => toggle(biomes, setBiomes, v)} />
+                  <View style={styles.facet}>
+                    <SectionLabel>Terrarium style</SectionLabel>
+                    <View style={styles.chipWrap}>
+                      {TERRARIUM_STYLES.map((s) => (
+                        <Chip
+                          key={s.label}
+                          label={s.label}
+                          tone="sage"
+                          selected={terrariumStyles.includes(s.label)}
+                          onPress={() => toggle(terrariumStyles, setTerrariumStyles, s.label)}
+                        />
+                      ))}
+                    </View>
+                    <View style={styles.chipWrap}>
+                      <Chip
+                        label="Small terrarium"
+                        tone="sage"
+                        selected={smallTerrarium}
+                        onPress={() => setSmallTerrarium((v) => !v)}
+                      />
+                    </View>
+                  </View>
                   <FacetGroup label="Light" options={LIGHT_LEVELS} selected={lights} onToggle={(v) => toggle(lights, setLights, v)} />
                   <View style={styles.facet}>
                     <SectionLabel>Care level</SectionLabel>
@@ -236,6 +289,37 @@ export default function BrowseScreen() {
                           onPress={() => toggle(difficulties, setDifficulties, d)}
                         />
                       ))}
+                    </View>
+                  </View>
+                  <RangeSlider
+                    label="Temperature"
+                    min={TEMP_MIN}
+                    max={TEMP_MAX}
+                    values={tempRange}
+                    onChange={setTempRange}
+                    format={(v) => fmtTemp(v, units)}
+                  />
+                  <RangeSlider
+                    label="Humidity"
+                    min={HUMID_MIN}
+                    max={HUMID_MAX}
+                    values={humidRange}
+                    onChange={setHumidRange}
+                    format={(v) => `${v}%`}
+                  />
+                  <RangeSlider
+                    label="Size"
+                    min={HEIGHT_MIN}
+                    max={HEIGHT_MAX}
+                    values={heightRange}
+                    onChange={setHeightRange}
+                    format={(v) => fmtLength(v, units)}
+                  />
+                  <View style={styles.facet}>
+                    <SectionLabel>Match</SectionLabel>
+                    <View style={styles.chipWrap}>
+                      <Chip label="All filters" tone="sage" selected={matchMode === 'all'} onPress={() => setMatchMode('all')} />
+                      <Chip label="Any filter" tone="sage" selected={matchMode === 'any'} onPress={() => setMatchMode('any')} />
                     </View>
                   </View>
                   {activeFilters > 0 ? (
@@ -316,6 +400,7 @@ const PlantRow = memo(function PlantRow({
   onPress: (plant: Plant) => void;
 }) {
   const { c } = useTokens();
+  const { units } = usePreferences();
   return (
     <Pressable onPress={() => onPress(plant)} accessibilityRole="button" accessibilityLabel={`Open ${plant.commonName}`}>
       <Card style={styles.row}>
@@ -345,7 +430,7 @@ const PlantRow = memo(function PlantRow({
           <Chip label={`Care level ${plant.difficulty}`} tone="neutral" />
         </View>
         <Text variant="caption" role="textMuted">
-          {plant.humidityPctRange[0]}–{plant.humidityPctRange[1]}% RH · {plant.tempCRange[0]}–{plant.tempCRange[1]}°C · ≤{plant.maxHeightCm} cm
+          {plant.humidityPctRange[0]}–{plant.humidityPctRange[1]}% RH · {fmtTempRange(plant.tempCRange[0], plant.tempCRange[1], units)} · ≤{fmtLength(plant.maxHeightCm, units)}
         </Text>
       </Card>
     </Pressable>

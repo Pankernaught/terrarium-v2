@@ -22,7 +22,7 @@ function matches(entry: GlossaryEntry, c: GlossaryCriteria): boolean {
     const hit =
       entry.term.toLowerCase().includes(q) ||
       entry.slug.toLowerCase().includes(q) ||
-      entry.definition.toLowerCase().includes(q);
+      (entry.definition ?? '').toLowerCase().includes(q);
     if (!hit) return false;
   }
   if (c.categories && c.categories.length > 0) {

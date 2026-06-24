@@ -66,6 +66,8 @@ export type LightLevel = (typeof LIGHT_LEVELS)[number];
 export type MoistureLevel = (typeof MOISTURE_LEVELS)[number];
 export type PhPreference = (typeof PH_PREFERENCES)[number];
 export type GrowthRate = (typeof GROWTH_RATES)[number];
+export type GrowthHabit = (typeof GROWTH_HABITS)[number];
+export type PlantType = (typeof PLANT_TYPES)[number];
 
 export const lightLevelSchema = z.enum(LIGHT_LEVELS);
 export const moistureLevelSchema = z.enum(MOISTURE_LEVELS);
@@ -113,9 +115,12 @@ export const plantSchema = z.object({
   humidityPctRange: rangeSchema,
   tempCRange: rangeSchema,
 
-  // Mature height: max required (tallest-plant value), min optional.
+  // Mature height: max required (tallest-plant value).
+  // typicalHeightCm is the expected cultivation height — what a well-kept specimen
+  // actually looks like day-to-day, as opposed to the genetic ceiling. When absent,
+  // the renderer falls back to maxHeightCm * 0.7.
   maxHeightCm: z.number(),
-  heightMinCm: z.number().nullish(),
+  typicalHeightCm: z.number().nullish(),
 
   // Mature spread/footprint range; either bound may stand alone.
   spreadMinCm: z.number().nullish(),
@@ -156,6 +161,7 @@ export const plantSchema = z.object({
 
   closedTerrariumOk: z.boolean(),
   openTerrariumOk: z.boolean(),
+  smallTerrariumFriendly: z.boolean(),
   difficulty: z.number().int().min(1).max(5),
   notes: z.string().nullish(),
 

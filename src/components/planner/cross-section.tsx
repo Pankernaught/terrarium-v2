@@ -50,14 +50,17 @@ import Svg, {
   Text as SvgText,
 } from 'react-native-svg';
 
-import { haptics, Text } from '@/components/ui';
+import { Text } from '@/components/ui';
 import { Motion, Radii, Spacing } from '@/constants/theme';
 import { useTokens } from '@/hooks/use-tokens';
+import { usePreferences } from '@/hooks/use-preferences';
+import { lengthUnit, lengthValue } from '@/logic/units';
 import {
   containerProfile,
   type Dimensions,
 } from '@/logic/containers';
 import { clamp01, type Placement } from '@/logic/placement';
+import { ampFor, rand, waveOffset } from '@/logic/substrate-wave';
 import type { ContainerOpening, ContainerShape, Plant } from '@/types';
 
 import {
@@ -70,6 +73,7 @@ import {
   MOISTURE_GRADIENT_ID,
   SOIL_BASE_FILL,
   SOIL_STIPPLE_PATTERN_ID,
+  SPECULAR_GRADIENT_ID,
   SUBSTRATE_SHADOW_FILTER_ID,
   SubstratePatternDefs,
   getComponentMarks,
@@ -90,10 +94,12 @@ export interface TerrariumCrossSectionProps {
   /** Commit a moved placement (parent runs `upsertPlacement`). */
   onCommit: (next: Placement) => void;
   height?: number;
+  /** Multiplier for all rotated (vertical) text labels. Default 1. */
+  textScale?: number;
 }
 
 // --- Canvas padding (px) ----------------------------------------------------
-const PAD_X = 20; // side breathing room
+const PAD_X = 28; // side breathing room (also clears the rotated H dimension label)
 const PAD_TOP = 30; // room for overflow stubs + ⚠️ badges above the rim
 const PAD_BOTTOM = 28; // room beneath the floor (extra for width dimension line)
 const OVERFLOW_STUB = 10; // dashed stub length above the rim for a too-tall plant
@@ -107,12 +113,6 @@ const LABEL_FONT_SIZE = 7; // px, plant name alongside the bar
  */
 const MIN_DIM_CM = 3;
 
-/** Deterministic 0–1 hash so scatter is stable across renders. */
-function rand(seed: number): number {
-  const x = Math.sin(seed * 127.1) * 43758.5453;
-  return x - Math.floor(x);
-}
-
 /** Stable integer seed derived from a component id string. */
 function idSeed(id: string): number {
   let h = 0;
@@ -122,8 +122,70 @@ function idSeed(id: string): number {
   return Math.abs(h);
 }
 
+/**
+ * Nudge a #rrggbb colour's lightness by a stable per-plant seed (±~12%, toward
+ * white or black), so two same-type plants standing next to each other read as
+ * distinct individuals rather than one cloned bar. The colour half of ADR 0012 §6.
+ */
+function tintSage(hexColor: string, seed: number): string {
+  const j = (rand(seed) - 0.5) * 0.24; // ±12% toward white (j>0) or black (j<0)
+  const target = j > 0 ? 255 : 0;
+  const t = Math.abs(j);
+  const ch = (i: number) => {
+    const v = parseInt(hexColor.slice(i, i + 2), 16);
+    return Math.round(v + (target - v) * t).toString(16).padStart(2, '0');
+  };
+  return `#${ch(1)}${ch(3)}${ch(5)}`;
+}
+
+/** Open polyline `d` through points — used for the substrate surface crust line. */
+function polylinePath(pts: readonly [number, number][]): string {
+  if (pts.length === 0) return '';
+  let d = `M ${pts[0][0].toFixed(1)} ${pts[0][1].toFixed(1)}`;
+  for (let i = 1; i < pts.length; i++) d += ` L ${pts[i][0].toFixed(1)} ${pts[i][1].toFixed(1)}`;
+  return d;
+}
+
 /** Max dart-throwing attempts before a mark is dropped to preserve spacing. */
 const SCATTER_MAX_ATTEMPTS = 12;
+
+// ponytail: visual calibration knob — px-per-cm at which a mark draws full size.
+// Marks are physical grit, so they ride the vessel's cmToPx like the bands and
+// roots do; below this the view is compacted (docked glance / large vessel) and
+// marks shrink with it. Capped at 1 so the normal full view is untouched.
+const MARK_REF_CMTOPX = 12;
+const MARK_MIN_SCALE = 0.45; // floor so a tiny vessel doesn't dissolve the grit
+
+// --- Organic layer boundaries ----------------------------------------------
+// The material seams (substrate surface, substrate/charcoal, charcoal/drainage)
+// undulate instead of sitting dead-level. Each seam is an independent, seeded
+// sum-of-sines wave so the layers interlock like hand-poured sediment. The floor
+// stays flat — it's the glass base. Adjacent bands share the *same* seam wave, so
+// they tessellate with no gap or overlap regardless of SVG draw order.
+const WAVE_STEP = 6; // px sample spacing along a boundary
+const WAVE_POKE = 0.15; // a scatter mark may cross a wavy seam by ≤15% of its radius
+
+/** Sample a seam into [x, y] points spanning the vessel width (seeded → stable). */
+function seamPoints(geom: GeomRect, baseY: number, amp: number, seed: number): [number, number][] {
+  const pts: [number, number][] = [];
+  const right = geom.x + geom.width;
+  for (let x = geom.x; x < right; x += WAVE_STEP) pts.push([x, baseY + waveOffset(x, amp, seed)]);
+  pts.push([right, baseY + waveOffset(right, amp, seed)]);
+  return pts;
+}
+
+/** Closed band fill: wavy top edge, bottom edge either a wavy seam or a flat y. */
+function bandPath(geom: GeomRect, top: [number, number][], bottom: [number, number][] | number): string {
+  let d = `M ${top[0][0].toFixed(1)} ${top[0][1].toFixed(1)}`;
+  for (let i = 1; i < top.length; i++) d += ` L ${top[i][0].toFixed(1)} ${top[i][1].toFixed(1)}`;
+  if (typeof bottom === 'number') {
+    d += ` L ${(geom.x + geom.width).toFixed(1)} ${bottom.toFixed(1)} L ${geom.x.toFixed(1)} ${bottom.toFixed(1)} Z`;
+  } else {
+    for (let i = bottom.length - 1; i >= 0; i--) d += ` L ${bottom[i][0].toFixed(1)} ${bottom[i][1].toFixed(1)}`;
+    d += ' Z';
+  }
+  return d;
+}
 
 /** Render one scattered mark in local space (centred on 0,0), placed by `transform`. */
 function renderScatteredMark(mark: Mark, key: string, transform: string, opacity: number): React.ReactNode {
@@ -172,6 +234,11 @@ function substrateComponentMarks(
   bottomY: number,
   style: ComponentStyle,
   parts: number,
+  /** Vessel px-per-cm; marks shrink with it so a compacted view shrinks the grit. */
+  cmToPx: number,
+  /** Wavy top/bottom seam y at x; a mark may cross by ≤ {@link WAVE_POKE} of its radius. */
+  seamTop?: (x: number) => number,
+  seamBottom?: (x: number) => number,
 ): React.ReactNode {
   const bandH = bottomY - surfaceY;
   if (bandH <= 2) return null;
@@ -186,6 +253,10 @@ function substrateComponentMarks(
   const count = Math.min(220, Math.round(baseCount * Math.max(1, parts) * style.density));
   const base = idSeed(id);
   const minDist2 = style.minDist * style.minDist;
+  const clear = style.minDist * 0.5 * (1 - WAVE_POKE); // keep most of a mark inside the seam
+  // Shrink grit when the vessel is drawn small (docked glance / large container);
+  // never enlarge it past the full-view design size.
+  const viewScale = Math.max(MARK_MIN_SCALE, Math.min(1, cmToPx / MARK_REF_CMTOPX));
   const placed: { x: number; y: number }[] = [];
   const nodes: React.ReactNode[] = [];
 
@@ -197,6 +268,10 @@ function substrateComponentMarks(
       const s = base + i * 97 + a * 1009;
       const cx = geom.x + rand(s) * geom.width;
       const cy = surfaceY + rand(s + 11) * bandH;
+      // Reject anything that would float as a sliced disc past a wavy seam (the
+      // band clip is the hard backstop; this just stops ugly half-marks at the edge).
+      if (seamTop && cy - clear < seamTop(cx)) continue;
+      if (seamBottom && cy + clear > seamBottom(cx)) continue;
       let collides = false;
       for (let p = 0; p < placed.length; p++) {
         const ddx = placed[p].x - cx;
@@ -218,7 +293,7 @@ function substrateComponentMarks(
 
     const mark = marks[i % marks.length];
     const eff = (mark.opacity ?? 1) * style.opacity;
-    const sc = 0.8 + rand(base + i * 13 + 5) * 0.5; // 0.8–1.3
+    const sc = (0.8 + rand(base + i * 13 + 5) * 0.5) * viewScale; // 0.8–1.3, scaled to the view
     const rot = style.rotate ? Math.floor(rand(base + i * 7 + 3) * 360) : 0;
     const transform = `translate(${mx}, ${my}) rotate(${rot}) scale(${sc})`;
     nodes.push(renderScatteredMark(mark, `${id}-${i}`, transform, eff));
@@ -248,9 +323,10 @@ interface PlantModel {
   label: string; // plant common name, shown as vertical bar label
   emoji: string;
   xPx: number;
-  capY: number; // y of the bar top (clamped to rim)
+  capY: number; // y of the *typical*-height bar top (clamped to rim)
+  ghostCapY: number | null; // y of the *max*-height ghost top; null when no headroom to show
   surfaceY: number;
-  overflow: boolean;
+  overflow: boolean; // typical height exceeds the vessel interior
   rootBottomY: number | null; // null = no root data
 }
 
@@ -265,6 +341,10 @@ interface Scene {
   widthCm: number;
   heightCm: number;
   containerShape: ContainerShape;
+  /** Per-seam wave amplitudes (px), capped share of each seam's thinner band. */
+  wave: { ampSurface: number; ampMid: number; ampLower: number };
+  /** Per-mount random seam seeds — fresh contour each build, stable across re-renders. */
+  seeds: { surface: number; mid: number; lower: number };
 }
 
 const PLANT_EMOJI = '🌿';
@@ -275,6 +355,7 @@ function buildScene(
   plants: readonly Plant[],
   W: number,
   H: number,
+  seedBase: number,
 ): Scene | null {
   const dims = draft.containerDimensions;
   const shape = draft.containerShape;
@@ -324,6 +405,18 @@ function buildScene(
     hasSubstrate: substrateCm > 0,
   };
 
+  // Seam wave amplitudes (px), each a capped share of its thinner adjacent band.
+  const subH = bands.charcoalTopY - bands.surfaceY;
+  const charH = bands.drainageTopY - bands.charcoalTopY;
+  const drainH = bands.floorY - bands.drainageTopY;
+  const wave = {
+    ampSurface: ampFor(subH),
+    ampMid: ampFor(Math.min(subH, charH)),
+    ampLower: ampFor(Math.min(charH > 0 ? charH : subH, drainH)),
+  };
+  // Spaced so adjacent seams don't share waveOffset's internal rand() octaves.
+  const seeds = { surface: seedBase + 1, mid: seedBase + 200, lower: seedBase + 400 };
+
   const surfaceCm = prof.substrateTopCm;
   const margin = 0.06; // keep a plant's centre off the glass
 
@@ -332,15 +425,28 @@ function buildScene(
     const xPx = cx0 + Math.min(1 - margin, Math.max(margin, clamp01(p.x))) * cw;
     const plant = bySlug.get(p.slug);
     if (!plant) continue;
-    const topCm = surfaceCm + plant.maxHeightCm;
-    const overflow = topCm > prof.interiorHeightCm + 0.001;
-    const capY = yOf(Math.min(topCm, prof.interiorHeightCm));
+    // The solid bar shows the *typical* cultivation height (what a well-kept
+    // specimen actually looks like); a faint ghost extends to the genetic max.
+    // typicalHeightCm falls back to 70% of max when unauthored (see plant.ts).
+    const typicalCm = plant.typicalHeightCm ?? plant.maxHeightCm * 0.7;
+    const typicalTopCm = surfaceCm + typicalCm;
+    const maxTopCm = surfaceCm + plant.maxHeightCm;
+    // Overflow stays on the *flat mean* surface so a crest/trough never flips the
+    // ⚠️ badge as the plant is nudged sideways. Only the visual anchor rides the wave.
+    const overflow = typicalTopCm > prof.interiorHeightCm + 0.001;
+    const wv = waveOffset(xPx, wave.ampSurface, seeds.surface);
+    const surfaceY = bands.surfaceY + wv;
+    const capY = yOf(Math.min(typicalTopCm, prof.interiorHeightCm)) + wv;
+    const ghostCapY =
+      maxTopCm > typicalTopCm + 0.001
+        ? yOf(Math.min(maxTopCm, prof.interiorHeightCm)) + wv
+        : null;
     const rootMax = plant.rootDepthMaxCm;
     const rootBottomY =
       rootMax != null && rootMax > 0
-        ? Math.min(floorY, bands.surfaceY + rootMax * scale)
+        ? Math.min(floorY, surfaceY + rootMax * scale)
         : null;
-    plantModels.push({ slug: p.slug, label: plant.commonName, emoji: PLANT_EMOJI, xPx, capY, surfaceY: bands.surfaceY, overflow, rootBottomY });
+    plantModels.push({ slug: p.slug, label: plant.commonName, emoji: PLANT_EMOJI, xPx, capY, ghostCapY, surfaceY, overflow, rootBottomY });
   }
 
   // Mix component ids with positive parts (for the pattern overlays).
@@ -358,6 +464,8 @@ function buildScene(
     widthCm,
     heightCm,
     containerShape: shape,
+    wave,
+    seeds,
   };
 }
 
@@ -367,25 +475,27 @@ export function TerrariumCrossSection({
   draggableKind,
   onCommit,
   height = 260,
+  textScale = 1,
 }: TerrariumCrossSectionProps) {
   const { c } = useTokens();
   const [size, setSize] = useState<{ w: number; h: number }>({ w: 0, h: 0 });
-  const [tooltipSlug, setTooltipSlug] = useState<string | null>(null);
-
   function onLayout(e: LayoutChangeEvent) {
     const { width } = e.nativeEvent.layout;
     setSize((prev) => (prev.w === width && prev.h === height ? prev : { w: width, h: height }));
   }
 
   const ready = size.w > 0;
+  // Random seam contour, generated once per mount and held stable so re-renders
+  // (drag, field edits) don't make the layers ripple. New each time the viewer mounts.
+  const seedBase = useRef(Math.floor(Math.random() * 1e5)).current;
   // Keep the last valid scene so the viewer never blanks during mid-edit
   // invalid states (empty field, shape switch before new dims are typed).
   const lastScene = useRef<Scene | null>(null);
   const scene = useMemo(() => {
-    const s = ready ? buildScene(draft, plants, size.w, height) : null;
+    const s = ready ? buildScene(draft, plants, size.w, height, seedBase) : null;
     if (s !== null) lastScene.current = s;
     return lastScene.current;
-  }, [ready, draft, plants, size.w, height]);
+  }, [ready, draft, plants, size.w, height, seedBase]);
 
   return (
     <View style={styles.wrap}>
@@ -400,6 +510,7 @@ export function TerrariumCrossSection({
               h={height}
               c={c}
               activeMix={draft.substrateMix}
+              textScale={textScale}
             />
           ) : (
             <PlaceholderSvg w={size.w} h={height} c={c} />
@@ -415,24 +526,7 @@ export function TerrariumCrossSection({
           </View>
         ) : null}
 
-        {/* --- RN overlays over the SVG (drag handles, overflow badges) --- */}
-        {scene
-          ? scene.plants.map((p) =>
-              p.overflow ? (
-                <OverflowBadge
-                  key={`warn-${p.slug}`}
-                  x={p.xPx}
-                  y={p.capY}
-                  active={tooltipSlug === p.slug}
-                  onPress={() => {
-                    haptics.select();
-                    setTooltipSlug((s) => (s === p.slug ? null : p.slug));
-                  }}
-                />
-              ) : null,
-            )
-          : null}
-
+        {/* --- RN overlays over the SVG (drag handles) --- */}
         {scene && draggableKind
           ? scene.plants.map((it) => (
                 <DragHandle
@@ -454,14 +548,6 @@ export function TerrariumCrossSection({
               ))
           : null}
 
-        {/* Overflow tooltip — one at a time, dismiss by tapping the badge again. */}
-        {tooltipSlug ? (
-          <View style={[styles.tooltip, { backgroundColor: c.text }]} pointerEvents="none">
-            <Text variant="caption" style={{ color: c.background }}>
-              This plant’s max height may exceed the height of your container.
-            </Text>
-          </View>
-        ) : null}
       </View>
     </View>
   );
@@ -473,28 +559,29 @@ const DIM_GAP = 12; // px gap between vessel rect and dimension lines
 const DIM_TICK = 4; // half-length of tick marks
 const DIM_FONT = 10; // px font size for dimension labels
 
-function formatDim(cm: number): string {
-  return cm === Math.round(cm) ? `${cm}` : cm.toFixed(1);
-}
-
 function DimensionLines({
   geom,
   widthCm,
   heightCm,
   containerShape,
   c,
+  textScale = 1,
 }: {
   geom: GeomRect;
   widthCm: number;
   heightCm: number;
   containerShape: ContainerShape;
   c: ReturnType<typeof useTokens>['c'];
+  textScale?: number;
 }) {
+  const { units } = usePreferences();
+  const u = lengthUnit(units);
   const { x, y, width, height } = geom;
   const hx = x - DIM_GAP; // x of the vertical height line
   const wy = y + height + DIM_GAP; // y of the horizontal width line
   const midY = y + height / 2;
   const midX = x + width / 2;
+  const dimFont = DIM_FONT * textScale;
 
   return (
     <G>
@@ -505,20 +592,20 @@ function DimensionLines({
       <SvgText
         x={hx - 6}
         y={midY}
-        fontSize={DIM_FONT}
+        fontSize={dimFont}
         fill={c.textMuted}
         textAnchor="middle"
         transform={`rotate(-90, ${hx - 6}, ${midY})`}
       >
-        {`H: ${formatDim(heightCm)}cm`}
+        {`H: ${lengthValue(heightCm, units)}${u}`}
       </SvgText>
 
       {/* Width line — horizontal, below vessel */}
       <Line x1={x} y1={wy} x2={x + width} y2={wy} stroke={c.textMuted} strokeWidth={1} />
       <Line x1={x} y1={wy - DIM_TICK} x2={x} y2={wy + DIM_TICK} stroke={c.textMuted} strokeWidth={1} />
       <Line x1={x + width} y1={wy - DIM_TICK} x2={x + width} y2={wy + DIM_TICK} stroke={c.textMuted} strokeWidth={1} />
-      <SvgText x={midX} y={wy + DIM_FONT + 2} fontSize={DIM_FONT} fill={c.textMuted} textAnchor="middle">
-        {`${containerShape === 'cylindrical' ? 'D' : 'W'}: ${formatDim(widthCm)}cm`}
+      <SvgText x={midX} y={wy + dimFont + 2} fontSize={dimFont} fill={c.textMuted} textAnchor="middle">
+        {`${containerShape === 'cylindrical' ? 'D' : 'W'}: ${lengthValue(widthCm, units)}${u}`}
       </SvgText>
     </G>
   );
@@ -530,12 +617,14 @@ function SceneSvg({
   h,
   c,
   activeMix,
+  textScale = 1,
 }: {
   scene: Scene;
   w: number;
   h: number;
   c: ReturnType<typeof useTokens>['c'];
   activeMix: PlannerDraft['substrateMix'];
+  textScale?: number;
 }) {
   const { geom, profile, bands, opening } = scene;
   // Geometry-keyed clip id. react-native-svg caches a <ClipPath> by its id and does
@@ -545,11 +634,50 @@ function SceneSvg({
   // width; growing the container then leaves every interior fill pinned to the stale,
   // narrow clip while the un-clipped walls stretch correctly. Encoding the vessel box
   // in the id points the reference at a fresh def on each resize, so the clip tracks it.
-  const clipId = `xs-interior-${Math.round(geom.x)}-${Math.round(geom.y)}-${Math.round(geom.width)}-${Math.round(geom.height)}`;
+  // The shape is folded in too: switching rectangular↔cylindrical at the same box keeps
+  // the same interior <Path d> mounted but a different silhouette, so without the shape
+  // the stale clip leaves square corners poking past a rounded wall (and vice-versa).
+  const clipId = `xs-interior-${scene.containerShape}-${Math.round(geom.x)}-${Math.round(geom.y)}-${Math.round(geom.width)}-${Math.round(geom.height)}`;
   const rimW = geom.width * profile.rimWidthFrac;
   const rimX0 = geom.x + (geom.width - rimW) / 2;
 
+  // Per-plant lightness nudge off the themed sage so same-type neighbours differ.
+  const tintOf = (slug: string) => tintSage(c.sage, idSeed(slug));
+
   const mix = activeMix ?? {};
+
+  // Wavy material seams. Adjacent bands share a seam's point array, so they tile
+  // with no gap/overlap; the floor stays flat. A seam's y-fn is reused to keep
+  // scatter marks from floating as sliced discs past the organic edge.
+  const { ampSurface, ampMid, ampLower } = scene.wave;
+  const { surface: seedSurface, mid: seedMid, lower: seedLower } = scene.seeds;
+  const surfacePts = bands.hasSubstrate ? seamPoints(geom, bands.surfaceY, ampSurface, seedSurface) : null;
+  const midPts = bands.hasCharcoal ? seamPoints(geom, bands.charcoalTopY, ampMid, seedMid) : null;
+  const lowerPts = bands.hasDrainage ? seamPoints(geom, bands.drainageTopY, ampLower, seedLower) : null;
+  const lowerSeamY = (x: number) => bands.drainageTopY + waveOffset(x, ampLower, seedLower);
+  // The substrate's bottom is whatever layer sits directly beneath it.
+  const subBottomPts = midPts ?? lowerPts;
+  const subBottomSeamY = midPts
+    ? (x: number) => bands.charcoalTopY + waveOffset(x, ampMid, seedMid)
+    : lowerPts
+      ? lowerSeamY
+      : undefined;
+  const subBottomAmp = midPts ? ampMid : lowerPts ? ampLower : 0;
+  // Texture envelope: overshoot the flat seams by each seam's amplitude so the wavy
+  // crests/troughs fill with stipple+marks instead of bare base. The band clip
+  // (subClipId) trims the overshoot back to the exact wavy edge — no slivers.
+  const texTop = bands.surfaceY - ampSurface;
+  const texBottom = bands.charcoalTopY + subBottomAmp;
+  const substrateD = surfacePts ? bandPath(geom, surfacePts, subBottomPts ?? bands.floorY) : null;
+  const charcoalD = midPts ? bandPath(geom, midPts, lowerPts ?? bands.floorY) : null;
+  const drainageD = lowerPts ? bandPath(geom, lowerPts, bands.floorY) : null;
+  // Seam-keyed ids. clipId only encodes the vessel box, so changing a *layer depth*
+  // (not the vessel) leaves these band paths reshaping under a stale cached <ClipPath>
+  // — react-native-svg won't re-apply a clip when only the child <Path d> changes
+  // (same gotcha as clipId above). Fold the seam y's in so a moved seam = fresh id.
+  const seamKey = `${Math.round(bands.surfaceY)}-${Math.round(bands.charcoalTopY)}-${Math.round(bands.drainageTopY)}`;
+  const subClipId = `${clipId}-sub-${seamKey}`;
+  const drainClipId = `${clipId}-drain-${seamKey}`;
 
   return (
     <Svg width={w} height={h}>
@@ -557,48 +685,81 @@ function SceneSvg({
         <ClipPath id={clipId}>
           <Path d={profile.interiorClipPath(geom)} />
         </ClipPath>
+        {substrateD ? (
+          <ClipPath id={subClipId}>
+            <Path d={substrateD} />
+          </ClipPath>
+        ) : null}
+        {drainageD ? (
+          <ClipPath id={drainClipId}>
+            <Path d={drainageD} />
+          </ClipPath>
+        ) : null}
         <SubstratePatternDefs />
       </Defs>
 
       {/* Layer fills, clipped to the vessel interior (rounded base clips for free). */}
       <G clipPath={`url(#${clipId})`}>
         {/* Drainage — pebble scatter on a cool grey bed. */}
-        {bands.hasDrainage ? (
+        {drainageD ? (
           <>
-            <Rect x={geom.x} y={bands.drainageTopY} width={geom.width} height={bands.floorY - bands.drainageTopY} fill="#8C8F8A" />
-            {drainagePebbles(geom, bands)}
+            <Path d={drainageD} fill="#8C8F8A" />
+            <G clipPath={`url(#${drainClipId})`}>{drainagePebbles(geom, bands, lowerSeamY)}</G>
           </>
         ) : null}
 
         {/* Charcoal — thin near-black filtration band. */}
-        {bands.hasCharcoal ? (
-          <Rect x={geom.x} y={bands.charcoalTopY} width={geom.width} height={bands.drainageTopY - bands.charcoalTopY} fill="#262320" />
-        ) : null}
+        {charcoalD ? <Path d={charcoalD} fill="#262320" /> : null}
 
         {/* Substrate — brown base → soil stipple → scattered mix marks → moisture. */}
-        {bands.hasSubstrate ? (
+        {substrateD ? (
           <>
-            <Rect x={geom.x} y={bands.surfaceY} width={geom.width} height={bands.charcoalTopY - bands.surfaceY} fill={SOIL_BASE_FILL} />
-            <Rect x={geom.x} y={bands.surfaceY} width={geom.width} height={bands.charcoalTopY - bands.surfaceY} fill={`url(#${SOIL_STIPPLE_PATTERN_ID})`} />
-            {scene.activeMixIds.map((id) => {
-              const marks = getComponentMarks(id);
-              if (!marks) return null;
-              const parts = Math.max(1, mix[id] ?? 1);
-              return substrateComponentMarks(id, marks ?? [], geom, bands.surfaceY, bands.charcoalTopY, getComponentStyle(id), parts);
-            })}
-            {/* Moisture grounding — soil reads damper toward the band's bottom. */}
-            <Rect
-              x={geom.x}
-              y={bands.surfaceY}
-              width={geom.width}
-              height={bands.charcoalTopY - bands.surfaceY}
-              fill={`url(#${MOISTURE_GRADIENT_ID})`}
-            />
+            <Path d={substrateD} fill={SOIL_BASE_FILL} />
+            <G clipPath={`url(#${subClipId})`}>
+              <Rect x={geom.x} y={texTop} width={geom.width} height={texBottom - texTop} fill={`url(#${SOIL_STIPPLE_PATTERN_ID})`} />
+              {scene.activeMixIds.map((id) => {
+                const marks = getComponentMarks(id);
+                if (!marks) return null;
+                const parts = Math.max(1, mix[id] ?? 1);
+                return substrateComponentMarks(
+                  id,
+                  marks ?? [],
+                  geom,
+                  texTop,
+                  texBottom,
+                  getComponentStyle(id),
+                  parts,
+                  scene.cmToPx,
+                  (x) => bands.surfaceY + waveOffset(x, ampSurface, seedSurface),
+                  subBottomSeamY,
+                );
+              })}
+              {/* Moisture grounding — soil reads damper toward the band's bottom. */}
+              <Rect
+                x={geom.x}
+                y={texTop}
+                width={geom.width}
+                height={texBottom - texTop}
+                fill={`url(#${MOISTURE_GRADIENT_ID})`}
+              />
+            </G>
           </>
+        ) : null}
+
+        {/* Surface crust — a thin damp leaf-litter line riding the substrate seam,
+            so the soil reads as planted rather than poured. Reuses the surface wave. */}
+        {surfacePts ? (
+          <Path d={polylinePath(surfacePts)} fill="none" stroke="#3A2A1A" strokeWidth={1.5} strokeOpacity={0.5} strokeLinecap="round" strokeLinejoin="round" />
         ) : null}
 
         {/* Ambient occlusion — light loss where every layer meets the glass walls. */}
         <Rect x={geom.x} y={geom.y} width={geom.width} height={geom.height} fill={`url(#${AO_GRADIENT_ID})`} />
+
+        {/* Glass sheen — soft diagonal highlight across the upper glass (AO's bright twin). */}
+        <Rect x={geom.x} y={geom.y} width={geom.width} height={geom.height} fill={`url(#${SPECULAR_GRADIENT_ID})`} />
+
+        {/* Condensation — faint droplets fogging the upper glass of a closed build. */}
+        {opening === 'sealed' || opening === 'lidded' ? condensation(geom, bands) : null}
 
         {/* Root-depth bands sit under the surface, inside the substrate/drainage. */}
         {scene.plants.map((p) =>
@@ -609,14 +770,14 @@ function SceneSvg({
               y={p.surfaceY}
               width={rootBandW(geom)}
               height={Math.max(0, p.rootBottomY - p.surfaceY)}
-              fill={c.sage}
+              fill={tintOf(p.slug)}
               opacity={0.22}
             />
           ) : null,
         )}
         {scene.plants.map((p) =>
           p.rootBottomY != null ? (
-            <Line key={`rootedge-${p.slug}`} x1={p.xPx - rootBandW(geom) / 2} y1={p.rootBottomY} x2={p.xPx + rootBandW(geom) / 2} y2={p.rootBottomY} stroke={c.sage} strokeWidth={1.5} opacity={0.6} />
+            <Line key={`rootedge-${p.slug}`} x1={p.xPx - rootBandW(geom) / 2} y1={p.rootBottomY} x2={p.xPx + rootBandW(geom) / 2} y2={p.rootBottomY} stroke={tintOf(p.slug)} strokeWidth={1.5} opacity={0.6} />
           ) : null,
         )}
       </G>
@@ -628,19 +789,33 @@ function SceneSvg({
         // For rotate(-90) with textAnchor="start": the right edge of the text
         // column lands at labelX, so offset right-side labels by fontSize to
         // keep the column clear of the bar.
+        const labelFontSize = LABEL_FONT_SIZE * textScale;
         const labelX = labelOnRight
-          ? p.xPx + STEM_W / 2 + LABEL_FONT_SIZE + 2
+          ? p.xPx + STEM_W / 2 + labelFontSize + 2
           : p.xPx - STEM_W / 2 - 2;
+        const tint = tintOf(p.slug);
         return (
           <G key={`plant-${p.slug}`}>
-            <Rect x={p.xPx - STEM_W / 2} y={p.capY} width={STEM_W} height={Math.max(0, p.surfaceY - p.capY)} rx={STEM_W / 2} fill={c.sage} />
+            {/* Ghost — faint bar to the genetic max height, with a dashed cap, behind
+                the solid typical-height bar (the exposed segment = typical→max headroom). */}
+            {p.ghostCapY != null ? (
+              <>
+                <Rect x={p.xPx - STEM_W / 2} y={p.ghostCapY} width={STEM_W} height={Math.max(0, p.surfaceY - p.ghostCapY)} rx={STEM_W / 2} fill={tint} opacity={0.3} />
+                <Line x1={p.xPx - STEM_W} y1={p.ghostCapY} x2={p.xPx + STEM_W} y2={p.ghostCapY} stroke={tint} strokeWidth={1} strokeDasharray="2 2" opacity={0.6} />
+              </>
+            ) : null}
+            <Rect x={p.xPx - STEM_W / 2} y={p.capY} width={STEM_W} height={Math.max(0, p.surfaceY - p.capY)} rx={STEM_W / 2} fill={tint} />
             {p.overflow ? (
-              <Line x1={p.xPx} y1={geom.y} x2={p.xPx} y2={geom.y - OVERFLOW_STUB} stroke={c.sage} strokeWidth={STEM_W} strokeDasharray="3 3" strokeLinecap="round" />
+              <>
+                <Line x1={p.xPx} y1={geom.y} x2={p.xPx} y2={geom.y - OVERFLOW_STUB} stroke={c.accent} strokeWidth={STEM_W} strokeDasharray="3 3" strokeLinecap="round" />
+                <Circle cx={p.xPx} cy={geom.y - OVERFLOW_STUB - 6} r={5} fill={c.accent} />
+                <SvgText x={p.xPx} y={geom.y - OVERFLOW_STUB - 3} fontSize={8} fill={c.surfaceSunken} textAnchor="middle" fontWeight="bold">!</SvgText>
+              </>
             ) : null}
             <SvgText
               x={labelX}
               y={p.surfaceY - 2}
-              fontSize={LABEL_FONT_SIZE}
+              fontSize={labelFontSize}
               fill={c.textMuted}
               textAnchor="start"
               transform={`rotate(-90, ${labelX}, ${p.surfaceY - 2})`}
@@ -660,7 +835,7 @@ function SceneSvg({
         <Line x1={rimX0 - 3} y1={geom.y - LID_GAP} x2={rimX0 + rimW + 3} y2={geom.y - LID_GAP} stroke={c.text} strokeOpacity={0.5} strokeWidth={3} strokeLinecap="round" />
       ) : null}
 
-      <DimensionLines geom={geom} widthCm={scene.widthCm} heightCm={scene.heightCm} containerShape={scene.containerShape} c={c} />
+      <DimensionLines geom={geom} widthCm={scene.widthCm} heightCm={scene.heightCm} containerShape={scene.containerShape} c={c} textScale={textScale} />
     </Svg>
   );
 }
@@ -671,7 +846,7 @@ function rootBandW(geom: GeomRect): number {
 }
 
 /** Scatter a stable set of pebble circles through the drainage band. */
-function drainagePebbles(geom: GeomRect, bands: LayerBands) {
+function drainagePebbles(geom: GeomRect, bands: LayerBands, seamTop?: (x: number) => number) {
   const top = bands.drainageTopY;
   const bottom = bands.floorY;
   const bandH = bottom - top;
@@ -686,9 +861,36 @@ function drainagePebbles(geom: GeomRect, bands: LayerBands) {
       const jx = (rand(seed) - 0.5) * 8;
       const jy = (rand(seed + 100) - 0.5) * 6;
       const cx = geom.x + ((col + 0.5) / cols) * geom.width + jx;
-      const cy = top + ((r + 0.5) / rows) * bandH + jy;
+      let cy = top + ((r + 0.5) / rows) * bandH + jy;
       const rad = 4.4 + rand(seed + 200) * 3.6;
+      // Sink any pebble that would breach the wavy top so it reads as buried gravel.
+      if (seamTop) cy = Math.max(cy, seamTop(cx) + rad * (1 - WAVE_POKE));
       nodes.push(<Circle key={`peb-${seed}`} cx={cx} cy={cy} r={rad} fill={tones[seed % tones.length]} />);
+    }
+  }
+  return nodes;
+}
+
+/**
+ * Faint condensation droplets fogging the upper glass of a closed terrarium — only
+ * the air space above the substrate, biased toward the cooler top. Seeded so they
+ * stay put across re-renders; clipped to the interior by the caller's `<G>`.
+ */
+function condensation(geom: GeomRect, bands: LayerBands): React.ReactNode {
+  const top = geom.y;
+  const airH = bands.surfaceY - top;
+  if (airH <= 8) return null;
+  const cols = Math.max(3, Math.round(geom.width / 22));
+  const rows = Math.max(2, Math.round(airH / 36));
+  const nodes: React.ReactNode[] = [];
+  for (let r = 0; r < rows; r++) {
+    for (let col = 0; col < cols; col++) {
+      const seed = r * 53 + col * 17 + 7;
+      const cx = geom.x + ((col + 0.5) / cols) * geom.width + (rand(seed) - 0.5) * 14;
+      // Keep droplets in the upper ~70% of the air gap — glass fogs most up high.
+      const cy = top + ((r + rand(seed + 3)) / rows) * airH * 0.7;
+      const rad = 0.8 + rand(seed + 9) * 1.6;
+      nodes.push(<Circle key={`cond-${seed}`} cx={cx} cy={cy} r={rad} fill="#FFFFFF" opacity={0.12 + rand(seed + 5) * 0.12} />);
     }
   }
   return nodes;
@@ -715,24 +917,6 @@ function PlaceholderSvg({ w, h, c }: { w: number; h: number; c: ReturnType<typeo
 }
 
 // --- RN overlays ------------------------------------------------------------
-
-/** A tappable ⚠️ badge floating at an overflowing plant's clipped cap. */
-function OverflowBadge({ x, y, active, onPress }: { x: number; y: number; active: boolean; onPress: () => void }) {
-  const { c } = useTokens();
-  return (
-    <Pressable
-      onPress={onPress}
-      accessibilityRole="button"
-      accessibilityLabel="Plant may be too tall for the container"
-      hitSlop={10}
-      style={[
-        styles.badge,
-        { left: x + 6, top: y - 26, backgroundColor: c.surface, borderColor: active ? c.accent : c.border },
-      ]}>
-      <Text variant="caption">⚠️</Text>
-    </Pressable>
-  );
-}
 
 /**
  * Horizontal drag for one plant. A static, transparent touch column at the plant's
@@ -828,15 +1012,6 @@ const styles = StyleSheet.create({
     padding: Spacing.lg,
   },
   hintText: { textAlign: 'center', maxWidth: 240, lineHeight: 18 },
-  badge: {
-    position: 'absolute',
-    width: 22,
-    height: 22,
-    borderRadius: Radii.pill,
-    borderWidth: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
   dragLine: {
     position: 'absolute',
     top: 0,
@@ -860,13 +1035,5 @@ const styles = StyleSheet.create({
     top: 0,
     width: 44,
     backgroundColor: 'transparent',
-  },
-  tooltip: {
-    position: 'absolute',
-    top: Spacing.sm,
-    left: Spacing.md,
-    right: Spacing.md,
-    padding: Spacing.sm,
-    borderRadius: Radii.md,
   },
 });

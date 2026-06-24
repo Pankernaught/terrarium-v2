@@ -10,7 +10,7 @@
  * (the CI integrity checks make that path unreachable in shipped data).
  */
 import { useState } from 'react';
-import { ScrollView, StyleSheet, useWindowDimensions, View } from 'react-native';
+import { Linking, Pressable, ScrollView, StyleSheet, useWindowDimensions, View } from 'react-native';
 
 import { BottomSheet, Chip, haptics, SectionLabel, Text } from '@/components/ui';
 import { Spacing } from '@/constants/theme';
@@ -57,9 +57,11 @@ export function TermSheet({ slug, onClose }: TermSheetProps) {
                 <Chip label={GLOSSARY_CATEGORY_LABELS[entry.category]} tone="sage" selected />
               </View>
 
-              <Text variant="body" role="textMuted" style={styles.definition}>
-                {entry.definition}
-              </Text>
+              {entry.definition ? (
+                <Text variant="body" role="textMuted" style={styles.definition}>
+                  {entry.definition}
+                </Text>
+              ) : null}
 
               {entry.seeAlso.length > 0 ? (
                 <View style={styles.seeAlso}>
@@ -79,6 +81,14 @@ export function TermSheet({ slug, onClose }: TermSheetProps) {
                   </View>
                 </View>
               ) : null}
+
+              {entry.wikiUrl ? (
+                <Pressable onPress={() => Linking.openURL(entry.wikiUrl!)}>
+                  <Text variant="caption" role="textMuted" style={styles.sourceLink}>
+                    Source: Wikipedia ↗
+                  </Text>
+                </Pressable>
+              ) : null}
             </>
           ) : (
             <Text variant="body" role="textMuted" style={styles.definition}>
@@ -97,4 +107,5 @@ const styles = StyleSheet.create({
   definition: { lineHeight: 22 },
   seeAlso: { gap: Spacing.sm },
   chipWrap: { flexDirection: 'row', flexWrap: 'wrap', gap: Spacing.sm },
+  sourceLink: { textDecorationLine: 'underline' },
 });

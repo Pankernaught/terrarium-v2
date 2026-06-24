@@ -16,19 +16,22 @@ import { memo, useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { ActivityIndicator, InteractionManager, type LayoutChangeEvent, Pressable, StyleSheet, TextInput, View } from 'react-native';
 import Animated, { Easing, useAnimatedStyle, useSharedValue, withSequence, withTiming } from 'react-native-reanimated';
 
-import { Card, Chip, EcoMeter, haptics, SectionLabel, Text } from '@/components/ui';
+import { Card, Chip, EcoMeter, haptics, RangeSlider, SectionLabel, Text } from '@/components/ui';
 import { PlantSheet, type PlantConflict } from '@/components/plant-sheet';
 import { Radii, Spacing } from '@/constants/theme';
 import { loadPlants } from '@/data';
 import { useTokens } from '@/hooks/use-tokens';
 import { resolveBuildContainer } from '@/logic/containers';
 import { ecoBandLabel, ecoColor } from '@/logic/eco';
+import { groupConflicts } from '@/logic/group-conflicts';
 import { defaultPlacement, removePlacement, upsertPlacement } from '@/logic/placement';
 import { plantFitScore } from '@/logic/recommend';
 import { scoreBuild } from '@/logic/score-build';
 import { filterPlants, type BrowseCriteria, type BrowseSort } from '@/logic/browse-filter';
 import { checkPair } from '@/logic/compatibility';
 import { humanize } from '@/lib/labels';
+import { usePreferences } from '@/hooks/use-preferences';
+import { fmtLength, fmtTemp } from '@/logic/units';
 import { LIGHT_LEVELS, NATIVE_BIOMES, PLANT_TYPES, type Plant } from '@/types/plant';
 import type { GroupReport } from '@/types/results';
 
@@ -43,6 +46,9 @@ const CATALOG_SORTS: { value: CatalogSort; label: string }[] = [
   { value: 'height', label: 'Height' },
 ];
 const DIFFICULTIES = [1, 2, 3, 4, 5];
+const TEMP_MIN = 5, TEMP_MAX = 35;
+const HUMID_MIN = 10, HUMID_MAX = 100;
+const HEIGHT_MIN = 0, HEIGHT_MAX = 100;
 
 /** Any incompatible (survival-critical) conflict anywhere in the report. */
 function hasSurvivalCritical(report: GroupReport): boolean {
@@ -57,9 +63,10 @@ function hasSurvivalCritical(report: GroupReport): boolean {
   return false;
 }
 
-/** Pairwise conflicts between `candidate` and each of `selected`. */
+/** Pairwise conflicts between `candidate` and each of `selected`, sorted worst-first
+ * with identical-template concerns collapsed (see {@link groupConflicts}). */
 function getConflicts(candidate: Plant, selected: Plant[]): PlantConflict[] {
-  return selected
+  const raw = selected
     .filter((sp) => sp.slug !== candidate.slug)
     .flatMap((sp) =>
       checkPair(candidate, sp).conflicts.map((c) => ({
@@ -68,10 +75,12 @@ function getConflicts(candidate: Plant, selected: Plant[]): PlantConflict[] {
         severity: c.severity,
       })),
     );
+  return groupConflicts(raw);
 }
 let placementCounter = 0;
 export function PlantsStep({ draft, plants, update }: StepProps) {
   const { c, scheme } = useTokens();
+  const { units } = usePreferences();
 
   // Refs keep the stable togglePlant callback from capturing stale closures.
   const draftRef = useRef(draft);
@@ -81,6 +90,12 @@ export function PlantsStep({ draft, plants, update }: StepProps) {
 
   const catalog = useMemo(() => loadPlants(), []);
   const container = useMemo(() => resolveBuildContainer(draft), [draft]);
+  const headroomCm = useMemo(() => {
+    const dims = draft.containerDimensions;
+    if (!dims?.height) return null;
+    const layers = (draft.substrateDepth ?? 0) + (draft.drainageDepth ?? 0) + (draft.charcoalDepth ?? 0);
+    return Math.max(0, dims.height - layers);
+  }, [draft]);
 
   // --- Filter / sort state (mirrors Browse) ---
   const [query, setQuery] = useState('');
@@ -88,10 +103,17 @@ export function PlantsStep({ draft, plants, update }: StepProps) {
   const [biomes, setBiomes] = useState<string[]>([]);
   const [lights, setLights] = useState<string[]>([]);
   const [difficulties, setDifficulties] = useState<number[]>([]);
+  const [tempRange, setTempRange] = useState<[number, number]>([TEMP_MIN, TEMP_MAX]);
+  const [humidRange, setHumidRange] = useState<[number, number]>([HUMID_MIN, HUMID_MAX]);
+  const [heightRange, setHeightRange] = useState<[number, number]>([HEIGHT_MIN, HEIGHT_MAX]);
   const [filtersOpen, setFiltersOpen] = useState(false);
+  const [matchMode, setMatchMode] = useState<'all' | 'any'>('all');
   const hasFitContext = container != null || plants.length > 0;
   const [sort, setSort] = useState<CatalogSort>(hasFitContext ? 'fit' : 'name');
-  const activeFilters = types.length + biomes.length + lights.length + difficulties.length;
+  const tempActive = tempRange[0] > TEMP_MIN || tempRange[1] < TEMP_MAX;
+  const humidActive = humidRange[0] > HUMID_MIN || humidRange[1] < HUMID_MAX;
+  const heightActive = heightRange[0] > HEIGHT_MIN || heightRange[1] < HEIGHT_MAX;
+  const activeFilters = types.length + biomes.length + lights.length + difficulties.length + (tempActive ? 1 : 0) + (humidActive ? 1 : 0) + (heightActive ? 1 : 0);
 
   // Switch default to 'fit' when fit context first becomes available.
   useEffect(() => {
@@ -105,6 +127,9 @@ export function PlantsStep({ draft, plants, update }: StepProps) {
   }
   function clearFilters() {
     setTypes([]); setBiomes([]); setLights([]); setDifficulties([]);
+    setTempRange([TEMP_MIN, TEMP_MAX]);
+    setHumidRange([HUMID_MIN, HUMID_MAX]);
+    setHeightRange([HEIGHT_MIN, HEIGHT_MAX]);
   }
 
   // --- Plant sheet state ---
@@ -136,6 +161,10 @@ export function PlantsStep({ draft, plants, update }: StepProps) {
     biomes: biomes.length ? biomes : undefined,
     lights: lights.length ? lights : undefined,
     difficulties: difficulties.length ? difficulties : undefined,
+    tempRange: tempActive ? tempRange : undefined,
+    humidRange: humidActive ? humidRange : undefined,
+    heightRange: heightActive ? heightRange : undefined,
+    matchMode,
     sort: sort === 'fit' ? 'name' : sort,
   };
   const filtered = useMemo(() => {
@@ -151,7 +180,7 @@ export function PlantsStep({ draft, plants, update }: StepProps) {
     const selected = new Set(draft.plantSlugs);
     return [...byFit].sort((a, b) => +!selected.has(a.slug) - +!selected.has(b.slug));
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [catalog, query, types, biomes, lights, difficulties, sort, fitScores, draft.plantSlugs]);
+  }, [catalog, query, types, biomes, lights, difficulties, matchMode, tempRange, humidRange, heightRange, sort, fitScores, draft.plantSlugs]);
 
   const selectedSlugs = new Set(draft.plantSlugs);
 
@@ -305,15 +334,23 @@ export function PlantsStep({ draft, plants, update }: StepProps) {
             />
           </Pressable>
           <View style={styles.sortGroup}>
-            {CATALOG_SORTS.filter((s) => s.value !== 'fit' || hasFitContext).map((s) => (
-              <Chip
-                key={s.value}
-                label={s.label}
-                tone="sage"
-                selected={sort === s.value}
-                onPress={() => setSort(s.value)}
-              />
-            ))}
+            {CATALOG_SORTS.filter((s) => s.value !== 'fit' || hasFitContext).map((s) => {
+              const directable = s.value === 'name' || s.value === 'difficulty';
+              const isActive = sort === s.value || sort === `${s.value}-desc`;
+              const isDesc = sort === `${s.value}-desc`;
+              return (
+                <Chip
+                  key={s.value}
+                  label={directable && isActive ? `${s.label} ${isDesc ? '↓' : '↑'}` : s.label}
+                  tone="sage"
+                  selected={isActive}
+                  onPress={() => {
+                    if (directable && isActive && !isDesc) setSort(`${s.value}-desc` as CatalogSort);
+                    else setSort(s.value);
+                  }}
+                />
+              );
+            })}
           </View>
         </View>
 
@@ -334,6 +371,37 @@ export function PlantsStep({ draft, plants, update }: StepProps) {
                     onPress={() => toggleFilter(difficulties, setDifficulties, d)}
                   />
                 ))}
+              </View>
+            </View>
+            <RangeSlider
+              label="Temperature"
+              min={TEMP_MIN}
+              max={TEMP_MAX}
+              values={tempRange}
+              onChange={setTempRange}
+              format={(v) => fmtTemp(v, units)}
+            />
+            <RangeSlider
+              label="Humidity"
+              min={HUMID_MIN}
+              max={HUMID_MAX}
+              values={humidRange}
+              onChange={setHumidRange}
+              format={(v) => `${v}%`}
+            />
+            <RangeSlider
+              label="Size"
+              min={HEIGHT_MIN}
+              max={HEIGHT_MAX}
+              values={heightRange}
+              onChange={setHeightRange}
+              format={(v) => fmtLength(v, units)}
+            />
+            <View style={styles.facet}>
+              <SectionLabel>Match</SectionLabel>
+              <View style={styles.chipWrap}>
+                <Chip label="All filters" tone="sage" selected={matchMode === 'all'} onPress={() => setMatchMode('all')} />
+                <Chip label="Any filter" tone="sage" selected={matchMode === 'any'} onPress={() => setMatchMode('any')} />
               </View>
             </View>
             {activeFilters > 0 ? (
@@ -359,6 +427,7 @@ export function PlantsStep({ draft, plants, update }: StepProps) {
                 plant={p}
                 selected={selectedSlugs.has(p.slug)}
                 fitScore={fitScores.get(p.slug) ?? null}
+                tooTall={headroomCm != null && p.maxHeightCm > headroomCm}
                 scheme={scheme}
                 onToggle={togglePlant}
                 onInfo={setSheetPlant}
@@ -403,6 +472,7 @@ const PlantCatalogRow = memo(function PlantCatalogRow({
   plant,
   selected,
   fitScore,
+  tooTall,
   scheme,
   onToggle,
   onInfo,
@@ -410,6 +480,7 @@ const PlantCatalogRow = memo(function PlantCatalogRow({
   plant: Plant;
   selected: boolean;
   fitScore: number | null;
+  tooTall: boolean;
   scheme: 'light' | 'dark';
   onToggle: (slug: string) => void;
   onInfo: (plant: Plant) => void;
@@ -443,6 +514,9 @@ const PlantCatalogRow = memo(function PlantCatalogRow({
             <View style={[styles.fitDot, { backgroundColor: fitColor }]} />
             <Text variant="caption" style={{ color: fitColor }}>{fitScore}%</Text>
           </View>
+        ) : null}
+        {tooTall ? (
+          <Text variant="caption" style={{ color: c.accent }} accessibilityLabel="May exceed container height">↑</Text>
         ) : null}
         <Pressable
           onPress={() => onInfo(plant)}

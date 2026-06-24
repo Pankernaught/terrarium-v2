@@ -88,7 +88,7 @@ const GROUPS = [
     title: 'Size & growth',
     fields: [
       { key: 'maxHeightCm', label: 'Max height cm', kind: 'number', required: true, min: 0, help: 'Mature height — drives substrate depth math.' },
-      { key: 'heightMinCm', label: 'Min height cm', kind: 'number', min: 0, help: 'Optional. Must be ≤ max height.' },
+      { key: 'typicalHeightCm', label: 'Typical height cm', kind: 'number', min: 0, help: 'Expected cultivation height (day-to-day look, not the genetic ceiling). Optional; renderer falls back to max×0.7. Must be ≤ max height.' },
       { key: 'spreadMinCm', label: 'Spread min cm', kind: 'number', min: 0 },
       { key: 'spreadMaxCm', label: 'Spread max cm', kind: 'number', min: 0 },
       { key: 'rootDepthMinCm', label: 'Root depth min cm', kind: 'number', required: true, min: 0, help: 'Reference-only range (not a depth driver). Required for every shipped plant.' },
@@ -110,6 +110,7 @@ const GROUPS = [
     fields: [
       { key: 'closedTerrariumOk', label: 'OK in closed terrarium', kind: 'bool', required: true },
       { key: 'openTerrariumOk', label: 'OK in open terrarium', kind: 'bool', required: true },
+      { key: 'smallTerrariumFriendly', label: 'Small-terrarium friendly', kind: 'bool', required: true, help: 'Stays manageable in a small build (≤20 cm tall at maturity).' },
       { key: 'difficulty', label: 'Difficulty (1–5)', kind: 'number', required: true, min: 1, max: 5, int: true },
     ],
   },
@@ -146,11 +147,11 @@ const WRITE_ORDER = [
   'slug', 'commonName', 'scientificName',
   'light', 'soilMoisture',
   'humidityPctRange', 'tempCRange',
-  'maxHeightCm', 'heightMinCm', 'spreadMinCm', 'spreadMaxCm',
+  'maxHeightCm', 'typicalHeightCm', 'spreadMinCm', 'spreadMaxCm',
   'rootDepthMinCm', 'rootDepthMaxCm',
   'soilPhMin', 'soilPhMax', 'phPreference',
   'growthRate', 'substrateTags', 'hardscapeTags',
-  'closedTerrariumOk', 'openTerrariumOk', 'difficulty',
+  'closedTerrariumOk', 'openTerrariumOk', 'smallTerrariumFriendly', 'difficulty',
   'image',
   'growthHabit', 'plantType', 'nativeBiome', 'rarity',
   'toxicity', 'nativeContext', 'notes',
@@ -280,8 +281,8 @@ function validatePlant(rec, existingSlugs, knownGlossarySlugs) {
   }
 
   // Cross-field rules.
-  if (isNum(rec.heightMinCm) && isNum(rec.maxHeightCm) && rec.heightMinCm > rec.maxHeightCm) {
-    errors.heightMinCm = errors.heightMinCm || `Min height must be ≤ max height`;
+  if (isNum(rec.typicalHeightCm) && isNum(rec.maxHeightCm) && rec.typicalHeightCm > rec.maxHeightCm) {
+    errors.typicalHeightCm = errors.typicalHeightCm || `Typical height must be ≤ max height`;
   }
   if (isNum(rec.spreadMinCm) && isNum(rec.spreadMaxCm) && rec.spreadMinCm > rec.spreadMaxCm) {
     errors.spreadMinCm = errors.spreadMinCm || `Spread min must be ≤ spread max`;

@@ -25,6 +25,7 @@ import { GlossaryText } from '@/components/glossary-text';
 import { TermSheet } from '@/components/term-sheet';
 import { Radii, Spacing } from '@/constants/theme';
 import { useTokens } from '@/hooks/use-tokens';
+import { usePreferences } from '@/hooks/use-preferences';
 import { copy } from '@/lib/copy';
 import { loadPlants } from '@/data';
 import { componentLabel } from '@/data/substrate-components';
@@ -47,6 +48,7 @@ type LoadState = { status: 'loading' } | { status: 'missing' } | { status: 'read
 
 function BuildGuide({ repos }: { repos: Repos }) {
   const { id } = useLocalSearchParams<{ id: string }>();
+  const { units } = usePreferences();
 
   const plants = useMemo(() => loadPlants(), []);
 
@@ -98,6 +100,7 @@ function BuildGuide({ repos }: { repos: Repos }) {
         drainageDepth: build.drainageDepth,
         charcoalDepth: build.charcoalDepth,
         substrateMix,
+        units,
       });
     } catch {
       guide = null;

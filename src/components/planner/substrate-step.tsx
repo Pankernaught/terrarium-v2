@@ -11,6 +11,8 @@ import { Pressable, StyleSheet, View } from 'react-native';
 import { CollapsibleCard, Chip, haptics, Meter, Text } from '@/components/ui';
 import { Radii, Spacing } from '@/constants/theme';
 import { useTokens } from '@/hooks/use-tokens';
+import { usePreferences } from '@/hooks/use-preferences';
+import { cmToIn, fmtLength, inToCm, lengthUnit } from '@/logic/units';
 import { SUBSTRATE_COMPONENTS, componentLabel } from '@/data/substrate-components';
 import { defaultLayerDepths } from '@/logic/containers';
 import { PROPERTY_LABELS, SUBSTRATE_PROPERTIES } from '@/logic/substrate-matrix';
@@ -32,13 +34,9 @@ const MAX_PARTS = 9;
 const CHARCOAL_DEFAULT_CM = 1.5;
 const DRAINAGE_DEFAULT_CM = 3;
 
-/** Round a cm value to one decimal and stringify without a trailing `.0`. */
-function fmtCm(value: number): string {
-  return String(Number(value.toFixed(1)));
-}
-
 export function SubstrateStep({ draft, plants, update }: StepProps) {
   const { c } = useTokens();
+  const { units } = usePreferences();
   const { containerVolumeL, substrateDepth, drainageDepth, charcoalDepth, substrateMix } = draft;
 
   // Prevents the seeding effect from immediately re-enabling drainage after the
@@ -85,6 +83,13 @@ export function SubstrateStep({ draft, plants, update }: StepProps) {
   const charcoalOn = charcoalDepth != null;
   const charcoal = charcoalDepth ?? 0;
 
+  // The depth stepper works in the display unit so it steps by a clean 0.5 cm / 0.5
+  // in (snapped to that grid), then converts back to the cm we store.
+  const imperial = units === 'imperial';
+  const snapHalf = (x: number) => Math.round(x / 0.5) * 0.5;
+  const substrateDisp = imperial ? snapHalf(cmToIn(substrate)) : substrate;
+  const substrateMaxDisp = imperial ? Math.floor(cmToIn(SUBSTRATE_MAX_CM) / 0.5) * 0.5 : SUBSTRATE_MAX_CM;
+
   function toggleDrainage() {
     haptics.select();
     if (drainageOn) {
@@ -111,9 +116,9 @@ export function SubstrateStep({ draft, plants, update }: StepProps) {
   }
 
   const layerDepthsSummary = [
-    `${fmtCm(substrate)} cm substrate`,
-    drainageOn ? `${fmtCm(drainage)} cm drainage` : null,
-    charcoalOn ? `${fmtCm(charcoal)} cm charcoal` : null,
+    `${fmtLength(substrate, units)} substrate`,
+    drainageOn ? `${fmtLength(drainage, units)} drainage` : null,
+    charcoalOn ? `${fmtLength(charcoal, units)} charcoal` : null,
   ]
     .filter(Boolean)
     .join(' · ');
@@ -146,14 +151,14 @@ export function SubstrateStep({ draft, plants, update }: StepProps) {
           </Text>
           <Stepper
             c={c}
-            value={substrate}
-            max={SUBSTRATE_MAX_CM}
+            value={substrateDisp}
+            max={substrateMaxDisp}
             step={STEP_CM}
-            unit="cm"
-            format={fmtCm}
-            decLabel="Decrease by half a centimetre"
-            incLabel="Increase by half a centimetre"
-            onChange={(n) => update({ substrateDepth: n })}
+            unit={lengthUnit(units)}
+            format={String}
+            decLabel="Decrease depth"
+            incLabel="Increase depth"
+            onChange={(n) => update({ substrateDepth: imperial ? Number(inToCm(n).toFixed(2)) : n })}
           />
 
           <View style={styles.divider} />
@@ -164,7 +169,7 @@ export function SubstrateStep({ draft, plants, update }: StepProps) {
           <OptionalLayerRow
             c={c}
             on={drainageOn}
-            onLabel={`Included · ${fmtCm(drainage)} cm`}
+            onLabel={`Included · ${fmtLength(drainage, units)}`}
             offLabel="Not included"
             description="A drainage layer at the base keeps roots out of standing water."
             accessibilityLabel={drainageOn ? 'Edit drainage layer depth' : 'Add a drainage layer'}
@@ -179,7 +184,7 @@ export function SubstrateStep({ draft, plants, update }: StepProps) {
           <OptionalLayerRow
             c={c}
             on={charcoalOn}
-            onLabel={`Included · ${fmtCm(charcoal)} cm`}
+            onLabel={`Included · ${fmtLength(charcoal, units)}`}
             offLabel="Not included"
             description="A thin charcoal layer between drainage and substrate keeps a closed build from souring."
             accessibilityLabel={

@@ -20,6 +20,7 @@ import { MaxContentWidth, Radii, Spacing } from '@/constants/theme';
 import { loadPlants } from '@/data';
 import { type Repos, useDbState } from '@/db/provider';
 import type { Build } from '@/db/schema';
+import type { Plant } from '@/types/plant';
 import { copy } from '@/lib/copy';
 import { shareBuildPdf, shareBuildTxt } from '@/lib/export';
 import { resolveBuildSummary } from '@/logic/export-txt';
@@ -51,6 +52,7 @@ function Dashboard({ repos }: { repos: Repos }) {
 
   // Seed catalogs are static — load once and reuse for every build's score.
   const plants = useMemo(() => loadPlants(), []);
+  const bySlug = useMemo(() => new Map(plants.map((p) => [p.slug, p])), [plants]);
 
   const [rows, setRows] = useState<Row[] | null>(null);
   const [overflowFor, setOverflowFor] = useState<Row | null>(null);
@@ -170,6 +172,8 @@ function Dashboard({ repos }: { repos: Repos }) {
                   plantCount={row.build.plantSlugs.length}
                   scored={row.scored}
                   heroUri={row.heroUri}
+                  build={row.build}
+                  plants={row.build.plantSlugs.map((s) => bySlug.get(s)).filter((p): p is Plant => !!p)}
                   width={cardW}
                   // Cast: the typed-routes manifest regenerates for build/[id] on `expo start`.
                   onPress={() => router.push(`/build/${row.build.id}` as Href)}

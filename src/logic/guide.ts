@@ -15,6 +15,7 @@
  */
 import type { Container, Plant } from '../types';
 import { copy } from '../lib/copy';
+import { fmtLength, fmtLengthRange, type Units } from './units';
 
 /** One ordered build step (camelCase mirror of the v1 `{step, title, instruction}` dict). */
 export interface BuildStep {
@@ -56,6 +57,8 @@ export interface BuildGuideOptions {
   charcoalDepth?: number | null;
   /** Material string for the drainage-layer instruction. Defaults to "pebbles or LECA". */
   drainageMaterial?: string;
+  /** Display units for the depth strings. Defaults to metric (storage is always cm). */
+  units?: Units;
   /**
    * A custom substrate-mixer recipe. When present (non-empty `recipe`), the
    * Substrate-Layer step names the concrete mix + its character; when absent it
@@ -69,9 +72,17 @@ function articleFor(phrase: string): string {
   return /^[aeiou]/i.test(phrase) ? 'an' : 'a';
 }
 
-/** Round a cm value to one decimal and stringify without a trailing `.0`. */
-function fmtCm(value: number): string {
-  return `${String(Number(value.toFixed(1)))} cm`;
+/**
+ * A layer depth in the active unit. Metric keeps the byte-exact "5 cm" form;
+ * imperial converts via `fmtLength`.
+ */
+function fmtDepth(value: number, units: Units): string {
+  return units === 'imperial' ? fmtLength(value, 'imperial') : `${String(Number(value.toFixed(1)))} cm`;
+}
+
+/** A preset depth *range* (cm). Metric keeps the compact "3-5cm" literal; imperial converts. */
+function fmtDepthRange(minCm: number, maxCm: number, units: Units): string {
+  return units === 'imperial' ? fmtLengthRange(minCm, maxCm, 'imperial') : `${minCm}-${maxCm}cm`;
 }
 
 /**
@@ -94,6 +105,7 @@ export function generateBuildGuide(
     charcoalDepth,
     drainageMaterial = 'pebbles or [[leca|LECA]]',
     substrateMix,
+    units = 'metric',
   } = opts;
 
   // Working steps without numbers; sequential `step` is stamped on at the end.
@@ -118,12 +130,16 @@ export function generateBuildGuide(
   if (addDrainage) {
     let actualDrainageDepth: string;
     if (drainageDepth != null && drainageDepth > 0) {
-      actualDrainageDepth = fmtCm(drainageDepth);
+      actualDrainageDepth = fmtDepth(drainageDepth, units);
     } else {
       const hasWetMoist = plants.some(
         (p) => p.soilMoisture.primary === 'wet' || p.soilMoisture.primary === 'moist',
       );
-      actualDrainageDepth = hasWetMoist ? '2-3cm' : '1cm';
+      actualDrainageDepth = hasWetMoist
+        ? fmtDepthRange(2, 3, units)
+        : units === 'imperial'
+          ? fmtLength(1, 'imperial')
+          : '1cm';
     }
 
     stepsData.push({
@@ -141,7 +157,7 @@ export function generateBuildGuide(
   if (charcoalDepth != null && charcoalDepth > 0) {
     stepsData.push({
       title: copy('guide.title.charcoal'),
-      instruction: copy('guide.charcoal', { depth: fmtCm(charcoalDepth) }),
+      instruction: copy('guide.charcoal', { depth: fmtDepth(charcoalDepth, units) }),
     });
   }
 
@@ -149,10 +165,10 @@ export function generateBuildGuide(
   // depth plus the concrete mix (or a standard mix when none was authored).
   let actualSubstrateDepth: string;
   if (substrateDepth != null) {
-    actualSubstrateDepth = fmtCm(substrateDepth);
+    actualSubstrateDepth = fmtDepth(substrateDepth, units);
   } else {
     const hasTallPlants = plants.some((p) => p.maxHeightCm > 15);
-    actualSubstrateDepth = hasTallPlants ? '6-8cm' : '3-5cm';
+    actualSubstrateDepth = hasTallPlants ? fmtDepthRange(6, 8, units) : fmtDepthRange(3, 5, units);
   }
 
   const substrateInstruction =
