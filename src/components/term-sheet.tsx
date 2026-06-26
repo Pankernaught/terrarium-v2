@@ -85,7 +85,7 @@ export function TermSheet({ slug, onClose }: TermSheetProps) {
               {entry.wikiUrl ? (
                 <Pressable onPress={() => Linking.openURL(entry.wikiUrl!)}>
                   <Text variant="caption" role="textMuted" style={styles.sourceLink}>
-                    Source: Wikipedia ↗
+                    Source: Wikipedia ↗ used under CC BY-SA 4.0
                   </Text>
                 </Pressable>
               ) : null}

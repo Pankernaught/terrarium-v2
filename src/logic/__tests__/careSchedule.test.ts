@@ -42,12 +42,14 @@ describe('buildCareSchedule — which tasks apply', () => {
     expect(types(tasks)).toContain('watering-inspection');
   });
 
-  it('includes lid-opening for sealed and lidded, but not open containers', () => {
+  it('includes lid-opening for lidded only — not sealed (as-needed) or open (already open)', () => {
     const plant = makePlant();
-    for (const opening of ['sealed', 'lidded'] as const) {
-      const tasks = buildCareSchedule([plant], makeContainerSpec({ opening }), CREATED);
-      expect(types(tasks)).toContain('lid-opening');
-    }
+    const lidded = buildCareSchedule([plant], makeContainerSpec({ opening: 'lidded' }), CREATED);
+    expect(types(lidded)).toContain('lid-opening');
+
+    const sealed = buildCareSchedule([plant], makeContainerSpec({ opening: 'sealed' }), CREATED);
+    expect(types(sealed)).not.toContain('lid-opening');
+
     const open = buildCareSchedule(
       [plant],
       makeContainerSpec({ opening: 'open', suitableFor: 'open' }),
@@ -68,33 +70,78 @@ describe('buildCareSchedule — which tasks apply', () => {
   });
 });
 
+describe('buildCareSchedule — one-time settle-in (establishment window)', () => {
+  it('includes a one-time settle-in, first, due ~2 days after creation for a fresh build', () => {
+    const tasks = buildCareSchedule([makePlant()], makeContainerSpec(), CREATED, undefined, CREATED);
+    expect(tasks[0].type).toBe('settle-in');
+
+    const settle = tasks[0];
+    expect(settle.oneTime).toBe(true);
+    expect(settle.muted).toBe(false);
+    expect(settle.firstDueAt).toBe(CREATED.getTime() + 2 * DAY_MS);
+  });
+
+  it('ages the settle-in out of the schedule once the build is established', () => {
+    const established = new Date(CREATED.getTime() + 20 * DAY_MS);
+    const tasks = buildCareSchedule([makePlant()], makeContainerSpec(), CREATED, undefined, established);
+    expect(types(tasks)).not.toContain('settle-in');
+  });
+
+  it('carries the container opening as the settle-in bucket (enclosed/open prose split)', () => {
+    const open = buildCareSchedule(
+      [makePlant()],
+      makeContainerSpec({ opening: 'open', suitableFor: 'open' }),
+      CREATED,
+      undefined,
+      CREATED,
+    );
+    expect(byType(open).get('settle-in')!.bucket).toBe('open');
+  });
+});
+
 describe('buildCareSchedule — provisional cadence buckets', () => {
-  it('paces watering-inspection by the wettest plant present', () => {
+  it('paces watering-inspection by opening (primary) × wettest moisture (secondary)', () => {
     const wet = makePlant({ slug: 'w', soilMoisture: 'wet' });
     const dry = makePlant({ slug: 'd', soilMoisture: 'dry' });
 
+    // Default container is sealed → the wettest plant selects the column.
     const wettish = byType(buildCareSchedule([wet, dry], makeContainerSpec(), CREATED)).get('watering-inspection')!;
-    expect(wettish.bucket).toBe('wet');
-    expect(wettish.intervalDays).toBe(4);
+    expect(wettish.bucket).toBe('sealed-wet');
+    expect(wettish.intervalDays).toBe(45);
 
     const dryOnly = byType(buildCareSchedule([dry], makeContainerSpec(), CREATED)).get('watering-inspection')!;
-    expect(dryOnly.bucket).toBe('dry');
-    expect(dryOnly.intervalDays).toBe(14);
+    expect(dryOnly.bucket).toBe('sealed-dry');
+    expect(dryOnly.intervalDays).toBe(90);
   });
 
-  it('paces lid-opening by opening × volume bucket', () => {
+  it('checks open more often than lidded, lidded more often than sealed (equal moisture)', () => {
+    const plant = () => makePlant({ soilMoisture: 'moist' });
+    const interval = (opening: 'open' | 'lidded' | 'sealed') =>
+      byType(
+        buildCareSchedule(
+          [plant()],
+          makeContainerSpec({ opening, suitableFor: opening === 'open' ? 'open' : 'closed' }),
+          CREATED,
+        ),
+      ).get('watering-inspection')!.intervalDays;
+
+    expect(interval('open')).toBeLessThan(interval('lidded'));
+    expect(interval('lidded')).toBeLessThan(interval('sealed'));
+  });
+
+  it('paces lid-opening by volume bucket — lidded only', () => {
     const plant = makePlant();
-    const sealedSmall = byType(
-      buildCareSchedule([plant], makeContainerSpec({ opening: 'sealed', volumeL: 3 }), CREATED),
+    const liddedSmall = byType(
+      buildCareSchedule([plant], makeContainerSpec({ opening: 'lidded', volumeL: 3 }), CREATED),
     ).get('lid-opening')!;
-    expect(sealedSmall.bucket).toBe('sealed-small');
-    expect(sealedSmall.intervalDays).toBe(7);
+    expect(liddedSmall.bucket).toBe('lidded-small');
+    expect(liddedSmall.intervalDays).toBe(7);
 
     const liddedLarge = byType(
       buildCareSchedule([plant], makeContainerSpec({ opening: 'lidded', volumeL: 40 }), CREATED),
     ).get('lid-opening')!;
     expect(liddedLarge.bucket).toBe('lidded-large');
-    expect(liddedLarge.intervalDays).toBe(24);
+    expect(liddedLarge.intervalDays).toBe(18);
   });
 
   it('paces trimming by the fastest grower present', () => {
@@ -115,34 +162,36 @@ describe('buildCareSchedule — provisional cadence buckets', () => {
 
 describe('buildCareSchedule — first due + body text', () => {
   it('sets firstDueAt one interval after creation (does not nag on save)', () => {
+    // Default container is sealed; moist → 60-day watering cadence.
     const tasks = buildCareSchedule([makePlant({ soilMoisture: 'moist' })], makeContainerSpec(), CREATED);
     const water = byType(tasks).get('watering-inspection')!;
-    expect(water.intervalDays).toBe(6);
-    expect(water.firstDueAt).toBe(CREATED.getTime() + 6 * DAY_MS);
+    expect(water.intervalDays).toBe(60);
+    expect(water.firstDueAt).toBe(CREATED.getTime() + 60 * DAY_MS);
     expect(water.firstDueAt).toBeGreaterThan(CREATED.getTime());
   });
 
   it('reuses the generateCareGuide prose as each task body', () => {
     const slow = makePlant({ slug: 's', growthRate: 'slow' });
     const fast = makePlant({ slug: 'f', growthRate: 'fast' });
-    const tasks = byType(buildCareSchedule([slow, fast], makeContainerSpec({ opening: 'sealed' }), CREATED));
+    // Lidded so all three steady-state tasks exist (sealed no longer vents).
+    const tasks = byType(buildCareSchedule([slow, fast], makeContainerSpec({ opening: 'lidded' }), CREATED));
 
-    // Watering body talks about the substrate; Humidity body about the sealed
-    // container; Trimming body about mixed growth — each non-empty and on-topic.
+    // Watering body talks about the substrate; Humidity body about the container;
+    // Trimming body about mixed growth — each non-empty and on-topic.
     expect(tasks.get('watering-inspection')!.body).toMatch(/substrate/i);
-    expect(tasks.get('lid-opening')!.body).toMatch(/sealed|humidity/i);
+    expect(tasks.get('lid-opening')!.body).toMatch(/humidity/i);
     expect(tasks.get('trimming')!.body).toMatch(/growth|prun/i);
   });
 });
 
 describe('buildCareSchedule — owner overrides (the customizable care cycle)', () => {
-  const plant = () => makePlant({ soilMoisture: 'moist' }); // suggested watering = every 6 days
+  const plant = () => makePlant({ soilMoisture: 'moist' }); // sealed + moist → suggested watering = 60 days
 
   it('defaults are unchanged when no overrides are passed', () => {
     const water = byType(buildCareSchedule([plant()], makeContainerSpec(), CREATED)).get(
       'watering-inspection',
     )!;
-    expect(water.intervalDays).toBe(6);
+    expect(water.intervalDays).toBe(60);
     expect(water.muted).toBe(false);
   });
 

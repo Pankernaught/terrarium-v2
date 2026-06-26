@@ -27,6 +27,7 @@ const validPlant = {
   substrateTags: ['peat', 'perlite'],
   closedTerrariumOk: true,
   openTerrariumOk: false,
+  smallTerrariumFriendly: true,
   difficulty: 2,
 };
 

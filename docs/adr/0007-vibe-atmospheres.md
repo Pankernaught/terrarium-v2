@@ -187,7 +187,7 @@ Settings switcher, the CI gate). A follow-up grilling session then settled how
 *character art* works — the mascot and the "little critters" that make a vibe feel
 alive. These refine decision 3 (art) and decision 1 (Conservatory's axes); A10
 supersedes decision 5's "Glasshouse default." Full intent + artistic vision live in
-[docs/vibe-mascot-critters-handoff.md](../vibe-mascot-critters-handoff.md).
+[docs/handoffs/vibe-mascot-critters-handoff.md](../handoffs/vibe-mascot-critters-handoff.md).
 
 ### A6. Character art plays two roles — keep them distinct
 

@@ -246,6 +246,16 @@ export function generateBuildGuide(
 
   stepsData.push({ title: copy('guide.title.light'), instruction: lightInstr });
 
+  // 9. Your First Two Weeks — the establishment / break-in window. Container-aware
+  // (the lid-cracking / overheating advice only applies to enclosed builds). The
+  // Care tab's one-time "Settle in" task is the reminder that points back here.
+  stepsData.push({
+    title: copy('guide.title.firstTwoWeeks'),
+    instruction: copy(
+      container.opening === 'open' ? 'guide.firstTwoWeeks.open' : 'guide.firstTwoWeeks.enclosed',
+    ),
+  });
+
   // Attach sequential step numbers.
   return stepsData.map((s, i) => ({ step: i + 1, title: s.title, instruction: s.instruction }));
 }

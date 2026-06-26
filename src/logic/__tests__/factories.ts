@@ -48,6 +48,7 @@ export function makePlant(overrides: PlantOverrides = {}): Plant {
     substrateTags: ['peat'],
     closedTerrariumOk: true,
     openTerrariumOk: false,
+    smallTerrariumFriendly: false,
     difficulty: 2,
     ...rest,
   });

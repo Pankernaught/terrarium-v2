@@ -32,6 +32,7 @@ const GLOSSARY_JSON = path.join(ROOT, 'src', 'data', 'glossary.json');
 const COPY_JSON = path.join(ROOT, 'src', 'data', 'copy.json');
 const ASSETS_DIR = path.join(ROOT, 'assets', 'plants');
 const PLACEHOLDER_SCRIPT = path.join(ROOT, 'scripts', 'build-placeholders.mjs');
+const PLANT_IMAGES_SCRIPT = path.join(ROOT, 'scripts', 'build-plant-images.mjs');
 const INDEX_HTML = path.join(__dirname, 'index.html');
 const FIELD_SPEC_JS = path.join(__dirname, 'field-spec.js');
 
@@ -52,6 +53,16 @@ function writeDoc(doc) {
 function regenPlaceholders() {
   return new Promise((resolve) => {
     execFile('node', [PLACEHOLDER_SCRIPT], { cwd: ROOT }, (err, stdout, stderr) => {
+      if (err) resolve({ ok: false, message: (stderr || err.message).trim() });
+      else resolve({ ok: true, message: (stdout || '').trim() });
+    });
+  });
+}
+
+/** Regenerate src/data/plant-images.ts after a photo is saved. */
+function regenPlantImages() {
+  return new Promise((resolve) => {
+    execFile('node', [PLANT_IMAGES_SCRIPT], { cwd: ROOT }, (err, stdout, stderr) => {
       if (err) resolve({ ok: false, message: (stderr || err.message).trim() });
       else resolve({ ok: true, message: (stdout || '').trim() });
     });
@@ -203,6 +214,7 @@ async function upsert(res, body, originalSlug) {
 
   writeDoc(doc);
   const placeholders = await regenPlaceholders();
+  if (imageSaved) await regenPlantImages();
   send(res, 200, { ok: true, count: plants.length, imageSaved, placeholders, plants });
 }
 

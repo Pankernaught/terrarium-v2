@@ -1025,7 +1025,8 @@
       "rarity": "uncommon",
       "nativeBiome": "tropical",
       "growthHabit": "rosette",
-      "typicalHeightCm": 12
+      "typicalHeightCm": 12,
+      "toxicity": "Leaf edges are finely serrated and can scratch skin during handling; wear gloves when working close to the plant."
     },
     {
       "slug": "ophiopogon-japonicus-mini",
@@ -1140,6 +1141,63 @@
         }
       ],
       "growthHabit": "climbing"
+    },
+    {
+      "slug": "syngonium-podophyllum",
+      "commonName": "Arrowhead Plant",
+      "scientificName": "Syngonium podophyllum",
+      "light": {
+        "primary": "medium",
+        "secondary": "low"
+      },
+      "soilMoisture": {
+        "primary": "moist"
+      },
+      "humidityPctRange": [
+        60,
+        85
+      ],
+      "tempCRange": [
+        18,
+        27
+      ],
+      "maxHeightCm": 45,
+      "rootDepthMinCm": 5,
+      "rootDepthMaxCm": 12,
+      "phPreference": "acidic",
+      "growthRate": "fast",
+      "substrateTags": [
+        "perlite",
+        "peat",
+        "potting-soil"
+      ],
+      "closedTerrariumOk": true,
+      "openTerrariumOk": false,
+      "smallTerrariumFriendly": false,
+      "difficulty": 1,
+      "image": "plants/syngonium-podophyllum.png",
+      "plantType": "aroid",
+      "nativeBiome": "tropical",
+      "rarity": "common",
+      "growthHabit": "climbing",
+      "typicalHeightCm": 30,
+      "toxicity": "Foliage and sap carry calcium oxalate crystals; ingestion irritates the mouth and digestive tract and the sap can irritate skin. Toxic to cats and dogs. See more information on the NCSU page.",
+      "nativeContext": "From the humid [[tropical]] forests of Latin America, [[climbing]] and [[trailing]] in dappled light beneath the canopy.",
+      "notes": "Arrowhead Plant grows faster than the mini cultivar and needs frequent trimming to prevent mature [[climbing]] growth from overtaking an enclosed build. Left unchecked, leaves shift from the signature juvenile arrowhead shape to deeply lobed adult foliage — cutting back to younger nodes keeps both size and look in check.",
+      "sources": [
+        {
+          "url": "https://en.wikipedia.org/wiki/Syngonium_podophyllum",
+          "label": "Wikipedia"
+        },
+        {
+          "url": "https://powo.science.kew.org/results?q=Syngonium%20podophyllum",
+          "label": "POWO"
+        },
+        {
+          "url": "https://plants.ces.ncsu.edu/plants/syngonium-podophyllum/",
+          "label": "NCSU Extension"
+        }
+      ]
     },
     {
       "slug": "pilea-nummulariifolia",
@@ -1424,7 +1482,8 @@
       "nativeBiome": "subtropical",
       "nativeContext": "Native to rocky hillsides in Mexico, where its plump, colored leaves store water through dry seasons.",
       "growthHabit": "trailing",
-      "typicalHeightCm": 12
+      "typicalHeightCm": 12,
+      "toxicity": "The sap can cause skin irritation in sensitive individuals. Mildly toxic to cats and dogs if ingested; may cause vomiting."
     },
     {
       "slug": "crassula-ovata-mini",
@@ -2047,7 +2106,8 @@
         }
       ],
       "growthHabit": "creeping",
-      "typicalHeightCm": 4
+      "typicalHeightCm": 4,
+      "toxicity": "Contains calcium oxalate crystals; ingestion can cause mouth irritation and digestive upset. Mildly toxic to cats and dogs."
     },
     {
       "slug": "hydrocotyle-tripartita",
@@ -3446,7 +3506,8 @@
           "label": "NCSU Extension"
         }
       ],
-      "typicalHeightCm": 3
+      "typicalHeightCm": 3,
+      "toxicity": "Considered mildly toxic if ingested in quantity; may cause digestive upset in cats and dogs."
     },
     {
       "slug": "mammillaria-gracilis",
@@ -3500,7 +3561,8 @@
           "url": "https://plants.ces.ncsu.edu/plants/mammillaria-gracilis/",
           "label": "NCSU Extension"
         }
-      ]
+      ],
+      "toxicity": "Dense fine spines and hooked centrals embed in skin easily and are painful to remove; handle with tongs or a folded paper collar, not bare hands."
     },
     {
       "slug": "sedum-morganianum",
@@ -3554,7 +3616,8 @@
           "label": "NCSU Extension"
         }
       ],
-      "rarity": "common"
+      "rarity": "common",
+      "toxicity": "Mildly toxic to cats and dogs; ingestion may cause vomiting and diarrhea."
     },
     {
       "slug": "ficus-pumila",
@@ -4334,7 +4397,8 @@
           "url": "https://powo.science.kew.org/results?q=Neoregelia",
           "label": "POWO"
         }
-      ]
+      ],
+      "toxicity": "Leaf tips are sharp and margins have fine teeth; handle with care to avoid scratches."
     },
     {
       "slug": "marcgravia-rectiflora",
@@ -4861,7 +4925,8 @@
           "url": "https://powo.science.kew.org/results?q=Begonia%20amphioxus",
           "label": "POWO"
         }
-      ]
+      ],
+      "toxicity": "Begonias contain soluble calcium oxalates, most concentrated in the tubers; ingestion can cause mouth irritation, drooling, and vomiting in cats and dogs."
     },
     {
       "slug": "begonia-schulzei",
@@ -4908,7 +4973,8 @@
           "url": "https://powo.science.kew.org/results?q=Begonia%20schulzei",
           "label": "POWO"
         }
-      ]
+      ],
+      "toxicity": "Begonias contain soluble calcium oxalates, most concentrated in the tubers; ingestion can cause mouth irritation, drooling, and vomiting in cats and dogs."
     },
     {
       "slug": "alocasia-reginula-black-velvet",
@@ -5407,7 +5473,8 @@
       "plantType": "foliage",
       "rarity": "uncommon",
       "nativeBiome": "subtropical",
-      "growthHabit": "upright"
+      "growthHabit": "upright",
+      "toxicity": "The rhizome of Acorus species contains beta-asarone, a compound toxic in large doses; avoid ingesting any part and keep away from pets."
     },
     {
       "slug": "hemigraphis-alternata",
@@ -5665,7 +5732,8 @@
       "rarity": "common",
       "nativeBiome": "subtropical",
       "growthHabit": "trailing",
-      "typicalHeightCm": 8
+      "typicalHeightCm": 8,
+      "toxicity": "Mildly toxic if ingested, particularly the corm; may cause digestive upset in cats and dogs."
     },
     {
       "slug": "ceropegia-woodii-string-of-spades",
@@ -5718,7 +5786,8 @@
       "rarity": "uncommon",
       "nativeBiome": "subtropical",
       "growthHabit": "trailing",
-      "typicalHeightCm": 8
+      "typicalHeightCm": 8,
+      "toxicity": "Mildly toxic if ingested, particularly the corm; may cause digestive upset in cats and dogs."
     },
     {
       "slug": "alocasia-dragon-scale",
@@ -5767,7 +5836,8 @@
       "rarity": "uncommon",
       "nativeBiome": "tropical",
       "growthHabit": "upright",
-      "typicalHeightCm": 30
+      "typicalHeightCm": 30,
+      "toxicity": "Contains insoluble calcium oxalate crystals; all parts are toxic if ingested, causing oral pain, drooling, and vomiting. Toxic to cats and dogs."
     },
     {
       "slug": "anubias-hastifolia",
@@ -5815,7 +5885,8 @@
       "rarity": "uncommon",
       "nativeBiome": "tropical",
       "growthHabit": "upright",
-      "typicalHeightCm": 20
+      "typicalHeightCm": 20,
+      "toxicity": "Contains calcium oxalate crystals; ingestion can cause mouth irritation and digestive upset. Mildly toxic to cats and dogs."
     },
     {
       "slug": "epipremnum-aureum-global-green",
@@ -5867,7 +5938,8 @@
       "rarity": "uncommon",
       "nativeBiome": "tropical",
       "growthHabit": "climbing",
-      "typicalHeightCm": 25
+      "typicalHeightCm": 25,
+      "toxicity": "Contains insoluble calcium oxalates; ingestion causes oral irritation, drooling, and vomiting. Toxic to cats and dogs."
     },
     {
       "slug": "philodendron-burle-marx-fantasy",
@@ -5916,7 +5988,8 @@
       "rarity": "rare",
       "nativeBiome": "tropical",
       "growthHabit": "upright",
-      "typicalHeightCm": 30
+      "typicalHeightCm": 30,
+      "toxicity": "Contains insoluble calcium oxalate crystals; chewing or ingesting any part causes mouth and throat irritation, drooling, and vomiting. Toxic to cats and dogs."
     },
     {
       "slug": "philodendron-verrucosum",
@@ -5969,7 +6042,8 @@
       "rarity": "uncommon",
       "nativeBiome": "tropical",
       "growthHabit": "climbing",
-      "typicalHeightCm": 35
+      "typicalHeightCm": 35,
+      "toxicity": "Contains insoluble calcium oxalate crystals; chewing or ingesting any part causes mouth and throat irritation, drooling, and vomiting. Toxic to cats and dogs."
     },
     {
       "slug": "philodendron-verrucosum-mini",
@@ -6018,7 +6092,8 @@
       "rarity": "rare",
       "nativeBiome": "tropical",
       "growthHabit": "climbing",
-      "typicalHeightCm": 18
+      "typicalHeightCm": 18,
+      "toxicity": "Contains insoluble calcium oxalate crystals; chewing or ingesting any part causes mouth and throat irritation, drooling, and vomiting. Toxic to cats and dogs."
     },
     {
       "slug": "philodendron-wend-imbe",
@@ -6067,7 +6142,8 @@
       "rarity": "uncommon",
       "nativeBiome": "tropical",
       "growthHabit": "climbing",
-      "typicalHeightCm": 35
+      "typicalHeightCm": 35,
+      "toxicity": "Contains insoluble calcium oxalate crystals; chewing or ingesting any part causes mouth and throat irritation, drooling, and vomiting. Toxic to cats and dogs."
     },
     {
       "slug": "rhaphidophora-cryptantha",
@@ -6116,7 +6192,8 @@
       "rarity": "uncommon",
       "nativeBiome": "tropical",
       "growthHabit": "climbing",
-      "typicalHeightCm": 40
+      "typicalHeightCm": 40,
+      "toxicity": "An aroid containing insoluble calcium oxalate crystals; ingestion causes oral irritation, drooling, and vomiting. Toxic to cats and dogs."
     },
     {
       "slug": "syngonium-albo",
@@ -6168,7 +6245,8 @@
       "rarity": "uncommon",
       "nativeBiome": "tropical",
       "growthHabit": "climbing",
-      "typicalHeightCm": 25
+      "typicalHeightCm": 25,
+      "toxicity": "Foliage and sap carry calcium oxalate crystals; ingestion irritates the mouth and digestive tract and the sap can irritate skin. Toxic to cats and dogs."
     },
     {
       "slug": "syngonium-rayii",
@@ -6217,7 +6295,8 @@
       "rarity": "rare",
       "nativeBiome": "tropical",
       "growthHabit": "climbing",
-      "typicalHeightCm": 15
+      "typicalHeightCm": 15,
+      "toxicity": "Foliage and sap carry calcium oxalate crystals; ingestion irritates the mouth and digestive tract and the sap can irritate skin. Toxic to cats and dogs."
     },
     {
       "slug": "begonia-baik",
@@ -6264,7 +6343,8 @@
       "plantType": "begonia",
       "rarity": "rare",
       "nativeBiome": "tropical",
-      "growthHabit": "creeping"
+      "growthHabit": "creeping",
+      "toxicity": "Begonias contain soluble calcium oxalates, most concentrated in the tubers; ingestion can cause mouth irritation, drooling, and vomiting in cats and dogs."
     },
     {
       "slug": "begonia-bipinnatifida",
@@ -6313,7 +6393,8 @@
       "rarity": "rare",
       "nativeBiome": "montane",
       "growthHabit": "upright",
-      "typicalHeightCm": 15
+      "typicalHeightCm": 15,
+      "toxicity": "Begonias contain soluble calcium oxalates, most concentrated in the tubers; ingestion can cause mouth irritation, drooling, and vomiting in cats and dogs."
     },
     {
       "slug": "begonia-cleopatrae",
@@ -6365,7 +6446,8 @@
       "rarity": "rare",
       "nativeBiome": "tropical",
       "growthHabit": "mounding",
-      "typicalHeightCm": 12
+      "typicalHeightCm": 12,
+      "toxicity": "Begonias contain soluble calcium oxalates, most concentrated in the tubers; ingestion can cause mouth irritation, drooling, and vomiting in cats and dogs."
     },
     {
       "slug": "begonia-conchifolia",
@@ -6418,7 +6500,8 @@
       "rarity": "uncommon",
       "nativeBiome": "tropical",
       "growthHabit": "mounding",
-      "typicalHeightCm": 20
+      "typicalHeightCm": 20,
+      "toxicity": "Begonias contain soluble calcium oxalates, most concentrated in the tubers; ingestion can cause mouth irritation, drooling, and vomiting in cats and dogs."
     },
     {
       "slug": "begonia-dodsoni",
@@ -6466,7 +6549,8 @@
       "plantType": "begonia",
       "rarity": "rare",
       "nativeBiome": "montane",
-      "growthHabit": "upright"
+      "growthHabit": "upright",
+      "toxicity": "Begonias contain soluble calcium oxalates, most concentrated in the tubers; ingestion can cause mouth irritation, drooling, and vomiting in cats and dogs."
     },
     {
       "slug": "begonia-elaeagnifolia",
@@ -6514,7 +6598,8 @@
       "rarity": "rare",
       "nativeBiome": "tropical",
       "growthHabit": "upright",
-      "typicalHeightCm": 18
+      "typicalHeightCm": 18,
+      "toxicity": "Begonias contain soluble calcium oxalates, most concentrated in the tubers; ingestion can cause mouth irritation, drooling, and vomiting in cats and dogs."
     },
     {
       "slug": "begonia-foliosa-var-foliosa",
@@ -6563,7 +6648,8 @@
       "rarity": "uncommon",
       "nativeBiome": "subtropical",
       "growthHabit": "upright",
-      "typicalHeightCm": 18
+      "typicalHeightCm": 18,
+      "toxicity": "Begonias contain soluble calcium oxalates, most concentrated in the tubers; ingestion can cause mouth irritation, drooling, and vomiting in cats and dogs."
     },
     {
       "slug": "begonia-glabra-bronze",
@@ -6612,7 +6698,8 @@
       "rarity": "uncommon",
       "nativeBiome": "tropical",
       "growthHabit": "climbing",
-      "typicalHeightCm": 25
+      "typicalHeightCm": 25,
+      "toxicity": "Begonias contain soluble calcium oxalates, most concentrated in the tubers; ingestion can cause mouth irritation, drooling, and vomiting in cats and dogs."
     },
     {
       "slug": "begonia-longiciliata-sizemoreae",
@@ -6659,7 +6746,8 @@
       "plantType": "begonia",
       "rarity": "rare",
       "nativeBiome": "tropical",
-      "growthHabit": "mounding"
+      "growthHabit": "mounding",
+      "toxicity": "Begonias contain soluble calcium oxalates, most concentrated in the tubers; ingestion can cause mouth irritation, drooling, and vomiting in cats and dogs."
     },
     {
       "slug": "begonia-luzonensis",
@@ -6706,7 +6794,8 @@
       "plantType": "begonia",
       "rarity": "rare",
       "nativeBiome": "tropical",
-      "growthHabit": "upright"
+      "growthHabit": "upright",
+      "toxicity": "Begonias contain soluble calcium oxalates, most concentrated in the tubers; ingestion can cause mouth irritation, drooling, and vomiting in cats and dogs."
     },
     {
       "slug": "begonia-manaus",
@@ -6755,7 +6844,8 @@
       "rarity": "rare",
       "nativeBiome": "tropical",
       "growthHabit": "trailing",
-      "typicalHeightCm": 18
+      "typicalHeightCm": 18,
+      "toxicity": "Begonias contain soluble calcium oxalates, most concentrated in the tubers; ingestion can cause mouth irritation, drooling, and vomiting in cats and dogs."
     },
     {
       "slug": "begonia-maurandiae-blue",
@@ -6804,7 +6894,8 @@
       "rarity": "rare",
       "nativeBiome": "montane",
       "growthHabit": "trailing",
-      "typicalHeightCm": 18
+      "typicalHeightCm": 18,
+      "toxicity": "Begonias contain soluble calcium oxalates, most concentrated in the tubers; ingestion can cause mouth irritation, drooling, and vomiting in cats and dogs."
     },
     {
       "slug": "begonia-prismatocarpa",
@@ -6856,7 +6947,8 @@
       "rarity": "uncommon",
       "nativeBiome": "tropical",
       "growthHabit": "trailing",
-      "typicalHeightCm": 6
+      "typicalHeightCm": 6,
+      "toxicity": "Begonias contain soluble calcium oxalates, most concentrated in the tubers; ingestion can cause mouth irritation, drooling, and vomiting in cats and dogs."
     },
     {
       "slug": "begonia-pustulata",
@@ -6908,7 +7000,8 @@
       "rarity": "uncommon",
       "nativeBiome": "tropical",
       "growthHabit": "upright",
-      "typicalHeightCm": 15
+      "typicalHeightCm": 15,
+      "toxicity": "Begonias contain soluble calcium oxalates, most concentrated in the tubers; ingestion can cause mouth irritation, drooling, and vomiting in cats and dogs."
     },
     {
       "slug": "begonia-raja",
@@ -6955,7 +7048,8 @@
       "plantType": "begonia",
       "rarity": "rare",
       "nativeBiome": "tropical",
-      "growthHabit": "mounding"
+      "growthHabit": "mounding",
+      "toxicity": "Begonias contain soluble calcium oxalates, most concentrated in the tubers; ingestion can cause mouth irritation, drooling, and vomiting in cats and dogs."
     },
     {
       "slug": "begonia-soli-mutata",
@@ -7007,7 +7101,8 @@
       "rarity": "uncommon",
       "nativeBiome": "tropical",
       "growthHabit": "mounding",
-      "typicalHeightCm": 15
+      "typicalHeightCm": 15,
+      "toxicity": "Begonias contain soluble calcium oxalates, most concentrated in the tubers; ingestion can cause mouth irritation, drooling, and vomiting in cats and dogs."
     },
     {
       "slug": "begonia-sutherlandii-saunders-legacy",
@@ -7059,7 +7154,8 @@
       "rarity": "uncommon",
       "nativeBiome": "subtropical",
       "growthHabit": "trailing",
-      "typicalHeightCm": 25
+      "typicalHeightCm": 25,
+      "toxicity": "Begonias contain soluble calcium oxalates, most concentrated in the tubers; ingestion can cause mouth irritation, drooling, and vomiting in cats and dogs."
     },
     {
       "slug": "begonia-turrialbae",
@@ -7112,7 +7208,8 @@
       "rarity": "rare",
       "nativeBiome": "montane",
       "growthHabit": "mounding",
-      "typicalHeightCm": 12
+      "typicalHeightCm": 12,
+      "toxicity": "Begonias contain soluble calcium oxalates, most concentrated in the tubers; ingestion can cause mouth irritation, drooling, and vomiting in cats and dogs."
     },
     {
       "slug": "begonia-variabilis",
@@ -7159,7 +7256,8 @@
       "plantType": "begonia",
       "rarity": "rare",
       "nativeBiome": "tropical",
-      "growthHabit": "upright"
+      "growthHabit": "upright",
+      "toxicity": "Begonias contain soluble calcium oxalates, most concentrated in the tubers; ingestion can cause mouth irritation, drooling, and vomiting in cats and dogs."
     },
     {
       "slug": "cryptanthus-absolute-zero",
@@ -7200,6 +7298,7 @@
       "rarity": "rare",
       "nativeContext": "[[terrestrial|Terrestrial]] [[bromeliad]] native to Brazil, growing on the forest floor in dappled light.",
       "notes": "Cryptanthus 'Absolute Zero' is a compact earth star with silvery-white striped leaves. It doesn't hold much water in its central cup compared to tank [[bromeliad|bromeliads]]. It needs airflow — avoid sealed enclosures — and [[offset|offsets]] freely once established.",
+      "imageLicense": "CC0",
       "sources": [
         {
           "url": "https://powo.science.kew.org/results?q=Cryptanthus",
@@ -7213,7 +7312,8 @@
           "url": "https://www.chicagobotanic.org/plant-information/plant-finder/cryptanthus-absolute-zero-absolute-zero-earth-star",
           "label": "Chicago Botanic"
         }
-      ]
+      ],
+      "toxicity": "Leaf edges are finely serrated and can scratch skin during handling; wear gloves when working close to the plant."
     },
     {
       "slug": "neoregelia-fireball",
@@ -7264,7 +7364,8 @@
       "rarity": "uncommon",
       "nativeBiome": "tropical",
       "growthHabit": "rosette",
-      "typicalHeightCm": 8
+      "typicalHeightCm": 8,
+      "toxicity": "Leaf tips are sharp and margins have fine teeth; handle with care to avoid scratches."
     },
     {
       "slug": "geogenanthus-poeppigii",
@@ -7513,7 +7614,8 @@
       "plantType": "fern-ally",
       "rarity": "rare",
       "nativeBiome": "montane",
-      "growthHabit": "upright"
+      "growthHabit": "upright",
+      "toxicity": "Stems have sharp silica ridges; the plant also contains alkaloids that are toxic to livestock and may cause digestive upset in pets if eaten in quantity."
     },
     {
       "slug": "aeschynanthus-longicaulis-black-pagoda",
@@ -8285,7 +8387,8 @@
       "rarity": "uncommon",
       "nativeBiome": "subtropical",
       "growthHabit": "climbing",
-      "typicalHeightCm": 15
+      "typicalHeightCm": 15,
+      "toxicity": "Ficus sap (a milky latex) can irritate skin and mucous membranes; ingestion may cause mild digestive upset. Toxic to cats and dogs."
     },
     {
       "slug": "ficus-vaccinioides",
@@ -8333,7 +8436,8 @@
       "plantType": "ground-cover",
       "rarity": "rare",
       "nativeBiome": "subtropical",
-      "growthHabit": "creeping"
+      "growthHabit": "creeping",
+      "toxicity": "Ficus sap (a milky latex) can irritate skin and mucous membranes; ingestion may cause mild digestive upset. Toxic to cats and dogs."
     },
     {
       "slug": "ficus-vilosa",
@@ -8381,7 +8485,8 @@
       "rarity": "rare",
       "nativeBiome": "tropical",
       "growthHabit": "climbing",
-      "typicalHeightCm": 20
+      "typicalHeightCm": 20,
+      "toxicity": "Ficus sap (a milky latex) can irritate skin and mucous membranes; ingestion may cause mild digestive upset. Toxic to cats and dogs."
     },
     {
       "slug": "ficus-punctata",
@@ -8429,7 +8534,8 @@
       "rarity": "uncommon",
       "nativeBiome": "tropical",
       "growthHabit": "climbing",
-      "typicalHeightCm": 20
+      "typicalHeightCm": 20,
+      "toxicity": "Ficus sap (a milky latex) can irritate skin and mucous membranes; ingestion may cause mild digestive upset. Toxic to cats and dogs."
     },
     {
       "slug": "ficus-pumila-snowflake",
@@ -8485,7 +8591,8 @@
       "rarity": "uncommon",
       "nativeBiome": "subtropical",
       "growthHabit": "climbing",
-      "typicalHeightCm": 8
+      "typicalHeightCm": 8,
+      "toxicity": "Ficus sap (a milky latex) can irritate skin and mucous membranes; ingestion may cause mild digestive upset. Toxic to cats and dogs."
     },
     {
       "slug": "micranthemum-tweedei",
@@ -9669,7 +9776,8 @@
       "rarity": "uncommon",
       "nativeBiome": "tropical",
       "growthHabit": "climbing",
-      "typicalHeightCm": 35
+      "typicalHeightCm": 35,
+      "toxicity": "The sap contains irritant compounds; wash hands after handling and avoid touching eyes or mucous membranes."
     },
     {
       "slug": "sphagnum-palustre",
@@ -10024,7 +10132,8 @@
       "rarity": "uncommon",
       "nativeBiome": "tropical",
       "growthHabit": "trailing",
-      "typicalHeightCm": 12
+      "typicalHeightCm": 12,
+      "toxicity": "May cause mild digestive upset (vomiting, diarrhea) if ingested by cats or dogs."
     },
     {
       "slug": "muehlenbeckia-complexa",
@@ -10076,7 +10185,8 @@
       "rarity": "common",
       "nativeBiome": "temperate",
       "growthHabit": "climbing",
-      "typicalHeightCm": 15
+      "typicalHeightCm": 15,
+      "toxicity": "The small berries can cause digestive upset if ingested by pets or children; keep flowering or fruiting plants away from curious pets."
     },
     {
       "slug": "muehlenbeckia-complexa-variegated",
@@ -10124,7 +10234,8 @@
       "rarity": "uncommon",
       "nativeBiome": "temperate",
       "growthHabit": "climbing",
-      "typicalHeightCm": 12
+      "typicalHeightCm": 12,
+      "toxicity": "The small berries can cause digestive upset if ingested by pets or children; keep flowering or fruiting plants away from curious pets."
     },
     {
       "slug": "selaginella-erythropus-sanguinea",
@@ -10429,7 +10540,7 @@
     },
     {
       "slug": "cissus-amazonicus",
-      "commonName": "Amazon Vine",
+      "commonName": "Amazon Jungle Vine",
       "scientificName": "Cissus amazonica",
       "light": {
         "primary": "medium",
@@ -10452,15 +10563,18 @@
       "phPreference": "neutral",
       "growthRate": "moderate",
       "substrateTags": [
-        "potting-soil",
+        "perlite",
         "peat",
-        "perlite"
+        "potting-soil"
       ],
       "closedTerrariumOk": true,
       "openTerrariumOk": false,
-      "smallTerrariumFriendly": false,
       "difficulty": 2,
       "image": "plants/cissus-amazonicus.png",
+      "growthHabit": "climbing",
+      "plantType": "vine",
+      "nativeBiome": "tropical",
+      "rarity": "uncommon",
       "nativeContext": "Cissus amazonica is a [[climbing]] [[vine]] native to the rainforests of the Amazon basin in Brazil and neighboring South America. It produces lanceolate, dark-green leaves marked with a distinctive silver chevron pattern along the [[midrib]] and lateral veins, with deep red-purple undersides.",
       "notes": "Cissus amazonica is an excellent large-build terrarium [[vine]] with striking metallic foliage that climbs readily on wood, cork, or background panels. Keep it consistently moist with high [[humidity]] — the large leaf area transpires rapidly in dry conditions. Vigorous growth means regular trimming may be needed in enclosed spaces.",
       "sources": [
@@ -10469,11 +10583,8 @@
           "label": "POWO — Cissus amazonica"
         }
       ],
-      "plantType": "vine",
-      "rarity": "uncommon",
-      "nativeBiome": "tropical",
-      "growthHabit": "climbing",
-      "typicalHeightCm": 30
+      "smallTerrariumFriendly": false,
+      "toxicity": "The sap can cause contact dermatitis in sensitive individuals; wear gloves when pruning or repotting."
     },
     {
       "slug": "cissus-discolor",
@@ -10525,7 +10636,8 @@
       "rarity": "uncommon",
       "nativeBiome": "tropical",
       "growthHabit": "climbing",
-      "typicalHeightCm": 20
+      "typicalHeightCm": 20,
+      "toxicity": "The sap can cause contact dermatitis in sensitive individuals; wear gloves when pruning or repotting."
     }
   ]
 }

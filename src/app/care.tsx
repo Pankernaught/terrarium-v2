@@ -18,9 +18,12 @@ import { type Href, useFocusEffect, useRouter } from 'expo-router';
 import { useCallback, useEffect, useState } from 'react';
 import { Alert, Pressable, ScrollView, StyleSheet, Switch, View } from 'react-native';
 
-import { Card, Collapse, EmptyState, GlanceHeader, haptics, Screen, Text } from '@/components/ui';
+import { Card, Collapse, EmptyState, GlanceHeader, haptics, Screen, SectionLabel, Text } from '@/components/ui';
+import { GlossaryText } from '@/components/glossary-text';
+import { TermSheet } from '@/components/term-sheet';
 import { MaxContentWidth, Radii, Spacing } from '@/constants/theme';
 import { loadPlants } from '@/data';
+import { generateCareGuide, type CareTip } from '@/logic/care';
 import { type Repos, useDbState } from '@/db/provider';
 import type { Build, CareMark } from '@/db/schema';
 import { copy } from '@/lib/copy';
@@ -68,6 +71,8 @@ interface CareRow {
   build: Build;
   /** The effective schedule — owner overrides (cadence / mute) already folded in. */
   schedule: CareTask[];
+  /** Derived care prose (Watering/Humidity/Light/Trimming), shown in the expanded card. */
+  guide: CareTip[];
   /** Suggested (un-overridden) cadence per task — drives "Reset to suggested". */
   suggestedByType: Map<CareTaskType, number>;
   /** Pending occurrence per task type (the next reminder), if reminders are on. */
@@ -109,11 +114,29 @@ function Care({ repos }: { repos: Repos }) {
           suggested.map((t) => [t.type, t.intervalDays]),
         );
 
+        const guide = haveSchedule ? generateCareGuide(buildPlants, container) : [];
+
         const pending = await repos.careMarks.pendingForBuild(build.id);
         const pendingByType = new Map<CareTaskType, CareMark>();
         for (const mark of pending) pendingByType.set(mark.kind as CareTaskType, mark);
 
-        return { build, schedule, suggestedByType, pendingByType, enabled: pending.length > 0 };
+        // Retire an aged-out settle-in: its pending row outlived the ~two-week window
+        // (now gone from `schedule`). Complete it one-time so it can't keep firing a
+        // generic fallback reminder. The user "missed" the nudge; there's no successor.
+        const settleMark = pendingByType.get('settle-in');
+        if (settleMark && !schedule.some((t) => t.type === 'settle-in')) {
+          await repos.careMarks.markDone(settleMark.id, null);
+          pendingByType.delete('settle-in');
+        }
+
+        return {
+          build,
+          schedule,
+          guide,
+          suggestedByType,
+          pendingByType,
+          enabled: pendingByType.size > 0,
+        };
       }),
     );
   }, [repos]);
@@ -123,10 +146,16 @@ function Care({ repos }: { repos: Repos }) {
     async (current: CareRow[]) => {
       const meta = new Map<string, { title: string; body: string; intervalDays: number }>();
       for (const row of current) {
+        // ponytail: fire-once is enforced at the data layer (markDone(null) +
+        // age gate), not the native trigger. A settle-in slot still arms as a
+        // repeating TIME_INTERVAL like the others, so it may re-nudge every ~2 days
+        // until acknowledged or aged out (≤~1 week, app-closed worst case). A true
+        // single DATE-trigger is the v2.1 escape hatch if that proves noisy.
         for (const task of row.schedule) {
           meta.set(`${row.build.id}:${task.type}`, {
             title: `${CARE_TASK_LABEL[task.type]} · ${row.build.name}`,
-            body: task.body,
+            // Short authored banner; the full guide prose now lives in the expanded card.
+            body: copy(`care.notif.body.${task.type}`, { build: row.build.name }),
             intervalDays: task.intervalDays,
           });
         }
@@ -181,7 +210,10 @@ function Care({ repos }: { repos: Repos }) {
     // Seed only the tasks the owner hasn't muted (muted ones stay off until un-muted).
     for (const task of row.schedule) {
       if (task.muted) continue;
-      await repos.careMarks.add({ buildId: row.build.id, kind: task.type, dueAt: new Date(task.firstDueAt) });
+      // A one-time settle-in fires at most once; if its firstDueAt is already past
+      // (build created a few days before enabling), seed it for now, never the past.
+      const dueAt = task.oneTime ? notBeforeNow(task.firstDueAt) : new Date(task.firstDueAt);
+      await repos.careMarks.add({ buildId: row.build.id, kind: task.type, dueAt });
     }
     haptics.commit();
     await reload();
@@ -190,7 +222,8 @@ function Care({ repos }: { repos: Repos }) {
   async function markDone(row: CareRow, task: CareTask) {
     const mark = row.pendingByType.get(task.type);
     if (!mark) return;
-    await repos.careMarks.markDone(mark.id, task.intervalDays);
+    // One-time tasks (settle-in) complete with no successor (intervalDays = null).
+    await repos.careMarks.markDone(mark.id, task.oneTime ? null : task.intervalDays);
     haptics.success(); // the one acknowledgement this calm screen makes.
     await reload();
   }
@@ -335,15 +368,15 @@ function mergeOverride(
 function summaryText(row: CareRow): string {
   if (!row.enabled) {
     const n = row.schedule.length;
-    return `Reminders off · ${n} ${n === 1 ? 'task' : 'tasks'} ready when you are`;
+    return copy('care.summary.off', { count: n, tasks: n === 1 ? 'task' : 'tasks' });
   }
   const dues = row.schedule
     .filter((t) => !t.muted)
     .map((t) => row.pendingByType.get(t.type)?.dueAt)
     .filter((d): d is Date => !!d);
-  if (dues.length === 0) return 'On · every task muted';
+  if (dues.length === 0) return copy('care.summary.allMuted');
   const soonest = dues.reduce((a, b) => (b < a ? b : a));
-  return `On · next ${dueLabel(soonest)}`;
+  return copy('care.summary.next', { due: dueLabel(soonest) });
 }
 
 // --- Pieces -----------------------------------------------------------------
@@ -371,7 +404,12 @@ function CareBuildCard({
 }) {
   const { c } = useTokens();
   const router = useRouter();
+  const [termSlug, setTermSlug] = useState<string | null>(null);
+  // Accordion: at most one guide tip's prose is open at a time, so the card never
+  // becomes a wall of text. `null` → all collapsed to their category headers.
+  const [openTip, setOpenTip] = useState<string | null>(null);
   return (
+    <>
     <Card style={styles.card}>
       <View style={styles.cardHead}>
         {/* Tap the name to open the build; the chevron is the customize/expand toggle. */}
@@ -394,7 +432,7 @@ function CareBuildCard({
           }}
           accessibilityRole="button"
           accessibilityState={{ expanded }}
-          accessibilityLabel={`${expanded ? 'Collapse' : 'Customize'} ${row.build.name}`}
+          accessibilityLabel={`${expanded ? 'Collapse' : 'Details'} ${row.build.name}`}
           hitSlop={12}>
           <Text
             variant="body"
@@ -419,26 +457,140 @@ function CareBuildCard({
 
       <Collapse open={expanded}>
         <View style={styles.editor}>
-          {row.schedule.map((task) => (
-            <TaskEditor
-              key={task.type}
-              task={task}
-              suggested={row.suggestedByType.get(task.type)}
-              pending={row.pendingByType.get(task.type) ?? null}
-              enabled={row.enabled}
-              onMarkDone={() => onMarkDone(task)}
-              onSetCadence={(days) => onSetCadence(task, days)}
-              onToggleMute={() => onToggleMute(task)}
-              onReschedule={(delta) => onReschedule(task, delta)}
-              onReset={() => onReset(task)}
-            />
-          ))}
+          {row.guide.length > 0 ? (
+            <View style={styles.guide}>
+              <SectionLabel>What to do</SectionLabel>
+              {row.guide.map((tip) => (
+                <GuideTipRow
+                  key={tip.category}
+                  tip={tip}
+                  open={openTip === tip.category}
+                  onToggle={() =>
+                    setOpenTip((cur) => (cur === tip.category ? null : tip.category))
+                  }
+                  onPressTerm={setTermSlug}
+                />
+              ))}
+            </View>
+          ) : null}
+          {row.schedule.map((task) =>
+            task.oneTime ? (
+              <SettleInRow
+                key={task.type}
+                task={task}
+                pending={row.pendingByType.get(task.type) ?? null}
+                enabled={row.enabled}
+                onMarkDone={() => onMarkDone(task)}
+                onPressTerm={setTermSlug}
+              />
+            ) : (
+              <TaskEditor
+                key={task.type}
+                task={task}
+                suggested={row.suggestedByType.get(task.type)}
+                pending={row.pendingByType.get(task.type) ?? null}
+                enabled={row.enabled}
+                onMarkDone={() => onMarkDone(task)}
+                onSetCadence={(days) => onSetCadence(task, days)}
+                onToggleMute={() => onToggleMute(task)}
+                onReschedule={(delta) => onReschedule(task, delta)}
+                onReset={() => onReset(task)}
+              />
+            ),
+          )}
           <Text variant="caption" role="textMuted" style={styles.editorHint}>
             {row.enabled ? copy('care.cadence.applies') : copy('care.cadence.turnOn')}
           </Text>
         </View>
       </Collapse>
     </Card>
+    <TermSheet slug={termSlug} onClose={() => setTermSlug(null)} />
+    </>
+  );
+}
+
+/** One care-guide category: a tappable header that expands to reveal its prose. */
+function GuideTipRow({
+  tip,
+  open,
+  onToggle,
+  onPressTerm,
+}: {
+  tip: CareTip;
+  open: boolean;
+  onToggle: () => void;
+  onPressTerm: (slug: string) => void;
+}) {
+  return (
+    <View>
+      <Pressable
+        onPress={() => {
+          haptics.select();
+          onToggle();
+        }}
+        accessibilityRole="button"
+        accessibilityState={{ expanded: open }}
+        accessibilityLabel={`${open ? 'Collapse' : 'Expand'} ${tip.category}`}
+        style={styles.guideTipHead}>
+        <Text variant="caption">{tip.category}</Text>
+        <Text variant="body" role="textMuted" style={[styles.chevron, open && styles.chevronOpen]}>
+          ›
+        </Text>
+      </Pressable>
+      <Collapse open={open}>
+        <GlossaryText text={tip.tip} onPressTerm={onPressTerm} style={styles.guideTipBody} />
+      </Collapse>
+    </View>
+  );
+}
+
+/**
+ * The one-time "Settle in" task: the quietest row on the calmest screen. Just the
+ * establishment prose (enclosed/open by the build's container) and a single "Got it"
+ * — no cadence stepper, mute, or reschedule, since it fires once and ages out.
+ */
+function SettleInRow({
+  task,
+  pending,
+  enabled,
+  onMarkDone,
+  onPressTerm,
+}: {
+  task: CareTask;
+  pending: CareMark | null;
+  enabled: boolean;
+  onMarkDone: () => void;
+  onPressTerm: (slug: string) => void;
+}) {
+  const { c } = useTokens();
+  const due = pending?.dueAt ?? null;
+  const prose = copy(task.bucket === 'open' ? 'care.settle.card.open' : 'care.settle.card.enclosed');
+
+  return (
+    <View style={[styles.taskEditor, { borderTopColor: c.border }]}>
+      <View style={styles.taskEditorHead}>
+        <Text variant="body" style={styles.taskName} numberOfLines={1}>
+          {CARE_TASK_LABEL['settle-in']}
+        </Text>
+      </View>
+      <GlossaryText text={prose} onPressTerm={onPressTerm} />
+      {enabled && due ? (
+        <View style={styles.taskEditorFoot}>
+          <Text variant="caption" role="textMuted">
+            {dueLabel(due)}
+          </Text>
+          <Pressable
+            onPress={onMarkDone}
+            accessibilityRole="button"
+            hitSlop={{ top: 4, bottom: 10, left: 8, right: 8 }}
+            style={[styles.doneBtn, { borderColor: c.border }]}>
+            <Text variant="caption" role="primary">
+              Got it
+            </Text>
+          </Pressable>
+        </View>
+      ) : null}
+    </View>
   );
 }
 
@@ -499,7 +651,7 @@ function TaskEditor({
 
       {task.muted ? (
         <Text variant="caption" role="textMuted">
-          Won’t remind until you un-mute.
+          {copy('care.task.mutedHint')}
         </Text>
       ) : (
         <>
@@ -671,7 +823,7 @@ function OverflowNotice({ plan }: { plan: BudgetPlan }) {
   return (
     <View style={[styles.notice, { backgroundColor: c.surfaceSunken }]}>
       <Text variant="caption" role="textMuted" style={styles.noticeText}>
-        {`Reminders are active on your ${n} nearest-due ${n === 1 ? 'terrarium' : 'terrariums'}; the others resume automatically as these complete.`}
+        {copy('care.overflow', { count: n, terrariums: n === 1 ? 'terrarium' : 'terrariums' })}
       </Text>
     </View>
   );
@@ -707,6 +859,11 @@ function nudgeDue(from: Date, deltaDays: number): Date {
   return new Date(Math.max(from.getTime() + deltaDays * DAY_MS, Date.now()));
 }
 
+/** A due time at `ms`, clamped to no earlier than now — module-level so `Date.now()` isn't render-scoped. */
+function notBeforeNow(ms: number): Date {
+  return new Date(Math.max(ms, Date.now()));
+}
+
 const UNIT_TITLE: Record<CareIntervalUnit, string> = { days: 'Days', weeks: 'Weeks', months: 'Months' };
 
 /** Singular/plural unit word for the stepper value ("1 day" / "2 weeks"). */
@@ -740,6 +897,15 @@ const styles = StyleSheet.create({
 
   // --- Expanded editor ---
   editor: { marginTop: Spacing.xs },
+  guide: { gap: Spacing.xs, paddingBottom: Spacing.sm },
+  guideTipHead: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    gap: Spacing.md,
+    paddingVertical: Spacing.xs,
+  },
+  guideTipBody: { paddingBottom: Spacing.xs },
   editorHint: { marginTop: Spacing.sm, fontStyle: 'italic' },
   taskEditor: {
     gap: Spacing.sm,

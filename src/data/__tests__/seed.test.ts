@@ -19,8 +19,8 @@ import { loadPlants, loadSeed, SUBSTRATE_COMPONENT_IDS } from '..';
 const plants = loadPlants();
 
 describe('seed counts', () => {
-  it('ships 243 plants', () => {
-    expect(plants).toHaveLength(243);
+  it('ships 201 plants', () => {
+    expect(plants).toHaveLength(201);
   });
 
   it('has unique plant slugs', () => {

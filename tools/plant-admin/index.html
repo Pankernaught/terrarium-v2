@@ -478,8 +478,8 @@ window.SPEC = SPEC;
       <div class="img-box">
         ${prev}
         <div>
-          <input type="file" id="imgFile" accept="image/png" />
-          <div class="help">Optional. Saved to <code>assets/plants/${esc(slug)}.png</code> on save. PNG only.
+          <input type="file" id="imgFile" accept="image/*" />
+          <div class="help">Optional. Saved to <code>assets/plants/${esc(slug)}.png</code> on save. JPEG, PNG, WebP all accepted.
           Leave empty to keep the stylized placeholder. <span class="badge">Real photos must be CC-licensed — fill credit/license above.</span></div>
         </div>
       </div></div>`;
@@ -617,14 +617,21 @@ window.SPEC = SPEC;
       if (file) file.addEventListener('change', () => {
         const f = file.files[0];
         if (!f) { state.imageDataUrl = null; return; }
-        if (f.type !== 'image/png') { toast('PNG only', 'bad'); file.value = ''; return; }
-        const reader = new FileReader();
-        reader.onload = () => {
-          state.imageDataUrl = reader.result;
+        if (!f.type.startsWith('image/')) { toast('Image files only', 'bad'); file.value = ''; return; }
+        const objectUrl = URL.createObjectURL(f);
+        const img = new window.Image();
+        img.onload = () => {
+          const canvas = document.createElement('canvas');
+          canvas.width = img.naturalWidth;
+          canvas.height = img.naturalHeight;
+          canvas.getContext('2d').drawImage(img, 0, 0);
+          URL.revokeObjectURL(objectUrl);
+          state.imageDataUrl = canvas.toDataURL('image/png');
           const box = form.querySelector('.img-prev');
-          box.outerHTML = `<img class="img-prev" src="${state.imageDataUrl}" />`;
+          if (box) box.outerHTML = `<img class="img-prev" src="${state.imageDataUrl}" />`;
         };
-        reader.readAsDataURL(f);
+        img.onerror = () => { URL.revokeObjectURL(objectUrl); toast('Could not read image', 'bad'); file.value = ''; };
+        img.src = objectUrl;
       });
     }
 

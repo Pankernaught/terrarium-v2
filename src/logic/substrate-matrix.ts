@@ -82,6 +82,8 @@ export const SUBSTRATE_MATRIX: Readonly<Record<string, PropertyVector>> = {
   vermiculite: { aeration: 2, waterRetention: 4, nutrient: 1, buffering: 2 },
   // Fired clay balls — pure drainage/aeration, holds nothing, near-inert.
   leca: { aeration: 4, waterRetention: 1, nutrient: 0, buffering: 1 },
+  // Japanese fired clay — porous hold-and-release, mineral-inert, mildly acidic.
+  akadama: { aeration: 2, waterRetention: 3, nutrient: 0, buffering: 2 },
 };
 
 /** The component ids that have an authored row (the mixer's blendable domain). */

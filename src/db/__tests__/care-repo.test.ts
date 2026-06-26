@@ -195,6 +195,45 @@ describe('care repository', () => {
     expect(reloaded.completedAt!.getTime()).toBeLessThanOrEqual(after);
   });
 
+  it('markDone with a null interval completes one-time, appending no successor', async () => {
+    const buildId = await makeBuild(db);
+    const at = new Date('2026-07-01T12:00:00.000Z');
+    const settle = await repo.add({
+      buildId,
+      kind: 'settle-in',
+      dueAt: new Date('2026-07-01T09:00:00.000Z'),
+    });
+
+    const result = await repo.markDone(settle.id, null, at);
+
+    // Returns the completed row (not a new pending one).
+    expect(result.id).toBe(settle.id);
+    expect(result.completedAt!.getTime()).toBe(at.getTime());
+
+    // No successor: the build has no pending rows, but history survives.
+    expect(await repo.pendingForBuild(buildId)).toHaveLength(0);
+    const all = await repo.listForBuild(buildId);
+    expect(all).toHaveLength(1);
+    expect(all[0].completedAt).toBeInstanceOf(Date);
+  });
+
+  it('a completed one-time row survives disableForBuild (history is kept)', async () => {
+    const buildId = await makeBuild(db);
+    const settle = await repo.add({
+      buildId,
+      kind: 'settle-in',
+      dueAt: new Date('2026-07-01T00:00:00.000Z'),
+    });
+    await repo.markDone(settle.id, null);
+
+    await repo.disableForBuild(buildId);
+
+    const all = await repo.listForBuild(buildId);
+    expect(all).toHaveLength(1);
+    expect(all[0].id).toBe(settle.id);
+    expect(all[0].completedAt).toBeInstanceOf(Date);
+  });
+
   it('markDone on an unknown id throws not found', async () => {
     await expect(repo.markDone('nope', 7)).rejects.toThrow(/not found/);
   });

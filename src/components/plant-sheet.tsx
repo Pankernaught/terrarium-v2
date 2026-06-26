@@ -12,10 +12,12 @@
  * Tier 2 is always visible. Tier 3 expands behind a toggle ("Full profile").
  */
 import { useState } from 'react';
-import { Pressable, ScrollView, StyleSheet, useWindowDimensions, View } from 'react-native';
+import { Modal, Pressable, ScrollView, StyleSheet, useWindowDimensions, View } from 'react-native';
 import * as WebBrowser from 'expo-web-browser';
+import { Image } from 'expo-image';
 
 import { BottomSheet, haptics, SectionLabel, StatStrip, type Stat, Text } from '@/components/ui';
+import { PLANT_IMAGES } from '@/data/plant-images';
 import { GlossaryText } from '@/components/glossary-text';
 import { TermSheet } from '@/components/term-sheet';
 import { Radii, Spacing } from '@/constants/theme';
@@ -81,6 +83,7 @@ export function PlantSheet({ plant, onClose, context, isSelected, onToggle, conf
   // Glossary term sheet opened from inline chip / stat / prose links — stacks over
   // this sheet and shares the single TermSheet component (ADR 0006).
   const [termSlug, setTermSlug] = useState<string | null>(null);
+  const [imgExpanded, setImgExpanded] = useState(false);
 
   // Reset Tier 3 + any open term when a different plant opens.
   const [lastSlug, setLastSlug] = useState<string | null>(null);
@@ -88,6 +91,7 @@ export function PlantSheet({ plant, onClose, context, isSelected, onToggle, conf
     setLastSlug(plant.slug);
     setTier3Open(false);
     setTermSlug(null);
+    setImgExpanded(false);
   }
 
   function handleToggle() {
@@ -107,34 +111,45 @@ export function PlantSheet({ plant, onClose, context, isSelected, onToggle, conf
             showsVerticalScrollIndicator={false}
             keyboardShouldPersistTaps="handled">
 
-            {/* Header — scientific name + classifier chips */}
-            <Text variant="caption" role="textMuted" style={styles.sci}>
-              {plant.scientificName}
-            </Text>
-            <View style={styles.headerChips}>
-              {plant.plantType ? (
-                <Pressable
-                  onPress={() => { haptics.select(); setTermSlug(vocabSlug('plantType', plant.plantType!)); }}
-                  accessibilityRole="link"
-                  accessibilityLabel={`Define ${humanize(plant.plantType)}`}>
-                  <View style={[styles.typeChip, { backgroundColor: c.surfaceSunken }]}>
-                    <Text variant="overline">{PLANT_TYPE_EMOJI[plant.plantType] ?? '🌱'}</Text>
-                    <Text variant="overline" style={styles.linkUnderline}>{humanize(plant.plantType)}</Text>
-                  </View>
+            {/* Header — square photo left, meta right */}
+            <View style={styles.cardHeader}>
+              {PLANT_IMAGES[plant.slug] != null ? (
+                <Pressable onPress={() => setImgExpanded(true)} accessibilityRole="button" accessibilityLabel="Expand photo">
+                  <Image source={PLANT_IMAGES[plant.slug]!} style={styles.cardImg} contentFit="cover" />
                 </Pressable>
-              ) : null}
-              {plant.nativeBiome ? (
-                <Pressable
-                  onPress={() => { haptics.select(); setTermSlug(vocabSlug('biome', plant.nativeBiome!)); }}
-                  accessibilityRole="link"
-                  accessibilityLabel={`Define ${humanize(plant.nativeBiome)}`}>
+              ) : (
+                <View style={[styles.cardImg, { backgroundColor: c.surfaceSunken }]} />
+              )}
+              <View style={styles.cardMeta}>
+                <Text variant="caption" role="textMuted" style={styles.sci}>
+                  {plant.scientificName}
+                </Text>
+                <View style={styles.headerChips}>
+                  {plant.plantType ? (
+                    <Pressable
+                      onPress={() => { haptics.select(); setTermSlug(vocabSlug('plantType', plant.plantType!)); }}
+                      accessibilityRole="link"
+                      accessibilityLabel={`Define ${humanize(plant.plantType)}`}>
+                      <View style={[styles.typeChip, { backgroundColor: c.surfaceSunken }]}>
+                        <Text variant="overline">{PLANT_TYPE_EMOJI[plant.plantType] ?? '🌱'}</Text>
+                        <Text variant="overline" style={styles.linkUnderline}>{humanize(plant.plantType)}</Text>
+                      </View>
+                    </Pressable>
+                  ) : null}
+                  {plant.nativeBiome ? (
+                    <Pressable
+                      onPress={() => { haptics.select(); setTermSlug(vocabSlug('biome', plant.nativeBiome!)); }}
+                      accessibilityRole="link"
+                      accessibilityLabel={`Define ${humanize(plant.nativeBiome)}`}>
+                      <View style={[styles.typeChip, { backgroundColor: c.surfaceSunken }]}>
+                        <Text variant="overline" style={styles.linkUnderline}>{humanize(plant.nativeBiome)}</Text>
+                      </View>
+                    </Pressable>
+                  ) : null}
                   <View style={[styles.typeChip, { backgroundColor: c.surfaceSunken }]}>
-                    <Text variant="overline" style={styles.linkUnderline}>{humanize(plant.nativeBiome)}</Text>
+                    <Text variant="overline">Care level {plant.difficulty}/5</Text>
                   </View>
-                </Pressable>
-              ) : null}
-              <View style={[styles.typeChip, { backgroundColor: c.surfaceSunken }]}>
-                <Text variant="overline">Care level {plant.difficulty}/5</Text>
+                </View>
               </View>
             </View>
 
@@ -253,6 +268,13 @@ export function PlantSheet({ plant, onClose, context, isSelected, onToggle, conf
       ) : null}
     </BottomSheet>
     <TermSheet slug={termSlug} onClose={() => setTermSlug(null)} />
+    <Modal visible={imgExpanded} transparent animationType="fade" onRequestClose={() => setImgExpanded(false)}>
+      <Pressable style={styles.imgModalOverlay} onPress={() => setImgExpanded(false)} accessibilityRole="button" accessibilityLabel="Close photo">
+        {plant && PLANT_IMAGES[plant.slug] != null ? (
+          <Image source={PLANT_IMAGES[plant.slug]!} style={StyleSheet.absoluteFill} contentFit="contain" />
+        ) : null}
+      </Pressable>
+    </Modal>
     </>
   );
 }
@@ -295,8 +317,11 @@ function tier3Stats(plant: Plant, units: Units): Stat[] {
 
 const styles = StyleSheet.create({
   scrollContent: { gap: Spacing.md, paddingBottom: Spacing.sm },
-  sci: { fontStyle: 'italic', marginTop: -Spacing.xs },
-  headerChips: { flexDirection: 'row', flexWrap: 'wrap', gap: Spacing.xs },
+  cardHeader: { flexDirection: 'row', gap: Spacing.md },
+  cardImg: { width: 110, height: 110, borderRadius: Radii.md, flexShrink: 0 },
+  cardMeta: { flex: 1, justifyContent: 'space-between', alignItems: 'center' },
+  sci: { fontStyle: 'italic', textAlign: 'center' },
+  headerChips: { flexDirection: 'column', alignItems: 'center', gap: Spacing.sm },
   linkUnderline: { textDecorationLine: 'underline', textDecorationStyle: 'dotted' },
   typeChip: {
     flexDirection: 'row',
@@ -332,4 +357,5 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     marginTop: Spacing.xs,
   },
+  imgModalOverlay: { flex: 1, backgroundColor: 'rgba(0,0,0,0.92)' },
 });

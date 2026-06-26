@@ -1,0 +1,41 @@
+HOW TO RUN — terrarium-v2
+=========================
+
+First time / after pulling: `npm install`
+
+
+1. THE APP
+----------
+  npm run start
+
+Starts the Expo dev server, then press a key to open a target:
+  i  -> iOS simulator
+  a  -> Android emulator
+  w  -> web browser
+(or scan the QR code with Expo Go on a physical phone)
+
+Shortcuts that skip the menu:
+  npm run ios       # straight to iOS simulator
+  npm run android   # straight to Android emulator
+  npm run web       # straight to web -> http://localhost:8081
+
+
+2. THE PLANT ADMIN TOOL  (standalone local web app)
+---------------------------------------------------
+  npm run plant-admin
+  then open:  http://localhost:4317
+
+This is a separate local server (tools/plant-admin/), unrelated to the
+Expo app — run it in its own terminal tab.
+
+
+EXTRAS
+------
+  npm test          # watch-mode unit tests (vitest)
+  npm run test:run  # run tests once
+  npm run typecheck # tsc --noEmit
+  npm run lint      # expo lint
+
+
+To update plant PNG photos
+node scripts/build-plant-images.mjs

@@ -41,7 +41,7 @@ describe('generateBuildGuide', () => {
     const guide = generateBuildGuide([plant], makeContainerSpec());
     const substrateStep = guide.find((s) => s.title === 'Substrate Layer')!;
     expect(substrateStep.instruction).toBe(
-      'Add 3-5cm of a standard well-draining terrarium mix.',
+      'Add 3-5cm of a standard well-draining terrarium mix. Press down on the mix gently to flatten, but try not to over compact. ',
     );
     expect(substrateStep.instruction).not.toContain('custom mix');
   });
@@ -51,7 +51,7 @@ describe('generateBuildGuide', () => {
     const guide = generateBuildGuide([plant], makeContainerSpec(), { substrateDepth: 5 });
     const substrateStep = guide.find((s) => s.title === 'Substrate Layer')!;
     expect(substrateStep.instruction).toBe(
-      'Add 5 cm of a standard well-draining terrarium mix.',
+      'Add 5 cm of a standard well-draining terrarium mix. Press down on the mix gently to flatten, but try not to over compact. ',
     );
   });
 
@@ -68,7 +68,7 @@ describe('generateBuildGuide', () => {
     // "an" before the vowel-initial character phrase; real depth + recipe verbatim.
     expect(substrateStep.instruction).toBe(
       'Add 6 cm of your custom mix: 2 parts coco coir, 1 part perlite, 1 part sphagnum moss — ' +
-        'an airy, moisture-retentive blend.',
+        'an airy, moisture-retentive blend. Press down on the blend gently to flatten, but try not to over compact. ',
     );
     expect(substrateStep.instruction).not.toContain('standard well-draining');
   });

@@ -39,6 +39,7 @@ export const SUBSTRATE_COMPONENTS = [
   { id: 'worm-castings', label: 'Worm castings' },
   { id: 'vermiculite', label: 'Vermiculite' },
   { id: 'leca', label: 'LECA' },
+  { id: 'akadama', label: 'Akadama' },
 ] as const satisfies readonly Component[];
 
 export type SubstrateComponentId = (typeof SUBSTRATE_COMPONENTS)[number]['id'];

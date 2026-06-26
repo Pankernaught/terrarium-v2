@@ -18,7 +18,10 @@
 import { memo, useCallback, useMemo, useState } from 'react';
 import { FlatList, Linking, Pressable, StyleSheet, TextInput, View } from 'react-native';
 
+import { Image } from 'expo-image';
+
 import { Card, Chip, EmptyState, GlanceHeader, RangeSlider, Screen, SectionLabel, Text } from '@/components/ui';
+import { PLANT_IMAGES } from '@/data/plant-images';
 import { PlantSheet } from '@/components/plant-sheet';
 import { TermSheet } from '@/components/term-sheet';
 import { MaxContentWidth, Radii, Spacing } from '@/constants/theme';
@@ -404,34 +407,43 @@ const PlantRow = memo(function PlantRow({
   return (
     <Pressable onPress={() => onPress(plant)} accessibilityRole="button" accessibilityLabel={`Open ${plant.commonName}`}>
       <Card style={styles.row}>
-        <View style={styles.rowHead}>
-          <View style={styles.rowTitle}>
-            <Text variant="subhead" numberOfLines={1}>
-              {plant.commonName}
-            </Text>
-            <Text variant="caption" role="textMuted" numberOfLines={1} style={styles.sci}>
-              {plant.scientificName}
+        <View style={styles.rowInner}>
+          <View style={styles.rowContent}>
+            <View style={styles.rowHead}>
+              <View style={styles.rowTitle}>
+                <Text variant="subhead" numberOfLines={1}>
+                  {plant.commonName}
+                </Text>
+                <Text variant="caption" role="textMuted" numberOfLines={1} style={styles.sci}>
+                  {plant.scientificName}
+                </Text>
+              </View>
+              {/* Toxicity indicator — shown ONLY when a note exists; icon + word, never
+                  colour alone; absence is never rendered as a "safe" claim. */}
+              {plant.toxicity ? (
+                <View style={[styles.toxPill, { backgroundColor: c.surfaceSunken }]}>
+                  <View style={[styles.toxDot, { backgroundColor: c.accent }]} />
+                  <Text variant="overline" role="accent">
+                    Handling note
+                  </Text>
+                </View>
+              ) : null}
+            </View>
+            <View style={styles.rowChips}>
+              <Chip label={humanize(plant.light.primary)} tone="neutral" />
+              <Chip label={humanize(plant.soilMoisture.primary)} tone="neutral" />
+              <Chip label={`Care level ${plant.difficulty}`} tone="neutral" />
+            </View>
+            <Text variant="caption" role="textMuted">
+              {plant.humidityPctRange[0]}–{plant.humidityPctRange[1]}% RH · {fmtTempRange(plant.tempCRange[0], plant.tempCRange[1], units)} · ≤{fmtLength(plant.maxHeightCm, units)}
             </Text>
           </View>
-          {/* Toxicity indicator — shown ONLY when a note exists; icon + word, never
-              colour alone; absence is never rendered as a "safe" claim. */}
-          {plant.toxicity ? (
-            <View style={[styles.toxPill, { backgroundColor: c.surfaceSunken }]}>
-              <View style={[styles.toxDot, { backgroundColor: c.accent }]} />
-              <Text variant="overline" role="accent">
-                Handling note
-              </Text>
-            </View>
-          ) : null}
+          {PLANT_IMAGES[plant.slug] != null ? (
+            <Image source={PLANT_IMAGES[plant.slug]!} style={styles.thumb} contentFit="cover" />
+          ) : (
+            <View style={[styles.thumb, { backgroundColor: c.surfaceSunken }]} />
+          )}
         </View>
-        <View style={styles.rowChips}>
-          <Chip label={humanize(plant.light.primary)} tone="neutral" />
-          <Chip label={humanize(plant.soilMoisture.primary)} tone="neutral" />
-          <Chip label={`Care level ${plant.difficulty}`} tone="neutral" />
-        </View>
-        <Text variant="caption" role="textMuted">
-          {plant.humidityPctRange[0]}–{plant.humidityPctRange[1]}% RH · {fmtTempRange(plant.tempCRange[0], plant.tempCRange[1], units)} · ≤{fmtLength(plant.maxHeightCm, units)}
-        </Text>
       </Card>
     </Pressable>
   );
@@ -484,7 +496,10 @@ const styles = StyleSheet.create({
   facet: { gap: Spacing.sm },
   chipWrap: { flexDirection: 'row', flexWrap: 'wrap', gap: Spacing.sm },
   clear: { alignSelf: 'flex-start', paddingTop: Spacing.xs },
-  row: { padding: Spacing.md, gap: Spacing.sm },
+  row: { padding: Spacing.md },
+  rowInner: { flexDirection: 'row', alignItems: 'center', gap: Spacing.md },
+  thumb: { width: 77, height: 77, borderRadius: Radii.md, flexShrink: 0 },
+  rowContent: { flex: 1, gap: Spacing.sm },
   rowHead: { flexDirection: 'row', alignItems: 'flex-start', justifyContent: 'space-between', gap: Spacing.sm },
   rowTitle: { flexShrink: 1, gap: 2 },
   sci: { fontStyle: 'italic' },

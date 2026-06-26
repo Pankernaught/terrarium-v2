@@ -16,8 +16,11 @@ import { memo, useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { ActivityIndicator, InteractionManager, type LayoutChangeEvent, Pressable, StyleSheet, TextInput, View } from 'react-native';
 import Animated, { Easing, useAnimatedStyle, useSharedValue, withSequence, withTiming } from 'react-native-reanimated';
 
+import { Image } from 'expo-image';
+
 import { Card, Chip, EcoMeter, haptics, RangeSlider, SectionLabel, Text } from '@/components/ui';
 import { PlantSheet, type PlantConflict } from '@/components/plant-sheet';
+import { PLANT_IMAGES } from '@/data/plant-images';
 import { Radii, Spacing } from '@/constants/theme';
 import { loadPlants } from '@/data';
 import { useTokens } from '@/hooks/use-tokens';
@@ -487,6 +490,7 @@ const PlantCatalogRow = memo(function PlantCatalogRow({
 }) {
   const { c } = useTokens();
   const emoji = plant.plantType ? (PLANT_TYPE_EMOJI[plant.plantType] ?? '🌱') : '🌱';
+  const photo = PLANT_IMAGES[plant.slug];
   const fitColor = fitScore != null ? ecoColor(fitScore, scheme) : null;
 
   return (
@@ -502,7 +506,11 @@ const PlantCatalogRow = memo(function PlantCatalogRow({
             borderColor: selected ? c.sage : c.border,
           },
         ]}>
-        <Text style={styles.rowEmoji}>{emoji}</Text>
+        {photo != null ? (
+          <Image source={photo} style={styles.rowThumb} contentFit="cover" />
+        ) : (
+          <Text style={styles.rowEmoji}>{emoji}</Text>
+        )}
         <View style={styles.rowNames}>
           <Text variant="body" numberOfLines={1}>{plant.commonName}</Text>
           <Text variant="overline" role="textMuted" numberOfLines={1} style={styles.sciSmall}>
@@ -638,6 +646,7 @@ const styles = StyleSheet.create({
     paddingVertical: Spacing.sm + 2,
   },
   rowEmoji: { fontSize: 20, width: 28, textAlign: 'center' },
+  rowThumb: { width: 36, height: 36, borderRadius: Radii.sm, flexShrink: 0 },
   rowNames: { flex: 1, gap: 1 },
   sciSmall: { fontStyle: 'italic' },
   fitCol: { flexDirection: 'row', alignItems: 'center', gap: Spacing.xs },

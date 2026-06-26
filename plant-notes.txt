@@ -1,0 +1,424 @@
+Slug:   begonia-cleopatrae
+Name:   Cleopatra Begonia (Begonia cleopatrae)
+Notes:  This African begonia has metallic silver-green leaves and slight iridescence. It should be grown in a sealed or closed terrarium — fluctuating humidity causes leaf edge browning that worsens over time. 
+
+---
+Slug:   begonia-conchifolia
+Name:   Pond Lily Begonia (Begonia conchifolia)
+Notes:  Pond Lily Begonia is one of the most forgiving terrarium begonias, tolerating a wide range of light and moisture conditions without complaint. The leaves are distinctive because the [[petiole]] attaches at the centre of the leaf instead of on the edge. It propagates readily from leaf cuttings placed on moist substrate.
+
+---
+Slug:   begonia-dodsoni
+Name:   Dodson's Begonia (Begonia dodsoni)
+Notes:  Dodson's Begonia is a rare cloud-forest species that demands cooler temperatures and very high humidity. Temperatures above 24°C will cause rapid decline. It's best suited to an expertly maintained, large closed terrarium with stable conditions. Not a recommended beginner plant. 
+
+---
+Slug:   begonia-elaeagnifolia
+Name:   Elaeagnus-leaf Begonia (Begonia elaeagnifolia)
+Notes:  Elaeagnus-leaf Begonia has elongated silvery leaves with a distinctive texture that give it an elegant appearance among African begonias. Its upright growth suits taller terrariums, and regular pruning keeps it compact and encourages the bushier side growth that makes the plant look its best.
+
+---
+Slug:   begonia-foliosa-var-foliosa
+Name:   Fern-leaf Begonia (Begonia foliosa var. foliosa)
+Notes:  Begonia foliosa var. foliosa has tiny oval leaflets densely packed on arching stems, creating a feathery, fern-like appearance quite unlike most begonias. It tolerates slightly cooler conditions than tropical species, and it's well-suited to large, well-ventilated closed terrariums where the arching stems have room to cascade naturally.
+
+---
+Slug:   begonia-glabra-bronze
+Name:   Bronze Climbing Begonia (Begonia glabra 'Bronze')
+Notes:  Begonia glabra 'Bronze' is an excellent vivarium vine that scrambles up backgrounds and cork bark. The leaves are small and glossy with a bronze sheen. It grows quickly and vigorously, so trim it regularly.
+
+---
+Slug:   begonia-longiciliata-sizemoreae
+Name:   Fringed Begonia Sizemoreae (Begonia longiciliata 'Sizemoreae')
+Notes:  Begonia longiciliata 'Sizemoreae' is defined by the long hairy cilia fringing its leaf margins, giving the leaves unique look among begonias. A sealed closed terrarium is essential — the delicate leaf margins deteriorate quickly if humidity drops.
+
+---
+Slug:   begonia-luzonensis
+Name:   Luzon Begonia (Begonia luzonensis)
+Notes:  Begonia luzonensis is a Philippine species with medium-sized pointed leaves and a glossy texture. It performs reliably in closed terrariums with consistent moisture and filtered light once established.
+
+---
+Slug:   begonia-manaus
+Name:   Manaus Begonia (Begonia manaus)
+Notes:  Begonia manaus is a vigorous cane-type begonia that thrives in warm, humid closed terrariums. Its fast growth means regular pruning is needed in smaller builds; it's better suited to large terrariums where it has room to run.
+
+---
+Slug:   begonia-maurandiae-blue
+Name:   Blue Maurandiae Begonia (Begonia maurandiae 'Blue')
+Notes:  Begonia maurandiae 'Blue' is a climbing cultivar with a blue-purple iridescent tint to its foliage and flowers. It requires cooler montane conditions and very high humidity, so it's best placed in a large, well-ventilated closed terrarium with consistently cool temperatures.
+
+---
+Slug:   begonia-prismatocarpa
+Name:   Prism-fruit Begonia (Begonia prismatocarpa)
+Notes:  Begonia prismatocarpa is one of the best begonias for closed terrariums: tiny leaves, a trailing habit, and cheerful yellow flowers that bloom reliably under terrarium conditions. It's easy and forgiving, making it a good choice for anyone new to begonias.
+
+---
+Slug:   begonia-pustulata
+Name:   Blister Begonia (Begonia pustulata)
+Notes:  Begonia pustulata has deep green leaves with silver markings — one of the most visually dramatic terrarium begonias available. It can be propagated from [[rhizome]] cuttings. Does well in a closed build where humidity is consistently high.
+
+---
+Slug:   begonia-raja
+Name:   Raja Begonia (Begonia raja)
+Notes:  Begonia raja produces large, velvety, heavily textured leaves covered in fine hairs and silver spots. It needs a large build to accommodate leaf size. Take care to avoid wetting the hairy foliage to prevent [[Botrytis]].
+
+---
+Slug:   begonia-soli-mutata
+Name:   Sun-changing Begonia (Begonia soli-mutata)
+Notes:  Begonia soli-mutata has leaves that display dramatically different colors and patterns depending on light exposure, which makes it one of the more fascinating begonias to observe over time. It's easy to grow and propagate, and suits a range of closed terrarium setups.
+
+---
+Slug:   begonia-sutherlandii-saunders-legacy
+Name:   Saunders Legacy Begonia (Begonia sutherlandii 'Saunders Legacy')
+Notes:  Begonia sutherlandii 'Saunders Legacy' is a tuberous begonia that dies back in winter and requires a distinct cool, dry rest period — unlike most terrarium begonias. It is not suited to enclosed humid environments; grow it in an open terrarium where its cheerful orange flowers and compact trailing habit can be fully appreciated.
+
+---
+Slug:   begonia-turrialbae
+Name:   Turrialba Begonia (Begonia turrialbae)
+Notes:  Begonia turrialbae is a compact cloud-forest species suited to cool, humid closed terrariums. Keep temperatures and humidity in optimal ranges in crucial as this species is very sensitive to fluctuations in both.
+
+---
+Slug:   begonia-variabilis
+Name:   Variable Begonia (Begonia variabilis)
+Notes:  Begonia variabilis shows notable variation in leaf form between populations and under different growing conditions, which is part of what makes it interesting to collect. It's reliable in closed terrariums and adapts to a range of light levels.
+
+---
+Slug:   cryptanthus-absolute-zero
+Name:   Absolute Zero Earth Star (Cryptanthus 'Absolute Zero')
+Notes:  Cryptanthus 'Absolute Zero' is a compact earth star with silvery-white striped leaves. It doesn't hold much water in its central cup compared to tank bromeliads. It needs airflow — avoid sealed enclosures — and [[offset|offsets]] freely once established.
+
+---
+Slug:   neoregelia-fireball
+Name:   Fireball Neoregelia (Neoregelia 'Fireball')
+Notes:  Neoregelia 'Fireball' is one of the most widely grown miniature Neoregelia cultivars. It turns brilliant crimson-red under high bright-indirect or some direct light, and stays green in lower light. It [[offset|offsets]] readily and forms clumping colonies over time.
+
+---
+Slug:   geogenanthus-poeppigii
+Name:   Seersucker Plant (Geogenanthus poeppigii)
+Notes:  Geogenanthus poeppigii has distinctive quilted, textured dark green leaves with silver banding. It demands very high humidity and will degrade quickly in open environments — sealed or near-sealed bioactive terrariums are ideal. It's sensitive to cold drafts and dry air.
+
+---
+Slug:   eleocharis-radicans
+Name:   Dwarf Hair Grass (Eleocharis radicans)
+Notes:  Eleocharis radicans is a fine grass-like sedge that creates a dense carpet effect when grown in a high-humidity closed terrarium with a wet substrate. It spreads by [[stolon|stolons]] to form a mat; the roots must remain wet at all times and the substrate should never dry out.
+
+---
+Slug:   drosera-adelae
+Name:   Lance-Leaf Sundew (Drosera adelae)
+Notes:  Drosera adelae, the Lance-Leaf Sundew, has narrow strap-like leaves densely covered in glistening red tentacles and is one of the easier tropical sundews to keep. Use only distilled or other pure water because minerals from tap water will kill it.
+
+---
+Slug:   drosera-spatulata
+Name:   Spoon-Leaf Sundew (Drosera spatulata)
+Notes:  Drosera spatulata, the Spoon-Leaf Sundew, is one of the most adaptable and beginner-friendly sundews — a compact flat rosette of spoon-shaped leaves covered in sticky red glands. It self-seeds readily in suitable conditions and tolerates a wide temperature range.
+
+---
+Slug:   equisetum-bogotense
+Name:   Andean Horsetail (Equisetum bogotense)
+Notes:  Equisetum bogotense, the Andean Horsetail, is a delicate fine-stemmed species. It requires cool intermediate temperatures and will suffer above 22°C, so it's suited only to cooler closed terrariums with extremely high humidity. Once established, it can spread vigorously via [[rhizome|rhizomes]].
+
+---
+Slug:   aeschynanthus-longicaulis-black-pagoda
+Name:   Black Pagoda Lipstick Plant (Aeschynanthus longicaulis 'Black Pagoda')
+Notes:  Aeschynanthus longicaulis 'Black Pagoda' has waxy dark green leaves and produces orange-yellow tubular flowers. Trailing stems can reach 60 cm; allow the substrate to approach dryness between waterings to avoid root rot, and provide bright indirect light to encourage flowering.
+
+---
+Slug:   alsobia-dianthiflora
+Name:   Lace Flower Vine (Alsobia dianthiflora)
+Notes:  Alsobia dianthiflora, the Lace Flower Vine, produces distinctive white tubular flowers and spreads readily by [[stolon|stolons]]. It makes an excellent terrarium ground cover; avoid waterlogging and ensure good drainage. It's sensitive to cold drafts.
+
+---
+Slug:   codonanthe-carnosa
+Name:   Codonanthe (Codonanthe carnosa)
+Notes:  Codonanthe carnosa has small, thick, waxy leaves and produces white flowers with red streaks. Its semi-succulent leaves let it tolerate slightly drier conditions, but good drainage is still essential — never let it sit in water.
+
+---
+Slug:   codonanthe-digna
+Name:   Codonanthe Digna (Codonanthe digna)
+Notes:  Codonanthe digna has smaller leaves than C. carnosa and a more compact trailing growth habit, with white flowers marked in yellow and red. It grows more slowly and is slightly more demanding than its relative; keep it moderately moist with excellent drainage.
+
+---
+Slug:   deinostigma-tamiana
+Name:   Miniature Chirita (Deinostigma tamiana)
+Notes:  Deinostigma tamiana forms a compact rosette with soft textured leaves and produces white flowers with purple striping. It's ideal for nano terrariums, prefers lean, well-draining substrate, and the leaves should be kept dry — don't mist them directly.
+
+---
+Slug:   episcia-chocolate-velvet
+Name:   Chocolate Velvet Flame Violet (Episcia 'Chocolate Velvet')
+Notes:  Episcia 'Chocolate Velvet' has velvety chocolate-brown leaves with silver markings and produces orange-red tubular flowers. It spreads by [[stolon|stolons]] to form a ground-covering mat, but is extremely sensitive to cold air and low humidity — a single cold draft can cause leaf damage. Never mist the leaves directly.
+
+---
+Slug:   episcia-lilacina
+Name:   Lilacina Flame Violet (Episcia 'Lilacina')
+Notes:  Episcia 'Lilacina' has silver-green patterned foliage and produces lilac to lavender flowers, unusual in the Episcia genus. It spreads by [[stolon|stolons]] and requires consistently high humidity and warmth; any temperature drop or dry air will cause rapid deterioration.
+
+---
+Slug:   episcia-silver-dust
+Name:   Silver Dust Flame Violet (Episcia 'Silver Dust')
+Notes:  Episcia 'Silver Dust' has heavily silver-dusted foliage that gives it a frosty look, with contrasting bright red tubular flowers. Like all Episcias, it requires warm temperatures and very high humidity — cold and dry conditions are fatal, not just stressful.
+
+---
+Slug:   paradrymonia-campostyla-suriname
+Name:   Paradrymonia (Paradrymonia campostyla)
+Notes:  Paradrymonia campostyla has trailing stems and large textured leaves — an uncommon gesneriad in cultivation with genuinely striking foliage. It requires consistently warm temperatures and high humidity.
+
+---
+Slug:   sinningia-freckles
+Name:   Freckles Miniature Sinningia (Sinningia 'Freckles')
+Notes:  Sinningia 'Freckles' is a tiny tuberous gesneriad that forms a compact mound of small velvety leaves topped with spotted purple flowers. It goes dormant in winter — water rarely and keep the [[tuber]] dry until new growth emerges in spring. It's excellent for nano terrariums.
+
+---
+Slug:   sinningia-prudence-risley
+Name:   Prudence Risley Miniature Sinningia (Sinningia 'Prudence Risley')
+Notes:  Sinningia 'Prudence Risley' is a classic miniature Sinningia for terrariums, producing violet-purple tubular flowers prolifically above compact foliage. It grows from a small [[tuber]] and may go dormant in low-light winter conditions — resume regular watering once new growth appears. A well-draining substrate is critical to prevent tuber rot.
+
+---
+Slug:   crepidomanes-minutum
+Name:   Minute Filmy Fern (Crepidomanes minutum)
+Notes:  Crepidomanes minutum, the Minute Filmy Fern, has [[frond|fronds]] just a single cell layer thick and completely transparent. It will desiccate and die within hours if humidity drops below saturation — sealed or near-sealed terrariums with stable near-100% humidity are the only suitable environment. It can be attached to live moss or moist rock rather than planted in substrate, and grows extremely slowly.
+
+---
+Slug:   pogostemon-deccanensis
+Name:   Indian Pogostemon (Pogostemon deccanensis)
+Notes:  Pogostemon deccanensis has fine, feathery leaves that create a delicate texture. It adapts well to humid and wet terrariums. It grows fast and will need regular trimming; plant it in a nutrient-rich, waterlogged substrate for best results.
+
+---
+Slug:   monolena-primulaeflora-red
+Name:   Red Monolena (Monolena primulaeflora 'Red')
+Notes:  Monolena primulaeflora 'Red' is a stunning but demanding plant that requires consistently saturated humidity and warmth. Plant it in a shallow-rooted mix of fine peat and sphagnum and never let it dry out. The red coloration intensifies in slightly brighter light, but direct exposure will cause burning. A mature, stable closed terrarium is the only reliable environment.
+
+---
+Slug:   sonerila-cantonensis-vietnam
+Name:   Vietnam Sonerila (Sonerila cantonensis)
+Notes:  Sonerila cantonensis prefers slightly cooler temperatures than typical tropical species — intermediate conditions of 16–25°C suit it well. Keep humidity high and the substrate consistently moist; its small size makes it an excellent candidate for a cool, closed mossy terrarium or a nano-scale build.
+
+---
+Slug:   ficus-thunbergii
+Name:   Thunberg's Fig (Ficus thunbergii)
+Notes:  Ficus thunbergii is an excellent choice for a naturalistic bonsai terrarium where its aerial roots can be displayed. It tolerates a range of light and temperature conditions but is less forgiving of saturated soil than many tropical figs, so keep the substrate moist but not waterlogged. A good candidate for cooler builds.
+
+---
+Slug:   ficus-vaccinioides
+Name:   Berry-Leaf Creeping Fig (Ficus vaccinioides)
+Notes:  Ficus vaccinioides is highly sought after for nano terrariums because of its extraordinarily small leaves. It grows as a tight creeping mat, ideal for covering hardscape or filling the ground layer, and it's capable of growing on bark or rock as an epiphyte. It prefers slightly cooler temperatures than tropical figs, so keep it moist and humid to avoid the tiny leaves desiccating rapidly.
+
+---
+Slug:   ficus-vilosa
+Name:   Velvet Creeping Fig (Ficus villosa)
+Notes:  Ficus villosa is distinguished by its hairy leaves, which press flat to bark in the juvenile shingling phase. High humidity helps keep the leaf hairs clean and healthy. It's more tolerant of lower humidity than other ficus but still does best in a closed environment.
+
+---
+Slug:   ficus-punctata
+Name:   Spotted Fig (Ficus punctata)
+Notes:  Ficus punctata is a fast-shingling background vine once established, capable of creating a dense covering on backgrounds. It needs a vertical surface, high humidity, and bright indirect light for best growth. It produces waxy, pale green juvenile leaves with interesting texture.
+
+---
+Slug:   ficus-pumila-snowflake
+Name:   Snowflake Creeping Fig (Ficus pumila 'Snowflake')
+Notes:  Ficus pumila 'Snowflake' is one of the most manageable shingling figs for terrariums, more tolerant of temperature variation and lower humidity than tropical species. It grows vigorously once established, so trim it regularly.
+
+---
+Slug:   micranthemum-tweedei
+Name:   Monte Carlo (Micranthemum tweedei)
+Notes:  Micranthemum tweedei, commonly known as Monte Carlo, forms a dense, low bright-green carpet when grown in high-humidity terrariums. It needs a nutrient-rich fine substrate kept permanently saturated, making it excellent for the floor of a high-humidity closed build. Under bright light it stays compact; under low light, stems [[etiolate]] and the carpet opens up.
+
+---
+Slug:   anoectochilus-albolineatus
+Name:   Silver-Veined Jewel Orchid (Anoectochilus albolineatus)
+Notes:  Anoectochilus albolineatus is a jewel orchid grown primarily for its foliage rather than its flowers. Plant it in a shallow layer of fine-grade sphagnum or sphagnum-peat mix and maintain high, stable humidity without wetting the leaves directly. Rotting stems are the main failure mode — good air circulation is essential to prevent stagnant conditions despite the humidity, and the plant is very rewarding once it stabilizes.
+
+---
+Slug:   anoectochilus-formosanus
+Name:   Formosan Jewel Orchid (Anoectochilus formosanus)
+Notes:  Anoectochilus formosanus, the Formosan Jewel Orchid, is one of the easier species in the genus to maintain. Keep it in sphagnum with stable moisture and indirect light. It's widely available and a good introduction to jewel orchid cultivation.
+
+---
+Slug:   masdevallia-auropurpurea
+Name:   Gold-Purple Masdevallia (Masdevallia auropurpurea)
+Notes:  Masdevallia auropurpurea is a cool-growing orchid that critically requires cool temperatures — sustained warmth above 22°C will kill it. A closed terrarium will overheat unless actively chilled, so it's best grown in a cool-room terrarium with excellent ventilation. Plant it in fine bark-sphagnum mix and never let the roots dry completely. Distilled or other pure water is important for this genus.
+
+---
+Slug:   masdevallia-floribunda
+Name:   Floriferous Masdevallia (Masdevallia floribunda)
+Notes:  Masdevallia floribunda is one of the more tolerant Masdevallia species and slightly more adaptable than most. It needs good air movement, consistently moist fine bark or sphagnum, and cool to intermediate temperatures. A cool, well-ventilated open terrarium or an orchid case suits it well; it will not tolerate stagnant warm air.
+
+---
+Slug:   masdevallia-nidifica
+Name:   Nest Masdevallia (Masdevallia nidifica)
+Notes:  Masdevallia nidifica is a true cool-grower that suffers in any warmth above 22°C. It requires near-constant high humidity with outstanding air movement. It can be mounted on cork bark or grown in a well-vented open terrarium; its miniature size makes it ideal where space is limited but temperatures permit.
+
+---
+Slug:   pleurothallis-grobyi
+Name:   Groby's Pleurothallis (Pleurothallis grobyi)
+Notes:  Pleurothallis grobyi is one of the most beginner-friendly miniature orchids, tolerating a wider temperature range than most Pleurothallis and growing vigorously once settled. It produces bright yellow-orange tiny flowers in clusters throughout the year, making it an excellent starter species for a high-humidity terrarium.
+
+---
+Slug:   pleurothallis-rubella
+Name:   Red Pleurothallis (Pleurothallis rubella)
+Notes:  Pleurothallis rubella is a small terrarium orchid suited to cool to intermediate conditions, with a reddish tint in the leaves and flowers that gives it distinctive appeal in a terrarium. Keep the roots moist on a cork or bark mount and ensure good airflow to prevent rot. Avoid temperature extremes.
+
+---
+Slug:   restrepia-lansburghi
+Name:   Lansburg's Restrepia (Restrepia lansburgii)
+Notes:  Restrepia lansburgii is an excellent candidate for a well-ventilated cool orchid terrarium — it stays compact and flowers continuously when conditions are right. Provide intermediate to cool temperatures (12–22°C), good airflow, and consistent moisture without waterlogging. It will not tolerate the heat of a closed tropics-style vivarium.
+
+---
+Slug:   restrepia-muscifera
+Name:   Fly-Trap Restrepia (Restrepia muscifera)
+Notes:  Restrepia muscifera prefers intermediate to cool temperatures, high humidity, and excellent air circulation. Its patterned flowers mimic flies, and it produces flowers at multiple times of year from leaf [[node|nodes]]. An ideal cool-case orchid for a specimen vivarium.
+
+---
+Slug:   scaphosepalum-dodsoni
+Name:   Dodson's Scaphosepalum (Scaphosepalum dodsoni)
+Notes:  Scaphosepalum dodsoni requires cool cloud-forest conditions and should not exceed 22°C. Its single flower spike blooms repeatedly over months, opening one flower at a time. It can be grown mounted or in small pots with excellent drainage and very high humidity with airflow. This is not a plant for tropical vivaria; it needs a cool case.
+
+---
+Slug:   stelis-argentata
+Name:   Silver Stelis (Stelis argentata)
+Notes:  Stelis argentata is among the most compact and container-friendly of the miniature orchids. It can be mounted on cork bark or grown in small pots of fine sphagnum with excellent drainage; intermediate temperatures and good humidity and airflow suit most collections. It produces flowers multiple times per year.
+
+---
+Slug:   bulbophyllum-intersitum
+Name:   Bulbophyllum Intersitum (Bulbophyllum intersitum)
+Notes:  Bulbophyllum intersitum is a warm-growing species more suited to tropical vivaria than cool-growing orchids. Mount it on cork bark and ensure the [[pseudobulb|pseudobulbs]] and roots never dry out completely between waterings; good humidity and warmth are the main requirements. The [[pseudobulb|pseudobulbs]] store water, which provides some drought tolerance.
+
+---
+Slug:   cirrhopetalum-farreri
+Name:   Farrer's Cirrhopetalum (Bulbophyllum farreri)
+Notes:  Bulbophyllum farreri is one of the more temperature-flexible Bulbophyllum relatives, tolerating intermediate to cool-warm conditions. Mount it on a bark slab and allow it to creep freely; keep it consistently moist during growth, and a slight dry rest in cooler months can encourage flowering.
+
+---
+Slug:   haerella-odorata
+Name:   Fragrant Haraella (Haraella odorata)
+Notes:  Haraella odorata is a delightful miniature orchid — compact enough for small terrariums and surprisingly adaptable. It can be grown on bark mounts or in small baskets with fine sphagnum, and it flowers multiple times per year with a sweet fragrance. It tolerates a range of temperatures from cool subtropical to warm.
+
+---
+Slug:   peperomia-angulata
+Name:   Beetle Peperomia (Peperomia angulata)
+Notes:  Peperomia angulata is a robust, low-maintenance terrarium peperomia. Its trailing stems and striped leaves work well in mid-level positions, and it performs reliably under low light, making it useful in darker terrarium corners. Allow the substrate to approach dryness between waterings — peperomia roots rot easily in saturated soil.
+
+---
+Slug:   peperomia-emarginella
+Name:   Notched-Leaf Peperomia (Peperomia emarginella)
+Notes:  Peperomia emarginella is an ideal small terrarium peperomia — extremely compact and slow-growing with almost jewel-like tiny leaves that are beautiful for covering the base of hardscape. Allow the substrate to partially dry between waterings; the small leaf size means it loses moisture quickly if humidity drops, so keep it in a closed environment.
+
+---
+Slug:   peperomia-guttalata
+Name:   Raindrop Peperomia (Peperomia guttulata)
+Notes:  Peperomia guttulata is a moderately easy terrarium peperomia with attractive foliar patterning. Allow it to partially dry between waterings, and keep it in medium light to preserve leaf contrast — low light can reduce the patterning. It suits a mid-layer position in a closed tropical build.
+
+---
+Slug:   peperomia-puteolata
+Name:   Parallel Peperomia (Peperomia puteolata)
+Notes:  Peperomia puteolata is one of the easiest peperomia for terrariums. Its whorled, striped foliage provides good visual interest, and it tolerates moderate humidity rather than requiring saturation. Allow the substrate to partially dry between waterings; it suits both small and large enclosed builds, and periodic trimming keeps it in shape.
+
+---
+Slug:   peperomia-rubella
+Name:   Itsy-Bitsy Peperomia (Peperomia rubella)
+Notes:  Peperomia rubella is a charming, compact peperomia with red-underside leaves. Avoid heavy watering — the small, fleshy leaves store moisture. The red coloration intensifies in brighter indirect light, and good humidity helps it stay compact and healthy.
+
+---
+Slug:   peperomia-serpens
+Name:   Vining Peperomia (Peperomia serpens)
+Notes:  Peperomia serpens has a trailing and climbing habit that makes it an excellent choice for vertical elements in a vivarium — its stems will attach loosely to cork bark or wood. Keep it moist but allow intermittent drying to prevent root rot. It grows readily once established; trim back if it becomes too dominant.
+
+---
+Slug:   peperomia-trinervis
+Name:   Three-Veined Peperomia (Peperomia trinervis)
+Notes:  Peperomia trinervis is a reliable, compact terrarium peperomia whose three-veined leaf structure gives it a subtle but appealing texture. Standard peperomia care applies: moderate humidity, allow partial drying between waterings, and avoid cold and waterlogging. It suits smaller closed builds well.
+
+---
+Slug:   peperomia-verticillata-red-log
+Name:   Red Log Peperomia (Peperomia verticillata 'Red Log')
+Notes:  Peperomia verticillata 'Red Log' is one of the most visually striking peperomia for terrarium with deep red undersides. It prefers slightly lower humidity than many tropical terrariums. Allow partial drying between waterings.
+
+---
+Slug:   piper-crocatum
+Name:   Ornate Pepper Vine (Piper crocatum)
+Notes:  Piper crocatum is an eye-catching terrarium vine that climbs readily up branches or cork bark. The metallic leaf patterning intensifies under medium to bright indirect light; too little light and the coloration fades. Keep it consistently moist without waterlogging, trim it periodically as growth can become vigorous, and avoid cold temperatures.
+
+---
+Slug:   lemmaphyllum-microphyllum
+Name:   Coin-Leaf Fern (Lemmaphyllum microphyllum)
+Notes:  Lemmaphyllum microphyllum is an excellent epiphytic terrarium fern that grows flat against bark or moss walls, producing a charming mosaic of tiny round fronds. It can be attached to cork bark or grown on moist wood, and it tolerates lower temperatures than many tropical ferns. Keep it moist and humid — the small [[frond|fronds]] desiccate quickly if conditions drop.
+
+---
+Slug:   pleopeltis-percussa
+Name:   Wart Fern (Pleopeltis percussa)
+Notes:  Pleopeltis percussa, the Wart Fern, is a tough epiphytic fern well-suited to terrarium culture. It can survive brief dry periods by curling its [[frond|fronds]] in a manner similar to resurrection ferns, and it rewets readily from dormancy. It can be mounted on bark or grown in a well-draining mix, and it's easier to care for than many of the more delicate terrarium ferns.
+
+---
+Slug:   pyrrosia-nummularifolia
+Name:   Coin-Leaf Tongue Fern (Pyrrosia nummularifolia)
+Notes:  Pyrrosia nummularifolia is a popular terrarium fern for its miniature, perfectly round [[frond|fronds]] that carpet bark and wood surfaces over time. Keep the [[rhizome|rhizomes]] exposed rather than buried, attach it to cork or a wood panel, and provide moderate to high humidity and stable warmth for the best growth. It's very slow-growing, but it forms attractive dense mats once established.
+
+---
+Slug:   actiniopteris-australis
+Name:   Palm Fern (Actiniopteris australis)
+Notes:  Actiniopteris australis, the Palm Fern, is an unusual arid-adapted fern completely unlike typical terrarium ferns. It's best suited to a dryland or desert open terrarium rather than a closed humid build — allow the substrate to dry thoroughly between waterings and provide bright, indirect to partial direct light. It's very drought-tolerant once established but dislikes overwatering.
+
+---
+Slug:   hatiora-salicornioides
+Name:   Dancing Bones Cactus (Hatiora salicornioides)
+Notes:  Hatiora salicornioides, the Dancing Bones Cactus, is a forest epiphyte that prefers higher humidity and more water than desert cacti — but still needs good drainage and periodic drying between waterings. It can be mounted on bark or grown in a fast-draining bark-perlite mix; bright indirect light and moderate humidity in an open terrarium suit it well. A brief cooler, drier rest period in winter will encourage spring blooming.
+
+---
+Slug:   muehlenbeckia-complexa
+Name:   Wire Vine (Muehlenbeckia complexa)
+Notes:  Muehlenbeckia complexa, the Wire Vine, is one of the easiest trailing vines for open terrariums and desert-style builds. It grows vigorously once established and needs regular trimming to prevent it from dominating an enclosure. It prefers cooler temperatures and lower humidity than tropical plants, making it ideal for temperate or Mediterranean-style terrariums.
+
+---
+Slug:   muehlenbeckia-complexa-variegated
+Name:   Variegated Wire Vine (Muehlenbeckia complexa 'Variegated')
+Notes:  Muehlenbeckia complexa 'Variegated' grows more slowly than the standard green form because of its reduced chlorophyll, and it needs more light than the green form to maintain the variegation and grow well. The same cool, open terrarium conditions as the species apply: good airflow, allow partial drying, and cool temperatures. Trim it regularly to keep it compact.
+
+---
+Slug:   selaginella-erythropus-sanguinea
+Name:   Red Spike Moss (Selaginella erythropus 'Sanguinea')
+Notes:  Selaginella erythropus 'Sanguinea' has nice red coloration that is most vivid under low to medium indirect light at high humidity — unlike many red plants, bright light can actually reduce the color intensity. It can be grown in consistently moist fine peat or coco-coir and makes excellent ground cover for tropical closed builds. High ambient humidity is required.
+
+---
+Slug:   selaginella-martensii-watsoniana
+Name:   Silver-Tipped Spike Moss (Selaginella martensii 'Watsoniana')
+Notes:  Selaginella martensii 'Watsoniana' is an extremely attractive selaginella for closed builds — the silver-tipped [[frond|fronds]] glow under terrarium lighting. It prefers slightly cooler temperatures and lower humidity than strictly tropical species, making it more versatile than many selaginellas. Keep it moist at all times; it's a reliable and forgiving ground cover.
+
+---
+Slug:   pilea-libanensis-aquamarine
+Name:   Aquamarine Artillery Plant (Pilea libanensis 'Aquamarine')
+Notes:  Pilea libanensis 'Aquamarine' has fine stems and tiny leaves that resemble a miniature cloud or soft moss from a distance. It prefers moderate to high humidity and moist but well-drained substrate. Trim it periodically to keep it dense and compact; it suits foreground or mid-level positions.
+
+---
+Slug:   pilea-pubescens-silver-cloud
+Name:   Silver Cloud Pilea (Pilea pubescens 'Silver Cloud')
+Notes:  Pilea pubescens 'Silver Cloud' is a striking metallic-leaved pilea well-suited to closed terrariums. The silver coloration is brightest under medium light — too low and it fades, too high and it bleaches. Keep it moist and humid. It's compact and relatively well-behaved, which makes it a good small terrarium and beginner plant. 
+
+---
+Slug:   pilea-spruceana
+Name:   Silver Tree Pilea (Pilea spruceana)
+Notes:  Pilea spruceana is one of the most ornamental Pilea species for terrariums, with dramatic texture and silver-on-brown coloration that are most vivid in medium indirect light. It prefers cooler temperatures than typical tropicals — 16–24°C is ideal — and the substrate should be allowed to approach partial dryness between waterings to avoid root saturation.
+
+---
+Slug:   procris-pulchra
+Name:   Beautiful Procris (Procris pulchra)
+Notes:  Procris pulchra is a rarely cultivated but beautiful terrarium plant with fittonia-like silver patterning on dark leaves. It requires consistently high humidity and shade — similar conditions to fittonia but even more shade-tolerant — and the substrate should be kept moist at all times. It's a rewarding accent plant for mature, stable closed terrariums.
+
+---
+Slug:   cissus-amazonicus
+Name:   Amazon Vine (Cissus amazonica)
+Notes:  Cissus amazonica is an excellent large-build terrarium vine with striking metallic foliage that climbs readily on wood, cork, or background panels. Keep it consistently moist with high humidity — the large leaf area transpires rapidly in dry conditions. Vigorous growth means regular trimming may be needed in enclosed spaces.
+
+---
+Slug:   cissus-discolor
+Name:   Rex Begonia Vine (Cissus discolor)
+Notes:  Cissus discolor, the Rex Begonia Vine, is one of the most dramatically patterned climbing plants available for terrariums. It's best suited to large terrariums where its vigorous growth can be accommodated. Bright indirect light is needed to maintain the spectacular leaf coloration; keep it moist and trim it regularly, as it will climb aggressively up any support.
+
+=== Summary ===
+Total plants: 243
+Plants with notes: 243
+Plants without notes: 0
+
+
+=== Summary ===
+Total plants: 85
+Plants with notes: 85
+Plants without notes: 0

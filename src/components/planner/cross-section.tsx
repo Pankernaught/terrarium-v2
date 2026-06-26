@@ -356,6 +356,7 @@ function buildScene(
   W: number,
   H: number,
   seedBase: number,
+  textScale: number,
 ): Scene | null {
   const dims = draft.containerDimensions;
   const shape = draft.containerShape;
@@ -382,14 +383,19 @@ function buildScene(
   const charcoalCm = draft.charcoalDepth ?? 0;
   const prof = containerProfile(shape, safeDims, substrateCm, drainageCm, tallestCm, charcoalCm);
 
+  // Bottom pad must clear the width dimension label, whose font scales with
+  // textScale. Its baseline sits DIM_GAP + 2 below the floor at DIM_FONT*textScale;
+  // reserve that plus a descender margin (matches PAD_BOTTOM=28 at textScale 1).
+  const padBottom = DIM_GAP + DIM_FONT * textScale + 8;
+
   // Fit the vessel into the drawing area, preserving aspect ratio, bottom-aligned.
   const availW = Math.max(1, W - 2 * PAD_X);
-  const availH = Math.max(1, H - PAD_TOP - PAD_BOTTOM);
+  const availH = Math.max(1, H - PAD_TOP - padBottom);
   const scale = Math.min(availW / widthCm, availH / heightCm);
   const cw = widthCm * scale;
   const ch = heightCm * scale;
   const cx0 = (W - cw) / 2;
-  const floorY = H - PAD_BOTTOM;
+  const floorY = H - padBottom;
   const cyTop = floorY - ch;
   const geom: GeomRect = { x: cx0, y: cyTop, width: cw, height: ch };
 
@@ -492,10 +498,10 @@ export function TerrariumCrossSection({
   // invalid states (empty field, shape switch before new dims are typed).
   const lastScene = useRef<Scene | null>(null);
   const scene = useMemo(() => {
-    const s = ready ? buildScene(draft, plants, size.w, height, seedBase) : null;
+    const s = ready ? buildScene(draft, plants, size.w, height, seedBase, textScale) : null;
     if (s !== null) lastScene.current = s;
     return lastScene.current;
-  }, [ready, draft, plants, size.w, height, seedBase]);
+  }, [ready, draft, plants, size.w, height, seedBase, textScale]);
 
   return (
     <View style={styles.wrap}>

@@ -15,11 +15,12 @@
  *     stamps its `completedAt` and inserts the *next* pending occurrence
  *     (`dueAt = completedAt + intervalDays`), so a build that is "on" always has
  *     exactly one pending row per kind rolling forward. History (completed rows)
- *     is never mutated — the timeline reads it.
+ *     is never mutated — the timeline reads it. The exception is a **one-time** task
+ *     (`markDone` with `intervalDays: null`): it completes with **no** successor.
  *
- * `kind` is the task-type string (`'watering-inspection' | 'lid-opening' |
- * 'trimming'` today) but is treated as a free string here — the repo never
- * imports a logic module. `plantSlug` is `null` for build-level tasks.
+ * `kind` is the task-type string (`'settle-in' | 'watering-inspection' |
+ * 'lid-opening' | 'trimming'` today) but is treated as a free string here — the repo
+ * never imports a logic module. `plantSlug` is `null` for build-level tasks.
  *
  * Imports are restricted to `drizzle-orm`, `./schema`, and `./ids` — the repo
  * never reaches a concrete driver, `src/data`, or `src/logic` (the +interval
@@ -50,12 +51,13 @@ export interface CareRepository {
   /** Pending rows across ALL builds, dueAt asc — feeds the notification budget refill. */
   listPending(): Promise<CareMark[]>;
   /**
-   * Mark a pending row done: set its completedAt (default now) and insert the NEXT
-   * pending occurrence with dueAt = completedAt + intervalDays. Returns the NEW
-   * pending row (so the caller can (re)schedule its notification). Throws if the id
-   * is unknown.
+   * Mark a pending row done: set its completedAt (default now). For a recurring task
+   * (`intervalDays: number`) also insert the NEXT pending occurrence with
+   * dueAt = completedAt + intervalDays, and return that new pending row (so the caller
+   * can (re)schedule its notification). For a **one-time** task (`intervalDays: null`)
+   * append no successor and return the completed row. Throws if the id is unknown.
    */
-  markDone(id: string, intervalDays: number, at?: Date): Promise<CareMark>;
+  markDone(id: string, intervalDays: number | null, at?: Date): Promise<CareMark>;
   /**
    * Move a pending occurrence to a new due time (manual reschedule). Only pending
    * rows are touched; history is never moved. Returns the updated row. Throws if the
@@ -123,6 +125,9 @@ export function createCareRepository(db: TerrariumDb): CareRepository {
 
       // Complete the current occurrence — history rows are never mutated again.
       await db.update(careMarks).set({ completedAt: at }).where(eq(careMarks.id, id));
+
+      // One-time task: fire once and stop — no successor occurrence.
+      if (intervalDays === null) return { ...mark, completedAt: at };
 
       // Append the next pending occurrence, interval-shifted from completion
       // (arithmetic inlined to keep the repo free of `src/logic`).

@@ -77,6 +77,36 @@ describe('generateCareGuide', () => {
     expect(categories).not.toContain('Trimming');
   });
 
+  it('frames a sealed build’s watering as a closed loop (container-first)', () => {
+    const guide = generateCareGuide([slowPlant()], sealedContainer());
+    const watering = guide.find((i) => i.category === 'Watering')!.tip;
+    expect(watering).toMatch(/recycles/i);
+  });
+
+  it('keeps moisture-led watering prose for an open container', () => {
+    const openContainer = makeContainerSpec({ opening: 'open', suitableFor: 'open' });
+    const watering = generateCareGuide([slowPlant()], openContainer).find(
+      (i) => i.category === 'Watering',
+    )!.tip;
+    // Open builds dry like a pot — prose speaks to the substrate drying, not a closed loop.
+    expect(watering).not.toMatch(/recycles/i);
+    expect(watering).toMatch(/substrate/i);
+  });
+
+  it('leaves no unfilled {slot} in any tip across container/light/growth combos', () => {
+    const openings = ['sealed', 'lidded', 'open'] as const;
+    for (const opening of openings) {
+      const guide = generateCareGuide(
+        [slowPlant(), fastPlant()], // mixed growth → also exercises Trimming
+        makeContainerSpec({ opening, suitableFor: opening === 'open' ? 'open' : 'closed' }),
+      );
+      for (const { category, tip } of guide) {
+        expect(tip, `${category}/${opening}`).not.toMatch(/\{[a-zA-Z]+\}/);
+        expect(tip.length, `${category}/${opening}`).toBeGreaterThan(0);
+      }
+    }
+  });
+
   it('raises a descriptive error on empty plants', () => {
     expect(() => generateCareGuide([], sealedContainer())).toThrow(
       /At least one plant must be provided/,

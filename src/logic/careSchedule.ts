@@ -30,7 +30,7 @@
 import type { Container, GrowthRate, MoistureLevel, Plant } from '../types';
 import { generateCareGuide } from './care';
 
-export type CareTaskType = 'watering-inspection' | 'lid-opening' | 'trimming';
+export type CareTaskType = 'settle-in' | 'watering-inspection' | 'lid-opening' | 'trimming';
 
 /**
  * Per-task, owner-set customization that overrides the derived defaults. Persisted
@@ -99,8 +99,9 @@ export function maxIntervalCount(unit: CareIntervalUnit): number {
   return Math.floor(MAX_CARE_INTERVAL_DAYS / UNIT_DAYS[unit]);
 }
 
-/** All three task kinds, in display order (calmest → most active). */
+/** All task kinds, in display order (establishment first, then calmest → most active). */
 export const CARE_TASK_TYPES: readonly CareTaskType[] = [
+  'settle-in',
   'watering-inspection',
   'lid-opening',
   'trimming',
@@ -108,15 +109,24 @@ export const CARE_TASK_TYPES: readonly CareTaskType[] = [
 
 const DAY_MS = 86_400_000;
 
+/** First fire of the one-time settle-in, and how long it stays in the schedule. */
+const SETTLE_FIRST_DAYS = 2;
+const SETTLE_WINDOW_DAYS = 14;
+
 /** Human label for a task type (Care tab + notification title). */
 export const CARE_TASK_LABEL: Record<CareTaskType, string> = {
+  'settle-in': 'Settle in',
   'watering-inspection': 'Watering check',
   'lid-opening': 'Air it out',
   trimming: 'Trim & tidy',
 };
 
-/** The `generateCareGuide` category each task reuses as its notification body. */
-const BODY_CATEGORY: Record<CareTaskType, string> = {
+/**
+ * The `generateCareGuide` category each *steady-state* task reuses as its
+ * notification body. `settle-in` is absent on purpose — its body is authored copy
+ * (establishment prose), not a guide tip, so it carries an empty `body` here.
+ */
+const BODY_CATEGORY: Partial<Record<CareTaskType, string>> = {
   'watering-inspection': 'Watering',
   'lid-opening': 'Humidity',
   trimming: 'Trimming',
@@ -125,24 +135,29 @@ const BODY_CATEGORY: Record<CareTaskType, string> = {
 // --- The provisional cadence table (days). Retune freely. --------------------
 
 /**
- * watering-**inspection** cadence by the *wettest* moisture profile present:
- * moisture-loving mixes signal sooner, so they're checked more often; dry profiles
- * are checked rarely. This is an inspection rhythm, **not** a watering schedule.
+ * watering-**inspection** cadence: **container openness is the primary axis**,
+ * wettest moisture the secondary modifier. Openness dominates water loss — a sealed
+ * system recycles its own water (transpire → condense → run back) and takes water on
+ * the scale of months; an open one dries like a pot. So the row is the opening and
+ * the column is the wettest plant, and the moisture spread *narrows* as the container
+ * seals (a sealed system self-regulates). This is an inspection rhythm, **not** a
+ * watering schedule. (ADR 0014.)
  */
-const WATERING_INSPECTION_DAYS: Record<MoistureLevel, number> = {
-  wet: 4,
-  moist: 6,
-  moderate: 9,
-  dry: 14,
+const WATERING_INSPECTION_DAYS: Record<Container['opening'], Record<MoistureLevel, number>> = {
+  open: { wet: 3, moist: 5, moderate: 8, dry: 12 },
+  lidded: { wet: 16, moist: 20, moderate: 26, dry: 32 },
+  sealed: { wet: 45, moist: 60, moderate: 75, dry: 90 },
 };
 
 type VolumeBucket = 'small' | 'medium' | 'large';
 
-/** Venting cadence by opening × volume. Open containers never appear here. */
-const LID_OPENING_DAYS: Record<'sealed' | 'lidded', Record<VolumeBucket, number>> = {
-  sealed: { small: 7, medium: 12, large: 18 },
-  lidded: { small: 10, medium: 16, large: 24 },
-};
+/**
+ * Venting cadence by volume — **lidded only**. A balanced sealed loop is the one you
+ * should barely ever open (routine venting of a healthy closed system is an
+ * anti-pattern); its venting is covered by the Settle-in window + the "fogged 48h+ →
+ * vent" troubleshooting prose. Open containers are already open. (ADR 0014.)
+ */
+const LID_OPENING_DAYS: Record<VolumeBucket, number> = { small: 7, medium: 12, large: 18 };
 
 /** Trimming cadence by the fastest grower present (only when growth is mixed). */
 const TRIMMING_DAYS: Record<GrowthRate, number> = {
@@ -188,10 +203,16 @@ export interface CareTask {
   intervalDays: number;
   /** True when the owner has silenced this task (never seeded as a pending row). */
   muted: boolean;
-  /** Notification body — reused verbatim from `generateCareGuide`. */
+  /** Notification body — reused verbatim from `generateCareGuide` (empty for one-time tasks). */
   body: string;
   /** First fire: one interval after build creation (don't nag on save). */
   firstDueAt: number;
+  /**
+   * A task that fires **once and stops** (no recurring successor). Only `settle-in`
+   * is one-time today: it carries no cadence semantics, its prose comes from copy,
+   * and `markDone` completes it with no follow-up occurrence.
+   */
+  oneTime?: true;
 }
 
 /**
@@ -210,12 +231,15 @@ export interface CareTask {
  * @param container the build's resolved container.
  * @param createdAt the build's creation time — `firstDueAt = createdAt + interval`.
  * @param overrides per-task owner customization, or omitted for pure defaults.
+ * @param now       evaluation time, for the one-time settle-in age gate (defaults to
+ *                  real now; tests pass an explicit value).
  */
 export function buildCareSchedule(
   plants: Plant[],
   container: Container,
   createdAt: Date,
   overrides?: CareOverrides,
+  now: Date = new Date(),
 ): CareTask[] {
   if (plants.length === 0) return [];
 
@@ -241,14 +265,34 @@ export function buildCareSchedule(
     });
   };
 
-  // 1. watering-inspection — always (every terrarium needs moisture checks).
-  const moisture = wettestMoisture(plants);
-  push('watering-inspection', moisture, WATERING_INSPECTION_DAYS[moisture]);
+  // 0. settle-in — a one-time establishment nudge, chronologically first. Seeded for
+  // every container but only while the build is inside its ~two-week break-in window,
+  // so it ages out (drops from the schedule) once the build is established. Its prose
+  // is authored copy (enclosed/open by `bucket`), so it carries an empty `body`.
+  if (now.getTime() < base + SETTLE_WINDOW_DAYS * DAY_MS) {
+    tasks.push({
+      type: 'settle-in',
+      bucket: container.opening,
+      intervalDays: SETTLE_FIRST_DAYS,
+      muted: false,
+      body: '',
+      firstDueAt: base + SETTLE_FIRST_DAYS * DAY_MS,
+      oneTime: true,
+    });
+  }
 
-  // 2. lid-opening — only enclosed containers (sealed / lidded).
-  if (container.opening === 'sealed' || container.opening === 'lidded') {
+  // 1. watering-inspection — always; paced by opening (primary) × moisture (secondary).
+  const moisture = wettestMoisture(plants);
+  push(
+    'watering-inspection',
+    `${container.opening}-${moisture}`,
+    WATERING_INSPECTION_DAYS[container.opening][moisture],
+  );
+
+  // 2. lid-opening — lidded only (sealed vents as-needed, open is already open).
+  if (container.opening === 'lidded') {
     const vol = volumeBucket(container.volumeL);
-    push('lid-opening', `${container.opening}-${vol}`, LID_OPENING_DAYS[container.opening][vol]);
+    push('lid-opening', `lidded-${vol}`, LID_OPENING_DAYS[vol]);
   }
 
   // 3. trimming — only when growth rates are mixed (reuses the guide's rule).

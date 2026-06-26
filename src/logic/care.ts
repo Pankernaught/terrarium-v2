@@ -11,8 +11,14 @@
  * the primary is the v1-scalar analog (the happiest condition the tips describe).
  * pH is untouched (and unused here). Secondary conditions are intentionally
  * ignored: care copy speaks to a plant's preferred condition, not its tolerance.
+ *
+ * **All tip wording lives in `copy.json`** (`care.guide.*`), so every sentence the
+ * care guide emits — and the notification bodies that reuse it — is editable from the
+ * Plant Admin Copy tab (ADR 0010). This module owns only the branching that *picks*
+ * which entry fires and the values it interpolates; it never holds prose.
  */
 import type { Container, Plant } from '../types';
+import { copy } from '../lib/copy';
 
 /** A single care recommendation. Mirrors the v1 `{category, tip}` dict. */
 export interface CareTip {
@@ -36,37 +42,31 @@ export function generateCareGuide(plants: Plant[], container: Container): CareTi
   // 1. Watering Guidelines
   // ==========================================================================
   const moistures = new Set(plants.map((p) => p.soilMoisture.primary));
+  const dryLeaning = moistures.has('moderate') || moistures.has('dry');
 
+  // Container openness is what actually governs watering in a terrarium, so the
+  // prose leads with it: a sealed loop recycles its own water (read the glass, don't
+  // water on a timer), a lidded one needs far less than a pot, and only an open
+  // planting follows the moisture-led advice. (ADR 0014.)
   let wateringTip: string;
-  if (moistures.has('wet') && moistures.size === 1) {
+  if (container.opening === 'sealed') {
+    wateringTip = copy('care.guide.water.sealed');
+  } else if (container.opening === 'lidded') {
     wateringTip =
-      'Keep the substrate consistently saturated and wet. Ensure there is ' +
-      'steady water pooling slightly at the base of the drainage layer at all times.';
+      copy('care.guide.water.lidded') +
+      (dryLeaning ? ' ' + copy('care.guide.water.liddedDryClause') : '');
+  } else if (moistures.has('wet') && moistures.size === 1) {
+    wateringTip = copy('care.guide.water.wet');
   } else if (moistures.has('moist') || moistures.has('wet')) {
-    if (moistures.has('dry')) {
-      wateringTip =
-        'Mixed moisture needs detected. Target watering precisely toward the roots ' +
-        'of moisture-loving plants while allowing sections housing dry-tolerant ' +
-        'varieties to stay well-drained. Avoid uniform overwatering.';
-    } else {
-      wateringTip =
-        'Keep the substrate consistently damp but not waterlogged or soggy. ' +
-        'Water evenly whenever the top surface begins to feel slightly dry.';
-    }
+    wateringTip = moistures.has('dry')
+      ? copy('care.guide.water.mixed')
+      : copy('care.guide.water.moist');
   } else if (moistures.has('moderate')) {
-    if (moistures.has('dry')) {
-      wateringTip =
-        'Allow the top layer of the substrate to dry out noticeably between waterings. ' +
-        'Be highly conservative with watering to safely accommodate dry-tolerant species.';
-    } else {
-      wateringTip =
-        'Allow the top half-inch of the substrate to dry out between waterings, ' +
-        'then water moderately to re-moisten without fully saturating the lower profile.';
-    }
+    wateringTip = moistures.has('dry')
+      ? copy('care.guide.water.moderateDry')
+      : copy('care.guide.water.moderate');
   } else {
-    wateringTip =
-      'Water very sparingly. Allow the substrate to dry out completely between waterings ' +
-      'to prevent root rot.';
+    wateringTip = copy('care.guide.water.dry');
   }
 
   careGuide.push({ category: 'Watering', tip: wateringTip });
@@ -82,26 +82,7 @@ export function generateCareGuide(plants: Plant[], container: Container): CareTi
       ? `${Math.trunc(minHum)}%-${Math.trunc(maxHum)}%`
       : `above ${Math.trunc(minHum)}%`;
 
-  let humidityTip: string;
-  if (container.opening === 'sealed') {
-    humidityTip =
-      `This sealed container naturally traps ambient moisture to maintain high ` +
-      `humidity levels (${targetRange}). Monitor for excessive glass condensation; ` +
-      `if the walls remain completely fogged for over 48 hours, open the enclosure ` +
-      `for a few hours to vent stale air, then reseal.`;
-  } else if (container.opening === 'lidded') {
-    humidityTip =
-      `This lidded container helps retain elevated humidity levels (${targetRange}). ` +
-      `Keep the lid closed and mist periodically only when internal air circulation ` +
-      `or the substrate surface feels notably dry.`;
-  } else {
-    // open container
-    humidityTip =
-      `This open container allows humidity to dissipate rapidly into the surrounding room. ` +
-      `Since your selected plants thrive with higher humidity (${targetRange}), ` +
-      `mist the foliage frequently, utilize an automated mister, or position a pebble ` +
-      `tray underneath the container to boost local humidity levels.`;
-  }
+  const humidityTip = copy(`care.guide.humidity.${container.opening}`, { range: targetRange });
 
   careGuide.push({ category: 'Humidity', tip: humidityTip });
 
@@ -112,30 +93,16 @@ export function generateCareGuide(plants: Plant[], container: Container): CareTi
 
   let lightTip: string;
   if (lights.has('direct')) {
-    if (lights.has('low') || lights.has('medium')) {
-      lightTip =
-        'Highly conflicting light requirements detected within this ecosystem. ' +
-        'Place the terrarium in bright, indirect sunlight as a fragile compromise. Monitor ' +
-        'direct-sun plants for stretching (etiolation) and low-light varieties for leaf bleaching.';
-    } else {
-      lightTip =
-        'Place in a location that receives several hours of direct sunlight daily. ' +
-        'Monitor temperature closely, as enclosed glass containers can create a greenhouse ' +
-        'effect and overheat rapidly under direct sun rays.';
-    }
+    lightTip =
+      lights.has('low') || lights.has('medium')
+        ? copy('care.guide.light.conflict')
+        : copy('care.guide.light.direct');
   } else if (lights.has('bright-indirect')) {
-    lightTip =
-      'Position the setup in bright, indirect sunlight (such as close to an east-facing window ' +
-      'or behind a sheer curtain on a south/west window). This provides optimal energy ' +
-      'while safeguarding delicate leaves from scorching.';
+    lightTip = copy('care.guide.light.brightIndirect');
   } else if (lights.has('medium')) {
-    lightTip =
-      'Place in a medium indirect light environment or a few feet back from a primary light window. ' +
-      'Avoid deep, dark corners as well as intense, burning direct sun rays.';
+    lightTip = copy('care.guide.light.medium');
   } else {
-    lightTip =
-      'Tolerates low-light baselines exceptionally well. Ideal for north-facing windows, ' +
-      'lower-light rooms, or placements sitting deeper within a brightly lit living area.';
+    lightTip = copy('care.guide.light.low');
   }
 
   careGuide.push({ category: 'Light', tip: lightTip });
@@ -149,12 +116,10 @@ export function generateCareGuide(plants: Plant[], container: Container): CareTi
   const growthRates = new Set(plants.map((p) => p.growthRate));
   if (growthRates.size > 1) {
     const sortedRates = [...growthRates].sort();
-    const trimmingTip =
-      `Mixed growth rates detected within the enclosure (${sortedRates.join(', ')}). ` +
-      `Regular pruning intervals are highly recommended: monitor fast-growing elements ` +
-      `closely and trim them back regularly to prevent them from choking out slower companions ` +
-      `or creating canopy shadows that block valuable light.`;
-    careGuide.push({ category: 'Trimming', tip: trimmingTip });
+    careGuide.push({
+      category: 'Trimming',
+      tip: copy('care.guide.trimming', { rates: sortedRates.join(', ') }),
+    });
   }
 
   return careGuide;
