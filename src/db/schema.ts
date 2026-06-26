@@ -1,21 +1,15 @@
 /**
  * Local-store schema — Drizzle + SQLite.
  *
- * **Two groups of tables, one DB.**
+ * **User data only — the three persisted entities.** `builds`, `build_photos`,
+ * `care_marks`. These are the mutable, per-install rows that ride the
+ * backup/restore payload (`care_marks` excluded — they are ephemeral reminders,
+ * not content). v1's `plant_photos` is **struck**: curator plant imagery is a
+ * static seed `image` path, not DB rows.
  *
- * 1. **User data — the three persisted entities.** `builds`, `build_photos`,
- *    `care_marks`. These are the mutable, per-install rows that ride the
- *    backup/restore payload (`care_marks` excluded — they are ephemeral reminders,
- *    not content). v1's `plant_photos` is **struck**: curator plant imagery is a
- *    static seed `image` path, not DB rows.
- *
- * 2. **Seed reference data — derived from the bundle (mirrors v1 `db/loader.py`).**
- *    `plants`. The engine reads the *bundle JSON* (`src/data`, zero DB round-trip),
- *    so this table is a queryable mirror seeded idempotently by `seedStore()`
- *    (upsert-by-slug), not the engine's read path. It is **regenerable from the
- *    bundle and never enters the backup payload**. Stored as `{ slug, data }` JSON
- *    blobs — the validated record is the source of truth in `src/data`, so we do not
- *    re-model 30+ plant columns in SQL.
+ * There is **no seed/reference table.** The engine reads plant data straight from
+ * the bundle JSON (`src/data`, zero DB round-trip via `loadPlants()`), so a SQL
+ * mirror would be write-only — it is not modelled here.
  *
  * **UUID primary keys on every row.** `builds` (and, for consistency +
  * restore-safety, photos and care-marks) use a generated UUID, not v1's integer
@@ -129,13 +123,6 @@ export const careMarks = sqliteTable(
   (t) => [index('idx_care_marks_build_id').on(t.buildId)],
 );
 
-// --- Seed reference data: regenerable from the bundle (mirrors db/loader.py) --
-
-export const plants = sqliteTable('plants', {
-  slug: text('slug').primaryKey(),
-  data: text('data', { mode: 'json' }).notNull(),
-});
-
 // --- Inferred row types ------------------------------------------------------
 
 export type Build = typeof builds.$inferSelect;
@@ -204,11 +191,6 @@ CREATE TABLE IF NOT EXISTS care_marks (
   created_at INTEGER NOT NULL
 );
 CREATE INDEX IF NOT EXISTS idx_care_marks_build_id ON care_marks (build_id);
-
-CREATE TABLE IF NOT EXISTS plants (
-  slug TEXT PRIMARY KEY NOT NULL,
-  data TEXT NOT NULL
-);
 `;
 
 /** The additive column the substrate mixer adds to `builds`. */

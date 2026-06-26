@@ -1,9 +1,9 @@
 /**
  * The app-edge database wiring. This is the *one* place the native driver is
- * constructed: `createExpoDb()` opens the device SQLite file, `seedStore`
- * idempotently loads the plants/containers/presets on first launch, and the
- * repositories are built once and handed down by context. Screens call `useRepos()`
- * — they never import a concrete driver or re-implement persistence.
+ * constructed: `createExpoDb()` opens the device SQLite file and the repositories
+ * are built once and handed down by context. Screens call `useRepos()` — they never
+ * import a concrete driver or re-implement persistence. (Plant data is read straight
+ * from the bundle, so there is no seed step on launch.)
  *
  * Native-only: imports `client.expo`, so it must never be pulled into the node
  * Vitest runner (the repos are unit-tested there against `client.node` instead).
@@ -15,7 +15,6 @@ import { type BuildRepository, createBuildRepository } from './builds-repo';
 import { type CareRepository, createCareRepository } from './care-repo';
 import { createPhotoRepository, type PhotoRepository } from './photos-repo';
 import { type TerrariumDb } from './schema';
-import { seedStore } from './seed';
 
 export interface Repos {
   db: TerrariumDb;
@@ -39,7 +38,6 @@ export function DbProvider({ children }: { children: ReactNode }) {
     (async () => {
       try {
         const db = createExpoDb();
-        await seedStore(db);
         if (cancelled) return;
         setState({
           status: 'ready',
