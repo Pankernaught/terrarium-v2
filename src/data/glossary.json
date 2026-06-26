@@ -466,6 +466,15 @@
     },
 
     {
+      "slug": "akadama",
+      "term": "Akadama",
+      "category": "substrate",
+      "definition": "Granular fired Japanese clay, originally a bonsai soil. Each grain soaks up water and nutrients internally while the chunky grains drain freely between them, so it adds moisture without waterlogging. Mineral and mildly acidic; it softens and breaks down over a few years.",
+      "seeAlso": ["pumice", "grit"],
+      "wikiUrl": "https://en.wikipedia.org/wiki/Akadama"
+    },
+
+    {
       "slug": "epiphyte",
       "term": "Epiphyte",
       "category": "concept",

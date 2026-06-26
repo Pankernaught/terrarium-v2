@@ -88,3 +88,44 @@ export const SUBSTRATE_MATRIX: Readonly<Record<string, PropertyVector>> = {
 
 /** The component ids that have an authored row (the mixer's blendable domain). */
 export const MATRIX_COMPONENT_IDS: readonly string[] = Object.keys(SUBSTRATE_MATRIX);
+
+/**
+ * **Hidden** inter-particle pore size, ordinal **0–4** (0 powder · 1 fine · 2
+ * granule · 3 coarse · 4 chunky). Deliberately *not* a display bar — a beginner
+ * can't act on "2.3 mm" (the old `particleSize` was dropped as a bar for exactly
+ * this reason). But it is the physics behind two things the four bars alone get
+ * wrong, so it lives on as an internal variable (see ADR 0015):
+ *
+ *   1. **Packing non-linearity** — fines fill the voids between coarse grains, so
+ *      a wide-spread blend has *less* aeration (and a touch more retained water)
+ *      than the parts-weighted mean predicts ("sand into clay = concrete").
+ *   2. **Perched water table** — finer inter-particle pores hold a taller
+ *      capillary-saturated zone at the substrate base, independent of depth.
+ *
+ * Note this correctly separates *internal* water-holding from *perched* height:
+ * vermiculite / pumice / akadama soak water inside the grain (high
+ * `waterRetention`) yet drain freely *between* grains (size 2–3) — so they won't
+ * waterlog a shallow base the way clay/peat powder (size 0–1) does.
+ *
+ * Keyed by the same frozen ids as {@link SUBSTRATE_MATRIX}; the mixer test's drift
+ * guard keeps the two maps in lockstep.
+ */
+export const SIZE_CLASS: Readonly<Record<string, number>> = {
+  mud: 0,
+  peat: 1,
+  'worm-castings': 1,
+  'potting-soil': 1,
+  sand: 2,
+  'coco-coir': 2,
+  vermiculite: 2,
+  akadama: 2,
+  perlite: 3,
+  grit: 3,
+  pumice: 3,
+  sphagnum: 3,
+  'orchid-bark': 4,
+  leca: 4,
+};
+
+/** Top of the size-class scale — normalizes mean size to 0–1. */
+export const SIZE_CLASS_MAX = 4;

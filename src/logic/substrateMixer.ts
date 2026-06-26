@@ -23,6 +23,8 @@
 import {
   MATRIX_COMPONENT_IDS,
   PROPERTY_MAX,
+  SIZE_CLASS,
+  SIZE_CLASS_MAX,
   SUBSTRATE_MATRIX,
   SUBSTRATE_PROPERTIES,
   type SubstrateProperty,
@@ -60,27 +62,121 @@ export function totalParts(mix: SubstrateMix): number {
   return total;
 }
 
+/** Parts-weighted mean inter-particle size of a recipe, 0–4 (caller ensures total>0). */
+function meanSize(mix: SubstrateMix, total: number): number {
+  let s = 0;
+  for (const id of MATRIX_COMPONENT_IDS) {
+    const p = mix[id] ?? 0;
+    if (p > 0) s += (p / total) * SIZE_CLASS[id];
+  }
+  return s;
+}
+
+/**
+ * The packing non-linearity term, 0–1. Fines fall into the voids between coarse
+ * grains, so porosity *dips* — strongest when the recipe both spans a wide size
+ * range and splits near 50/50 fine-to-coarse (the binary-packing intuition, here a
+ * symmetric parabola). A single component, or a uniform-size blend, returns 0.
+ *
+ * ponytail: symmetric `4f(1−f)` peak at 50/50; the real Furnas optimum is ~30%
+ * fine — swap for an asymmetric curve only if the bars ever need it.
+ */
+function packingMismatch(mix: SubstrateMix, total: number): number {
+  const active = activeComponents(mix);
+  if (active.length < 2) return 0;
+  const sizes = active.map((id) => SIZE_CLASS[id]);
+  const spread = (Math.max(...sizes) - Math.min(...sizes)) / SIZE_CLASS_MAX;
+  const mean = meanSize(mix, total);
+  let fineFrac = 0;
+  for (const id of active) if (SIZE_CLASS[id] < mean) fineFrac += (mix[id] ?? 0) / total;
+  return spread * 4 * fineFrac * (1 - fineFrac);
+}
+
+/** How much of aeration the worst packing can erase (macropores clogged by fines). */
+const AERATION_PACKING_LOSS = 0.5;
+/** How much of the *remaining* retention headroom that lost pore space fills with water. */
+const RETENTION_PACKING_GAIN = 0.5;
+
 /**
  * Roll a recipe up into the normalized derived stats, or `null` for an empty /
  * all-zero recipe. Only matrix-known components contribute (an unknown id is
  * ignored), so the blend domain is always exactly the authored matrix.
+ *
+ * Two-step (ADR 0015): the parts-weighted ordinal mean gives each property as a
+ * single-component blend, then a **packing correction** bends aeration/retention
+ * off that line — fines filling coarse voids cut aeration sub-linearly and turn
+ * the lost macropores into held water. A uniform-size recipe (mismatch 0) is the
+ * pure weighted mean, exactly as before. Nutrient and buffering blend linearly.
  */
 export function mixSubstrate(mix: SubstrateMix): MixStats | null {
   const total = totalParts(mix);
   if (total === 0) return null;
 
-  const stats = blankStats();
+  // 1. parts-weighted ordinal means, in 0–4 matrix units.
+  const lin = blankStats();
   for (const id of MATRIX_COMPONENT_IDS) {
     const parts = mix[id] ?? 0;
     if (parts <= 0) continue;
     const weight = parts / total;
     const row = SUBSTRATE_MATRIX[id];
-    for (const prop of SUBSTRATE_PROPERTIES) {
-      // weighted ordinal mean, normalized 0–4 → 0–1.
-      stats[prop] += (weight * row[prop]) / PROPERTY_MAX;
-    }
+    for (const prop of SUBSTRATE_PROPERTIES) lin[prop] += weight * row[prop];
   }
+
+  // 2. packing correction, then normalize 0–4 → 0–1.
+  const m = packingMismatch(mix, total);
+  const stats: MixStats = {
+    aeration: (lin.aeration * (1 - AERATION_PACKING_LOSS * m)) / PROPERTY_MAX,
+    waterRetention:
+      (lin.waterRetention + RETENTION_PACKING_GAIN * m * (PROPERTY_MAX - lin.waterRetention)) /
+      PROPERTY_MAX,
+    nutrient: lin.nutrient / PROPERTY_MAX,
+    buffering: lin.buffering / PROPERTY_MAX,
+  };
   return stats;
+}
+
+// --- Perched water table (mix × container depth) -----------------------------
+
+/** The capillary-saturated base zone a recipe holds at a given substrate depth. */
+export interface PerchedWaterTable {
+  /** Saturated-zone height (cm), set by pore size — *independent* of container depth. */
+  perchedHeightCm: number;
+  /** `perchedHeightCm / substrateDepthCm`, clamped 0–1 — the rot signal. */
+  saturatedFraction: number;
+}
+
+/**
+ * The perched water table for a recipe in a substrate layer `substrateDepthCm`
+ * deep (ADR 0015). After draining, capillary tension holds a saturated zone at the
+ * base whose *height* is fixed by the mix's inter-particle pore size (finer →
+ * taller), **independent of how deep the substrate is** — so in a shallow base that
+ * same zone is a larger, rot-prone *fraction* of the roots' space.
+ *
+ * `null` for an empty recipe or a non-positive depth. The height runs ~1 cm
+ * (chunky) … 7 cm (powder); `saturatedFraction` reads roughly: `<0.3` fine ·
+ * `0.3–0.6` watch · `>0.6` roots sitting in water.
+ *
+ * Note (the counterintuitive bit worth surfacing): a coarse drainage layer does
+ * **not** drain this zone — it raises it into the finer substrate above. What
+ * lowers it is a coarser mix, a deeper substrate, or a wick.
+ */
+export function perchedWaterTable(
+  mix: SubstrateMix,
+  substrateDepthCm: number,
+): PerchedWaterTable | null {
+  const total = totalParts(mix);
+  if (total === 0 || substrateDepthCm <= 0) return null;
+  const mean = meanSize(mix, total);
+  const perchedHeightCm = round1(1 + 6 * (1 - mean / SIZE_CLASS_MAX));
+  return {
+    perchedHeightCm,
+    saturatedFraction: Math.min(1, perchedHeightCm / substrateDepthCm),
+  };
+}
+
+/** One-decimal round (the cm values are soft — no false precision). */
+function round1(value: number): number {
+  return Number(value.toFixed(1));
 }
 
 // --- Soft character summary (feeds the build-guide substrate line) -----------
