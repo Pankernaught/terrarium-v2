@@ -22,7 +22,7 @@ describe('copy()', () => {
   });
 
   it('leaves no unfilled placeholder once a template is given its slots', () => {
-    expect(copy('compat.temp.noOverlap', { a: 'Fern', b: 'Cactus', aMin: 10, aMax: 20, bMin: 25, bMax: 35 }))
+    expect(copy('compat.temp.lethal', { plant: 'Fern', min: 10, max: 20, bmin: 25, bmax: 35 }))
       .not.toMatch(/\{[a-zA-Z]+\}/);
   });
 

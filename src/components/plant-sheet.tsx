@@ -26,6 +26,7 @@ import { useTokens } from '@/hooks/use-tokens';
 import { usePreferences } from '@/hooks/use-preferences';
 import { fmtLength, fmtLengthRange, fmtTempRange, type Units } from '@/logic/units';
 import { vocabSlug } from '@/types';
+import type { Conflict } from '@/types/results';
 import type { Plant, PlantSource } from '@/types/plant';
 
 /** Human-readable label for a source link — its `label`, else the bare host. */
@@ -38,15 +39,6 @@ function sourceLabel(source: PlantSource): string {
   }
 }
 
-/** A pre-resolved conflict against another plant in the current build. */
-export interface PlantConflict {
-  withPlantName: string;
-  message: string;
-  severity: 'caution' | 'incompatible';
-  /** Other plants hit by the identical concern, collapsed into this one row. */
-  alsoPlantNames?: string[];
-}
-
 export interface PlantSheetProps {
   plant: Plant | null;
   onClose: () => void;
@@ -55,8 +47,8 @@ export interface PlantSheetProps {
   isSelected?: boolean;
   /** Toggle add/remove in the build (planner context only). */
   onToggle?: () => void;
-  /** Pre-computed pairwise conflicts against the current build (planner context only). */
-  conflicts?: PlantConflict[];
+  /** Pre-computed conflicts against the build consensus (planner context only). */
+  conflicts?: Conflict[];
 }
 
 const PLANT_TYPE_EMOJI: Record<string, string> = {
@@ -113,13 +105,18 @@ export function PlantSheet({ plant, onClose, context, isSelected, onToggle, conf
 
             {/* Header — square photo left, meta right */}
             <View style={styles.cardHeader}>
-              {PLANT_IMAGES[plant.slug] != null ? (
-                <Pressable onPress={() => setImgExpanded(true)} accessibilityRole="button" accessibilityLabel="Expand photo">
-                  <Image source={PLANT_IMAGES[plant.slug]!} style={styles.cardImg} contentFit="cover" />
-                </Pressable>
-              ) : (
-                <View style={[styles.cardImg, { backgroundColor: c.surfaceSunken }]} />
-              )}
+              <View style={styles.cardImgCol}>
+                {PLANT_IMAGES[plant.slug] != null ? (
+                  <Pressable onPress={() => setImgExpanded(true)} accessibilityRole="button" accessibilityLabel="Expand photo">
+                    <Image source={PLANT_IMAGES[plant.slug]!} style={styles.cardImg} contentFit="cover" />
+                  </Pressable>
+                ) : (
+                  <View style={[styles.cardImg, { backgroundColor: c.surfaceSunken }]} />
+                )}
+                {plant.imageCredit ? (
+                  <Text variant="caption" role="textMuted" style={styles.imgCredit}>{plant.imageCredit}</Text>
+                ) : null}
+              </View>
               <View style={styles.cardMeta}>
                 <Text variant="caption" role="textMuted" style={styles.sci}>
                   {plant.scientificName}
@@ -163,8 +160,7 @@ export function PlantSheet({ plant, onClose, context, isSelected, onToggle, conf
                   <View key={i} style={styles.conflictRow}>
                     <View style={[styles.dot, { backgroundColor: cf.severity === 'incompatible' ? c.accent : c.sage }]} />
                     <Text variant="caption" role="textMuted" style={styles.conflictMsg}>
-                      <Text variant="caption">{cf.withPlantName}</Text> — {cf.message}
-                      {cf.alsoPlantNames?.length ? ` Also affects: ${cf.alsoPlantNames.join(', ')}.` : ''}
+                      {cf.message}
                     </Text>
                   </View>
                 ))}
@@ -318,7 +314,9 @@ function tier3Stats(plant: Plant, units: Units): Stat[] {
 const styles = StyleSheet.create({
   scrollContent: { gap: Spacing.md, paddingBottom: Spacing.sm },
   cardHeader: { flexDirection: 'row', gap: Spacing.md },
-  cardImg: { width: 110, height: 110, borderRadius: Radii.md, flexShrink: 0 },
+  cardImgCol: { flexShrink: 0, gap: 4 },
+  cardImg: { width: 110, height: 110, borderRadius: Radii.md },
+  imgCredit: { width: 110, fontSize: 9, lineHeight: 12, opacity: 0.55 },
   cardMeta: { flex: 1, justifyContent: 'space-between', alignItems: 'center' },
   sci: { fontStyle: 'italic', textAlign: 'center' },
   headerChips: { flexDirection: 'column', alignItems: 'center', gap: Spacing.sm },

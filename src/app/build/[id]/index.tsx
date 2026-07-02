@@ -3,7 +3,7 @@
  * `pages/build_detail.py` with progressive disclosure:
  *
  *   hero → glance header → verdict band → Tier-2 (container facts + plant chips)
- *        → Tier-3 pairwise matrix behind a deliberate tap.
+ *        → Tier-3 per-plant breakdown vs the build consensus, behind a tap.
  *
  * Read-only by default; "Edit" re-opens the planner. Scoring runs through the
  * same pure `scoreBuild` the dashboard uses, so a broken build shows a real
@@ -48,7 +48,7 @@ import { generateBuildGuide } from '@/logic/guide';
 import { copy } from '@/lib/copy';
 import { shareBuildPdf, shareBuildTxt } from '@/lib/export';
 import { scoreBuild } from '@/logic/score-build';
-import type { CompatibilityResult, Conflict } from '@/types/results';
+import type { Conflict } from '@/types/results';
 import type { Plant } from '@/types/plant';
 import { vocabSlug, type EnvEnvelope } from '@/types';
 import { humanize } from '@/lib/labels';
@@ -347,9 +347,9 @@ function BuildDetail({ repos }: { repos: Repos }) {
             onAdd={() => setAddSheetOpen(true)}
           />
 
-          {/* Tier 3 — the full pairwise breakdown, behind a deliberate tap. */}
+          {/* Tier 3 — the per-plant breakdown vs the build consensus, behind a tap. */}
           {scored.report && buildPlants.length >= 2 ? (
-            <PairwiseMatrix report={scored.report} plants={buildPlants} />
+            <PlantBreakdown report={scored.report} plants={buildPlants} />
           ) : null}
         </View>
       </ScrollView>
@@ -551,25 +551,13 @@ function PhotoThumb({
   );
 }
 
-// --- Tier 3: pairwise matrix -----------------------------------------------
+// --- Tier 3: per-plant breakdown vs the build consensus (ADR 0017) ----------
 
-const VERDICT_TONE = {
-  compatible: 'primary',
-  caution: 'accent',
-  incompatible: 'accent',
-} as const;
-
-function PairwiseMatrix({ report, plants }: { report: NonNullable<ReturnType<typeof scoreBuild>['report']>; plants: Plant[] }) {
+function PlantBreakdown({ report, plants }: { report: NonNullable<ReturnType<typeof scoreBuild>['report']>; plants: Plant[] }) {
   const [open, setOpen] = useState(false);
-
-  // Upper-triangle unique pairs, with the cell from the engine's matrix.
-  const pairs: { a: Plant; b: Plant; cell: CompatibilityResult }[] = [];
-  for (let i = 0; i < plants.length; i++) {
-    for (let j = i + 1; j < plants.length; j++) {
-      const cell = report.pairMatrix[plants[i].slug]?.[plants[j].slug];
-      if (cell) pairs.push({ a: plants[i], b: plants[j], cell });
-    }
-  }
+  const bySlug = new Map(plants.map((p) => [p.slug, p]));
+  const issueCount =
+    report.buildWarnings.length + report.plantScores.filter((ps) => ps.conflicts.length > 0).length;
 
   function toggle() {
     haptics.select();
@@ -579,28 +567,36 @@ function PairwiseMatrix({ report, plants }: { report: NonNullable<ReturnType<typ
   return (
     <View style={styles.section}>
       <Pressable onPress={toggle} accessibilityRole="button" style={styles.tier3Head}>
-        <SectionLabel>Pairwise compatibility</SectionLabel>
+        <SectionLabel>Per-plant compatibility</SectionLabel>
         <Text variant="caption" role="primary">
-          {open ? 'Hide' : `Show all ${pairs.length}`}
+          {open ? 'Hide' : issueCount > 0 ? `Show ${issueCount}` : 'Show'}
         </Text>
       </Pressable>
 
       {open ? (
         <Card style={styles.card}>
           <View style={{ gap: Spacing.md }}>
-            {pairs.map(({ a, b, cell }) => (
-              <View key={`${a.slug}-${b.slug}`} style={styles.pairRow}>
-                <View style={styles.pairHead}>
-                  <Text variant="body" style={styles.pairNames}>
-                    {a.commonName} <Text role="textMuted">×</Text> {b.commonName}
-                  </Text>
-                  <Chip label={`${Math.round(cell.score)}% · ${humanize(cell.verdict)}`} tone={VERDICT_TONE[cell.verdict]} />
-                </View>
-                {cell.conflicts.map((conflict, k) => (
-                  <ConflictLine key={k} conflict={conflict} />
-                ))}
-              </View>
+            {/* Build-level issues (a split trait with no majority, crowding). */}
+            {report.buildWarnings.map((conflict, i) => (
+              <ConflictLine key={`w${i}`} conflict={conflict} />
             ))}
+            {report.plantScores.map((ps) => {
+              const plant = bySlug.get(ps.slug);
+              if (!plant) return null;
+              return (
+                <View key={ps.slug} style={styles.pairRow}>
+                  <View style={styles.pairHead}>
+                    <Text variant="body" style={styles.pairNames}>
+                      {plant.commonName}
+                    </Text>
+                    <Chip label={`${Math.round(ps.score)}%`} tone={ps.conflicts.length > 0 ? 'accent' : 'primary'} />
+                  </View>
+                  {ps.conflicts.map((conflict, k) => (
+                    <ConflictLine key={k} conflict={conflict} />
+                  ))}
+                </View>
+              );
+            })}
           </View>
         </Card>
       ) : null}

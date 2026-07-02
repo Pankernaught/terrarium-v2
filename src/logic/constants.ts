@@ -34,10 +34,14 @@ export const HUMIDITY_PENALTY = 25; // no humidity-range overlap
 export const TEMPERATURE_PENALTY = 15; // no temperature-range overlap
 export const PH_CAUTION_PENALTY = 7; // one pH band apart
 
-// --- Group scoring --------------------------------------------------------
-// A group score may sit at most this many points above its weakest pair, so a
-// single terrible pairing cannot be averaged away into a misleading "Healthy".
-export const WORST_PAIR_FLOOR_BUFFER = 20;
+// --- Build-level penalty ladder (ADR 0017) --------------------------------
+// Group-level issues (a tie/"split" trait, crowding) deduct from the build score
+// after the weakest-link min. A survival-grade build issue clamps to the ceiling
+// instead of deducting; these two cover the caution/incompatible rungs.
+export const BUILD_CAUTION_PENALTY = 5;
+export const BUILD_INCOMPATIBLE_PENALTY = 20;
+// Per-plant caution for a fast grower in a micro sealed jar (was a group penalty).
+export const GAS_EXCHANGE_PENALTY = 5;
 
 // --- Small-container safety thresholds ------------------------------------
 // Crowding is a 2-D problem: plants compete for the planting *surface*, not the
@@ -52,13 +56,19 @@ export const GAS_EXCHANGE_SEALED_THRESHOLD_L = 1.0;
 // Mismatches that kill plants regardless of care. Any survival-critical conflict
 // clamps the score to the ceiling, forcing an "incompatible" verdict.
 export const LIGHT_SURVIVAL_PENALTY = 35;
+// Adjacency-distance gap that is lethal for light. direct sits at order 4, so any
+// direct↔shade (low/medium) gap is >= 3, while direct↔bright-indirect is only 2 (a
+// risky -30, not lethal). Used by the tie/"split" severity scaler.
+export const LIGHT_SURVIVAL_GAP = 3;
 export const MOISTURE_SURVIVAL_PENALTY = 35;
 export const MOISTURE_SURVIVAL_GAP = 3; // dry <-> wet
 export const PH_SURVIVAL_PENALTY = 35;
 export const PH_SURVIVAL_GAP = 2; // acidic <-> alkaline (the two extremes)
 export const CONTAINER_TYPE_SURVIVAL_PENALTY = 35;
 export const CONTAINER_TYPE_OPEN_PENALTY = 5; // humid-loving plant in an open container (caution)
-export const SURVIVAL_SCORE_CEILING = 40; // survival => incompatible verdict
+// A survival-critical mismatch clamps the affected *plant* to this (ADR 0017), and
+// the build's weakest-link min carries it through — no whole-build 40 clamp.
+export const PLANT_SURVIVAL_CEILING = 20;
 
 export const SHADE_LIGHTS: ReadonlySet<LightLevel> = new Set(['low', 'medium']);
 

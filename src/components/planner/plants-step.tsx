@@ -13,30 +13,29 @@
  * owns selection + live compatibility read-outs.
  */
 import { memo, useCallback, useEffect, useMemo, useRef, useState } from 'react';
-import { ActivityIndicator, InteractionManager, type LayoutChangeEvent, Pressable, StyleSheet, TextInput, View } from 'react-native';
-import Animated, { Easing, useAnimatedStyle, useSharedValue, withSequence, withTiming } from 'react-native-reanimated';
+import { ActivityIndicator, InteractionManager, Pressable, StyleSheet, TextInput, View } from 'react-native';
 
 import { Image } from 'expo-image';
 
-import { Card, Chip, EcoMeter, haptics, RangeSlider, SectionLabel, Text } from '@/components/ui';
-import { PlantSheet, type PlantConflict } from '@/components/plant-sheet';
+import { Card, Chip, haptics, RangeSlider, SectionLabel, Text } from '@/components/ui';
+import { PlantSheet } from '@/components/plant-sheet';
+import { EcoVerdictCard, type EcoRosterRow } from './eco-verdict-card';
 import { PLANT_IMAGES } from '@/data/plant-images';
 import { Radii, Spacing } from '@/constants/theme';
 import { loadPlants } from '@/data';
 import { useTokens } from '@/hooks/use-tokens';
 import { resolveBuildContainer } from '@/logic/containers';
-import { ecoBandLabel, ecoColor } from '@/logic/eco';
-import { groupConflicts } from '@/logic/group-conflicts';
+import { ecoColor } from '@/logic/eco';
 import { defaultPlacement, removePlacement, upsertPlacement } from '@/logic/placement';
 import { plantFitScore } from '@/logic/recommend';
 import { scoreBuild } from '@/logic/score-build';
 import { filterPlants, type BrowseCriteria, type BrowseSort } from '@/logic/browse-filter';
-import { checkPair } from '@/logic/compatibility';
+import { deriveConsensus, scorePlantVsConsensus } from '@/logic/compatibility';
 import { humanize } from '@/lib/labels';
 import { usePreferences } from '@/hooks/use-preferences';
 import { fmtLength, fmtTemp } from '@/logic/units';
 import { LIGHT_LEVELS, NATIVE_BIOMES, PLANT_TYPES, type Plant } from '@/types/plant';
-import type { GroupReport } from '@/types/results';
+import type { Conflict, Container } from '@/types';
 
 import type { StepProps } from './step';
 
@@ -49,36 +48,21 @@ const CATALOG_SORTS: { value: CatalogSort; label: string }[] = [
   { value: 'height', label: 'Height' },
 ];
 const DIFFICULTIES = [1, 2, 3, 4, 5];
+// ponytail: cap rendered rows so the un-virtualized list (201 plants) can't jank
+// the planner's single page ScrollView. Fit-sort + selected-first put the best
+// matches on top; the tail is reachable via search/filter or the Browse tab.
+// Lift this if users complain they can't scroll the full catalog here.
+const CATALOG_CAP = 50;
 const TEMP_MIN = 5, TEMP_MAX = 35;
 const HUMID_MIN = 10, HUMID_MAX = 100;
 const HEIGHT_MIN = 0, HEIGHT_MAX = 100;
 
-/** Any incompatible (survival-critical) conflict anywhere in the report. */
-function hasSurvivalCritical(report: GroupReport): boolean {
-  if (report.containerFitIssues.some((c) => c.severity === 'incompatible')) return true;
-  const slugs = Object.keys(report.pairMatrix);
-  for (let i = 0; i < slugs.length; i++) {
-    for (let j = i + 1; j < slugs.length; j++) {
-      const cell = report.pairMatrix[slugs[i]]?.[slugs[j]];
-      if (cell?.survivalCritical) return true;
-    }
-  }
-  return false;
-}
-
-/** Pairwise conflicts between `candidate` and each of `selected`, sorted worst-first
- * with identical-template concerns collapsed (see {@link groupConflicts}). */
-function getConflicts(candidate: Plant, selected: Plant[]): PlantConflict[] {
-  const raw = selected
-    .filter((sp) => sp.slug !== candidate.slug)
-    .flatMap((sp) =>
-      checkPair(candidate, sp).conflicts.map((c) => ({
-        withPlantName: sp.commonName,
-        message: c.message,
-        severity: c.severity,
-      })),
-    );
-  return groupConflicts(raw);
+/** A plant's conflicts against the build consensus (ADR 0017). A selected plant is
+ * scored against the consensus that includes it (matching the roster); an unselected
+ * candidate against the consensus of the current selection. Worst-first (scorer-sorted). */
+function getConflicts(candidate: Plant, selected: Plant[], container: Container | null): Conflict[] {
+  if (selected.length === 0 && !container) return [];
+  return scorePlantVsConsensus(candidate, deriveConsensus(selected), container ?? undefined).conflicts;
 }
 let placementCounter = 0;
 export function PlantsStep({ draft, plants, update }: StepProps) {
@@ -189,35 +173,23 @@ export function PlantsStep({ draft, plants, update }: StepProps) {
 
   // --- Live eco-balance ---
   const scored = useMemo(() => scoreBuild(draft, catalog), [draft, catalog]);
-  const survivalCritical = scored.report ? hasSurvivalCritical(scored.report) : false;
+  // Critical band ⇒ a plant will die here (a survival-clamped plant, a survival
+  // split, or overcrowding) — the haptic nudge the amber roster rows back up.
+  const survivalCritical = scored.band === 'critical';
 
-  const pulse = useSharedValue(0);
+  // Survival-critical builds get a haptic nudge (the visual cue is the amber roster rows).
   useEffect(() => {
-    if (!survivalCritical) return;
-    haptics.warn();
-    pulse.value = withSequence(withTiming(1, { duration: 160 }), withTiming(0, { duration: 460 }));
+    if (survivalCritical) haptics.warn();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [survivalCritical]);
-  const glowStyle = useAnimatedStyle(() => ({ opacity: pulse.value }));
 
-  const [matrixOpen, setMatrixOpen] = useState(false);
-
-  // Inline collapsible animation for pair checks inside the eco-balance card
-  const pairProgress = useSharedValue(0);
-  const pairContentHeight = useSharedValue(0);
-  const [pairMeasured, setPairMeasured] = useState(false);
-  useEffect(() => {
-    pairProgress.value = withTiming(matrixOpen ? 1 : 0, { duration: 300, easing: Easing.out(Easing.cubic) });
-    // pairProgress is a stable shared-value ref — mutated here, not a dependency.
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [matrixOpen]);
-  const pairBodyStyle = useAnimatedStyle(() => ({ height: pairProgress.value * pairContentHeight.value }));
-  const pairChevronStyle = useAnimatedStyle(() => ({ transform: [{ rotate: `${pairProgress.value * 90}deg` }] }));
-  function onPairLayout(e: LayoutChangeEvent) {
-    const h = e.nativeEvent.layout.height;
-    if (h > 0) pairContentHeight.value = h;
-    if (!pairMeasured) setPairMeasured(true);
-  }
+  // Roster rows for the verdict card: each selected plant + its fit + its conflicts
+  // vs the build consensus. Read straight from the scored report so the roster and
+  // the build score can never disagree.
+  const rosterRows: EcoRosterRow[] = useMemo(() => {
+    const conflictsBySlug = new Map((scored.report?.plantScores ?? []).map((ps) => [ps.slug, ps.conflicts]));
+    return plants.map((p) => ({ plant: p, fit: fitScores.get(p.slug) ?? null, conflicts: conflictsBySlug.get(p.slug) ?? [] }));
+  }, [plants, fitScores, scored.report]);
 
   // --- Add / remove ---
   // ponytail: stable via refs — memo on PlantCatalogRow skips re-renders when
@@ -234,82 +206,18 @@ export function PlantsStep({ draft, plants, update }: StepProps) {
     }
   }, []);
 
-  // The one-line readout under the meter — honest for every state: a prompt when
-  // empty, the scoring diagnostic when it can't be scored yet (e.g. no container),
-  // and the verdict sentence once it scores.
-  const ecoMessage =
-    scored.empty
-      ? scored.verdict?.sentence ?? ''
-      : scored.score != null
-        ? scored.verdict?.sentence ?? ''
-        : scored.diagnostic ?? 'Can’t score this build yet.';
-
   return (
     <View style={styles.root}>
-      {/* Live Eco-balance — a fixed-height bar pinned above the catalog. It updates
-          in place as plants are added (meter and verdict swap content without
-          changing the bar's height), so the catalog never shifts under your finger. */}
-      <Card style={styles.ecoBar}>
-        <View style={styles.ecoHead}>
-          <SectionLabel>Eco-balance</SectionLabel>
-          {scored.score != null && !scored.empty ? (
-            <Text
-              variant="caption"
-              style={{ color: ecoColor(scored.score, scheme), fontWeight: '600' }}>
-              {Math.round(scored.score)}% · {ecoBandLabel(scored.band ?? 'caution')}
-            </Text>
-          ) : null}
-        </View>
-
-        {scored.score != null && !scored.empty ? (
-          <View>
-            <EcoMeter score={scored.score} height={10} />
-            <Animated.View
-              pointerEvents="none"
-              style={[styles.glow, { backgroundColor: c.accent }, glowStyle]}
-            />
-          </View>
-        ) : (
-          <View style={[styles.emptyMeter, { backgroundColor: c.surfaceSunken }]} />
-        )}
-
-        <Text
-          variant="caption"
-          role={survivalCritical ? 'accent' : 'textMuted'}
-          numberOfLines={3}
-          style={styles.ecoVerdict}>
-          {ecoMessage}
-        </Text>
-
-        {scored.report && draft.plantSlugs.length >= 2 ? (
-          <View style={styles.pairSection}>
-            <View style={[styles.pairDivider, { borderColor: c.border }]} />
-            <Pressable
-              onPress={() => { haptics.select(); setMatrixOpen((o) => !o); }}
-              accessibilityRole="button"
-              accessibilityLabel={`${matrixOpen ? 'Collapse' : 'Expand'} pair checks`}
-              accessibilityState={{ expanded: matrixOpen }}
-              style={styles.pairToggle}>
-              <View style={styles.pairToggleText}>
-                <Text variant="overline" role="textMuted">Pair checks</Text>
-                {!matrixOpen ? (
-                  <Text variant="caption" role="textMuted">Every pair, checked</Text>
-                ) : null}
-              </View>
-              <Animated.View style={pairChevronStyle}>
-                <Text variant="body" role="textMuted" style={styles.pairChevron}>›</Text>
-              </Animated.View>
-            </Pressable>
-            <Animated.View style={[styles.pairOverflow, pairMeasured ? pairBodyStyle : matrixOpen ? styles.pairAutoHeight : styles.pairCollapsed]}>
-              <View
-                onLayout={onPairLayout}
-                style={[styles.pairBody, pairMeasured || !matrixOpen ? styles.pairBodyAbsolute : null]}>
-                <PairMatrix report={scored.report} plants={plants} />
-              </View>
-            </Animated.View>
-          </View>
-        ) : null}
-      </Card>
+      {/* Live Eco-balance verdict card (ADR 0016): score ring + band/loop status over
+          a per-plant roster. Grows with the build — the catalog reflows below it. */}
+      <EcoVerdictCard
+        scored={scored}
+        rows={rosterRows}
+        opening={draft.containerOpening}
+        consensus={scored.report?.consensus}
+        onPlantInfo={setSheetPlant}
+        onPlantRemove={(p) => togglePlant(p.slug)}
+      />
 
       {/* Catalog — search + filter + sorted rows */}
       <Card style={styles.card}>
@@ -424,18 +332,25 @@ export function PlantsStep({ draft, plants, update }: StepProps) {
               No plants match{query.trim() ? ` "${query.trim()}"` : ' these filters'}.
             </Text>
           ) : (
-            filtered.map((p) => (
-              <PlantCatalogRow
-                key={p.slug}
-                plant={p}
-                selected={selectedSlugs.has(p.slug)}
-                fitScore={fitScores.get(p.slug) ?? null}
-                tooTall={headroomCm != null && p.maxHeightCm > headroomCm}
-                scheme={scheme}
-                onToggle={togglePlant}
-                onInfo={setSheetPlant}
-              />
-            ))
+            <>
+              {filtered.slice(0, CATALOG_CAP).map((p) => (
+                <PlantCatalogRow
+                  key={p.slug}
+                  plant={p}
+                  selected={selectedSlugs.has(p.slug)}
+                  fitScore={fitScores.get(p.slug) ?? null}
+                  tooTall={headroomCm != null && p.maxHeightCm > headroomCm}
+                  scheme={scheme}
+                  onToggle={togglePlant}
+                  onInfo={setSheetPlant}
+                />
+              ))}
+              {filtered.length > CATALOG_CAP ? (
+                <Text variant="caption" role="textMuted" style={styles.catalogMore}>
+                  Showing {CATALOG_CAP} of {filtered.length} — search or filter to narrow, or browse the full library in Plants.
+                </Text>
+              ) : null}
+            </>
           )}
         </View>
       </Card>
@@ -449,7 +364,7 @@ export function PlantsStep({ draft, plants, update }: StepProps) {
         onToggle={() => {
           if (sheetPlant) togglePlant(sheetPlant.slug);
         }}
-        conflicts={sheetPlant ? getConflicts(sheetPlant, plants) : []}
+        conflicts={sheetPlant ? getConflicts(sheetPlant, plants, container) : []}
       />
     </View>
   );
@@ -561,62 +476,9 @@ function FacetGroup({
   );
 }
 
-// --- Tier-3 pairwise matrix (unchanged from original) -----------------------
-
-function PairMatrix({ report, plants }: { report: GroupReport; plants: readonly Plant[] }) {
-  const { c } = useTokens();
-  const rows: { a: Plant; b: Plant; score: number; verdict: string; lines: { msg: string; bad: boolean }[] }[] = [];
-  for (let i = 0; i < plants.length; i++) {
-    for (let j = i + 1; j < plants.length; j++) {
-      const cell = report.pairMatrix[plants[i].slug]?.[plants[j].slug];
-      if (!cell) continue;
-      rows.push({
-        a: plants[i],
-        b: plants[j],
-        score: cell.score,
-        verdict: cell.verdict,
-        lines: cell.conflicts.map((cf) => ({
-          msg: cf.message + (cf.viaSecondary ? ' (via a secondary tolerance)' : ''),
-          bad: cf.severity === 'incompatible',
-        })),
-      });
-    }
-  }
-
-  return (
-    <View style={styles.matrix}>
-      {rows.map(({ a, b, score, verdict, lines }) => (
-        <View key={`${a.slug}-${b.slug}`} style={styles.pairRow}>
-          <View style={styles.pairHead}>
-            <Text variant="caption" style={styles.pairNames}>
-              {a.commonName} <Text role="textMuted">×</Text> {b.commonName}
-            </Text>
-            <Chip label={`${Math.round(score)}%`} tone={verdict === 'compatible' ? 'sage' : 'accent'} />
-          </View>
-          {lines.map((l, k) => (
-            <View key={k} style={styles.conflictLine}>
-              <View style={[styles.matrixDot, { backgroundColor: l.bad ? c.accent : c.sage }]} />
-              <Text variant="caption" role="textMuted" style={styles.conflictText}>
-                {l.msg}
-              </Text>
-            </View>
-          ))}
-        </View>
-      ))}
-    </View>
-  );
-}
-
 const styles = StyleSheet.create({
   root: { gap: Spacing.md },
   card: { padding: Spacing.lg, gap: Spacing.sm },
-  // Eco-balance bar — fixed height so a plant add updates it in place without
-  // shifting the catalog below it.
-  ecoBar: { padding: Spacing.lg, gap: Spacing.sm },
-  ecoHead: { flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', gap: Spacing.sm },
-  emptyMeter: { height: 10, borderRadius: 5 },
-  ecoVerdict: { minHeight: 54 },
-  glow: { position: 'absolute', left: 0, right: 0, top: 0, bottom: 0, borderRadius: Radii.pill },
 
   // Filter panel
   search: {
@@ -636,6 +498,7 @@ const styles = StyleSheet.create({
   // Catalog rows
   catalogList: { gap: Spacing.xs },
   catalogLoading: { paddingVertical: Spacing.xl },
+  catalogMore: { paddingTop: Spacing.xs },
   catalogRow: {
     flexDirection: 'row',
     alignItems: 'center',
@@ -652,25 +515,4 @@ const styles = StyleSheet.create({
   fitCol: { flexDirection: 'row', alignItems: 'center', gap: Spacing.xs },
   fitDot: { width: 8, height: 8, borderRadius: Radii.pill },
   infoBtn: { fontSize: 18, paddingHorizontal: Spacing.xs },
-
-  // Pair matrix
-  matrix: { gap: Spacing.md, marginTop: Spacing.xs },
-  pairRow: { gap: Spacing.xs },
-  pairHead: { flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', gap: Spacing.sm },
-  pairNames: { flexShrink: 1 },
-  conflictLine: { flexDirection: 'row', gap: Spacing.sm, alignItems: 'flex-start', paddingLeft: Spacing.xs },
-  matrixDot: { width: 7, height: 7, borderRadius: Radii.pill, marginTop: 5 },
-  conflictText: { flexShrink: 1, lineHeight: 18 },
-
-  // Pair checks inline collapsible inside the eco-balance card
-  pairSection: { gap: Spacing.xs },
-  pairDivider: { borderTopWidth: StyleSheet.hairlineWidth },
-  pairToggle: { flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', gap: Spacing.sm },
-  pairToggleText: { flex: 1, gap: 2 },
-  pairChevron: { fontSize: 18 },
-  pairOverflow: { overflow: 'hidden' },
-  pairAutoHeight: {},
-  pairCollapsed: { height: 0 },
-  pairBody: { gap: Spacing.sm, paddingTop: Spacing.xs },
-  pairBodyAbsolute: { position: 'absolute', left: 0, right: 0, top: 0 },
 });

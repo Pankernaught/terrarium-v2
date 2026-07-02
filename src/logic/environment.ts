@@ -7,8 +7,8 @@
  *
  * **Decision 15 ripple:** the categorical union now spans each plant's
  * `primary ∪ secondary` for light and soil moisture. This widens the **display**
- * sets only — the recommender re-runs `checkPair` and never reads the envelope,
- * so the union cannot over-widen scoring.
+ * sets only — scoring goes through the consensus model (ADR 0017) and never
+ * reads the envelope, so the union cannot over-widen scoring.
  */
 import type { EnvEnvelope, LightLevel, MoistureLevel, Plant } from '../types';
 

@@ -14,30 +14,32 @@ const ENV: GroupReport['envEnvelope'] = {
 };
 
 function report(overallScore: number, opts: {
-  containerFit?: Conflict[];
-  pair?: Conflict[];
+  /** Conflicts pinned on plant `b` (the deviant); `a` stays a clean 100. */
+  plant?: Conflict[];
+  /** Build-level warnings (splits, crowding). */
+  build?: Conflict[];
 } = {}): GroupReport {
-  const pairConflicts = opts.pair ?? [];
+  const plantConflicts = opts.plant ?? [];
   return {
     overallScore,
-    containerFitIssues: opts.containerFit ?? [],
-    envEnvelope: ENV,
-    // Two plants a/b so the upper-triangle scan finds [a][b].
-    pairMatrix: {
-      a: {
-        a: { score: 100, verdict: 'compatible', conflicts: [], survivalCritical: false },
-        b: {
-          score: 60,
-          verdict: pairConflicts.some((c) => c.severity === 'incompatible') ? 'incompatible' : 'caution',
-          conflicts: pairConflicts,
-          survivalCritical: false,
-        },
+    plantScores: [
+      { slug: 'a', score: 100, conflicts: [], survivalCritical: false },
+      {
+        slug: 'b',
+        score: overallScore,
+        conflicts: plantConflicts,
+        survivalCritical: plantConflicts.some((c) => c.severity === 'incompatible'),
       },
-      b: {
-        a: { score: 60, verdict: 'caution', conflicts: [], survivalCritical: false },
-        b: { score: 100, verdict: 'compatible', conflicts: [], survivalCritical: false },
-      },
+    ],
+    consensus: {
+      light: 'medium',
+      soilMoisture: 'moist',
+      phPreference: null,
+      humidity: [40, 80],
+      temperature: [15, 28],
     },
+    buildWarnings: opts.build ?? [],
+    envEnvelope: ENV,
   };
 }
 
@@ -58,20 +60,20 @@ describe('summarizeVerdict', () => {
   });
 
   it('a single caution is named in the sentence', () => {
-    const v = summarizeVerdict(report(78, { pair: [caution('wants more light')] }), 2);
+    const v = summarizeVerdict(report(78, { plant: [caution('wants more light')] }), 2);
     expect(v.sentence).toBe('Mostly healthy — wants more light');
     expect(v.issueCount).toBe(1);
   });
 
   it('multiple cautions roll up with a "+N more"', () => {
-    const v = summarizeVerdict(report(60, { pair: [caution('first issue'), caution('second issue')] }), 2);
+    const v = summarizeVerdict(report(60, { plant: [caution('first issue'), caution('second issue')] }), 2);
     expect(v.sentence).toMatch(/first issue \(\+1 more to review\)/);
     expect(v.issueCount).toBe(2);
   });
 
   it('a survival-critical conflict leads, even over cautions', () => {
     const v = summarizeVerdict(
-      report(35, { containerFit: [critical('not suitable for sealed terrariums')], pair: [caution('also this')] }),
+      report(35, { plant: [critical('not suitable for sealed terrariums'), caution('also this')] }),
       2,
     );
     expect(v.sentence).toMatch(/^Needs attention — not suitable/);

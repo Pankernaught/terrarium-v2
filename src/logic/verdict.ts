@@ -12,17 +12,9 @@ import type { Conflict, GroupReport } from '@/types/results';
 import { copy } from '../lib/copy';
 import { ecoBand, type EcoBand } from './eco';
 
-/** Collect every conflict in the report (container fit + the upper-triangle pairs). */
+/** Collect every conflict in the report (per-plant deviations + build-level warnings). */
 function allConflicts(report: GroupReport): Conflict[] {
-  const out: Conflict[] = [...report.containerFitIssues];
-  const slugs = Object.keys(report.pairMatrix);
-  for (let i = 0; i < slugs.length; i++) {
-    for (let j = i + 1; j < slugs.length; j++) {
-      const cell = report.pairMatrix[slugs[i]]?.[slugs[j]];
-      if (cell) out.push(...cell.conflicts);
-    }
-  }
-  return out;
+  return [...report.buildWarnings, ...report.plantScores.flatMap((p) => p.conflicts)];
 }
 
 export interface VerdictSummary {
