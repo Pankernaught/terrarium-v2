@@ -1,0 +1,1166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Terrarium — Build a terrarium that actually thrives</title>
+    <style>
+        *, *::before, *::after { box-sizing: border-box; }
+        html { scroll-behavior: smooth; }
+        body {
+            margin: 0;
+            background: #EEF1E6;
+            color: #1C231C;
+            font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+            -webkit-font-smoothing: antialiased;
+        }
+        ::selection { background: #8C6A1B; color: #F7F9F0; }
+        a { color: inherit; text-decoration: none; }
+        button { font-family: inherit; }
+
+        /* NAV */
+        .nav {
+            position: sticky;
+            top: 0;
+            z-index: 50;
+            background: rgba(14,26,18,0.88);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(91,184,115,0.18);
+        }
+        .nav-inner {
+            max-width: 1160px;
+            margin: 0 auto;
+            padding: 14px 32px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        .nav-logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .nav-logo-mark {
+            width: 18px;
+            height: 18px;
+            background: #5BB873;
+            border-radius: 4px;
+            transform: rotate(45deg);
+            display: inline-block;
+            box-shadow: 0 0 0 4px rgba(91,184,115,0.16);
+            flex-shrink: 0;
+        }
+        .nav-logo-text {
+            font-family: Georgia, ui-serif, serif;
+            font-size: 20px;
+            font-weight: 700;
+            color: #F7F9F0;
+            letter-spacing: -0.3px;
+        }
+        .nav-links {
+            display: flex;
+            align-items: center;
+            gap: 28px;
+        }
+        .nav-link {
+            font-size: 14px;
+            font-weight: 500;
+            color: #C9D4C2;
+            transition: color 120ms ease;
+        }
+        .nav-link:hover { color: #F7F9F0; }
+        .nav-cta {
+            background: #5BB873;
+            color: #0E1A12;
+            font-size: 14px;
+            font-weight: 600;
+            padding: 9px 18px;
+            border-radius: 999px;
+            transition: background 120ms ease;
+        }
+        .nav-cta:hover { background: #69c281; }
+
+        /* HERO */
+        .hero {
+            position: relative;
+            background: #0E1A12;
+            color: #E8EFE0;
+            overflow: hidden;
+        }
+        .hero-bg {
+            position: absolute;
+            inset: 0;
+            background:
+                    radial-gradient(120% 90% at 85% 10%, rgba(91,184,115,0.14), transparent 55%),
+                    radial-gradient(80% 70% at 0% 100%, rgba(224,185,78,0.08), transparent 60%);
+            pointer-events: none;
+        }
+        .hero-inner {
+            position: relative;
+            max-width: 1160px;
+            margin: 0 auto;
+            padding: 84px 32px 96px;
+            display: grid;
+            grid-template-columns: 1.05fr 0.95fr;
+            gap: 56px;
+            align-items: center;
+        }
+        .hero-eyebrow {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 11px;
+            font-weight: 500;
+            letter-spacing: 0.8px;
+            text-transform: uppercase;
+            color: #E0B94E;
+            margin-bottom: 22px;
+        }
+        .hero-eyebrow-dot {
+            width: 6px;
+            height: 6px;
+            background: #E0B94E;
+            border-radius: 999px;
+            display: inline-block;
+            flex-shrink: 0;
+        }
+        .hero-h1 {
+            font-family: Georgia, ui-serif, serif;
+            font-size: 54px;
+            line-height: 1.04;
+            font-weight: 700;
+            letter-spacing: -1.2px;
+            margin: 0 0 22px;
+            color: #F4F8EE;
+        }
+        .hero-sub {
+            font-size: 18px;
+            line-height: 1.6;
+            color: #A9B8A4;
+            max-width: 480px;
+            margin: 0 0 34px;
+        }
+        .hero-buttons {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 14px;
+            margin-bottom: 26px;
+        }
+        .btn-store {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 14px 22px;
+            border-radius: 14px;
+            transition: background 120ms ease, border-color 120ms ease;
+        }
+        .btn-store-icon { font-size: 22px; line-height: 0; }
+        .btn-store-label { text-align: left; line-height: 1.1; }
+        .btn-store-small { display: block; font-size: 11px; }
+        .btn-store-big { font-size: 17px; font-weight: 600; }
+        .btn-appstore {
+            background: #F4F8EE;
+            color: #0E1A12;
+        }
+        .btn-appstore:hover { background: #ffffff; }
+        .btn-appstore .btn-store-small { color: #5F6B59; }
+        .btn-googleplay {
+            background: transparent;
+            color: #F4F8EE;
+            border: 1px solid rgba(143,176,127,0.32);
+        }
+        .btn-googleplay:hover { border-color: rgba(143,176,127,0.6); }
+        .btn-googleplay .btn-store-small { color: #94A38E; }
+        .btn-googleplay .btn-store-icon { font-size: 20px; }
+        .hero-social {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            font-size: 14px;
+            color: #94A38E;
+        }
+        .hero-stars { color: #E0B94E; letter-spacing: 2px; }
+        .hero-rating-text strong { color: #E8EFE0; }
+
+        /* PHONE MOCKUP */
+        .phone-wrap {
+            justify-self: center;
+            position: relative;
+        }
+        .phone-glow {
+            position: absolute;
+            inset: -26px;
+            background: radial-gradient(closest-side, rgba(91,184,115,0.18), transparent);
+            filter: blur(8px);
+        }
+        .phone-shell {
+            position: relative;
+            width: 284px;
+            height: 582px;
+            background: #152217;
+            border: 1px solid rgba(143,176,127,0.24);
+            border-radius: 42px;
+            padding: 11px;
+            box-shadow: 0 24px 60px rgba(0,0,0,0.45);
+        }
+        .phone-notch {
+            position: absolute;
+            top: 22px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 108px;
+            height: 26px;
+            background: #0E1A12;
+            border-radius: 999px;
+            z-index: 2;
+        }
+        .phone-screen {
+            width: 100%;
+            height: 100%;
+            background: #0E1A12;
+            border-radius: 32px;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+        .phone-header {
+            padding: 46px 18px 14px;
+        }
+        .phone-header-eyebrow {
+            font-size: 11px;
+            letter-spacing: 0.8px;
+            text-transform: uppercase;
+            color: #E0B94E;
+            margin-bottom: 4px;
+        }
+        .phone-header-title {
+            font-family: Georgia, serif;
+            font-size: 18px;
+            color: #F4F8EE;
+            font-weight: 700;
+        }
+        .phone-cross-section {
+            flex: 1;
+            margin: 4px 14px 14px;
+            border-radius: 18px;
+            background:
+                    repeating-linear-gradient(135deg, rgba(143,176,127,0.10) 0 9px, transparent 9px 18px),
+                    #14201A;
+            border: 1px dashed rgba(143,176,127,0.28);
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end;
+            position: relative;
+        }
+        .phone-cross-label {
+            position: absolute;
+            top: 12px;
+            left: 0;
+            right: 0;
+            text-align: center;
+            font-family: ui-monospace, Menlo, monospace;
+            font-size: 10px;
+            color: #7d8a78;
+        }
+        .phone-layer-1 { height: 30%; background: rgba(91,184,115,0.14); border-top: 1px solid rgba(143,176,127,0.24); }
+        .phone-layer-2 { height: 14%; background: rgba(78,107,67,0.30); }
+        .phone-layer-3 { height: 10%; background: rgba(140,106,27,0.22); }
+        .phone-layer-4 { height: 8%; background: rgba(20,32,26,0.9); }
+        .phone-eco {
+            margin: 0 14px 16px;
+            background: #152217;
+            border: 1px solid rgba(143,176,127,0.18);
+            border-radius: 14px;
+            padding: 12px 14px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        .phone-eco-score-label { font-size: 11px; color: #94A38E; }
+        .phone-eco-score-val {
+            font-family: Georgia, serif;
+            font-size: 22px;
+            font-weight: 700;
+            color: #5BB873;
+        }
+        .phone-eco-desc { font-size: 11px; color: #94A38E; text-align: right; max-width: 120px; }
+
+        /* STATS */
+        .stats {
+            background: #0E1A12;
+        }
+        .stats-inner {
+            max-width: 1160px;
+            margin: 0 auto;
+            padding: 0 32px;
+        }
+        .stats-grid {
+            border-top: 1px solid rgba(91,184,115,0.16);
+            padding: 34px 0;
+            display: grid;
+            grid-template-columns: repeat(4,1fr);
+            gap: 24px;
+        }
+        .stat-val {
+            font-family: Georgia, serif;
+            font-size: 30px;
+            font-weight: 700;
+            color: #F4F8EE;
+        }
+        .stat-val-gold { color: #E0B94E; }
+        .stat-desc { font-size: 13px; color: #94A38E; margin-top: 2px; }
+
+        /* FEATURES */
+        .features { padding: 88px 32px; }
+        .features-inner { max-width: 1160px; margin: 0 auto; }
+        .section-eyebrow {
+            font-size: 11px;
+            font-weight: 500;
+            letter-spacing: 0.8px;
+            text-transform: uppercase;
+            color: #8C6A1B;
+            margin-bottom: 14px;
+        }
+        .section-h2 {
+            font-family: Georgia, serif;
+            font-size: 36px;
+            line-height: 1.12;
+            font-weight: 700;
+            letter-spacing: -0.6px;
+            margin: 0 0 16px;
+            color: #1C231C;
+        }
+        .section-lead {
+            font-size: 17px;
+            line-height: 1.6;
+            color: #5F6B59;
+            margin: 0;
+        }
+        .features-header { max-width: 640px; margin-bottom: 48px; }
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(2,1fr);
+            gap: 20px;
+        }
+        .feature-card {
+            background: #F7F9F0;
+            border: 1px solid rgba(31,77,46,0.14);
+            border-radius: 16px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+            padding: 28px;
+            transition: box-shadow 180ms ease;
+        }
+        .feature-card:hover { box-shadow: 0 8px 24px rgba(0,0,0,0.10); }
+        .feature-icon {
+            width: 38px;
+            height: 38px;
+            border-radius: 10px;
+            background: #E3E8D6;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 18px;
+        }
+        .fi-square {
+            width: 14px;
+            height: 14px;
+            border: 2px solid #1F4D2E;
+            border-radius: 3px;
+            display: inline-block;
+        }
+        .fi-circle {
+            width: 14px;
+            height: 14px;
+            border: 2px solid #1F4D2E;
+            border-radius: 999px;
+            display: inline-block;
+        }
+        .fi-lines {
+            width: 14px;
+            height: 2px;
+            background: #1F4D2E;
+            display: inline-block;
+            box-shadow: 0 5px 0 #1F4D2E, 0 -5px 0 #1F4D2E;
+        }
+        .fi-dots {
+            width: 6px;
+            height: 6px;
+            background: #1F4D2E;
+            border-radius: 999px;
+            display: inline-block;
+            box-shadow: 8px 0 0 #1F4D2E, -8px 0 0 #1F4D2E;
+        }
+        .feature-h3 {
+            font-family: Georgia, serif;
+            font-size: 22px;
+            font-weight: 700;
+            margin: 0 0 8px;
+            color: #1C231C;
+        }
+        .feature-p {
+            font-size: 15px;
+            line-height: 1.55;
+            color: #5F6B59;
+            margin: 0 0 16px;
+        }
+        .feature-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            gap: 9px;
+        }
+        .feature-list li {
+            font-size: 14px;
+            color: #1C231C;
+            display: flex;
+            gap: 10px;
+        }
+        .feature-list li span:first-child { color: #1F4D2E; flex-shrink: 0; }
+
+        /* HOW IT WORKS */
+        .how {
+            background: #F7F9F0;
+            border-top: 1px solid rgba(31,77,46,0.10);
+            border-bottom: 1px solid rgba(31,77,46,0.10);
+            padding: 88px 32px;
+        }
+        .how-inner { max-width: 1160px; margin: 0 auto; }
+        .how-header {
+            text-align: center;
+            max-width: 600px;
+            margin: 0 auto 52px;
+        }
+        .how-grid {
+            display: grid;
+            grid-template-columns: repeat(4,1fr);
+            gap: 18px;
+        }
+        .how-step { text-align: center; }
+        .how-step-img {
+            position: relative;
+            height: 150px;
+            border-radius: 14px;
+            background:
+                    repeating-linear-gradient(135deg, rgba(31,77,46,0.06) 0 9px, transparent 9px 18px),
+                    #EEF1E6;
+            border: 1px dashed rgba(31,77,46,0.20);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 18px;
+        }
+        .how-step-label {
+            font-family: ui-monospace, Menlo, monospace;
+            font-size: 10px;
+            color: #8a937f;
+        }
+        .how-step-num {
+            position: absolute;
+            top: 10px;
+            left: 12px;
+            width: 26px;
+            height: 26px;
+            border-radius: 999px;
+            background: #1F4D2E;
+            color: #F7F9F0;
+            font-size: 13px;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .how-step h3 {
+            font-size: 17px;
+            font-weight: 600;
+            margin: 0 0 6px;
+            color: #1C231C;
+        }
+        .how-step p {
+            font-size: 14px;
+            line-height: 1.5;
+            color: #5F6B59;
+            margin: 0;
+        }
+
+        /* SPOTLIGHT */
+        .spotlight { padding: 88px 32px; }
+        .spotlight-inner {
+            max-width: 1160px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 0.95fr 1.05fr;
+            gap: 64px;
+            align-items: center;
+        }
+        .spotlight-h2 {
+            font-family: Georgia, serif;
+            font-size: 34px;
+            line-height: 1.14;
+            font-weight: 700;
+            letter-spacing: -0.5px;
+            margin: 0 0 18px;
+            color: #1C231C;
+        }
+        .spotlight-p {
+            font-size: 17px;
+            line-height: 1.6;
+            color: #5F6B59;
+            margin: 0 0 22px;
+        }
+        .spotlight-checks {
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+        }
+        .spotlight-check {
+            display: flex;
+            gap: 12px;
+            align-items: flex-start;
+        }
+        .spotlight-check-icon {
+            width: 22px;
+            height: 22px;
+            flex-shrink: 0;
+            border-radius: 999px;
+            background: #E3E8D6;
+            color: #1F4D2E;
+            font-size: 13px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .spotlight-check span:last-child { font-size: 15px; color: #1C231C; }
+
+        /* SCORE PANEL */
+        .score-panel {
+            background: #0E1A12;
+            border-radius: 24px;
+            padding: 28px;
+            box-shadow: 0 24px 60px rgba(0,0,0,0.22);
+        }
+        .score-panel-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 22px;
+        }
+        .score-label {
+            font-size: 11px;
+            letter-spacing: 0.8px;
+            text-transform: uppercase;
+            color: #94A38E;
+        }
+        .score-val {
+            font-family: Georgia, serif;
+            font-size: 46px;
+            font-weight: 700;
+            color: #5BB873;
+            line-height: 1;
+        }
+        .score-denom { font-size: 18px; color: #5F6B59; }
+        .score-desc { text-align: right; font-size: 12px; color: #94A38E; max-width: 150px; }
+        .score-plants {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        .score-plant {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            border-radius: 12px;
+            padding: 12px 14px;
+        }
+        .score-plant-good {
+            background: #152217;
+            border: 1px solid rgba(143,176,127,0.16);
+        }
+        .score-plant-warn {
+            background: #1f1a12;
+            border: 1px solid rgba(224,185,78,0.32);
+        }
+        .score-plant-badge {
+            width: 30px;
+            height: 30px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 13px;
+            flex-shrink: 0;
+        }
+        .score-plant-badge-good { background: rgba(91,184,115,0.18); color: #5BB873; }
+        .score-plant-badge-warn { background: rgba(224,185,78,0.18); color: #E0B94E; font-size: 14px; }
+        .score-plant-name { flex: 1; font-size: 14px; color: #E8EFE0; }
+        .score-plant-reason { color: #E0B94E; font-size: 12px; }
+        .score-plant-fit-good { font-size: 12px; color: #5BB873; }
+        .score-plant-fit-warn { font-size: 12px; color: #E0B94E; }
+        .score-tip {
+            margin-top: 14px;
+            font-size: 12px;
+            color: #94A38E;
+            line-height: 1.5;
+            padding: 0 2px;
+        }
+        .score-tip strong { color: #5BB873; }
+
+        /* FAQ */
+        .faq {
+            background: #F7F9F0;
+            border-top: 1px solid rgba(31,77,46,0.10);
+            padding: 88px 32px;
+        }
+        .faq-inner { max-width: 760px; margin: 0 auto; }
+        .faq-h2 {
+            font-family: Georgia, serif;
+            font-size: 34px;
+            font-weight: 700;
+            letter-spacing: -0.5px;
+            margin: 0 0 36px;
+            color: #1C231C;
+            text-align: center;
+        }
+        .faq-list {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+        .faq-item {
+            background: #EEF1E6;
+            border: 1px solid rgba(31,77,46,0.14);
+            border-radius: 14px;
+            overflow: hidden;
+        }
+        .faq-btn {
+            width: 100%;
+            text-align: left;
+            background: transparent;
+            border: none;
+            cursor: pointer;
+            padding: 18px 22px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 16px;
+        }
+        .faq-q {
+            font-size: 16px;
+            font-weight: 600;
+            color: #1C231C;
+        }
+        .faq-sign {
+            font-size: 20px;
+            color: #8C6A1B;
+            flex-shrink: 0;
+        }
+        .faq-a {
+            padding: 0 22px 20px;
+            font-size: 15px;
+            line-height: 1.6;
+            color: #5F6B59;
+            display: none;
+        }
+        .faq-item.open .faq-a { display: block; }
+
+        /* FINAL CTA */
+        .cta-section {
+            background: #0E1A12;
+            color: #E8EFE0;
+            position: relative;
+            overflow: hidden;
+        }
+        .cta-bg {
+            position: absolute;
+            inset: 0;
+            background: radial-gradient(90% 120% at 50% 0%, rgba(91,184,115,0.14), transparent 60%);
+            pointer-events: none;
+        }
+        .cta-inner {
+            position: relative;
+            max-width: 760px;
+            margin: 0 auto;
+            padding: 96px 32px;
+            text-align: center;
+        }
+        .cta-eyebrow {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 11px;
+            font-weight: 500;
+            letter-spacing: 0.8px;
+            text-transform: uppercase;
+            color: #E0B94E;
+            margin-bottom: 22px;
+        }
+        .cta-eyebrow-dot { width: 6px; height: 6px; background: #E0B94E; border-radius: 999px; flex-shrink: 0; }
+        .cta-h2 {
+            font-family: Georgia, serif;
+            font-size: 44px;
+            line-height: 1.08;
+            font-weight: 700;
+            letter-spacing: -0.8px;
+            margin: 0 0 18px;
+            color: #F4F8EE;
+        }
+        .cta-sub {
+            font-size: 18px;
+            line-height: 1.6;
+            color: #A9B8A4;
+            max-width: 480px;
+            margin: 0 auto 32px;
+        }
+        .cta-buttons {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 14px;
+            justify-content: center;
+        }
+
+        /* FOOTER */
+        .footer {
+            background: #0B140E;
+            color: #7d8a78;
+            padding: 30px 32px;
+        }
+        .footer-inner {
+            max-width: 1160px;
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 16px;
+        }
+        .footer-logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .footer-logo-mark {
+            width: 14px;
+            height: 14px;
+            background: #5BB873;
+            border-radius: 3px;
+            transform: rotate(45deg);
+            display: inline-block;
+            flex-shrink: 0;
+        }
+        .footer-logo-text {
+            font-family: Georgia, serif;
+            font-size: 16px;
+            font-weight: 700;
+            color: #C9D4C2;
+        }
+        .footer-links {
+            display: flex;
+            gap: 24px;
+            font-size: 13px;
+        }
+        .footer-links a { color: #7d8a78; transition: color 120ms ease; }
+        .footer-links a:hover { color: #C9D4C2; }
+        .footer-copy { font-size: 13px; }
+
+        /* RESPONSIVE */
+        @media (max-width: 900px) {
+            .hero-inner {
+                grid-template-columns: 1fr;
+                padding: 56px 24px 64px;
+                gap: 48px;
+            }
+            .hero-h1 { font-size: 40px; }
+            .phone-wrap { justify-self: start; }
+            .stats-grid { grid-template-columns: repeat(2,1fr); }
+            .features-grid { grid-template-columns: 1fr; }
+            .how-grid { grid-template-columns: repeat(2,1fr); }
+            .spotlight-inner { grid-template-columns: 1fr; gap: 40px; }
+            .nav-inner { padding: 14px 20px; }
+            .features, .spotlight { padding: 64px 24px; }
+            .how, .faq { padding: 64px 24px; }
+        }
+        @media (max-width: 600px) {
+            .hero-h1 { font-size: 32px; }
+            .how-grid { grid-template-columns: 1fr; }
+            .cta-h2 { font-size: 32px; }
+            .nav-links .nav-link { display: none; }
+        }
+    </style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav class="nav">
+    <div class="nav-inner">
+        <a href="#top" class="nav-logo">
+            <span class="nav-logo-mark"></span>
+            <span class="nav-logo-text">Terrarium</span>
+        </a>
+        <div class="nav-links">
+            <a href="#features" class="nav-link">Features</a>
+            <a href="#how" class="nav-link">How it works</a>
+            <a href="#faq" class="nav-link">FAQ</a>
+            <a href="#download" class="nav-cta">Get the app</a>
+        </div>
+    </div>
+</nav>
+
+<!-- HERO -->
+<header id="top" class="hero">
+    <div class="hero-bg"></div>
+    <div class="hero-inner">
+        <div>
+            <div class="hero-eyebrow">
+                <span class="hero-eyebrow-dot"></span>
+                Planner &amp; care, automated
+            </div>
+            <h1 class="hero-h1">
+                Build a terrarium<br>that actually thrives.
+            </h1>
+            <p class="hero-sub">
+                Terrarium takes the technical part off your plate — substrate science, plant compatibility, assembly order and care timing. You just plant and enjoy.
+            </p>
+            <div class="hero-buttons">
+                <a href="#download" class="btn-store btn-appstore">
+                    <span class="btn-store-icon">&#63743;</span>
+                    <span class="btn-store-label">
+              <span class="btn-store-small">Download on the</span>
+              <span class="btn-store-big">App Store</span>
+            </span>
+                </a>
+                <a href="#download" class="btn-store btn-googleplay">
+                    <span class="btn-store-icon">&#9654;</span>
+                    <span class="btn-store-label">
+              <span class="btn-store-small">Get it on</span>
+              <span class="btn-store-big">Google Play</span>
+            </span>
+                </a>
+            </div>
+            <div class="hero-social">
+                <span class="hero-stars">&#9733;&#9733;&#9733;&#9733;&#9733;</span>
+                <span class="hero-rating-text"><strong>4.9</strong> &middot; loved by first-time builders</span>
+            </div>
+        </div>
+
+        <!-- Phone mockup -->
+        <div class="phone-wrap">
+            <div class="phone-glow"></div>
+            <div class="phone-shell">
+                <div class="phone-notch"></div>
+                <div class="phone-screen">
+                    <div class="phone-header">
+                        <div class="phone-header-eyebrow">Cross-section</div>
+                        <div class="phone-header-title">Mossy closed jar</div>
+                    </div>
+                    <div class="phone-cross-section">
+                        <div class="phone-cross-label">cross-section viewer</div>
+                        <div class="phone-layer-1"></div>
+                        <div class="phone-layer-2"></div>
+                        <div class="phone-layer-3"></div>
+                        <div class="phone-layer-4"></div>
+                    </div>
+                    <div class="phone-eco">
+                        <div>
+                            <div class="phone-eco-score-label">Eco-Balance</div>
+                            <div class="phone-eco-score-val">94</div>
+                        </div>
+                        <div class="phone-eco-desc">All 6 plants compatible &middot; healthy ecosystem</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+<!-- STATS -->
+<section class="stats">
+    <div class="stats-inner">
+        <div class="stats-grid">
+            <div>
+                <div class="stat-val">7</div>
+                <div class="stat-desc">compatibility factors checked together</div>
+            </div>
+            <div>
+                <div class="stat-val">4</div>
+                <div class="stat-desc">guided steps from empty jar to finished build</div>
+            </div>
+            <div>
+                <div class="stat-val">0</div>
+                <div class="stat-desc">guesswork on substrate or watering</div>
+            </div>
+            <div>
+                <div class="stat-val stat-val-gold">14 days</div>
+                <div class="stat-desc">of critical settle-in care, handled</div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- FEATURES -->
+<section id="features" class="features">
+    <div class="features-inner">
+        <div class="features-header">
+            <div class="section-eyebrow">The hard part, handled</div>
+            <h2 class="section-h2">The science runs in the background. You just build.</h2>
+            <p class="section-lead">Four systems work together so a beginner can make decisions like an expert — without learning the theory first.</p>
+        </div>
+
+        <div class="features-grid">
+            <div class="feature-card">
+                <div class="feature-icon"><span class="fi-square"></span></div>
+                <h3 class="feature-h3">Plan before you plant</h3>
+                <p class="feature-p">A step-by-step Planner walks every decision: container, layers, plants, hardscape — previewed at true scale before you touch soil.</p>
+                <ul class="feature-list">
+                    <li><span>&#10003;</span> Cross-section viewer at real proportions</li>
+                    <li><span>&#10003;</span> Custom substrate mix with a porosity model</li>
+                </ul>
+            </div>
+
+            <div class="feature-card">
+                <div class="feature-icon"><span class="fi-circle"></span></div>
+                <h3 class="feature-h3">Know it&rsquo;ll thrive</h3>
+                <p class="feature-p">An Eco-Balance score tells you at a glance whether your plant selection makes a healthy ecosystem — and a per-plant Fit Score flags the odd one out, with the reason why.</p>
+                <ul class="feature-list">
+                    <li><span>&#10003;</span> Whole-build ecosystem score</li>
+                    <li><span>&#10003;</span> Light, humidity, moisture, temp, pH &amp; crowding, together</li>
+                </ul>
+            </div>
+
+            <div class="feature-card">
+                <div class="feature-icon"><span class="fi-lines"></span></div>
+                <h3 class="feature-h3">Assembly, step by step</h3>
+                <p class="feature-p">Instructions are generated from your exact build — not generic advice. Drainage depth, charcoal, substrate, planting order, watering and sealing, in the right sequence.</p>
+                <ul class="feature-list">
+                    <li><span>&#10003;</span> Derived from your container &amp; plant mix</li>
+                    <li><span>&#10003;</span> The critical first two weeks, covered</li>
+                </ul>
+            </div>
+
+            <div class="feature-card">
+                <div class="feature-icon"><span class="fi-dots"></span></div>
+                <h3 class="feature-h3">Care that fits your build</h3>
+                <p class="feature-p">Personalised reminders tuned to your container type and plant mix. Sealed, lidded and open containers each get their own watering and humidity guidance.</p>
+                <ul class="feature-list">
+                    <li><span>&#10003;</span> Settle-in, vent &amp; trimming tasks scheduled for you</li>
+                    <li><span>&#10003;</span> Built-in glossary &mdash; no jargon left unexplained</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- HOW IT WORKS -->
+<section id="how" class="how">
+    <div class="how-inner">
+        <div class="how-header">
+            <div class="section-eyebrow">From empty jar to finished build</div>
+            <h2 class="section-h2" style="font-size:36px;letter-spacing:-0.6px;margin-bottom:0;">Four steps. The app handles the rest.</h2>
+        </div>
+
+        <div class="how-grid">
+            <div class="how-step">
+                <div class="how-step-img">
+                    <span class="how-step-label">container</span>
+                    <span class="how-step-num">1</span>
+                </div>
+                <h3>Pick a container</h3>
+                <p>Sealed, lidded or open &mdash; it shapes every recommendation that follows.</p>
+            </div>
+            <div class="how-step">
+                <div class="how-step-img">
+                    <span class="how-step-label">layers</span>
+                    <span class="how-step-num">2</span>
+                </div>
+                <h3>Build your layers</h3>
+                <p>Drainage, charcoal and a substrate mix tuned to your plants&rsquo; needs.</p>
+            </div>
+            <div class="how-step">
+                <div class="how-step-img">
+                    <span class="how-step-label">plants</span>
+                    <span class="how-step-num">3</span>
+                </div>
+                <h3>Choose compatible plants</h3>
+                <p>Fit Score and Eco-Balance keep the whole ecosystem in harmony.</p>
+            </div>
+            <div class="how-step">
+                <div class="how-step-img">
+                    <span class="how-step-label">hardscape</span>
+                    <span class="how-step-num">4</span>
+                </div>
+                <h3>Finish &amp; get your plan</h3>
+                <p>Add hardscape, then get an assembly guide and a care schedule.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- SPOTLIGHT: ECO-BALANCE -->
+<section class="spotlight">
+    <div class="spotlight-inner">
+        <div>
+            <div class="section-eyebrow">Plant intelligence</div>
+            <h2 class="spotlight-h2">One score tells you if it&rsquo;ll live.</h2>
+            <p class="spotlight-p">Most beginner terrariums fail because two plants quietly want opposite things. Terrarium checks light, humidity, moisture, temperature, pH, crowding and container type as one system — then points to the exact plant that doesn&rsquo;t belong.</p>
+            <div class="spotlight-checks">
+                <div class="spotlight-check">
+                    <span class="spotlight-check-icon">&#10003;</span>
+                    <span><strong>Eco-Balance</strong> grades the whole build at a glance.</span>
+                </div>
+                <div class="spotlight-check">
+                    <span class="spotlight-check-icon">&#10003;</span>
+                    <span><strong>Fit Score</strong> isolates the odd one out, and tells you why.</span>
+                </div>
+                <div class="spotlight-check">
+                    <span class="spotlight-check-icon">&#10003;</span>
+                    <span>Swap it, and watch the score climb in real time.</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="score-panel">
+            <div class="score-panel-header">
+                <div>
+                    <div class="score-label">Eco-Balance</div>
+                    <div class="score-val">94<span class="score-denom">/100</span></div>
+                </div>
+                <div class="score-desc">Healthy ecosystem &middot; closed humidity loop</div>
+            </div>
+            <div class="score-plants">
+                <div class="score-plant score-plant-good">
+                    <span class="score-plant-badge score-plant-badge-good">&#10003;</span>
+                    <span class="score-plant-name">Button fern</span>
+                    <span class="score-plant-fit-good">Fit 96</span>
+                </div>
+                <div class="score-plant score-plant-good">
+                    <span class="score-plant-badge score-plant-badge-good">&#10003;</span>
+                    <span class="score-planpnt-name">Cushion moss</span>
+                    <span class="score-plant-fit-good">Fit 92</span>
+                </div>
+                <div class="score-plant score-plant-warn">
+                    <span class="score-plant-badge score-plant-badge-warn">!</span>
+                    <span class="score-plant-name">Succulent jade <span class="score-plant-reason">&mdash; wants dry air</span></span>
+                    <span class="score-plant-fit-warn">Fit 41</span>
+                </div>
+            </div>
+            <div class="score-tip">Jade prefers low humidity &mdash; it clashes with a sealed, moss-heavy build. Replace it to reach <strong>98</strong>.</div>
+        </div>
+    </div>
+</section>
+
+<!-- FAQ -->
+<section id="faq" class="faq">
+    <div class="faq-inner">
+        <h2 class="faq-h2">Questions, before you dig in</h2>
+        <div class="faq-list">
+
+            <div class="faq-item">
+                <button class="faq-btn" aria-expanded="false">
+                    <span class="faq-q">Do I need any terrarium experience?</span>
+                    <span class="faq-sign">+</span>
+                </button>
+                <div class="faq-a">None at all. The Planner makes the expert decisions for you — it&rsquo;s built for first-timers, with a glossary on hand for any term you haven&rsquo;t met.</div>
+            </div>
+
+            <div class="faq-item">
+                <button class="faq-btn" aria-expanded="false">
+                    <span class="faq-q">What if I pick plants that don&rsquo;t work together?</span>
+                    <span class="faq-sign">+</span>
+                </button>
+                <div class="faq-a">The Fit Score flags the specific plant that clashes and explains why, while the Eco-Balance score shows the health of the whole build. Swap the plant and the score updates instantly.</div>
+            </div>
+
+            <div class="faq-item">
+                <button class="faq-btn" aria-expanded="false">
+                    <span class="faq-q">Does it work for sealed and open terrariums?</span>
+                    <span class="faq-sign">+</span>
+                </button>
+                <div class="faq-a">Yes. Sealed, lidded and open containers each get their own substrate, watering and humidity guidance — plus the right recurring tasks, like venting a sealed jar.</div>
+            </div>
+
+            <div class="faq-item">
+                <button class="faq-btn" aria-expanded="false">
+                    <span class="faq-q">Will it remind me how to care for it?</span>
+                    <span class="faq-sign">+</span>
+                </button>
+                <div class="faq-a">Care reminders are tuned to your exact container and plant mix — a settle-in task for new builds, trimming alerts for fast growers, and venting reminders for sealed builds.</div>
+            </div>
+
+            <div class="faq-item">
+                <button class="faq-btn" aria-expanded="false">
+                    <span class="faq-q">How much does it cost?</span>
+                    <span class="faq-sign">+</span>
+                </button>
+                <div class="faq-a">Terrarium is free to download and plan your first build. You can map out your whole terrarium and see its Eco-Balance before committing to anything.</div>
+            </div>
+
+        </div>
+    </div>
+</section>
+
+<!-- FINAL CTA -->
+<section id="download" class="cta-section">
+    <div class="cta-bg"></div>
+    <div class="cta-inner">
+        <div class="cta-eyebrow">
+            <span class="cta-eyebrow-dot"></span>
+            Free to download
+        </div>
+        <h2 class="cta-h2">Plant your first thriving terrarium.</h2>
+        <p class="cta-sub">Plan it, build it, and keep it alive &mdash; with the technical part quietly handled for you.</p>
+        <div class="cta-buttons">
+            <a href="#top" class="btn-store btn-appstore">
+                <span class="btn-store-icon">&#63743;</span>
+                <span class="btn-store-label">
+            <span class="btn-store-small">Download on the</span>
+            <span class="btn-store-big">App Store</span>
+          </span>
+            </a>
+            <a href="#top" class="btn-store btn-googleplay">
+                <span class="btn-store-icon">&#9654;</span>
+                <span class="btn-store-label">
+            <span class="btn-store-small">Get it on</span>
+            <span class="btn-store-big">Google Play</span>
+          </span>
+            </a>
+        </div>
+    </div>
+</section>
+
+<!-- FOOTER -->
+<footer class="footer">
+    <div class="footer-inner">
+        <div class="footer-logo">
+            <span class="footer-logo-mark"></span>
+            <span class="footer-logo-text">Terrarium</span>
+        </div>
+        <div class="footer-links">
+            <a href="#features">Features</a>
+            <a href="#how">How it works</a>
+            <a href="#faq">FAQ</a>
+        </div>
+        <div class="footer-copy">&copy; 2026 Terrarium</div>
+    </div>
+</footer>
+
+<script>
+    document.querySelectorAll('.faq-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+            const item = btn.closest('.faq-item');
+            const isOpen = item.classList.contains('open');
+            document.querySelectorAll('.faq-item.open').forEach(el => {
+                el.classList.remove('open');
+                el.querySelector('.faq-btn').setAttribute('aria-expanded', 'false');
+                el.querySelector('.faq-sign').textContent = '+';
+            });
+            if (!isOpen) {
+                item.classList.add('open');
+                btn.setAttribute('aria-expanded', 'true');
+                btn.querySelector('.faq-sign').textContent = '−';
+            }
+        });
+    });
+</script>
+</body>
+</html>

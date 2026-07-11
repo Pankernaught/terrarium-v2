@@ -19,8 +19,11 @@ import type { VibeId } from '@/constants/theme';
 export type MascotPose = 'default' | 'sad' | 'pensive';
 
 export interface VibeArtBundle {
-  foliageBack?: number;
-  foliageFront?: number;
+  /** Bottom-canopy fill pool — slot-filled into a dense overlapping mass. Plain
+   *  `number[]`: a sprite carries no metadata, the layout decides scale/flip/row. */
+  bottomSprites?: number[];
+  /** Tall accent pool — ≤1 chosen per launch, scaled to rise as a centerpiece. */
+  focalSprites?: number[];
   /** Open critter set — ship one, expand by file-drop. */
   critters?: Record<string, number>;
   /** Featured-mascot poses (empty states). */
@@ -29,8 +32,12 @@ export interface VibeArtBundle {
 
 export const VibeArt: Partial<Record<VibeId, VibeArtBundle>> = {
   conservatory: {
-    foliageBack: require('@/assets/vibes/conservatory/foliage-back.png'),
-    foliageFront: require('@/assets/vibes/conservatory/foliage-front.png'),
+    // Drop hand-drawn transparent PNGs (base rooted at the image's bottom edge) into
+    // assets/vibes/conservatory/canopy|focal/ and add one require() line each — e.g.
+    // require('…/canopy/pothos.png'). The CI gate (vibe-art.test.ts) text-scans the
+    // @/assets paths here and fails on a missing file, so only add a line with its PNG.
+    bottomSprites: [],
+    focalSprites: [],
     critters: {
       snail: require('@/assets/vibes/conservatory/critters/snail.png'),
     },

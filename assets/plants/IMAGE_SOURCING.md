@@ -54,7 +54,7 @@ plant, credit-required-with-CC-BY, and no `-NC`/`-ND` licenses.
 | `fittonia-albivenis` | *Fittonia albivenis* | Nerve Plant | `plants/fittonia-albivenis.png` | Pending |
 | `selaginella-uncinata` | *Selaginella uncinata* | Rainbow Moss | `plants/selaginella-uncinata.png` | Pending |
 | `taxiphyllum-barbieri` | *Taxiphyllum barbieri* | Java Moss | `plants/taxiphyllum-barbieri.png` | Pending |
-| `soleirolia-soleirolii` | *Soleirolia soleirolii* | Baby Tears | `plants/soleirolia-soleirolii.png` | Pending |
+| `soleirolia-soleirolii` | *Soleirolia soleirolii* | Baby Tears | `plants/soleirolia-soleirolii.png` | Done (CC-BY-SA-4.0, Krzysztof Ziarnek / Wikimedia Commons) |
 | `pellionia-repens` | *Pellionia repens* | Trailing Watermelon Begonia | `plants/pellionia-repens.png` | Pending |
 | `maranta-leuconeura` | *Maranta leuconeura* | Prayer Plant | `plants/maranta-leuconeura.png` | Pending |
 | `calathea-ornata` | *Calathea ornata* | Pinstripe Calathea | `plants/calathea-ornata.png` | Pending |
@@ -175,9 +175,9 @@ plant, credit-required-with-CC-BY, and no `-NC`/`-ND` licenses.
 | `begonia-longiciliata-sizemoreae` | *Begonia longiciliata 'Sizemoreae'* | Fringed Begonia Sizemoreae | `plants/begonia-longiciliata-sizemoreae.png` | Pending |
 | `begonia-luzonensis` | *Begonia luzonensis* | Luzon Begonia | `plants/begonia-luzonensis.png` | Pending |
 | `begonia-manaus` | *Begonia manaus* | Manaus Begonia | `plants/begonia-manaus.png` | Pending |
-| `begonia-maurandiae-blue` | *Begonia maurandiae 'Blue'* | Blue Maurandiae Begonia | `plants/begonia-maurandiae-blue.png` | Pending |
+| `begonia-maurandiae-blue` | *Begonia maurandiae 'Blue'* | Blue Maurandiae Begonia | `plants/begonia-maurandiae-blue.png` | Done (CC-BY-SA-2.0, yakovlev.alexey / Wikimedia Commons) |
 | `begonia-prismatocarpa` | *Begonia prismatocarpa* | Prism-fruit Begonia | `plants/begonia-prismatocarpa.png` | Pending |
-| `begonia-pustulata` | *Begonia pustulata* | Blister Begonia | `plants/begonia-pustulata.png` | Pending |
+| `begonia-pustulata` | *Begonia pustulata* | Blister Begonia | `plants/begonia-pustulata.png` | Done (CC-BY-SA-4.0, Raimond Spekking / Wikimedia Commons) |
 | `begonia-raja` | *Begonia raja* | Raja Begonia | `plants/begonia-raja.png` | Pending |
 | `begonia-soli-mutata` | *Begonia soli-mutata* | Sun-changing Begonia | `plants/begonia-soli-mutata.png` | Pending |
 | `begonia-sutherlandii-saunders-legacy` | *Begonia sutherlandii 'Saunders Legacy'* | Saunders Legacy Begonia | `plants/begonia-sutherlandii-saunders-legacy.png` | Pending |
@@ -206,7 +206,7 @@ plant, credit-required-with-CC-BY, and no `-NC`/`-ND` licenses.
 | `monolena-primulaeflora-red` | *Monolena primulaeflora 'Red'* | Red Monolena | `plants/monolena-primulaeflora-red.png` | Pending |
 | `sonerila-cantonensis-vietnam` | *Sonerila cantonensis* | Vietnam Sonerila | `plants/sonerila-cantonensis-vietnam.png` | Pending |
 | `ficus-thunbergii` | *Ficus thunbergii* | Thunberg's Fig | `plants/ficus-thunbergii.png` | Pending |
-| `ficus-vaccinioides` | *Ficus vaccinioides* | Berry-Leaf Creeping Fig | `plants/ficus-vaccinioides.png` | Pending |
+| `ficus-vaccinioides` | *Ficus vaccinioides* | Berry-Leaf Creeping Fig | `plants/ficus-vaccinioides.png` | Done (owner-provided, chiuluan / easyscape.com) |
 | `ficus-vilosa` | *Ficus villosa* | Velvet Creeping Fig | `plants/ficus-vilosa.png` | Pending |
 | `ficus-punctata` | *Ficus punctata* | Spotted Fig | `plants/ficus-punctata.png` | Pending |
 | `ficus-pumila-snowflake` | *Ficus pumila 'Snowflake'* | Snowflake Creeping Fig | `plants/ficus-pumila-snowflake.png` | Pending |
@@ -225,7 +225,7 @@ plant, credit-required-with-CC-BY, and no `-NC`/`-ND` licenses.
 | `bulbophyllum-intersitum` | *Bulbophyllum intersitum* | Bulbophyllum Intersitum | `plants/bulbophyllum-intersitum.png` | Pending |
 | `cirrhopetalum-farreri` | *Bulbophyllum farreri* | Farrer's Cirrhopetalum | `plants/cirrhopetalum-farreri.png` | Pending |
 | `haerella-odorata` | *Haraella odorata* | Fragrant Haraella | `plants/haerella-odorata.png` | Pending |
-| `peperomia-angulata` | *Peperomia angulata* | Beetle Peperomia | `plants/peperomia-angulata.png` | Pending |
+| `peperomia-angulata` | *Peperomia angulata* | Beetle Peperomia | `plants/peperomia-angulata.png` | Done (CC-BY-SA-3.0, Assianir / Wikimedia Commons) |
 | `peperomia-emarginella` | *Peperomia emarginella* | Notched-Leaf Peperomia | `plants/peperomia-emarginella.png` | Pending |
 | `peperomia-guttalata` | *Peperomia guttulata* | Raindrop Peperomia | `plants/peperomia-guttalata.png` | Pending |
 | `peperomia-puteolata` | *Peperomia puteolata* | Parallel Peperomia | `plants/peperomia-puteolata.png` | Pending |

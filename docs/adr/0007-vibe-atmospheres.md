@@ -289,6 +289,75 @@ referenced file is still asserted to exist.
   extension of `CRITTER_SPOTS`. (Adding more *backdrop* peek-spots stays in-bounds and
   needs no ADR change — that's just more `CRITTER_SPOTS` lines.)
 
+## Amendment (2026-06-26): Conservatory canopy — slot-filled plant scatter
+
+The Conservatory backdrop is **reworked from two full-width foliage PNGs into a dense
+canopy of individual, overlapping hand-drawn plant sprites** that re-arrange each cold
+launch. This **reverses two earlier calls** and records why the reversal is warranted.
+Code: [canopy.ts](../../src/components/vibes/canopy.ts) (pure layout),
+[conservatory-background.tsx](../../src/components/vibes/conservatory-background.tsx)
+(render), [art.ts](../../src/components/vibes/art.ts) (pools),
+[canopy.test.ts](../../src/data/__tests__/canopy.test.ts) (invariants).
+
+### B1. A scatter engine now exists — but only for the canopy (revises A8)
+
+A8 rejected a procedural scatter ("code to debug for a feeling 3–4 chosen spots already
+give") and kept critters at fixed hand-placed spots. That reasoning held for **a few
+critters**; it does not hold for **a canopy of many plants meant to read differently
+every launch** — hand-placing dozens of per-load arrangements is the unlazy path. So:
+
+- **Critters stay fixed-spot** (`CRITTER_SPOTS`, A8 unchanged) — still a feeling a few
+  spots give.
+- **The canopy is the scatter engine**, but a *constrained* one: **slot-fill**, not free
+  scatter. The bottom is divided into N overlapping slots; each slot is guaranteed
+  filled (a random sprite + bounded jitters). This buys the dense "mature planting" look
+  **every** load — no gap-roulette, which free random placement can't promise — while
+  staying trivially testable (assert every slot filled, no adjacent duplicate).
+
+### B2. Two depth rows replace the two foliage PNGs (revises decision 3)
+
+`foliageBack`/`foliageFront` are **retired** (files left on disk, unreferenced). The two
+parallax layers are reused as **two slot-filled depth rows** — back (smaller, higher,
+slow drift) and front (larger, bottom-rooted, fast drift). The depth illusion that sold
+the old band now emerges from the sprites themselves. Parallax mechanism (decision 4)
+and reduce-motion gate are **unchanged**; randomization is not motion, so reduce-motion
+users still get a (static) canopy.
+
+### B3. Art contract: two flat sprite pools, same file-drop + CI gate
+
+The bundle gains `bottomSprites: number[]` (canopy fill) and `focalSprites: number[]`
+(see B4) — plain arrays of `require()` ids, no per-sprite metadata (the layout decides
+scale/flip/row/z at runtime). Sprite art contract: **transparent PNG, plant base rooted
+at the image's bottom edge, varied aspect welcome** (sprites scale by *width*, anchored
+at the bottom → taller art rises higher for free). Drop a PNG in
+`assets/vibes/conservatory/canopy/` (or `focal/`), add one `require()` line. The
+existing text-scan gate ([vibe-art.test.ts](../../src/data/__tests__/vibe-art.test.ts))
+covers them with no change. Empty pools render nothing — the mechanism ships now, the
+art lands by file-drop.
+
+### B4. "Sides" cut; a focal category added instead
+
+The request began as two sprite categories, **bottom + sides**. Sides were **dropped**:
+on a phone the content runs edge-to-edge (only `Spacing.md` gutter) and the backdrop
+sits *behind* content, so side sprites would land behind text — reopening the A8
+legibility rule for no payoff until a gutter-having tablet/web layout exists (YAGNI;
+revisit then as a third pool + render path). The "two categories" instinct is instead
+spent where it earns its keep: an optional **focal** plant — `focalSprites`, **≤1 per
+cold launch (~50% chance)**, scaled taller to rise ~½–⅔ screen as a centerpiece. It
+*does* poke into the text band behind content; the focal-chance constant is the dial if
+a load feels busy.
+
+### B5. Randomness is per cold launch; layout is a pure, testable function
+
+`buildCanopy(pool, rng = Math.random)` is **pure** (no React/RN) and computed **once at
+module load**, so the arrangement is fresh each app start but **stable across
+navigation** (the backdrop mounts behind every `Screen` — re-rolling per mount would
+teleport plants on every screen change). `rng` is injected only so
+[canopy.test.ts](../../src/data/__tests__/canopy.test.ts) can pin it and assert the
+invariants. Per-slot jitters (bounded): horizontal flip, scale, x-nudge, z-order, and
+(back row) a small vertical lift. Tunables are named constants at the top of
+`canopy.ts` — the calibration knobs, set against real art.
+
 ## Related
 
 ADR 0005 (plant-admin), ADR 0006 (glossary); habitat-expansion (idea: atmosphere

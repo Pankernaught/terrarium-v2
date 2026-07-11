@@ -206,6 +206,8 @@
       "smallTerrariumFriendly": true,
       "difficulty": 2,
       "image": "plants/soleirolia-soleirolii.png",
+      "imageCredit": "Krzysztof Ziarnek, Kenraiz / Wikimedia Commons",
+      "imageLicense": "CC-BY-SA-4.0",
       "nativeContext": "Native to shaded, damp rocks on islands of the western [[mediterranean|Mediterranean]].",
       "notes": "Baby Tears is a tiny-leaved [[creeping]] [[ground-cover|ground cover]] that can spread aggressively, so trim it regularly. It prefers cooler temperatures than most [[tropical]] species.",
       "sources": [
@@ -343,7 +345,7 @@
       "plantType": "foliage",
       "rarity": "common",
       "nativeBiome": "tropical",
-      "growthHabit": "creeping",
+      "growthHabit": "mounding",
       "typicalHeightCm": 20
     },
     {
@@ -510,7 +512,7 @@
       "plantType": "fern",
       "rarity": "common",
       "nativeBiome": "tropical",
-      "growthHabit": "mounding",
+      "growthHabit": "rosette",
       "typicalHeightCm": 25
     },
     {
@@ -5578,7 +5580,7 @@
       "plantType": "foliage",
       "rarity": "uncommon",
       "nativeBiome": "tropical",
-      "growthHabit": "climbing",
+      "growthHabit": "upright",
       "typicalHeightCm": 12
     },
     {
@@ -6882,6 +6884,8 @@
       "smallTerrariumFriendly": false,
       "difficulty": 3,
       "image": "plants/begonia-maurandiae-blue.png",
+      "imageCredit": "yakovlev.alexey / Wikimedia Commons",
+      "imageLicense": "CC-BY-SA-2.0",
       "nativeContext": "The species [[begonia|Begonia]] maurandiae is native to the [[montane]] cloud forests of Central America, growing as a [[climbing]] plant in cool, misty, high-[[humidity]] conditions.",
       "notes": "[[begonia|Begonia]] maurandiae 'Blue' is a [[climbing]] [[cultivar]] with a blue-purple iridescent tint to its foliage and flowers. It requires cooler [[montane]] conditions and very high [[humidity]], so it's best placed in a large, well-ventilated [[closed-terrarium|closed terrarium]] with consistently cool temperatures.",
       "sources": [
@@ -6984,6 +6988,8 @@
       "smallTerrariumFriendly": true,
       "difficulty": 2,
       "image": "plants/begonia-pustulata.png",
+      "imageCredit": "Raimond Spekking / Wikimedia Commons",
+      "imageLicense": "CC-BY-SA-4.0",
       "nativeContext": "Native to the [[tropical]] forests of Mexico and Central America, growing as a rhizomatous ground-cover plant in humid, shaded understorey conditions.",
       "notes": "[[begonia|Begonia]] pustulata has deep green leaves with silver markings — one of the most visually dramatic terrarium begonias available. It can be propagated from [[rhizome]] cuttings. Does well in a closed build where [[humidity]] is consistently high.",
       "sources": [
@@ -8425,6 +8431,7 @@
       "smallTerrariumFriendly": true,
       "difficulty": 3,
       "image": "plants/ficus-vaccinioides.png",
+      "imageCredit": "chiuluan / easyscape.com",
       "nativeContext": "Ficus vaccinioides is a miniature [[creeping]] fig endemic to Taiwan and parts of southern China, where it grows on moist rock faces and mossy tree bases in cool [[montane]] forests. Its leaves are tiny (2–5 mm) and round, making it one of the smallest-leaved figs in cultivation.",
       "notes": "Ficus vaccinioides is highly sought after for nano terrariums because of its extraordinarily small leaves. It grows as a tight [[creeping]] mat, ideal for covering [[hardscape]] or filling the ground layer, and it's capable of growing on bark or rock as an [[epiphyte]]. It prefers slightly cooler temperatures than [[tropical]] figs, so keep it moist and humid to avoid the tiny leaves desiccating rapidly.",
       "sources": [
@@ -9359,6 +9366,8 @@
       "smallTerrariumFriendly": false,
       "difficulty": 2,
       "image": "plants/peperomia-angulata.png",
+      "imageCredit": "Assianir / Wikimedia Commons",
+      "imageLicense": "CC-BY-SA-3.0",
       "nativeContext": "Peperomia angulata (syn. P. quadrangularis) is native to the [[tropical]] forests of Central and South America. It grows as a compact, [[trailing]] herb in the humid forest understorey, producing distinctive dark-green leaves with paler longitudinal stripes along the veins.",
       "notes": "Peperomia angulata is a robust, low-maintenance terrarium peperomia. Its [[trailing]] stems and striped leaves work well in mid-level positions, and it performs reliably under [[low|low light]], making it useful in darker terrarium corners. Allow the substrate to approach dryness between waterings — peperomia roots rot easily in saturated soil.",
       "sources": [
@@ -10184,7 +10193,7 @@
       "plantType": "vine",
       "rarity": "common",
       "nativeBiome": "temperate",
-      "growthHabit": "climbing",
+      "growthHabit": "trailing",
       "typicalHeightCm": 15,
       "toxicity": "The small berries can cause digestive upset if ingested by pets or children; keep flowering or fruiting plants away from curious pets."
     },
@@ -10233,7 +10242,7 @@
       "plantType": "vine",
       "rarity": "uncommon",
       "nativeBiome": "temperate",
-      "growthHabit": "climbing",
+      "growthHabit": "trailing",
       "typicalHeightCm": 12,
       "toxicity": "The small berries can cause digestive upset if ingested by pets or children; keep flowering or fruiting plants away from curious pets."
     },
