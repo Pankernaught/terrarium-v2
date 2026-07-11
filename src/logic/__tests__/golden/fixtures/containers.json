@@ -1,0 +1,411 @@
+{
+  "container:golden-rect-30": {
+    "slug": "golden-rect-30",
+    "name": "Custom Rectangular (15 L)",
+    "volumeL": 15,
+    "opening": "sealed",
+    "dimensionsCm": "30×20×25 cm",
+    "shape": "rectangular",
+    "suitableFor": "closed"
+  },
+  "roundTrip:golden-rect-30": {
+    "parsed": {
+      "length": 30,
+      "width": 20,
+      "height": 25
+    },
+    "volumeL": 15,
+    "floorAreaCm2": 600,
+    "rendered": "30×20×25 cm"
+  },
+  "container:golden-cyl-25": {
+    "slug": "golden-cyl-25",
+    "name": "Custom Cylindrical (9.82 L)",
+    "volumeL": 9.82,
+    "opening": "open",
+    "dimensionsCm": "⌀25×20 cm",
+    "shape": "cylindrical",
+    "suitableFor": "open"
+  },
+  "roundTrip:golden-cyl-25": {
+    "parsed": {
+      "diameter": 25,
+      "height": 20
+    },
+    "volumeL": 9.82,
+    "floorAreaCm2": 490.8738521234052,
+    "rendered": "⌀25×20 cm"
+  },
+  "container:golden-cyl-12-tall": {
+    "slug": "golden-cyl-12-tall",
+    "name": "Custom Cylindrical (4.52 L)",
+    "volumeL": 4.52,
+    "opening": "lidded",
+    "dimensionsCm": "⌀12×40 cm",
+    "shape": "cylindrical",
+    "suitableFor": "closed"
+  },
+  "roundTrip:golden-cyl-12-tall": {
+    "parsed": {
+      "diameter": 12,
+      "height": 40
+    },
+    "volumeL": 4.52,
+    "floorAreaCm2": 113.09733552923255,
+    "rendered": "⌀12×40 cm"
+  },
+  "container:golden-cyl-15": {
+    "slug": "golden-cyl-15",
+    "name": "Custom Cylindrical (3.53 L)",
+    "volumeL": 3.53,
+    "opening": "sealed",
+    "dimensionsCm": "⌀15×20 cm",
+    "shape": "cylindrical",
+    "suitableFor": "closed"
+  },
+  "roundTrip:golden-cyl-15": {
+    "parsed": {
+      "diameter": 15,
+      "height": 20
+    },
+    "volumeL": 3.53,
+    "floorAreaCm2": 176.71458676442586,
+    "rendered": "⌀15×20 cm"
+  },
+  "container:golden-rect-25": {
+    "slug": "golden-rect-25",
+    "name": "Custom Rectangular (7.5 L)",
+    "volumeL": 7.5,
+    "opening": "lidded",
+    "dimensionsCm": "25×15×20 cm",
+    "shape": "rectangular",
+    "suitableFor": "closed"
+  },
+  "roundTrip:golden-rect-25": {
+    "parsed": {
+      "length": 25,
+      "width": 15,
+      "height": 20
+    },
+    "volumeL": 7.5,
+    "floorAreaCm2": 375,
+    "rendered": "25×15×20 cm"
+  },
+  "container:golden-rect-10": {
+    "slug": "golden-rect-10",
+    "name": "Custom Rectangular (1.5 L)",
+    "volumeL": 1.5,
+    "opening": "sealed",
+    "dimensionsCm": "10×10×15 cm",
+    "shape": "rectangular",
+    "suitableFor": "closed"
+  },
+  "roundTrip:golden-rect-10": {
+    "parsed": {
+      "length": 10,
+      "width": 10,
+      "height": 15
+    },
+    "volumeL": 1.5,
+    "floorAreaCm2": 100,
+    "rendered": "10×10×15 cm"
+  },
+  "container:golden-cyl-20": {
+    "slug": "golden-cyl-20",
+    "name": "Custom Cylindrical (4.71 L)",
+    "volumeL": 4.71,
+    "opening": "open",
+    "dimensionsCm": "⌀20×15 cm",
+    "shape": "cylindrical",
+    "suitableFor": "open"
+  },
+  "roundTrip:golden-cyl-20": {
+    "parsed": {
+      "diameter": 20,
+      "height": 15
+    },
+    "volumeL": 4.71,
+    "floorAreaCm2": 314.1592653589793,
+    "rendered": "⌀20×15 cm"
+  },
+  "container:golden-cyl-10-micro": {
+    "slug": "golden-cyl-10-micro",
+    "name": "Custom Cylindrical (0.94 L)",
+    "volumeL": 0.94,
+    "opening": "sealed",
+    "dimensionsCm": "⌀10×12 cm",
+    "shape": "cylindrical",
+    "suitableFor": "closed"
+  },
+  "roundTrip:golden-cyl-10-micro": {
+    "parsed": {
+      "diameter": 10,
+      "height": 12
+    },
+    "volumeL": 0.94,
+    "floorAreaCm2": 78.53981633974483,
+    "rendered": "⌀10×12 cm"
+  },
+  "defaultLayerDepths:closed-tropical-rect": [
+    7,
+    2.5
+  ],
+  "recommendDimensions:closed-tropical-rect": {
+    "shape": "rectangular",
+    "dimensions": {
+      "length": 28,
+      "width": 20,
+      "height": 52
+    },
+    "opening": "lidded",
+    "volumeL": 29.12,
+    "rationale": [
+      "Height 52 cm = ~7 cm substrate + 30 cm tallest plant + 15 cm headroom.",
+      "Footprint sized for 4 plants.",
+      "Lidded container suggested to hold humidity for these plants."
+    ]
+  },
+  "defaultLayerDepths:open-arid-cyl": [
+    7,
+    1
+  ],
+  "recommendDimensions:open-arid-cyl": {
+    "shape": "rectangular",
+    "dimensions": {
+      "length": 23,
+      "width": 16,
+      "height": 45
+    },
+    "opening": "open",
+    "volumeL": 16.56,
+    "rationale": [
+      "Height 45 cm = ~7 cm substrate + 25 cm tallest plant + 13 cm headroom.",
+      "Footprint sized for 3 plants.",
+      "Open container suggested — at least one plant prefers open airflow."
+    ]
+  },
+  "defaultLayerDepths:tall-cylinder": [
+    7,
+    2.5
+  ],
+  "recommendDimensions:tall-cylinder": {
+    "shape": "rectangular",
+    "dimensions": {
+      "length": 28,
+      "width": 20,
+      "height": 37
+    },
+    "opening": "lidded",
+    "volumeL": 20.72,
+    "rationale": [
+      "Height 37 cm = ~7 cm substrate + 20 cm tallest plant + 10 cm headroom.",
+      "Footprint sized for 4 plants.",
+      "Lidded container suggested to hold humidity for these plants."
+    ]
+  },
+  "defaultLayerDepths:single-plant": [
+    4,
+    2.5
+  ],
+  "recommendDimensions:single-plant": {
+    "shape": "cylindrical",
+    "dimensions": {
+      "diameter": 13,
+      "height": 27
+    },
+    "opening": "lidded",
+    "volumeL": 3.58,
+    "rationale": [
+      "Height 27 cm = ~4 cm substrate + 15 cm tallest plant + 8 cm headroom.",
+      "Footprint sized for 1 plant.",
+      "Lidded container suggested to hold humidity for these plants."
+    ]
+  },
+  "defaultLayerDepths:survival-clamp": [
+    7,
+    2.5
+  ],
+  "recommendDimensions:survival-clamp": {
+    "shape": "rectangular",
+    "dimensions": {
+      "length": 28,
+      "width": 20,
+      "height": 52
+    },
+    "opening": "open",
+    "volumeL": 29.12,
+    "rationale": [
+      "Height 52 cm = ~7 cm substrate + 30 cm tallest plant + 15 cm headroom.",
+      "Footprint sized for 4 plants.",
+      "Open container suggested — at least one plant prefers open airflow."
+    ]
+  },
+  "defaultLayerDepths:split-tie": [
+    4,
+    2.5
+  ],
+  "recommendDimensions:split-tie": {
+    "shape": "rectangular",
+    "dimensions": {
+      "length": 28,
+      "width": 20,
+      "height": 27
+    },
+    "opening": "lidded",
+    "volumeL": 15.12,
+    "rationale": [
+      "Height 27 cm = ~4 cm substrate + 15 cm tallest plant + 8 cm headroom.",
+      "Footprint sized for 4 plants.",
+      "Lidded container suggested to hold humidity for these plants."
+    ]
+  },
+  "defaultLayerDepths:crowded": [
+    7,
+    2.5
+  ],
+  "recommendDimensions:crowded": {
+    "shape": "rectangular",
+    "dimensions": {
+      "length": 38,
+      "width": 27,
+      "height": 52
+    },
+    "opening": "lidded",
+    "volumeL": 53.35,
+    "rationale": [
+      "Height 52 cm = ~7 cm substrate + 30 cm tallest plant + 15 cm headroom.",
+      "Footprint sized for 6 plants.",
+      "Lidded container suggested to hold humidity for these plants."
+    ]
+  },
+  "defaultLayerDepths:sparse-fields": [
+    4,
+    1
+  ],
+  "recommendDimensions:sparse-fields": {
+    "shape": "rectangular",
+    "dimensions": {
+      "length": 18,
+      "width": 13,
+      "height": 27
+    },
+    "opening": "open",
+    "volumeL": 6.32,
+    "rationale": [
+      "Height 27 cm = ~4 cm substrate + 15 cm tallest plant + 8 cm headroom.",
+      "Footprint sized for 2 plants.",
+      "Open container suggested — at least one plant prefers open airflow."
+    ]
+  },
+  "defaultLayerDepths:micro-sealed-gas": [
+    4,
+    0
+  ],
+  "recommendDimensions:micro-sealed-gas": {
+    "shape": "rectangular",
+    "dimensions": {
+      "length": 18,
+      "width": 13,
+      "height": 27
+    },
+    "opening": "lidded",
+    "volumeL": 6.32,
+    "rationale": [
+      "Height 27 cm = ~4 cm substrate + 15 cm tallest plant + 8 cm headroom.",
+      "Footprint sized for 2 plants.",
+      "Lidded container suggested to hold humidity for these plants."
+    ]
+  },
+  "profile:rect-full": {
+    "interiorHeightCm": 25,
+    "widthCm": 30,
+    "drainageTopCm": 2,
+    "charcoalTopCm": 3.5,
+    "substrateTopCm": 9.5,
+    "plantingSurfaceCm": 9.5,
+    "plantTopCm": 21.5,
+    "headroomCm": 15.5,
+    "overflowCm": 0
+  },
+  "profile:rect-no-charcoal-default": {
+    "interiorHeightCm": 25,
+    "widthCm": 30,
+    "drainageTopCm": 2,
+    "charcoalTopCm": 2,
+    "substrateTopCm": 8,
+    "plantingSurfaceCm": 8,
+    "plantTopCm": 20,
+    "headroomCm": 17,
+    "overflowCm": 0
+  },
+  "profile:clamped-overflow": {
+    "interiorHeightCm": 40,
+    "widthCm": 12,
+    "drainageTopCm": 10,
+    "charcoalTopCm": 15,
+    "substrateTopCm": 40,
+    "plantingSurfaceCm": 40,
+    "plantTopCm": 70,
+    "headroomCm": 0,
+    "overflowCm": 30
+  },
+  "profile:zero-defaults": {
+    "interiorHeightCm": 25,
+    "widthCm": 30,
+    "drainageTopCm": 0,
+    "charcoalTopCm": 0,
+    "substrateTopCm": 0,
+    "plantingSurfaceCm": 0,
+    "plantTopCm": 0,
+    "headroomCm": 25,
+    "overflowCm": 0
+  },
+  "resolveBuildContainer:full-snapshot": {
+    "slug": "golden-rect-30",
+    "name": "Custom Rectangular (15 L)",
+    "volumeL": 15,
+    "opening": "lidded",
+    "dimensionsCm": "30×20×25 cm",
+    "shape": "rectangular",
+    "suitableFor": "closed"
+  },
+  "resolveBuildContainer:no-snapshot": null,
+  "errors": {
+    "unknownShapeVolume": {
+      "threw": true,
+      "message": "Shape must be one of [\"rectangular\",\"cylindrical\"], got \"spherical\"."
+    },
+    "negativeRectVolume": {
+      "threw": true,
+      "message": "Rectangular container needs positive length/width/height."
+    },
+    "missingRectDimension": {
+      "threw": true,
+      "message": "Rectangular container needs positive length/width/height."
+    },
+    "zeroDiameterVolume": {
+      "threw": true,
+      "message": "Cylindrical container needs positive diameter/height."
+    },
+    "unknownShapeFloor": {
+      "threw": true,
+      "message": "Shape must be one of [\"rectangular\",\"cylindrical\"], got \"hexagonal\"."
+    },
+    "missingWidthFloor": {
+      "threw": true,
+      "message": "Rectangular container needs positive length/width."
+    },
+    "missingDiameterFloor": {
+      "threw": true,
+      "message": "Cylindrical container needs a positive diameter."
+    },
+    "invalidOpening": {
+      "threw": true,
+      "message": "Opening must be one of [\"sealed\",\"lidded\",\"open\"], got \"vented\"."
+    },
+    "recommendForNoPlants": {
+      "threw": true,
+      "message": "Cannot recommend container dimensions for no plants."
+    }
+  }
+}

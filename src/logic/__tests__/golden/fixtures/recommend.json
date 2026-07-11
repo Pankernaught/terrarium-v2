@@ -1,0 +1,1863 @@
+{
+  "recommend:closed-tropical-rect": [
+    {
+      "plant": "soleirolia-soleirolii",
+      "fitScore": 100,
+      "reasons": [
+        "Matches light requirement (medium)",
+        "Humidity compatible with all plants",
+        "Temperature range compatible"
+      ],
+      "cautions": [
+        {
+          "factor": "growth_rate",
+          "severity": "caution",
+          "message": "Trim regularly — Baby Tears's growth rate differs from companions.",
+          "affectedPlants": [
+            "soleirolia-soleirolii"
+          ]
+        }
+      ]
+    },
+    {
+      "plant": "hypoestes-phyllostachya",
+      "fitScore": 100,
+      "reasons": [
+        "Matches light requirement (medium)",
+        "Humidity compatible with all plants",
+        "Temperature range compatible"
+      ],
+      "cautions": [
+        {
+          "factor": "growth_rate",
+          "severity": "caution",
+          "message": "Trim regularly — Polka Dot Plant's growth rate differs from companions.",
+          "affectedPlants": [
+            "hypoestes-phyllostachya"
+          ]
+        }
+      ]
+    },
+    {
+      "plant": "asplenium-nidus",
+      "fitScore": 100,
+      "reasons": [
+        "Matches light requirement (medium)",
+        "Humidity compatible with all plants",
+        "Temperature range compatible"
+      ],
+      "cautions": [
+        {
+          "factor": "growth_rate",
+          "severity": "caution",
+          "message": "Trim regularly — Bird's Nest Fern's growth rate differs from companions.",
+          "affectedPlants": [
+            "asplenium-nidus"
+          ]
+        }
+      ]
+    },
+    {
+      "plant": "pilea-involucrata",
+      "fitScore": 100,
+      "reasons": [
+        "Matches light requirement (medium)",
+        "Humidity compatible with all plants",
+        "Temperature range compatible"
+      ],
+      "cautions": [
+        {
+          "factor": "growth_rate",
+          "severity": "caution",
+          "message": "Trim regularly — Friendship Plant's growth rate differs from companions.",
+          "affectedPlants": [
+            "pilea-involucrata"
+          ]
+        }
+      ]
+    },
+    {
+      "plant": "philodendron-hederaceum-mini",
+      "fitScore": 100,
+      "reasons": [
+        "Matches light requirement (medium)",
+        "Humidity compatible with all plants",
+        "Temperature range compatible"
+      ],
+      "cautions": [
+        {
+          "factor": "growth_rate",
+          "severity": "caution",
+          "message": "Trim regularly — Heartleaf Philodendron (mini)'s growth rate differs from companions.",
+          "affectedPlants": [
+            "philodendron-hederaceum-mini"
+          ]
+        }
+      ]
+    },
+    {
+      "plant": "syngonium-podophyllum-mini",
+      "fitScore": 100,
+      "reasons": [
+        "Matches light requirement (medium)",
+        "Humidity compatible with all plants",
+        "Temperature range compatible"
+      ],
+      "cautions": [
+        {
+          "factor": "growth_rate",
+          "severity": "caution",
+          "message": "Trim regularly — Arrowhead Plant (mini)'s growth rate differs from companions.",
+          "affectedPlants": [
+            "syngonium-podophyllum-mini"
+          ]
+        }
+      ]
+    },
+    {
+      "plant": "syngonium-podophyllum",
+      "fitScore": 100,
+      "reasons": [
+        "Matches light requirement (medium)",
+        "Humidity compatible with all plants",
+        "Temperature range compatible"
+      ],
+      "cautions": [
+        {
+          "factor": "growth_rate",
+          "severity": "caution",
+          "message": "Trim regularly — Arrowhead Plant's growth rate differs from companions.",
+          "affectedPlants": [
+            "syngonium-podophyllum"
+          ]
+        }
+      ]
+    },
+    {
+      "plant": "asplenium-bulbiferum",
+      "fitScore": 100,
+      "reasons": [
+        "Matches light requirement (medium)",
+        "Humidity compatible with all plants",
+        "Temperature range compatible"
+      ],
+      "cautions": [
+        {
+          "factor": "growth_rate",
+          "severity": "caution",
+          "message": "Trim regularly — Mother Spleenwort's growth rate differs from companions.",
+          "affectedPlants": [
+            "asplenium-bulbiferum"
+          ]
+        }
+      ]
+    },
+    {
+      "plant": "soleirolia-soleirolii-minor",
+      "fitScore": 100,
+      "reasons": [
+        "Matches light requirement (medium)",
+        "Humidity compatible with all plants",
+        "Temperature range compatible"
+      ],
+      "cautions": [
+        {
+          "factor": "growth_rate",
+          "severity": "caution",
+          "message": "Trim regularly — Miniature Baby Tears's growth rate differs from companions.",
+          "affectedPlants": [
+            "soleirolia-soleirolii-minor"
+          ]
+        }
+      ]
+    },
+    {
+      "plant": "nephrolepis-duffii",
+      "fitScore": 100,
+      "reasons": [
+        "Matches light requirement (medium)",
+        "Humidity compatible with all plants",
+        "Temperature range compatible"
+      ],
+      "cautions": [
+        {
+          "factor": "growth_rate",
+          "severity": "caution",
+          "message": "Trim regularly — Lemon Button Fern's growth rate differs from companions.",
+          "affectedPlants": [
+            "nephrolepis-duffii"
+          ]
+        }
+      ]
+    }
+  ],
+  "recommend:open-arid-cyl": [
+    {
+      "plant": "senecio-rowleyanus",
+      "fitScore": 100,
+      "reasons": [
+        "Matches light requirement (bright-indirect)",
+        "Humidity compatible with all plants",
+        "Temperature range compatible"
+      ],
+      "cautions": [
+        {
+          "factor": "growth_rate",
+          "severity": "caution",
+          "message": "Trim regularly — String of Pearls's growth rate differs from companions.",
+          "affectedPlants": [
+            "senecio-rowleyanus"
+          ]
+        }
+      ]
+    },
+    {
+      "plant": "sedum-morganianum",
+      "fitScore": 100,
+      "reasons": [
+        "Matches light requirement (bright-indirect)",
+        "Humidity compatible with all plants",
+        "Temperature range compatible"
+      ],
+      "cautions": []
+    },
+    {
+      "plant": "tillandsia-ionantha",
+      "fitScore": 100,
+      "reasons": [
+        "Matches light requirement (bright-indirect)",
+        "Humidity compatible with all plants",
+        "Temperature range compatible"
+      ],
+      "cautions": []
+    },
+    {
+      "plant": "portulacaria-afra",
+      "fitScore": 100,
+      "reasons": [
+        "Matches light requirement (bright-indirect)",
+        "Humidity compatible with all plants",
+        "Temperature range compatible"
+      ],
+      "cautions": [
+        {
+          "factor": "growth_rate",
+          "severity": "caution",
+          "message": "Trim regularly — Elephant Bush's growth rate differs from companions.",
+          "affectedPlants": [
+            "portulacaria-afra"
+          ]
+        }
+      ]
+    },
+    {
+      "plant": "ceropegia-woodii",
+      "fitScore": 100,
+      "reasons": [
+        "Matches light requirement (bright-indirect)",
+        "Humidity compatible with all plants",
+        "Temperature range compatible"
+      ],
+      "cautions": [
+        {
+          "factor": "growth_rate",
+          "severity": "caution",
+          "message": "Trim regularly — String of Hearts's growth rate differs from companions.",
+          "affectedPlants": [
+            "ceropegia-woodii"
+          ]
+        }
+      ]
+    },
+    {
+      "plant": "ceropegia-woodii-string-of-spades",
+      "fitScore": 100,
+      "reasons": [
+        "Matches light requirement (bright-indirect)",
+        "Humidity compatible with all plants",
+        "Temperature range compatible"
+      ],
+      "cautions": [
+        {
+          "factor": "growth_rate",
+          "severity": "caution",
+          "message": "Trim regularly — String of Spades's growth rate differs from companions.",
+          "affectedPlants": [
+            "ceropegia-woodii-string-of-spades"
+          ]
+        }
+      ]
+    },
+    {
+      "plant": "pilea-peperomioides",
+      "fitScore": 93,
+      "reasons": [
+        "Matches light requirement (bright-indirect)",
+        "Humidity compatible with all plants",
+        "Temperature range compatible"
+      ],
+      "cautions": [
+        {
+          "factor": "soil_moisture",
+          "severity": "caution",
+          "message": "Chinese Money Plant prefers Moderate soil; the build is Dry — manageable with care.",
+          "affectedPlants": [
+            "pilea-peperomioides"
+          ]
+        },
+        {
+          "factor": "growth_rate",
+          "severity": "caution",
+          "message": "Trim regularly — Chinese Money Plant's growth rate differs from companions.",
+          "affectedPlants": [
+            "pilea-peperomioides"
+          ]
+        }
+      ]
+    },
+    {
+      "plant": "peperomia-obtusifolia",
+      "fitScore": 93,
+      "reasons": [
+        "Matches light requirement (bright-indirect)",
+        "Humidity compatible with all plants",
+        "Temperature range compatible"
+      ],
+      "cautions": [
+        {
+          "factor": "soil_moisture",
+          "severity": "caution",
+          "message": "Baby Rubber Plant only meets the build's Dry soil through a secondary tolerance.",
+          "affectedPlants": [
+            "peperomia-obtusifolia"
+          ],
+          "viaSecondary": true
+        },
+        {
+          "factor": "growth_rate",
+          "severity": "caution",
+          "message": "Trim regularly — Baby Rubber Plant's growth rate differs from companions.",
+          "affectedPlants": [
+            "peperomia-obtusifolia"
+          ]
+        }
+      ]
+    },
+    {
+      "plant": "rhipsalis-baccifera",
+      "fitScore": 93,
+      "reasons": [
+        "Matches light requirement (bright-indirect)",
+        "Humidity compatible with all plants",
+        "Temperature range compatible"
+      ],
+      "cautions": [
+        {
+          "factor": "soil_moisture",
+          "severity": "caution",
+          "message": "Mistletoe Cactus prefers Moderate soil; the build is Dry — manageable with care.",
+          "affectedPlants": [
+            "rhipsalis-baccifera"
+          ]
+        }
+      ]
+    },
+    {
+      "plant": "pellaea-rotundifolia",
+      "fitScore": 93,
+      "reasons": [
+        "Matches light requirement (bright-indirect)",
+        "Humidity compatible with all plants",
+        "Temperature range compatible"
+      ],
+      "cautions": [
+        {
+          "factor": "soil_moisture",
+          "severity": "caution",
+          "message": "Button Fern prefers Moderate soil; the build is Dry — manageable with care.",
+          "affectedPlants": [
+            "pellaea-rotundifolia"
+          ]
+        }
+      ]
+    }
+  ],
+  "recommend:tall-cylinder": [
+    {
+      "plant": "calathea-ornata",
+      "fitScore": 100,
+      "reasons": [
+        "Matches light requirement (medium)",
+        "Humidity compatible with all plants",
+        "Temperature range compatible"
+      ],
+      "cautions": [
+        {
+          "factor": "growth_rate",
+          "severity": "caution",
+          "message": "Trim regularly — Pinstripe Calathea's growth rate differs from companions.",
+          "affectedPlants": [
+            "calathea-ornata"
+          ]
+        }
+      ]
+    },
+    {
+      "plant": "hypoestes-phyllostachya",
+      "fitScore": 100,
+      "reasons": [
+        "Matches light requirement (medium)",
+        "Humidity compatible with all plants",
+        "Temperature range compatible"
+      ],
+      "cautions": [
+        {
+          "factor": "growth_rate",
+          "severity": "caution",
+          "message": "Trim regularly — Polka Dot Plant's growth rate differs from companions.",
+          "affectedPlants": [
+            "hypoestes-phyllostachya"
+          ]
+        }
+      ]
+    },
+    {
+      "plant": "adiantum-raddianum",
+      "fitScore": 100,
+      "reasons": [
+        "Matches light requirement (medium)",
+        "Humidity compatible with all plants",
+        "Temperature range compatible"
+      ],
+      "cautions": [
+        {
+          "factor": "growth_rate",
+          "severity": "caution",
+          "message": "Trim regularly — Maidenhair Fern's growth rate differs from companions.",
+          "affectedPlants": [
+            "adiantum-raddianum"
+          ]
+        }
+      ]
+    },
+    {
+      "plant": "asplenium-nidus",
+      "fitScore": 100,
+      "reasons": [
+        "Matches light requirement (medium)",
+        "Humidity compatible with all plants",
+        "Temperature range compatible"
+      ],
+      "cautions": [
+        {
+          "factor": "growth_rate",
+          "severity": "caution",
+          "message": "Trim regularly — Bird's Nest Fern's growth rate differs from companions.",
+          "affectedPlants": [
+            "asplenium-nidus"
+          ]
+        }
+      ]
+    },
+    {
+      "plant": "philodendron-hederaceum-mini",
+      "fitScore": 100,
+      "reasons": [
+        "Matches light requirement (medium)",
+        "Humidity compatible with all plants",
+        "Temperature range compatible"
+      ],
+      "cautions": [
+        {
+          "factor": "growth_rate",
+          "severity": "caution",
+          "message": "Trim regularly — Heartleaf Philodendron (mini)'s growth rate differs from companions.",
+          "affectedPlants": [
+            "philodendron-hederaceum-mini"
+          ]
+        }
+      ]
+    },
+    {
+      "plant": "syngonium-podophyllum-mini",
+      "fitScore": 100,
+      "reasons": [
+        "Matches light requirement (medium)",
+        "Humidity compatible with all plants",
+        "Temperature range compatible"
+      ],
+      "cautions": [
+        {
+          "factor": "growth_rate",
+          "severity": "caution",
+          "message": "Trim regularly — Arrowhead Plant (mini)'s growth rate differs from companions.",
+          "affectedPlants": [
+            "syngonium-podophyllum-mini"
+          ]
+        }
+      ]
+    },
+    {
+      "plant": "syngonium-podophyllum",
+      "fitScore": 100,
+      "reasons": [
+        "Matches light requirement (medium)",
+        "Humidity compatible with all plants",
+        "Temperature range compatible"
+      ],
+      "cautions": [
+        {
+          "factor": "growth_rate",
+          "severity": "caution",
+          "message": "Trim regularly — Arrowhead Plant's growth rate differs from companions.",
+          "affectedPlants": [
+            "syngonium-podophyllum"
+          ]
+        }
+      ]
+    },
+    {
+      "plant": "asplenium-bulbiferum",
+      "fitScore": 100,
+      "reasons": [
+        "Matches light requirement (medium)",
+        "Humidity compatible with all plants",
+        "Temperature range compatible"
+      ],
+      "cautions": [
+        {
+          "factor": "growth_rate",
+          "severity": "caution",
+          "message": "Trim regularly — Mother Spleenwort's growth rate differs from companions.",
+          "affectedPlants": [
+            "asplenium-bulbiferum"
+          ]
+        }
+      ]
+    },
+    {
+      "plant": "soleirolia-soleirolii-minor",
+      "fitScore": 100,
+      "reasons": [
+        "Matches light requirement (medium)",
+        "Humidity compatible with all plants",
+        "Temperature range compatible"
+      ],
+      "cautions": [
+        {
+          "factor": "growth_rate",
+          "severity": "caution",
+          "message": "Trim regularly — Miniature Baby Tears's growth rate differs from companions.",
+          "affectedPlants": [
+            "soleirolia-soleirolii-minor"
+          ]
+        }
+      ]
+    },
+    {
+      "plant": "nephrolepis-duffii",
+      "fitScore": 100,
+      "reasons": [
+        "Matches light requirement (medium)",
+        "Humidity compatible with all plants",
+        "Temperature range compatible"
+      ],
+      "cautions": [
+        {
+          "factor": "growth_rate",
+          "severity": "caution",
+          "message": "Trim regularly — Lemon Button Fern's growth rate differs from companions.",
+          "affectedPlants": [
+            "nephrolepis-duffii"
+          ]
+        }
+      ]
+    }
+  ],
+  "recommend:single-plant": [
+    {
+      "plant": "soleirolia-soleirolii",
+      "fitScore": 100,
+      "reasons": [
+        "Matches light requirement (medium)",
+        "Humidity compatible with all plants",
+        "Temperature range compatible"
+      ],
+      "cautions": [
+        {
+          "factor": "growth_rate",
+          "severity": "caution",
+          "message": "Trim regularly — Baby Tears's growth rate differs from companions.",
+          "affectedPlants": [
+            "soleirolia-soleirolii"
+          ]
+        }
+      ]
+    },
+    {
+      "plant": "calathea-ornata",
+      "fitScore": 100,
+      "reasons": [
+        "Matches light requirement (medium)",
+        "Humidity compatible with all plants",
+        "Temperature range compatible"
+      ],
+      "cautions": []
+    },
+    {
+      "plant": "hypoestes-phyllostachya",
+      "fitScore": 100,
+      "reasons": [
+        "Matches light requirement (medium)",
+        "Humidity compatible with all plants",
+        "Temperature range compatible"
+      ],
+      "cautions": [
+        {
+          "factor": "growth_rate",
+          "severity": "caution",
+          "message": "Trim regularly — Polka Dot Plant's growth rate differs from companions.",
+          "affectedPlants": [
+            "hypoestes-phyllostachya"
+          ]
+        }
+      ]
+    },
+    {
+      "plant": "adiantum-raddianum",
+      "fitScore": 100,
+      "reasons": [
+        "Matches light requirement (medium)",
+        "Humidity compatible with all plants",
+        "Temperature range compatible"
+      ],
+      "cautions": []
+    },
+    {
+      "plant": "asplenium-nidus",
+      "fitScore": 100,
+      "reasons": [
+        "Matches light requirement (medium)",
+        "Humidity compatible with all plants",
+        "Temperature range compatible"
+      ],
+      "cautions": []
+    },
+    {
+      "plant": "pilea-involucrata",
+      "fitScore": 100,
+      "reasons": [
+        "Matches light requirement (medium)",
+        "Humidity compatible with all plants",
+        "Temperature range compatible"
+      ],
+      "cautions": [
+        {
+          "factor": "growth_rate",
+          "severity": "caution",
+          "message": "Trim regularly — Friendship Plant's growth rate differs from companions.",
+          "affectedPlants": [
+            "pilea-involucrata"
+          ]
+        }
+      ]
+    },
+    {
+      "plant": "episcia-cupreata",
+      "fitScore": 100,
+      "reasons": [
+        "Matches light requirement (medium)",
+        "Humidity compatible with all plants",
+        "Temperature range compatible"
+      ],
+      "cautions": [
+        {
+          "factor": "growth_rate",
+          "severity": "caution",
+          "message": "Trim regularly — Flame Violet's growth rate differs from companions.",
+          "affectedPlants": [
+            "episcia-cupreata"
+          ]
+        }
+      ]
+    },
+    {
+      "plant": "philodendron-hederaceum-mini",
+      "fitScore": 100,
+      "reasons": [
+        "Matches light requirement (medium)",
+        "Humidity compatible with all plants",
+        "Temperature range compatible"
+      ],
+      "cautions": [
+        {
+          "factor": "growth_rate",
+          "severity": "caution",
+          "message": "Trim regularly — Heartleaf Philodendron (mini)'s growth rate differs from companions.",
+          "affectedPlants": [
+            "philodendron-hederaceum-mini"
+          ]
+        }
+      ]
+    },
+    {
+      "plant": "syngonium-podophyllum-mini",
+      "fitScore": 100,
+      "reasons": [
+        "Matches light requirement (medium)",
+        "Humidity compatible with all plants",
+        "Temperature range compatible"
+      ],
+      "cautions": [
+        {
+          "factor": "growth_rate",
+          "severity": "caution",
+          "message": "Trim regularly — Arrowhead Plant (mini)'s growth rate differs from companions.",
+          "affectedPlants": [
+            "syngonium-podophyllum-mini"
+          ]
+        }
+      ]
+    },
+    {
+      "plant": "syngonium-podophyllum",
+      "fitScore": 100,
+      "reasons": [
+        "Matches light requirement (medium)",
+        "Humidity compatible with all plants",
+        "Temperature range compatible"
+      ],
+      "cautions": [
+        {
+          "factor": "growth_rate",
+          "severity": "caution",
+          "message": "Trim regularly — Arrowhead Plant's growth rate differs from companions.",
+          "affectedPlants": [
+            "syngonium-podophyllum"
+          ]
+        }
+      ]
+    }
+  ],
+  "recommend:survival-clamp": [
+    {
+      "plant": "soleirolia-soleirolii",
+      "fitScore": 100,
+      "reasons": [
+        "Matches light requirement (medium)",
+        "Humidity compatible with all plants",
+        "Temperature range compatible"
+      ],
+      "cautions": [
+        {
+          "factor": "growth_rate",
+          "severity": "caution",
+          "message": "Trim regularly — Baby Tears's growth rate differs from companions.",
+          "affectedPlants": [
+            "soleirolia-soleirolii"
+          ]
+        }
+      ]
+    },
+    {
+      "plant": "hypoestes-phyllostachya",
+      "fitScore": 100,
+      "reasons": [
+        "Matches light requirement (medium)",
+        "Humidity compatible with all plants",
+        "Temperature range compatible"
+      ],
+      "cautions": [
+        {
+          "factor": "growth_rate",
+          "severity": "caution",
+          "message": "Trim regularly — Polka Dot Plant's growth rate differs from companions.",
+          "affectedPlants": [
+            "hypoestes-phyllostachya"
+          ]
+        }
+      ]
+    },
+    {
+      "plant": "asplenium-nidus",
+      "fitScore": 100,
+      "reasons": [
+        "Matches light requirement (medium)",
+        "Humidity compatible with all plants",
+        "Temperature range compatible"
+      ],
+      "cautions": []
+    },
+    {
+      "plant": "pilea-involucrata",
+      "fitScore": 100,
+      "reasons": [
+        "Matches light requirement (medium)",
+        "Humidity compatible with all plants",
+        "Temperature range compatible"
+      ],
+      "cautions": [
+        {
+          "factor": "growth_rate",
+          "severity": "caution",
+          "message": "Trim regularly — Friendship Plant's growth rate differs from companions.",
+          "affectedPlants": [
+            "pilea-involucrata"
+          ]
+        }
+      ]
+    },
+    {
+      "plant": "episcia-cupreata",
+      "fitScore": 100,
+      "reasons": [
+        "Matches light requirement (medium)",
+        "Humidity compatible with all plants",
+        "Temperature range compatible"
+      ],
+      "cautions": [
+        {
+          "factor": "growth_rate",
+          "severity": "caution",
+          "message": "Trim regularly — Flame Violet's growth rate differs from companions.",
+          "affectedPlants": [
+            "episcia-cupreata"
+          ]
+        }
+      ]
+    },
+    {
+      "plant": "philodendron-hederaceum-mini",
+      "fitScore": 100,
+      "reasons": [
+        "Matches light requirement (medium)",
+        "Humidity compatible with all plants",
+        "Temperature range compatible"
+      ],
+      "cautions": [
+        {
+          "factor": "growth_rate",
+          "severity": "caution",
+          "message": "Trim regularly — Heartleaf Philodendron (mini)'s growth rate differs from companions.",
+          "affectedPlants": [
+            "philodendron-hederaceum-mini"
+          ]
+        }
+      ]
+    },
+    {
+      "plant": "syngonium-podophyllum-mini",
+      "fitScore": 100,
+      "reasons": [
+        "Matches light requirement (medium)",
+        "Humidity compatible with all plants",
+        "Temperature range compatible"
+      ],
+      "cautions": [
+        {
+          "factor": "growth_rate",
+          "severity": "caution",
+          "message": "Trim regularly — Arrowhead Plant (mini)'s growth rate differs from companions.",
+          "affectedPlants": [
+            "syngonium-podophyllum-mini"
+          ]
+        }
+      ]
+    },
+    {
+      "plant": "syngonium-podophyllum",
+      "fitScore": 100,
+      "reasons": [
+        "Matches light requirement (medium)",
+        "Humidity compatible with all plants",
+        "Temperature range compatible"
+      ],
+      "cautions": [
+        {
+          "factor": "growth_rate",
+          "severity": "caution",
+          "message": "Trim regularly — Arrowhead Plant's growth rate differs from companions.",
+          "affectedPlants": [
+            "syngonium-podophyllum"
+          ]
+        }
+      ]
+    },
+    {
+      "plant": "asplenium-bulbiferum",
+      "fitScore": 100,
+      "reasons": [
+        "Matches light requirement (medium)",
+        "Humidity compatible with all plants",
+        "Temperature range compatible"
+      ],
+      "cautions": [
+        {
+          "factor": "growth_rate",
+          "severity": "caution",
+          "message": "Trim regularly — Mother Spleenwort's growth rate differs from companions.",
+          "affectedPlants": [
+            "asplenium-bulbiferum"
+          ]
+        }
+      ]
+    },
+    {
+      "plant": "soleirolia-soleirolii-minor",
+      "fitScore": 100,
+      "reasons": [
+        "Matches light requirement (medium)",
+        "Humidity compatible with all plants",
+        "Temperature range compatible"
+      ],
+      "cautions": [
+        {
+          "factor": "growth_rate",
+          "severity": "caution",
+          "message": "Trim regularly — Miniature Baby Tears's growth rate differs from companions.",
+          "affectedPlants": [
+            "soleirolia-soleirolii-minor"
+          ]
+        }
+      ]
+    }
+  ],
+  "recommend:split-tie": [
+    {
+      "plant": "maranta-leuconeura",
+      "fitScore": 100,
+      "reasons": [
+        "Matches light requirement (low)",
+        "Humidity compatible with all plants",
+        "Temperature range compatible"
+      ],
+      "cautions": [
+        {
+          "factor": "growth_rate",
+          "severity": "caution",
+          "message": "Trim regularly — Prayer Plant's growth rate differs from companions.",
+          "affectedPlants": [
+            "maranta-leuconeura"
+          ]
+        }
+      ]
+    },
+    {
+      "plant": "calathea-ornata",
+      "fitScore": 100,
+      "reasons": [
+        "Matches light requirement (medium)",
+        "Humidity compatible with all plants",
+        "Temperature range compatible"
+      ],
+      "cautions": [
+        {
+          "factor": "growth_rate",
+          "severity": "caution",
+          "message": "Trim regularly — Pinstripe Calathea's growth rate differs from companions.",
+          "affectedPlants": [
+            "calathea-ornata"
+          ]
+        }
+      ]
+    },
+    {
+      "plant": "hypoestes-phyllostachya",
+      "fitScore": 100,
+      "reasons": [
+        "Matches light requirement (medium)",
+        "Humidity compatible with all plants",
+        "Temperature range compatible"
+      ],
+      "cautions": [
+        {
+          "factor": "growth_rate",
+          "severity": "caution",
+          "message": "Trim regularly — Polka Dot Plant's growth rate differs from companions.",
+          "affectedPlants": [
+            "hypoestes-phyllostachya"
+          ]
+        }
+      ]
+    },
+    {
+      "plant": "adiantum-raddianum",
+      "fitScore": 100,
+      "reasons": [
+        "Matches light requirement (medium)",
+        "Humidity compatible with all plants",
+        "Temperature range compatible"
+      ],
+      "cautions": [
+        {
+          "factor": "growth_rate",
+          "severity": "caution",
+          "message": "Trim regularly — Maidenhair Fern's growth rate differs from companions.",
+          "affectedPlants": [
+            "adiantum-raddianum"
+          ]
+        }
+      ]
+    },
+    {
+      "plant": "asplenium-nidus",
+      "fitScore": 100,
+      "reasons": [
+        "Matches light requirement (medium)",
+        "Humidity compatible with all plants",
+        "Temperature range compatible"
+      ],
+      "cautions": [
+        {
+          "factor": "growth_rate",
+          "severity": "caution",
+          "message": "Trim regularly — Bird's Nest Fern's growth rate differs from companions.",
+          "affectedPlants": [
+            "asplenium-nidus"
+          ]
+        }
+      ]
+    },
+    {
+      "plant": "pilea-involucrata",
+      "fitScore": 100,
+      "reasons": [
+        "Matches light requirement (medium)",
+        "Humidity compatible with all plants",
+        "Temperature range compatible"
+      ],
+      "cautions": [
+        {
+          "factor": "growth_rate",
+          "severity": "caution",
+          "message": "Trim regularly — Friendship Plant's growth rate differs from companions.",
+          "affectedPlants": [
+            "pilea-involucrata"
+          ]
+        }
+      ]
+    },
+    {
+      "plant": "episcia-cupreata",
+      "fitScore": 100,
+      "reasons": [
+        "Matches light requirement (medium)",
+        "Humidity compatible with all plants",
+        "Temperature range compatible"
+      ],
+      "cautions": [
+        {
+          "factor": "growth_rate",
+          "severity": "caution",
+          "message": "Trim regularly — Flame Violet's growth rate differs from companions.",
+          "affectedPlants": [
+            "episcia-cupreata"
+          ]
+        }
+      ]
+    },
+    {
+      "plant": "philodendron-hederaceum-mini",
+      "fitScore": 100,
+      "reasons": [
+        "Matches light requirement (medium)",
+        "Humidity compatible with all plants",
+        "Temperature range compatible"
+      ],
+      "cautions": [
+        {
+          "factor": "growth_rate",
+          "severity": "caution",
+          "message": "Trim regularly — Heartleaf Philodendron (mini)'s growth rate differs from companions.",
+          "affectedPlants": [
+            "philodendron-hederaceum-mini"
+          ]
+        }
+      ]
+    },
+    {
+      "plant": "miniature-orchid",
+      "fitScore": 100,
+      "reasons": [
+        "Matches light requirement (bright-indirect)",
+        "Humidity compatible with all plants",
+        "Temperature range compatible"
+      ],
+      "cautions": [
+        {
+          "factor": "growth_rate",
+          "severity": "caution",
+          "message": "Trim regularly — Miniature Orchid's growth rate differs from companions.",
+          "affectedPlants": [
+            "miniature-orchid"
+          ]
+        }
+      ]
+    },
+    {
+      "plant": "syngonium-podophyllum-mini",
+      "fitScore": 100,
+      "reasons": [
+        "Matches light requirement (medium)",
+        "Humidity compatible with all plants",
+        "Temperature range compatible"
+      ],
+      "cautions": [
+        {
+          "factor": "growth_rate",
+          "severity": "caution",
+          "message": "Trim regularly — Arrowhead Plant (mini)'s growth rate differs from companions.",
+          "affectedPlants": [
+            "syngonium-podophyllum-mini"
+          ]
+        }
+      ]
+    }
+  ],
+  "recommend:crowded": [
+    {
+      "plant": "adiantum-raddianum",
+      "fitScore": 100,
+      "reasons": [
+        "Matches light requirement (medium)",
+        "Humidity compatible with all plants",
+        "Temperature range compatible"
+      ],
+      "cautions": [
+        {
+          "factor": "growth_rate",
+          "severity": "caution",
+          "message": "Trim regularly — Maidenhair Fern's growth rate differs from companions.",
+          "affectedPlants": [
+            "adiantum-raddianum"
+          ]
+        }
+      ]
+    },
+    {
+      "plant": "asplenium-nidus",
+      "fitScore": 100,
+      "reasons": [
+        "Matches light requirement (medium)",
+        "Humidity compatible with all plants",
+        "Temperature range compatible"
+      ],
+      "cautions": [
+        {
+          "factor": "growth_rate",
+          "severity": "caution",
+          "message": "Trim regularly — Bird's Nest Fern's growth rate differs from companions.",
+          "affectedPlants": [
+            "asplenium-nidus"
+          ]
+        }
+      ]
+    },
+    {
+      "plant": "philodendron-hederaceum-mini",
+      "fitScore": 100,
+      "reasons": [
+        "Matches light requirement (medium)",
+        "Humidity compatible with all plants",
+        "Temperature range compatible"
+      ],
+      "cautions": [
+        {
+          "factor": "growth_rate",
+          "severity": "caution",
+          "message": "Trim regularly — Heartleaf Philodendron (mini)'s growth rate differs from companions.",
+          "affectedPlants": [
+            "philodendron-hederaceum-mini"
+          ]
+        }
+      ]
+    },
+    {
+      "plant": "syngonium-podophyllum-mini",
+      "fitScore": 100,
+      "reasons": [
+        "Matches light requirement (medium)",
+        "Humidity compatible with all plants",
+        "Temperature range compatible"
+      ],
+      "cautions": [
+        {
+          "factor": "growth_rate",
+          "severity": "caution",
+          "message": "Trim regularly — Arrowhead Plant (mini)'s growth rate differs from companions.",
+          "affectedPlants": [
+            "syngonium-podophyllum-mini"
+          ]
+        }
+      ]
+    },
+    {
+      "plant": "syngonium-podophyllum",
+      "fitScore": 100,
+      "reasons": [
+        "Matches light requirement (medium)",
+        "Humidity compatible with all plants",
+        "Temperature range compatible"
+      ],
+      "cautions": [
+        {
+          "factor": "growth_rate",
+          "severity": "caution",
+          "message": "Trim regularly — Arrowhead Plant's growth rate differs from companions.",
+          "affectedPlants": [
+            "syngonium-podophyllum"
+          ]
+        }
+      ]
+    },
+    {
+      "plant": "asplenium-bulbiferum",
+      "fitScore": 100,
+      "reasons": [
+        "Matches light requirement (medium)",
+        "Humidity compatible with all plants",
+        "Temperature range compatible"
+      ],
+      "cautions": [
+        {
+          "factor": "growth_rate",
+          "severity": "caution",
+          "message": "Trim regularly — Mother Spleenwort's growth rate differs from companions.",
+          "affectedPlants": [
+            "asplenium-bulbiferum"
+          ]
+        }
+      ]
+    },
+    {
+      "plant": "soleirolia-soleirolii-minor",
+      "fitScore": 100,
+      "reasons": [
+        "Matches light requirement (medium)",
+        "Humidity compatible with all plants",
+        "Temperature range compatible"
+      ],
+      "cautions": [
+        {
+          "factor": "growth_rate",
+          "severity": "caution",
+          "message": "Trim regularly — Miniature Baby Tears's growth rate differs from companions.",
+          "affectedPlants": [
+            "soleirolia-soleirolii-minor"
+          ]
+        }
+      ]
+    },
+    {
+      "plant": "nephrolepis-duffii",
+      "fitScore": 100,
+      "reasons": [
+        "Matches light requirement (medium)",
+        "Humidity compatible with all plants",
+        "Temperature range compatible"
+      ],
+      "cautions": [
+        {
+          "factor": "growth_rate",
+          "severity": "caution",
+          "message": "Trim regularly — Lemon Button Fern's growth rate differs from companions.",
+          "affectedPlants": [
+            "nephrolepis-duffii"
+          ]
+        }
+      ]
+    },
+    {
+      "plant": "microsorum-musifolium",
+      "fitScore": 100,
+      "reasons": [
+        "Matches light requirement (medium)",
+        "Humidity compatible with all plants",
+        "Temperature range compatible"
+      ],
+      "cautions": [
+        {
+          "factor": "growth_rate",
+          "severity": "caution",
+          "message": "Trim regularly — Crocodile Fern's growth rate differs from companions.",
+          "affectedPlants": [
+            "microsorum-musifolium"
+          ]
+        }
+      ]
+    },
+    {
+      "plant": "marcgravia-rectiflora",
+      "fitScore": 100,
+      "reasons": [
+        "Matches light requirement (medium)",
+        "Humidity compatible with all plants",
+        "Temperature range compatible"
+      ],
+      "cautions": [
+        {
+          "factor": "growth_rate",
+          "severity": "caution",
+          "message": "Trim regularly — Shingle Plant's growth rate differs from companions.",
+          "affectedPlants": [
+            "marcgravia-rectiflora"
+          ]
+        }
+      ]
+    }
+  ],
+  "recommend:sparse-fields": [
+    {
+      "plant": "crassula-ovata-mini",
+      "fitScore": 100,
+      "reasons": [
+        "Matches light requirement (bright-indirect)",
+        "Humidity compatible with all plants",
+        "Temperature range compatible"
+      ],
+      "cautions": []
+    },
+    {
+      "plant": "senecio-rowleyanus",
+      "fitScore": 100,
+      "reasons": [
+        "Matches light requirement (bright-indirect)",
+        "Humidity compatible with all plants",
+        "Temperature range compatible"
+      ],
+      "cautions": [
+        {
+          "factor": "growth_rate",
+          "severity": "caution",
+          "message": "Trim regularly — String of Pearls's growth rate differs from companions.",
+          "affectedPlants": [
+            "senecio-rowleyanus"
+          ]
+        }
+      ]
+    },
+    {
+      "plant": "sedum-morganianum",
+      "fitScore": 100,
+      "reasons": [
+        "Matches light requirement (bright-indirect)",
+        "Humidity compatible with all plants",
+        "Temperature range compatible"
+      ],
+      "cautions": []
+    },
+    {
+      "plant": "portulacaria-afra",
+      "fitScore": 100,
+      "reasons": [
+        "Matches light requirement (bright-indirect)",
+        "Humidity compatible with all plants",
+        "Temperature range compatible"
+      ],
+      "cautions": [
+        {
+          "factor": "growth_rate",
+          "severity": "caution",
+          "message": "Trim regularly — Elephant Bush's growth rate differs from companions.",
+          "affectedPlants": [
+            "portulacaria-afra"
+          ]
+        }
+      ]
+    },
+    {
+      "plant": "ceropegia-woodii",
+      "fitScore": 100,
+      "reasons": [
+        "Matches light requirement (bright-indirect)",
+        "Humidity compatible with all plants",
+        "Temperature range compatible"
+      ],
+      "cautions": [
+        {
+          "factor": "growth_rate",
+          "severity": "caution",
+          "message": "Trim regularly — String of Hearts's growth rate differs from companions.",
+          "affectedPlants": [
+            "ceropegia-woodii"
+          ]
+        }
+      ]
+    },
+    {
+      "plant": "ceropegia-woodii-string-of-spades",
+      "fitScore": 100,
+      "reasons": [
+        "Matches light requirement (bright-indirect)",
+        "Humidity compatible with all plants",
+        "Temperature range compatible"
+      ],
+      "cautions": [
+        {
+          "factor": "growth_rate",
+          "severity": "caution",
+          "message": "Trim regularly — String of Spades's growth rate differs from companions.",
+          "affectedPlants": [
+            "ceropegia-woodii-string-of-spades"
+          ]
+        }
+      ]
+    },
+    {
+      "plant": "cryptanthus-bivittatus",
+      "fitScore": 93,
+      "reasons": [
+        "Matches light requirement (bright-indirect)",
+        "Humidity compatible with all plants",
+        "Temperature range compatible"
+      ],
+      "cautions": [
+        {
+          "factor": "soil_moisture",
+          "severity": "caution",
+          "message": "Earth Star Bromeliad prefers Moderate soil; the build is Dry — manageable with care.",
+          "affectedPlants": [
+            "cryptanthus-bivittatus"
+          ]
+        }
+      ]
+    },
+    {
+      "plant": "pilea-peperomioides",
+      "fitScore": 93,
+      "reasons": [
+        "Matches light requirement (bright-indirect)",
+        "Humidity compatible with all plants",
+        "Temperature range compatible"
+      ],
+      "cautions": [
+        {
+          "factor": "soil_moisture",
+          "severity": "caution",
+          "message": "Chinese Money Plant prefers Moderate soil; the build is Dry — manageable with care.",
+          "affectedPlants": [
+            "pilea-peperomioides"
+          ]
+        },
+        {
+          "factor": "growth_rate",
+          "severity": "caution",
+          "message": "Trim regularly — Chinese Money Plant's growth rate differs from companions.",
+          "affectedPlants": [
+            "pilea-peperomioides"
+          ]
+        }
+      ]
+    },
+    {
+      "plant": "peperomia-argyreia",
+      "fitScore": 93,
+      "reasons": [
+        "Matches light requirement (bright-indirect)",
+        "Humidity compatible with all plants",
+        "Temperature range compatible"
+      ],
+      "cautions": [
+        {
+          "factor": "soil_moisture",
+          "severity": "caution",
+          "message": "Watermelon Peperomia prefers Moderate soil; the build is Dry — manageable with care.",
+          "affectedPlants": [
+            "peperomia-argyreia"
+          ]
+        },
+        {
+          "factor": "growth_rate",
+          "severity": "caution",
+          "message": "Trim regularly — Watermelon Peperomia's growth rate differs from companions.",
+          "affectedPlants": [
+            "peperomia-argyreia"
+          ]
+        }
+      ]
+    },
+    {
+      "plant": "peperomia-obtusifolia",
+      "fitScore": 93,
+      "reasons": [
+        "Matches light requirement (bright-indirect)",
+        "Humidity compatible with all plants",
+        "Temperature range compatible"
+      ],
+      "cautions": [
+        {
+          "factor": "soil_moisture",
+          "severity": "caution",
+          "message": "Baby Rubber Plant only meets the build's Dry soil through a secondary tolerance.",
+          "affectedPlants": [
+            "peperomia-obtusifolia"
+          ],
+          "viaSecondary": true
+        },
+        {
+          "factor": "growth_rate",
+          "severity": "caution",
+          "message": "Trim regularly — Baby Rubber Plant's growth rate differs from companions.",
+          "affectedPlants": [
+            "peperomia-obtusifolia"
+          ]
+        }
+      ]
+    }
+  ],
+  "recommend:micro-sealed-gas": [
+    {
+      "plant": "calathea-ornata",
+      "fitScore": 100,
+      "reasons": [
+        "Matches light requirement (medium)",
+        "Humidity compatible with all plants",
+        "Temperature range compatible"
+      ],
+      "cautions": [
+        {
+          "factor": "growth_rate",
+          "severity": "caution",
+          "message": "Trim regularly — Pinstripe Calathea's growth rate differs from companions.",
+          "affectedPlants": [
+            "calathea-ornata"
+          ]
+        }
+      ]
+    },
+    {
+      "plant": "adiantum-raddianum",
+      "fitScore": 100,
+      "reasons": [
+        "Matches light requirement (medium)",
+        "Humidity compatible with all plants",
+        "Temperature range compatible"
+      ],
+      "cautions": [
+        {
+          "factor": "growth_rate",
+          "severity": "caution",
+          "message": "Trim regularly — Maidenhair Fern's growth rate differs from companions.",
+          "affectedPlants": [
+            "adiantum-raddianum"
+          ]
+        }
+      ]
+    },
+    {
+      "plant": "asplenium-nidus",
+      "fitScore": 100,
+      "reasons": [
+        "Matches light requirement (medium)",
+        "Humidity compatible with all plants",
+        "Temperature range compatible"
+      ],
+      "cautions": [
+        {
+          "factor": "growth_rate",
+          "severity": "caution",
+          "message": "Trim regularly — Bird's Nest Fern's growth rate differs from companions.",
+          "affectedPlants": [
+            "asplenium-nidus"
+          ]
+        }
+      ]
+    },
+    {
+      "plant": "pilea-involucrata",
+      "fitScore": 100,
+      "reasons": [
+        "Matches light requirement (medium)",
+        "Humidity compatible with all plants",
+        "Temperature range compatible"
+      ],
+      "cautions": [
+        {
+          "factor": "growth_rate",
+          "severity": "caution",
+          "message": "Trim regularly — Friendship Plant's growth rate differs from companions.",
+          "affectedPlants": [
+            "pilea-involucrata"
+          ]
+        }
+      ]
+    },
+    {
+      "plant": "episcia-cupreata",
+      "fitScore": 100,
+      "reasons": [
+        "Matches light requirement (medium)",
+        "Humidity compatible with all plants",
+        "Temperature range compatible"
+      ],
+      "cautions": [
+        {
+          "factor": "growth_rate",
+          "severity": "caution",
+          "message": "Trim regularly — Flame Violet's growth rate differs from companions.",
+          "affectedPlants": [
+            "episcia-cupreata"
+          ]
+        }
+      ]
+    },
+    {
+      "plant": "philodendron-hederaceum-mini",
+      "fitScore": 100,
+      "reasons": [
+        "Matches light requirement (medium)",
+        "Humidity compatible with all plants",
+        "Temperature range compatible"
+      ],
+      "cautions": [
+        {
+          "factor": "growth_rate",
+          "severity": "caution",
+          "message": "Trim regularly — Heartleaf Philodendron (mini)'s growth rate differs from companions.",
+          "affectedPlants": [
+            "philodendron-hederaceum-mini"
+          ]
+        }
+      ]
+    },
+    {
+      "plant": "syngonium-podophyllum-mini",
+      "fitScore": 100,
+      "reasons": [
+        "Matches light requirement (medium)",
+        "Humidity compatible with all plants",
+        "Temperature range compatible"
+      ],
+      "cautions": [
+        {
+          "factor": "growth_rate",
+          "severity": "caution",
+          "message": "Trim regularly — Arrowhead Plant (mini)'s growth rate differs from companions.",
+          "affectedPlants": [
+            "syngonium-podophyllum-mini"
+          ]
+        }
+      ]
+    },
+    {
+      "plant": "asplenium-bulbiferum",
+      "fitScore": 100,
+      "reasons": [
+        "Matches light requirement (medium)",
+        "Humidity compatible with all plants",
+        "Temperature range compatible"
+      ],
+      "cautions": [
+        {
+          "factor": "growth_rate",
+          "severity": "caution",
+          "message": "Trim regularly — Mother Spleenwort's growth rate differs from companions.",
+          "affectedPlants": [
+            "asplenium-bulbiferum"
+          ]
+        }
+      ]
+    },
+    {
+      "plant": "nephrolepis-duffii",
+      "fitScore": 100,
+      "reasons": [
+        "Matches light requirement (medium)",
+        "Humidity compatible with all plants",
+        "Temperature range compatible"
+      ],
+      "cautions": [
+        {
+          "factor": "growth_rate",
+          "severity": "caution",
+          "message": "Trim regularly — Lemon Button Fern's growth rate differs from companions.",
+          "affectedPlants": [
+            "nephrolepis-duffii"
+          ]
+        }
+      ]
+    },
+    {
+      "plant": "microsorum-musifolium",
+      "fitScore": 100,
+      "reasons": [
+        "Matches light requirement (medium)",
+        "Humidity compatible with all plants",
+        "Temperature range compatible"
+      ],
+      "cautions": [
+        {
+          "factor": "growth_rate",
+          "severity": "caution",
+          "message": "Trim regularly — Crocodile Fern's growth rate differs from companions.",
+          "affectedPlants": [
+            "microsorum-musifolium"
+          ]
+        }
+      ]
+    }
+  ],
+  "plantFitScore:no-context": null,
+  "plantFitScore:container-only": 20,
+  "plantFitScore:selected-with-container": 0,
+  "envelope:closed-tropical-rect": {
+    "humidityMin": 70,
+    "humidityMax": 85,
+    "tempMin": 20,
+    "tempMax": 24,
+    "compatibleLights": [
+      "medium"
+    ],
+    "compatibleMoisture": [
+      "moist"
+    ]
+  },
+  "envelope:inverted-ranges": {
+    "humidityMin": 70,
+    "humidityMax": 50,
+    "tempMin": 18,
+    "tempMax": 27,
+    "compatibleLights": [
+      "bright-indirect",
+      "medium"
+    ],
+    "compatibleMoisture": [
+      "dry",
+      "moist"
+    ]
+  },
+  "envelope:empty-throws": {
+    "threw": true,
+    "message": "Cannot derive an environmental envelope for an empty plant list."
+  },
+  "placement:clamp": {
+    "inBounds": {
+      "slug": "p",
+      "x": 0.5,
+      "y": 0.5,
+      "scale": 1
+    },
+    "offPlane": {
+      "slug": "p",
+      "x": 0,
+      "y": 1,
+      "scale": 1.4
+    },
+    "nonFinite": {
+      "slug": "p",
+      "x": 0,
+      "y": 0,
+      "scale": 0.4
+    },
+    "withMargin": {
+      "slug": "p",
+      "x": 0.08,
+      "y": 0.92,
+      "scale": 1
+    },
+    "marginCappedAtHalf": {
+      "slug": "p",
+      "x": 0.5,
+      "y": 0.5,
+      "scale": 1
+    }
+  },
+  "placement:move": {
+    "slug": "p",
+    "x": 0.75,
+    "y": 0.08,
+    "scale": 1
+  },
+  "placement:scale": {
+    "slug": "p",
+    "x": 0.5,
+    "y": 0.5,
+    "scale": 1.4
+  },
+  "placement:upsert": {
+    "replaceExisting": [
+      {
+        "slug": "fittonia-albivenis",
+        "x": 0.9,
+        "y": 0.1,
+        "scale": 1.4
+      },
+      {
+        "slug": "calathea-ornata",
+        "x": 0.7,
+        "y": 0.5,
+        "scale": 1.15
+      }
+    ],
+    "appendNew": [
+      {
+        "slug": "fittonia-albivenis",
+        "x": 0.3,
+        "y": 0.62,
+        "scale": 1
+      },
+      {
+        "slug": "calathea-ornata",
+        "x": 0.7,
+        "y": 0.5,
+        "scale": 1.15
+      },
+      {
+        "slug": "adiantum-raddianum",
+        "x": 0.5,
+        "y": 0.5,
+        "scale": 1
+      }
+    ]
+  },
+  "placement:remove": [
+    {
+      "slug": "fittonia-albivenis",
+      "x": 0.3,
+      "y": 0.62,
+      "scale": 1
+    }
+  ],
+  "placement:defaults": [
+    {
+      "slug": "plant-0",
+      "x": 0.618033988749895,
+      "y": 0.62,
+      "scale": 1
+    },
+    {
+      "slug": "plant-1",
+      "x": 0.23606797749979003,
+      "y": 0.5,
+      "scale": 1
+    },
+    {
+      "slug": "plant-2",
+      "x": 0.8541019662496852,
+      "y": 0.74,
+      "scale": 1
+    },
+    {
+      "slug": "plant-3",
+      "x": 0.47213595499958005,
+      "y": 0.62,
+      "scale": 1
+    },
+    {
+      "slug": "plant-4",
+      "x": 0.09016994374947496,
+      "y": 0.5,
+      "scale": 1
+    },
+    {
+      "slug": "plant-5",
+      "x": 0.7082039324993703,
+      "y": 0.74,
+      "scale": 1
+    }
+  ],
+  "placement:isInsidePlane": {
+    "onEdge": true,
+    "outside": false
+  }
+}

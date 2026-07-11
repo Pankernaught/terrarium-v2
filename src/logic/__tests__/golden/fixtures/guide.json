@@ -1,0 +1,973 @@
+{
+  "metric:closed-tropical-rect": [
+    {
+      "step": 1,
+      "title": "Container Preparation",
+      "instruction": "Clean the container with warm water first. If necessary, clean with a small amount of dish soap and thoroughly rinse. Ensure it is fully dry before starting."
+    },
+    {
+      "step": 2,
+      "title": "Drainage Layer",
+      "instruction": "Add 2-3cm of pebbles or [[leca|LECA]] to the bottom of your container. "
+    },
+    {
+      "step": 3,
+      "title": "Separation Layer",
+      "instruction": "It's important that the [[drainage-layer|drainage layer]] be separate from the substrate. Most hobbyists opt for a fine mesh like a window screen, but you can also use a layer of [[sphagnum|sphagnum moss]]. "
+    },
+    {
+      "step": 4,
+      "title": "Substrate Layer",
+      "instruction": "Add 6-8cm of a standard well-draining terrarium mix. Press down on the mix gently to flatten, but try not to over compact. "
+    },
+    {
+      "step": 5,
+      "title": "Plant Placement",
+      "instruction": "Plant the tallest or deepest-rooted plants first so that you can work around them: Pinstripe Calathea, Maidenhair Fern, Nerve Plant, Flame Violet. "
+    },
+    {
+      "step": 6,
+      "title": "Initial Watering",
+      "instruction": "Based on these plants' needs, make sure your substrate is thoroughly wetted."
+    },
+    {
+      "step": 7,
+      "title": "Sealing / Ventilation Setup",
+      "instruction": "The building process can be stressful for plants. Seal the container completely and place in indirect light for 48 hours to stabilise."
+    },
+    {
+      "step": 8,
+      "title": "Light Placement",
+      "instruction": "Place in medium light."
+    },
+    {
+      "step": 9,
+      "title": "Your First Two Weeks",
+      "instruction": "The first two weeks decide whether your terrarium takes. First 48 hours: keep it in indirect light and let it stabilise — if the glass fogs up so heavily you can't see in, crack the lid for a few hours to let it clear, and watch it doesn't overheat in any sun. A little wilting now is normal transplant shock, not a watering cue. Days 2–14: check daily for mould or walls that stay fogged solid, and resist adding water — a sealed build is still finding its balance and almost always has enough. Once condensation clears by midday on its own, you can close it up and let the cycle run."
+    }
+  ],
+  "imperial:closed-tropical-rect": [
+    {
+      "step": 1,
+      "title": "Container Preparation",
+      "instruction": "Clean the container with warm water first. If necessary, clean with a small amount of dish soap and thoroughly rinse. Ensure it is fully dry before starting."
+    },
+    {
+      "step": 2,
+      "title": "Drainage Layer",
+      "instruction": "Add 0.8–1.2 in of pebbles or [[leca|LECA]] to the bottom of your container. "
+    },
+    {
+      "step": 3,
+      "title": "Separation Layer",
+      "instruction": "It's important that the [[drainage-layer|drainage layer]] be separate from the substrate. Most hobbyists opt for a fine mesh like a window screen, but you can also use a layer of [[sphagnum|sphagnum moss]]. "
+    },
+    {
+      "step": 4,
+      "title": "Substrate Layer",
+      "instruction": "Add 2.4–3.1 in of a standard well-draining terrarium mix. Press down on the mix gently to flatten, but try not to over compact. "
+    },
+    {
+      "step": 5,
+      "title": "Plant Placement",
+      "instruction": "Plant the tallest or deepest-rooted plants first so that you can work around them: Pinstripe Calathea, Maidenhair Fern, Nerve Plant, Flame Violet. "
+    },
+    {
+      "step": 6,
+      "title": "Initial Watering",
+      "instruction": "Based on these plants' needs, make sure your substrate is thoroughly wetted."
+    },
+    {
+      "step": 7,
+      "title": "Sealing / Ventilation Setup",
+      "instruction": "The building process can be stressful for plants. Seal the container completely and place in indirect light for 48 hours to stabilise."
+    },
+    {
+      "step": 8,
+      "title": "Light Placement",
+      "instruction": "Place in medium light."
+    },
+    {
+      "step": 9,
+      "title": "Your First Two Weeks",
+      "instruction": "The first two weeks decide whether your terrarium takes. First 48 hours: keep it in indirect light and let it stabilise — if the glass fogs up so heavily you can't see in, crack the lid for a few hours to let it clear, and watch it doesn't overheat in any sun. A little wilting now is normal transplant shock, not a watering cue. Days 2–14: check daily for mould or walls that stay fogged solid, and resist adding water — a sealed build is still finding its balance and almost always has enough. Once condensation clears by midday on its own, you can close it up and let the cycle run."
+    }
+  ],
+  "metric:open-arid-cyl": [
+    {
+      "step": 1,
+      "title": "Container Preparation",
+      "instruction": "Clean the container with warm water first. If necessary, clean with a small amount of dish soap and thoroughly rinse. Ensure it is fully dry before starting."
+    },
+    {
+      "step": 2,
+      "title": "Drainage Layer",
+      "instruction": "Add 1cm of pebbles or [[leca|LECA]] to the bottom of your container. "
+    },
+    {
+      "step": 3,
+      "title": "Separation Layer",
+      "instruction": "It's important that the [[drainage-layer|drainage layer]] be separate from the substrate. Most hobbyists opt for a fine mesh like a window screen, but you can also use a layer of [[sphagnum|sphagnum moss]]. "
+    },
+    {
+      "step": 4,
+      "title": "Substrate Layer",
+      "instruction": "Add 6-8cm of a standard well-draining terrarium mix. Press down on the mix gently to flatten, but try not to over compact. "
+    },
+    {
+      "step": 5,
+      "title": "Plant Placement",
+      "instruction": "Plant the tallest or deepest-rooted plants first so that you can work around them: Mini Jade Plant, Zebra Haworthia, Mexican Snowball. "
+    },
+    {
+      "step": 6,
+      "title": "Initial Watering",
+      "instruction": "Based on these plants' needs, give the terrarium a gentle misting."
+    },
+    {
+      "step": 7,
+      "title": "Sealing / Ventilation Setup",
+      "instruction": "No sealing needed. Monitor [[humidity]] closely during the first week."
+    },
+    {
+      "step": 8,
+      "title": "Light Placement",
+      "instruction": "Direct and bright-indirect light requirements conflict. Place in [[bright-indirect|bright indirect light]] to not scorch sun-sensitive plants. Plants that need higher light requirements may not survive. "
+    },
+    {
+      "step": 9,
+      "title": "Your First Two Weeks",
+      "instruction": "The first two weeks decide whether your terrarium takes. Keep it in bright, indirect light and let the plants settle — a little wilting at first is normal transplant shock, not a watering cue. Over the next fortnight, check daily that the substrate stays evenly moist (an open build dries far faster than a closed one) and watch new growth for signs the light or [[humidity]] needs nudging. Mist if the foliage looks dry between waterings."
+    }
+  ],
+  "imperial:open-arid-cyl": [
+    {
+      "step": 1,
+      "title": "Container Preparation",
+      "instruction": "Clean the container with warm water first. If necessary, clean with a small amount of dish soap and thoroughly rinse. Ensure it is fully dry before starting."
+    },
+    {
+      "step": 2,
+      "title": "Drainage Layer",
+      "instruction": "Add 0.4 in of pebbles or [[leca|LECA]] to the bottom of your container. "
+    },
+    {
+      "step": 3,
+      "title": "Separation Layer",
+      "instruction": "It's important that the [[drainage-layer|drainage layer]] be separate from the substrate. Most hobbyists opt for a fine mesh like a window screen, but you can also use a layer of [[sphagnum|sphagnum moss]]. "
+    },
+    {
+      "step": 4,
+      "title": "Substrate Layer",
+      "instruction": "Add 2.4–3.1 in of a standard well-draining terrarium mix. Press down on the mix gently to flatten, but try not to over compact. "
+    },
+    {
+      "step": 5,
+      "title": "Plant Placement",
+      "instruction": "Plant the tallest or deepest-rooted plants first so that you can work around them: Mini Jade Plant, Zebra Haworthia, Mexican Snowball. "
+    },
+    {
+      "step": 6,
+      "title": "Initial Watering",
+      "instruction": "Based on these plants' needs, give the terrarium a gentle misting."
+    },
+    {
+      "step": 7,
+      "title": "Sealing / Ventilation Setup",
+      "instruction": "No sealing needed. Monitor [[humidity]] closely during the first week."
+    },
+    {
+      "step": 8,
+      "title": "Light Placement",
+      "instruction": "Direct and bright-indirect light requirements conflict. Place in [[bright-indirect|bright indirect light]] to not scorch sun-sensitive plants. Plants that need higher light requirements may not survive. "
+    },
+    {
+      "step": 9,
+      "title": "Your First Two Weeks",
+      "instruction": "The first two weeks decide whether your terrarium takes. Keep it in bright, indirect light and let the plants settle — a little wilting at first is normal transplant shock, not a watering cue. Over the next fortnight, check daily that the substrate stays evenly moist (an open build dries far faster than a closed one) and watch new growth for signs the light or [[humidity]] needs nudging. Mist if the foliage looks dry between waterings."
+    }
+  ],
+  "metric:tall-cylinder": [
+    {
+      "step": 1,
+      "title": "Container Preparation",
+      "instruction": "Clean the container with warm water first. If necessary, clean with a small amount of dish soap and thoroughly rinse. Ensure it is fully dry before starting."
+    },
+    {
+      "step": 2,
+      "title": "Drainage Layer",
+      "instruction": "Add 2-3cm of pebbles or [[leca|LECA]] to the bottom of your container. "
+    },
+    {
+      "step": 3,
+      "title": "Separation Layer",
+      "instruction": "It's important that the [[drainage-layer|drainage layer]] be separate from the substrate. Most hobbyists opt for a fine mesh like a window screen, but you can also use a layer of [[sphagnum|sphagnum moss]]. "
+    },
+    {
+      "step": 4,
+      "title": "Substrate Layer",
+      "instruction": "Add 6-8cm of a standard well-draining terrarium mix. Press down on the mix gently to flatten, but try not to over compact. "
+    },
+    {
+      "step": 5,
+      "title": "Plant Placement",
+      "instruction": "Plant the tallest or deepest-rooted plants first so that you can work around them: Friendship Plant, Nerve Plant, Flame Violet, Baby Tears.  Note: Baby Tears grow fast, so leave extra room around them."
+    },
+    {
+      "step": 6,
+      "title": "Initial Watering",
+      "instruction": "Based on these plants' needs, make sure your substrate is thoroughly wetted."
+    },
+    {
+      "step": 7,
+      "title": "Sealing / Ventilation Setup",
+      "instruction": "The building process can be stressful for plants. Close the lid, but crack it open briefly each day for the first week to allow gas exchange."
+    },
+    {
+      "step": 8,
+      "title": "Light Placement",
+      "instruction": "Place in medium light."
+    },
+    {
+      "step": 9,
+      "title": "Your First Two Weeks",
+      "instruction": "The first two weeks decide whether your terrarium takes. First 48 hours: keep it in indirect light and let it stabilise — if the glass fogs up so heavily you can't see in, crack the lid for a few hours to let it clear, and watch it doesn't overheat in any sun. A little wilting now is normal transplant shock, not a watering cue. Days 2–14: check daily for mould or walls that stay fogged solid, and resist adding water — a sealed build is still finding its balance and almost always has enough. Once condensation clears by midday on its own, you can close it up and let the cycle run."
+    }
+  ],
+  "imperial:tall-cylinder": [
+    {
+      "step": 1,
+      "title": "Container Preparation",
+      "instruction": "Clean the container with warm water first. If necessary, clean with a small amount of dish soap and thoroughly rinse. Ensure it is fully dry before starting."
+    },
+    {
+      "step": 2,
+      "title": "Drainage Layer",
+      "instruction": "Add 0.8–1.2 in of pebbles or [[leca|LECA]] to the bottom of your container. "
+    },
+    {
+      "step": 3,
+      "title": "Separation Layer",
+      "instruction": "It's important that the [[drainage-layer|drainage layer]] be separate from the substrate. Most hobbyists opt for a fine mesh like a window screen, but you can also use a layer of [[sphagnum|sphagnum moss]]. "
+    },
+    {
+      "step": 4,
+      "title": "Substrate Layer",
+      "instruction": "Add 2.4–3.1 in of a standard well-draining terrarium mix. Press down on the mix gently to flatten, but try not to over compact. "
+    },
+    {
+      "step": 5,
+      "title": "Plant Placement",
+      "instruction": "Plant the tallest or deepest-rooted plants first so that you can work around them: Friendship Plant, Nerve Plant, Flame Violet, Baby Tears.  Note: Baby Tears grow fast, so leave extra room around them."
+    },
+    {
+      "step": 6,
+      "title": "Initial Watering",
+      "instruction": "Based on these plants' needs, make sure your substrate is thoroughly wetted."
+    },
+    {
+      "step": 7,
+      "title": "Sealing / Ventilation Setup",
+      "instruction": "The building process can be stressful for plants. Close the lid, but crack it open briefly each day for the first week to allow gas exchange."
+    },
+    {
+      "step": 8,
+      "title": "Light Placement",
+      "instruction": "Place in medium light."
+    },
+    {
+      "step": 9,
+      "title": "Your First Two Weeks",
+      "instruction": "The first two weeks decide whether your terrarium takes. First 48 hours: keep it in indirect light and let it stabilise — if the glass fogs up so heavily you can't see in, crack the lid for a few hours to let it clear, and watch it doesn't overheat in any sun. A little wilting now is normal transplant shock, not a watering cue. Days 2–14: check daily for mould or walls that stay fogged solid, and resist adding water — a sealed build is still finding its balance and almost always has enough. Once condensation clears by midday on its own, you can close it up and let the cycle run."
+    }
+  ],
+  "metric:single-plant": [
+    {
+      "step": 1,
+      "title": "Container Preparation",
+      "instruction": "Clean the container with warm water first. If necessary, clean with a small amount of dish soap and thoroughly rinse. Ensure it is fully dry before starting."
+    },
+    {
+      "step": 2,
+      "title": "Drainage Layer",
+      "instruction": "Add 2-3cm of pebbles or [[leca|LECA]] to the bottom of your container. "
+    },
+    {
+      "step": 3,
+      "title": "Separation Layer",
+      "instruction": "It's important that the [[drainage-layer|drainage layer]] be separate from the substrate. Most hobbyists opt for a fine mesh like a window screen, but you can also use a layer of [[sphagnum|sphagnum moss]]. "
+    },
+    {
+      "step": 4,
+      "title": "Substrate Layer",
+      "instruction": "Add 3-5cm of a standard well-draining terrarium mix. Press down on the mix gently to flatten, but try not to over compact. "
+    },
+    {
+      "step": 5,
+      "title": "Plant Placement",
+      "instruction": "Plant the tallest or deepest-rooted plants first so that you can work around them: Nerve Plant. "
+    },
+    {
+      "step": 6,
+      "title": "Initial Watering",
+      "instruction": "Based on these plants' needs, make sure your substrate is thoroughly wetted."
+    },
+    {
+      "step": 7,
+      "title": "Sealing / Ventilation Setup",
+      "instruction": "The building process can be stressful for plants. Seal the container completely and place in indirect light for 48 hours to stabilise."
+    },
+    {
+      "step": 8,
+      "title": "Light Placement",
+      "instruction": "Place in medium light."
+    },
+    {
+      "step": 9,
+      "title": "Your First Two Weeks",
+      "instruction": "The first two weeks decide whether your terrarium takes. First 48 hours: keep it in indirect light and let it stabilise — if the glass fogs up so heavily you can't see in, crack the lid for a few hours to let it clear, and watch it doesn't overheat in any sun. A little wilting now is normal transplant shock, not a watering cue. Days 2–14: check daily for mould or walls that stay fogged solid, and resist adding water — a sealed build is still finding its balance and almost always has enough. Once condensation clears by midday on its own, you can close it up and let the cycle run."
+    }
+  ],
+  "imperial:single-plant": [
+    {
+      "step": 1,
+      "title": "Container Preparation",
+      "instruction": "Clean the container with warm water first. If necessary, clean with a small amount of dish soap and thoroughly rinse. Ensure it is fully dry before starting."
+    },
+    {
+      "step": 2,
+      "title": "Drainage Layer",
+      "instruction": "Add 0.8–1.2 in of pebbles or [[leca|LECA]] to the bottom of your container. "
+    },
+    {
+      "step": 3,
+      "title": "Separation Layer",
+      "instruction": "It's important that the [[drainage-layer|drainage layer]] be separate from the substrate. Most hobbyists opt for a fine mesh like a window screen, but you can also use a layer of [[sphagnum|sphagnum moss]]. "
+    },
+    {
+      "step": 4,
+      "title": "Substrate Layer",
+      "instruction": "Add 1.2–2 in of a standard well-draining terrarium mix. Press down on the mix gently to flatten, but try not to over compact. "
+    },
+    {
+      "step": 5,
+      "title": "Plant Placement",
+      "instruction": "Plant the tallest or deepest-rooted plants first so that you can work around them: Nerve Plant. "
+    },
+    {
+      "step": 6,
+      "title": "Initial Watering",
+      "instruction": "Based on these plants' needs, make sure your substrate is thoroughly wetted."
+    },
+    {
+      "step": 7,
+      "title": "Sealing / Ventilation Setup",
+      "instruction": "The building process can be stressful for plants. Seal the container completely and place in indirect light for 48 hours to stabilise."
+    },
+    {
+      "step": 8,
+      "title": "Light Placement",
+      "instruction": "Place in medium light."
+    },
+    {
+      "step": 9,
+      "title": "Your First Two Weeks",
+      "instruction": "The first two weeks decide whether your terrarium takes. First 48 hours: keep it in indirect light and let it stabilise — if the glass fogs up so heavily you can't see in, crack the lid for a few hours to let it clear, and watch it doesn't overheat in any sun. A little wilting now is normal transplant shock, not a watering cue. Days 2–14: check daily for mould or walls that stay fogged solid, and resist adding water — a sealed build is still finding its balance and almost always has enough. Once condensation clears by midday on its own, you can close it up and let the cycle run."
+    }
+  ],
+  "metric:survival-clamp": [
+    {
+      "step": 1,
+      "title": "Container Preparation",
+      "instruction": "Clean the container with warm water first. If necessary, clean with a small amount of dish soap and thoroughly rinse. Ensure it is fully dry before starting."
+    },
+    {
+      "step": 2,
+      "title": "Drainage Layer",
+      "instruction": "Add 2-3cm of pebbles or [[leca|LECA]] to the bottom of your container. "
+    },
+    {
+      "step": 3,
+      "title": "Separation Layer",
+      "instruction": "It's important that the [[drainage-layer|drainage layer]] be separate from the substrate. Most hobbyists opt for a fine mesh like a window screen, but you can also use a layer of [[sphagnum|sphagnum moss]]. "
+    },
+    {
+      "step": 4,
+      "title": "Substrate Layer",
+      "instruction": "Add 6-8cm of a standard well-draining terrarium mix. Press down on the mix gently to flatten, but try not to over compact. "
+    },
+    {
+      "step": 5,
+      "title": "Plant Placement",
+      "instruction": "Plant the tallest or deepest-rooted plants first so that you can work around them: Pinstripe Calathea, Maidenhair Fern, Nerve Plant, Mexican Snowball. "
+    },
+    {
+      "step": 6,
+      "title": "Initial Watering",
+      "instruction": "Based on these plants' needs, make sure your substrate is thoroughly wetted."
+    },
+    {
+      "step": 7,
+      "title": "Sealing / Ventilation Setup",
+      "instruction": "The building process can be stressful for plants. Seal the container completely and place in indirect light for 48 hours to stabilise."
+    },
+    {
+      "step": 8,
+      "title": "Light Placement",
+      "instruction": "Conflicting light needs: some plants need direct sun, others prefer low or medium light. Place in [[bright-indirect|bright indirect light]] as a compromise — watch sun-lovers for [[etiolation]] and shade plants for bleaching."
+    },
+    {
+      "step": 9,
+      "title": "Your First Two Weeks",
+      "instruction": "The first two weeks decide whether your terrarium takes. First 48 hours: keep it in indirect light and let it stabilise — if the glass fogs up so heavily you can't see in, crack the lid for a few hours to let it clear, and watch it doesn't overheat in any sun. A little wilting now is normal transplant shock, not a watering cue. Days 2–14: check daily for mould or walls that stay fogged solid, and resist adding water — a sealed build is still finding its balance and almost always has enough. Once condensation clears by midday on its own, you can close it up and let the cycle run."
+    }
+  ],
+  "imperial:survival-clamp": [
+    {
+      "step": 1,
+      "title": "Container Preparation",
+      "instruction": "Clean the container with warm water first. If necessary, clean with a small amount of dish soap and thoroughly rinse. Ensure it is fully dry before starting."
+    },
+    {
+      "step": 2,
+      "title": "Drainage Layer",
+      "instruction": "Add 0.8–1.2 in of pebbles or [[leca|LECA]] to the bottom of your container. "
+    },
+    {
+      "step": 3,
+      "title": "Separation Layer",
+      "instruction": "It's important that the [[drainage-layer|drainage layer]] be separate from the substrate. Most hobbyists opt for a fine mesh like a window screen, but you can also use a layer of [[sphagnum|sphagnum moss]]. "
+    },
+    {
+      "step": 4,
+      "title": "Substrate Layer",
+      "instruction": "Add 2.4–3.1 in of a standard well-draining terrarium mix. Press down on the mix gently to flatten, but try not to over compact. "
+    },
+    {
+      "step": 5,
+      "title": "Plant Placement",
+      "instruction": "Plant the tallest or deepest-rooted plants first so that you can work around them: Pinstripe Calathea, Maidenhair Fern, Nerve Plant, Mexican Snowball. "
+    },
+    {
+      "step": 6,
+      "title": "Initial Watering",
+      "instruction": "Based on these plants' needs, make sure your substrate is thoroughly wetted."
+    },
+    {
+      "step": 7,
+      "title": "Sealing / Ventilation Setup",
+      "instruction": "The building process can be stressful for plants. Seal the container completely and place in indirect light for 48 hours to stabilise."
+    },
+    {
+      "step": 8,
+      "title": "Light Placement",
+      "instruction": "Conflicting light needs: some plants need direct sun, others prefer low or medium light. Place in [[bright-indirect|bright indirect light]] as a compromise — watch sun-lovers for [[etiolation]] and shade plants for bleaching."
+    },
+    {
+      "step": 9,
+      "title": "Your First Two Weeks",
+      "instruction": "The first two weeks decide whether your terrarium takes. First 48 hours: keep it in indirect light and let it stabilise — if the glass fogs up so heavily you can't see in, crack the lid for a few hours to let it clear, and watch it doesn't overheat in any sun. A little wilting now is normal transplant shock, not a watering cue. Days 2–14: check daily for mould or walls that stay fogged solid, and resist adding water — a sealed build is still finding its balance and almost always has enough. Once condensation clears by midday on its own, you can close it up and let the cycle run."
+    }
+  ],
+  "metric:split-tie": [
+    {
+      "step": 1,
+      "title": "Container Preparation",
+      "instruction": "Clean the container with warm water first. If necessary, clean with a small amount of dish soap and thoroughly rinse. Ensure it is fully dry before starting."
+    },
+    {
+      "step": 2,
+      "title": "Drainage Layer",
+      "instruction": "Add 2-3cm of pebbles or [[leca|LECA]] to the bottom of your container. "
+    },
+    {
+      "step": 3,
+      "title": "Separation Layer",
+      "instruction": "It's important that the [[drainage-layer|drainage layer]] be separate from the substrate. Most hobbyists opt for a fine mesh like a window screen, but you can also use a layer of [[sphagnum|sphagnum moss]]. "
+    },
+    {
+      "step": 4,
+      "title": "Substrate Layer",
+      "instruction": "Add 3-5cm of a standard well-draining terrarium mix. Press down on the mix gently to flatten, but try not to over compact. "
+    },
+    {
+      "step": 5,
+      "title": "Plant Placement",
+      "instruction": "Plant the tallest or deepest-rooted plants first so that you can work around them: Nerve Plant, Trailing Watermelon Begonia, Baby Tears, Rainbow Moss.  Note: Baby Tears grow fast, so leave extra room around them."
+    },
+    {
+      "step": 6,
+      "title": "Initial Watering",
+      "instruction": "Based on these plants' needs, make sure your substrate is thoroughly wetted."
+    },
+    {
+      "step": 7,
+      "title": "Sealing / Ventilation Setup",
+      "instruction": "The building process can be stressful for plants. Close the lid, but crack it open briefly each day for the first week to allow gas exchange."
+    },
+    {
+      "step": 8,
+      "title": "Light Placement",
+      "instruction": "Mixed low and medium light needs. A medium-low indirect light spot works well — a few feet back from a bright window."
+    },
+    {
+      "step": 9,
+      "title": "Your First Two Weeks",
+      "instruction": "The first two weeks decide whether your terrarium takes. First 48 hours: keep it in indirect light and let it stabilise — if the glass fogs up so heavily you can't see in, crack the lid for a few hours to let it clear, and watch it doesn't overheat in any sun. A little wilting now is normal transplant shock, not a watering cue. Days 2–14: check daily for mould or walls that stay fogged solid, and resist adding water — a sealed build is still finding its balance and almost always has enough. Once condensation clears by midday on its own, you can close it up and let the cycle run."
+    }
+  ],
+  "imperial:split-tie": [
+    {
+      "step": 1,
+      "title": "Container Preparation",
+      "instruction": "Clean the container with warm water first. If necessary, clean with a small amount of dish soap and thoroughly rinse. Ensure it is fully dry before starting."
+    },
+    {
+      "step": 2,
+      "title": "Drainage Layer",
+      "instruction": "Add 0.8–1.2 in of pebbles or [[leca|LECA]] to the bottom of your container. "
+    },
+    {
+      "step": 3,
+      "title": "Separation Layer",
+      "instruction": "It's important that the [[drainage-layer|drainage layer]] be separate from the substrate. Most hobbyists opt for a fine mesh like a window screen, but you can also use a layer of [[sphagnum|sphagnum moss]]. "
+    },
+    {
+      "step": 4,
+      "title": "Substrate Layer",
+      "instruction": "Add 1.2–2 in of a standard well-draining terrarium mix. Press down on the mix gently to flatten, but try not to over compact. "
+    },
+    {
+      "step": 5,
+      "title": "Plant Placement",
+      "instruction": "Plant the tallest or deepest-rooted plants first so that you can work around them: Nerve Plant, Trailing Watermelon Begonia, Baby Tears, Rainbow Moss.  Note: Baby Tears grow fast, so leave extra room around them."
+    },
+    {
+      "step": 6,
+      "title": "Initial Watering",
+      "instruction": "Based on these plants' needs, make sure your substrate is thoroughly wetted."
+    },
+    {
+      "step": 7,
+      "title": "Sealing / Ventilation Setup",
+      "instruction": "The building process can be stressful for plants. Close the lid, but crack it open briefly each day for the first week to allow gas exchange."
+    },
+    {
+      "step": 8,
+      "title": "Light Placement",
+      "instruction": "Mixed low and medium light needs. A medium-low indirect light spot works well — a few feet back from a bright window."
+    },
+    {
+      "step": 9,
+      "title": "Your First Two Weeks",
+      "instruction": "The first two weeks decide whether your terrarium takes. First 48 hours: keep it in indirect light and let it stabilise — if the glass fogs up so heavily you can't see in, crack the lid for a few hours to let it clear, and watch it doesn't overheat in any sun. A little wilting now is normal transplant shock, not a watering cue. Days 2–14: check daily for mould or walls that stay fogged solid, and resist adding water — a sealed build is still finding its balance and almost always has enough. Once condensation clears by midday on its own, you can close it up and let the cycle run."
+    }
+  ],
+  "metric:crowded": [
+    {
+      "step": 1,
+      "title": "Container Preparation",
+      "instruction": "Clean the container with warm water first. If necessary, clean with a small amount of dish soap and thoroughly rinse. Ensure it is fully dry before starting."
+    },
+    {
+      "step": 2,
+      "title": "Drainage Layer",
+      "instruction": "Add 2-3cm of pebbles or [[leca|LECA]] to the bottom of your container. "
+    },
+    {
+      "step": 3,
+      "title": "Separation Layer",
+      "instruction": "It's important that the [[drainage-layer|drainage layer]] be separate from the substrate. Most hobbyists opt for a fine mesh like a window screen, but you can also use a layer of [[sphagnum|sphagnum moss]]. "
+    },
+    {
+      "step": 4,
+      "title": "Substrate Layer",
+      "instruction": "Add 6-8cm of a standard well-draining terrarium mix. Press down on the mix gently to flatten, but try not to over compact. "
+    },
+    {
+      "step": 5,
+      "title": "Plant Placement",
+      "instruction": "Plant the tallest or deepest-rooted plants first so that you can work around them: Polka Dot Plant, Pinstripe Calathea, Friendship Plant, Nerve Plant, Flame Violet, Baby Tears.  Note: Baby Tears, Polka Dot Plant grow fast, so leave extra room around them."
+    },
+    {
+      "step": 6,
+      "title": "Initial Watering",
+      "instruction": "Based on these plants' needs, make sure your substrate is thoroughly wetted."
+    },
+    {
+      "step": 7,
+      "title": "Sealing / Ventilation Setup",
+      "instruction": "The building process can be stressful for plants. Seal the container completely and place in indirect light for 48 hours to stabilise."
+    },
+    {
+      "step": 8,
+      "title": "Light Placement",
+      "instruction": "Place in medium light."
+    },
+    {
+      "step": 9,
+      "title": "Your First Two Weeks",
+      "instruction": "The first two weeks decide whether your terrarium takes. First 48 hours: keep it in indirect light and let it stabilise — if the glass fogs up so heavily you can't see in, crack the lid for a few hours to let it clear, and watch it doesn't overheat in any sun. A little wilting now is normal transplant shock, not a watering cue. Days 2–14: check daily for mould or walls that stay fogged solid, and resist adding water — a sealed build is still finding its balance and almost always has enough. Once condensation clears by midday on its own, you can close it up and let the cycle run."
+    }
+  ],
+  "imperial:crowded": [
+    {
+      "step": 1,
+      "title": "Container Preparation",
+      "instruction": "Clean the container with warm water first. If necessary, clean with a small amount of dish soap and thoroughly rinse. Ensure it is fully dry before starting."
+    },
+    {
+      "step": 2,
+      "title": "Drainage Layer",
+      "instruction": "Add 0.8–1.2 in of pebbles or [[leca|LECA]] to the bottom of your container. "
+    },
+    {
+      "step": 3,
+      "title": "Separation Layer",
+      "instruction": "It's important that the [[drainage-layer|drainage layer]] be separate from the substrate. Most hobbyists opt for a fine mesh like a window screen, but you can also use a layer of [[sphagnum|sphagnum moss]]. "
+    },
+    {
+      "step": 4,
+      "title": "Substrate Layer",
+      "instruction": "Add 2.4–3.1 in of a standard well-draining terrarium mix. Press down on the mix gently to flatten, but try not to over compact. "
+    },
+    {
+      "step": 5,
+      "title": "Plant Placement",
+      "instruction": "Plant the tallest or deepest-rooted plants first so that you can work around them: Polka Dot Plant, Pinstripe Calathea, Friendship Plant, Nerve Plant, Flame Violet, Baby Tears.  Note: Baby Tears, Polka Dot Plant grow fast, so leave extra room around them."
+    },
+    {
+      "step": 6,
+      "title": "Initial Watering",
+      "instruction": "Based on these plants' needs, make sure your substrate is thoroughly wetted."
+    },
+    {
+      "step": 7,
+      "title": "Sealing / Ventilation Setup",
+      "instruction": "The building process can be stressful for plants. Seal the container completely and place in indirect light for 48 hours to stabilise."
+    },
+    {
+      "step": 8,
+      "title": "Light Placement",
+      "instruction": "Place in medium light."
+    },
+    {
+      "step": 9,
+      "title": "Your First Two Weeks",
+      "instruction": "The first two weeks decide whether your terrarium takes. First 48 hours: keep it in indirect light and let it stabilise — if the glass fogs up so heavily you can't see in, crack the lid for a few hours to let it clear, and watch it doesn't overheat in any sun. A little wilting now is normal transplant shock, not a watering cue. Days 2–14: check daily for mould or walls that stay fogged solid, and resist adding water — a sealed build is still finding its balance and almost always has enough. Once condensation clears by midday on its own, you can close it up and let the cycle run."
+    }
+  ],
+  "metric:sparse-fields": [
+    {
+      "step": 1,
+      "title": "Container Preparation",
+      "instruction": "Clean the container with warm water first. If necessary, clean with a small amount of dish soap and thoroughly rinse. Ensure it is fully dry before starting."
+    },
+    {
+      "step": 2,
+      "title": "Drainage Layer",
+      "instruction": "Add 1cm of pebbles or [[leca|LECA]] to the bottom of your container. "
+    },
+    {
+      "step": 3,
+      "title": "Separation Layer",
+      "instruction": "It's important that the [[drainage-layer|drainage layer]] be separate from the substrate. Most hobbyists opt for a fine mesh like a window screen, but you can also use a layer of [[sphagnum|sphagnum moss]]. "
+    },
+    {
+      "step": 4,
+      "title": "Substrate Layer",
+      "instruction": "Add 3-5cm of a standard well-draining terrarium mix. Press down on the mix gently to flatten, but try not to over compact. "
+    },
+    {
+      "step": 5,
+      "title": "Plant Placement",
+      "instruction": "Plant the tallest or deepest-rooted plants first so that you can work around them: Zebra Haworthia, Air Plant. "
+    },
+    {
+      "step": 6,
+      "title": "Initial Watering",
+      "instruction": "Based on these plants' needs, give the terrarium a gentle misting."
+    },
+    {
+      "step": 7,
+      "title": "Sealing / Ventilation Setup",
+      "instruction": "No sealing needed. Monitor [[humidity]] closely during the first week."
+    },
+    {
+      "step": 8,
+      "title": "Light Placement",
+      "instruction": "Place in bright indirect light."
+    },
+    {
+      "step": 9,
+      "title": "Your First Two Weeks",
+      "instruction": "The first two weeks decide whether your terrarium takes. Keep it in bright, indirect light and let the plants settle — a little wilting at first is normal transplant shock, not a watering cue. Over the next fortnight, check daily that the substrate stays evenly moist (an open build dries far faster than a closed one) and watch new growth for signs the light or [[humidity]] needs nudging. Mist if the foliage looks dry between waterings."
+    }
+  ],
+  "imperial:sparse-fields": [
+    {
+      "step": 1,
+      "title": "Container Preparation",
+      "instruction": "Clean the container with warm water first. If necessary, clean with a small amount of dish soap and thoroughly rinse. Ensure it is fully dry before starting."
+    },
+    {
+      "step": 2,
+      "title": "Drainage Layer",
+      "instruction": "Add 0.4 in of pebbles or [[leca|LECA]] to the bottom of your container. "
+    },
+    {
+      "step": 3,
+      "title": "Separation Layer",
+      "instruction": "It's important that the [[drainage-layer|drainage layer]] be separate from the substrate. Most hobbyists opt for a fine mesh like a window screen, but you can also use a layer of [[sphagnum|sphagnum moss]]. "
+    },
+    {
+      "step": 4,
+      "title": "Substrate Layer",
+      "instruction": "Add 1.2–2 in of a standard well-draining terrarium mix. Press down on the mix gently to flatten, but try not to over compact. "
+    },
+    {
+      "step": 5,
+      "title": "Plant Placement",
+      "instruction": "Plant the tallest or deepest-rooted plants first so that you can work around them: Zebra Haworthia, Air Plant. "
+    },
+    {
+      "step": 6,
+      "title": "Initial Watering",
+      "instruction": "Based on these plants' needs, give the terrarium a gentle misting."
+    },
+    {
+      "step": 7,
+      "title": "Sealing / Ventilation Setup",
+      "instruction": "No sealing needed. Monitor [[humidity]] closely during the first week."
+    },
+    {
+      "step": 8,
+      "title": "Light Placement",
+      "instruction": "Place in bright indirect light."
+    },
+    {
+      "step": 9,
+      "title": "Your First Two Weeks",
+      "instruction": "The first two weeks decide whether your terrarium takes. Keep it in bright, indirect light and let the plants settle — a little wilting at first is normal transplant shock, not a watering cue. Over the next fortnight, check daily that the substrate stays evenly moist (an open build dries far faster than a closed one) and watch new growth for signs the light or [[humidity]] needs nudging. Mist if the foliage looks dry between waterings."
+    }
+  ],
+  "metric:micro-sealed-gas": [
+    {
+      "step": 1,
+      "title": "Container Preparation",
+      "instruction": "Clean the container with warm water first. If necessary, clean with a small amount of dish soap and thoroughly rinse. Ensure it is fully dry before starting."
+    },
+    {
+      "step": 2,
+      "title": "Substrate Layer",
+      "instruction": "Add 3-5cm of a standard well-draining terrarium mix. Press down on the mix gently to flatten, but try not to over compact. "
+    },
+    {
+      "step": 3,
+      "title": "Plant Placement",
+      "instruction": "Plant the tallest or deepest-rooted plants first so that you can work around them: Nerve Plant, Baby Tears.  Note: Baby Tears grow fast, so leave extra room around them."
+    },
+    {
+      "step": 4,
+      "title": "Initial Watering",
+      "instruction": "Based on these plants' needs, make sure your substrate is thoroughly wetted."
+    },
+    {
+      "step": 5,
+      "title": "Sealing / Ventilation Setup",
+      "instruction": "The building process can be stressful for plants. Seal the container completely and place in indirect light for 48 hours to stabilise."
+    },
+    {
+      "step": 6,
+      "title": "Light Placement",
+      "instruction": "Place in medium light."
+    },
+    {
+      "step": 7,
+      "title": "Your First Two Weeks",
+      "instruction": "The first two weeks decide whether your terrarium takes. First 48 hours: keep it in indirect light and let it stabilise — if the glass fogs up so heavily you can't see in, crack the lid for a few hours to let it clear, and watch it doesn't overheat in any sun. A little wilting now is normal transplant shock, not a watering cue. Days 2–14: check daily for mould or walls that stay fogged solid, and resist adding water — a sealed build is still finding its balance and almost always has enough. Once condensation clears by midday on its own, you can close it up and let the cycle run."
+    }
+  ],
+  "imperial:micro-sealed-gas": [
+    {
+      "step": 1,
+      "title": "Container Preparation",
+      "instruction": "Clean the container with warm water first. If necessary, clean with a small amount of dish soap and thoroughly rinse. Ensure it is fully dry before starting."
+    },
+    {
+      "step": 2,
+      "title": "Substrate Layer",
+      "instruction": "Add 1.2–2 in of a standard well-draining terrarium mix. Press down on the mix gently to flatten, but try not to over compact. "
+    },
+    {
+      "step": 3,
+      "title": "Plant Placement",
+      "instruction": "Plant the tallest or deepest-rooted plants first so that you can work around them: Nerve Plant, Baby Tears.  Note: Baby Tears grow fast, so leave extra room around them."
+    },
+    {
+      "step": 4,
+      "title": "Initial Watering",
+      "instruction": "Based on these plants' needs, make sure your substrate is thoroughly wetted."
+    },
+    {
+      "step": 5,
+      "title": "Sealing / Ventilation Setup",
+      "instruction": "The building process can be stressful for plants. Seal the container completely and place in indirect light for 48 hours to stabilise."
+    },
+    {
+      "step": 6,
+      "title": "Light Placement",
+      "instruction": "Place in medium light."
+    },
+    {
+      "step": 7,
+      "title": "Your First Two Weeks",
+      "instruction": "The first two weeks decide whether your terrarium takes. First 48 hours: keep it in indirect light and let it stabilise — if the glass fogs up so heavily you can't see in, crack the lid for a few hours to let it clear, and watch it doesn't overheat in any sun. A little wilting now is normal transplant shock, not a watering cue. Days 2–14: check daily for mould or walls that stay fogged solid, and resist adding water — a sealed build is still finding its balance and almost always has enough. Once condensation clears by midday on its own, you can close it up and let the cycle run."
+    }
+  ],
+  "metric:full-fat-export-build": [
+    {
+      "step": 1,
+      "title": "Container Preparation",
+      "instruction": "Clean the container with warm water first. If necessary, clean with a small amount of dish soap and thoroughly rinse. Ensure it is fully dry before starting."
+    },
+    {
+      "step": 2,
+      "title": "Drainage Layer",
+      "instruction": "Add 2 cm of pebbles or [[leca|LECA]] to the bottom of your container. "
+    },
+    {
+      "step": 3,
+      "title": "Separation Layer",
+      "instruction": "It's important that the [[drainage-layer|drainage layer]] be separate from the substrate. Most hobbyists opt for a fine mesh like a window screen, but you can also use a layer of [[sphagnum|sphagnum moss]]. "
+    },
+    {
+      "step": 4,
+      "title": "Charcoal Layer",
+      "instruction": "Add 1.5 cm of [[horticultural-charcoal|horticultural charcoal]] over the separation layer. Charcoal traps impurities and keeps the water cycle fresh. This is especially important if you are not using rain or distilled water. "
+    },
+    {
+      "step": 5,
+      "title": "Substrate Layer",
+      "instruction": "Add 6 cm of your custom mix: 2 parts coco coir, 1 part perlite, 1 part sphagnum moss — a moisture-retentive, airy blend. Press down on the blend gently to flatten, but try not to over compact. "
+    },
+    {
+      "step": 6,
+      "title": "Plant Placement",
+      "instruction": "Plant the tallest or deepest-rooted plants first so that you can work around them: Pinstripe Calathea, Maidenhair Fern, Nerve Plant. "
+    },
+    {
+      "step": 7,
+      "title": "Initial Watering",
+      "instruction": "Based on these plants' needs, make sure your substrate is thoroughly wetted."
+    },
+    {
+      "step": 8,
+      "title": "Sealing / Ventilation Setup",
+      "instruction": "The building process can be stressful for plants. Close the lid, but crack it open briefly each day for the first week to allow gas exchange."
+    },
+    {
+      "step": 9,
+      "title": "Light Placement",
+      "instruction": "Place in medium light."
+    },
+    {
+      "step": 10,
+      "title": "Your First Two Weeks",
+      "instruction": "The first two weeks decide whether your terrarium takes. First 48 hours: keep it in indirect light and let it stabilise — if the glass fogs up so heavily you can't see in, crack the lid for a few hours to let it clear, and watch it doesn't overheat in any sun. A little wilting now is normal transplant shock, not a watering cue. Days 2–14: check daily for mould or walls that stay fogged solid, and resist adding water — a sealed build is still finding its balance and almost always has enough. Once condensation clears by midday on its own, you can close it up and let the cycle run."
+    }
+  ],
+  "imperial:full-fat-export-build": [
+    {
+      "step": 1,
+      "title": "Container Preparation",
+      "instruction": "Clean the container with warm water first. If necessary, clean with a small amount of dish soap and thoroughly rinse. Ensure it is fully dry before starting."
+    },
+    {
+      "step": 2,
+      "title": "Drainage Layer",
+      "instruction": "Add 0.8 in of pebbles or [[leca|LECA]] to the bottom of your container. "
+    },
+    {
+      "step": 3,
+      "title": "Separation Layer",
+      "instruction": "It's important that the [[drainage-layer|drainage layer]] be separate from the substrate. Most hobbyists opt for a fine mesh like a window screen, but you can also use a layer of [[sphagnum|sphagnum moss]]. "
+    },
+    {
+      "step": 4,
+      "title": "Charcoal Layer",
+      "instruction": "Add 0.6 in of [[horticultural-charcoal|horticultural charcoal]] over the separation layer. Charcoal traps impurities and keeps the water cycle fresh. This is especially important if you are not using rain or distilled water. "
+    },
+    {
+      "step": 5,
+      "title": "Substrate Layer",
+      "instruction": "Add 2.4 in of your custom mix: 2 parts coco coir, 1 part perlite, 1 part sphagnum moss — a moisture-retentive, airy blend. Press down on the blend gently to flatten, but try not to over compact. "
+    },
+    {
+      "step": 6,
+      "title": "Plant Placement",
+      "instruction": "Plant the tallest or deepest-rooted plants first so that you can work around them: Pinstripe Calathea, Maidenhair Fern, Nerve Plant. "
+    },
+    {
+      "step": 7,
+      "title": "Initial Watering",
+      "instruction": "Based on these plants' needs, make sure your substrate is thoroughly wetted."
+    },
+    {
+      "step": 8,
+      "title": "Sealing / Ventilation Setup",
+      "instruction": "The building process can be stressful for plants. Close the lid, but crack it open briefly each day for the first week to allow gas exchange."
+    },
+    {
+      "step": 9,
+      "title": "Light Placement",
+      "instruction": "Place in medium light."
+    },
+    {
+      "step": 10,
+      "title": "Your First Two Weeks",
+      "instruction": "The first two weeks decide whether your terrarium takes. First 48 hours: keep it in indirect light and let it stabilise — if the glass fogs up so heavily you can't see in, crack the lid for a few hours to let it clear, and watch it doesn't overheat in any sun. A little wilting now is normal transplant shock, not a watering cue. Days 2–14: check daily for mould or walls that stay fogged solid, and resist adding water — a sealed build is still finding its balance and almost always has enough. Once condensation clears by midday on its own, you can close it up and let the cycle run."
+    }
+  ],
+  "metric:zero-drainage": [
+    {
+      "step": 1,
+      "title": "Container Preparation",
+      "instruction": "Clean the container with warm water first. If necessary, clean with a small amount of dish soap and thoroughly rinse. Ensure it is fully dry before starting."
+    },
+    {
+      "step": 2,
+      "title": "Substrate Layer",
+      "instruction": "Add 6-8cm of a standard well-draining terrarium mix. Press down on the mix gently to flatten, but try not to over compact. "
+    },
+    {
+      "step": 3,
+      "title": "Plant Placement",
+      "instruction": "Plant the tallest or deepest-rooted plants first so that you can work around them: Pinstripe Calathea, Maidenhair Fern, Nerve Plant. "
+    },
+    {
+      "step": 4,
+      "title": "Initial Watering",
+      "instruction": "Based on these plants' needs, make sure your substrate is thoroughly wetted."
+    },
+    {
+      "step": 5,
+      "title": "Sealing / Ventilation Setup",
+      "instruction": "The building process can be stressful for plants. Close the lid, but crack it open briefly each day for the first week to allow gas exchange."
+    },
+    {
+      "step": 6,
+      "title": "Light Placement",
+      "instruction": "Place in medium light."
+    },
+    {
+      "step": 7,
+      "title": "Your First Two Weeks",
+      "instruction": "The first two weeks decide whether your terrarium takes. First 48 hours: keep it in indirect light and let it stabilise — if the glass fogs up so heavily you can't see in, crack the lid for a few hours to let it clear, and watch it doesn't overheat in any sun. A little wilting now is normal transplant shock, not a watering cue. Days 2–14: check daily for mould or walls that stay fogged solid, and resist adding water — a sealed build is still finding its balance and almost always has enough. Once condensation clears by midday on its own, you can close it up and let the cycle run."
+    }
+  ],
+  "guide:empty-throws": {
+    "threw": true,
+    "message": "At least one plant must be provided to generate a build guide."
+  }
+}

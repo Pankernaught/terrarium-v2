@@ -1,0 +1,763 @@
+{
+  "verdict:closed-tropical-rect": {
+    "band": "healthy",
+    "sentence": "A thriving ecosystem — every plant suits this setup.",
+    "issueCount": 0
+  },
+  "scoreBuild:closed-tropical-rect": {
+    "score": 100,
+    "band": "healthy",
+    "report": {
+      "overallScore": 100,
+      "plantScores": [
+        {
+          "slug": "fittonia-albivenis",
+          "score": 100,
+          "conflicts": [],
+          "survivalCritical": false
+        },
+        {
+          "slug": "calathea-ornata",
+          "score": 100,
+          "conflicts": [],
+          "survivalCritical": false
+        },
+        {
+          "slug": "adiantum-raddianum",
+          "score": 100,
+          "conflicts": [],
+          "survivalCritical": false
+        },
+        {
+          "slug": "episcia-cupreata",
+          "score": 100,
+          "conflicts": [],
+          "survivalCritical": false
+        }
+      ],
+      "consensus": {
+        "light": "medium",
+        "soilMoisture": "moist",
+        "phPreference": "acidic",
+        "humidity": [
+          70,
+          85
+        ],
+        "temperature": [
+          20,
+          24
+        ]
+      },
+      "buildWarnings": [],
+      "envEnvelope": {
+        "humidityMin": 70,
+        "humidityMax": 85,
+        "tempMin": 20,
+        "tempMax": 24,
+        "compatibleLights": [
+          "medium"
+        ],
+        "compatibleMoisture": [
+          "moist"
+        ]
+      }
+    },
+    "verdict": {
+      "band": "healthy",
+      "sentence": "A thriving ecosystem — every plant suits this setup.",
+      "issueCount": 0
+    },
+    "diagnostic": null,
+    "empty": false
+  },
+  "verdict:open-arid-cyl": {
+    "band": "healthy",
+    "sentence": "Mostly healthy — Mexican Snowball only meets the build's Bright Indirect light through a secondary tolerance — keep an eye on it.",
+    "issueCount": 1
+  },
+  "scoreBuild:open-arid-cyl": {
+    "score": 85,
+    "band": "healthy",
+    "report": {
+      "overallScore": 85,
+      "plantScores": [
+        {
+          "slug": "haworthia-attenuata",
+          "score": 100,
+          "conflicts": [],
+          "survivalCritical": false
+        },
+        {
+          "slug": "echeveria-elegans",
+          "score": 85,
+          "conflicts": [
+            {
+              "factor": "light",
+              "severity": "caution",
+              "message": "Mexican Snowball only meets the build's Bright Indirect light through a secondary tolerance — keep an eye on it.",
+              "affectedPlants": [
+                "echeveria-elegans"
+              ],
+              "viaSecondary": true
+            }
+          ],
+          "survivalCritical": false
+        },
+        {
+          "slug": "crassula-ovata-mini",
+          "score": 100,
+          "conflicts": [],
+          "survivalCritical": false
+        }
+      ],
+      "consensus": {
+        "light": "bright-indirect",
+        "soilMoisture": "dry",
+        "phPreference": "neutral",
+        "humidity": [
+          20,
+          40
+        ],
+        "temperature": [
+          10,
+          30
+        ]
+      },
+      "buildWarnings": [],
+      "envEnvelope": {
+        "humidityMin": 20,
+        "humidityMax": 40,
+        "tempMin": 10,
+        "tempMax": 30,
+        "compatibleLights": [
+          "bright-indirect",
+          "direct",
+          "medium"
+        ],
+        "compatibleMoisture": [
+          "dry"
+        ]
+      }
+    },
+    "verdict": {
+      "band": "healthy",
+      "sentence": "Mostly healthy — Mexican Snowball only meets the build's Bright Indirect light through a secondary tolerance — keep an eye on it.",
+      "issueCount": 1
+    },
+    "diagnostic": null,
+    "empty": false
+  },
+  "verdict:tall-cylinder": {
+    "band": "healthy",
+    "sentence": "Mostly healthy — 4 plants share 113 cm² of floor. They may compete for space, monitor for overcrowding.",
+    "issueCount": 1
+  },
+  "scoreBuild:tall-cylinder": {
+    "score": 95,
+    "band": "healthy",
+    "report": {
+      "overallScore": 95,
+      "plantScores": [
+        {
+          "slug": "fittonia-albivenis",
+          "score": 100,
+          "conflicts": [],
+          "survivalCritical": false
+        },
+        {
+          "slug": "soleirolia-soleirolii",
+          "score": 100,
+          "conflicts": [],
+          "survivalCritical": false
+        },
+        {
+          "slug": "episcia-cupreata",
+          "score": 100,
+          "conflicts": [],
+          "survivalCritical": false
+        },
+        {
+          "slug": "pilea-involucrata",
+          "score": 100,
+          "conflicts": [],
+          "survivalCritical": false
+        }
+      ],
+      "consensus": {
+        "light": "medium",
+        "soilMoisture": "moist",
+        "phPreference": "acidic",
+        "humidity": [
+          70,
+          80
+        ],
+        "temperature": [
+          20,
+          24
+        ]
+      },
+      "buildWarnings": [
+        {
+          "factor": "crowding",
+          "severity": "caution",
+          "message": "4 plants share 113 cm² of floor. They may compete for space, monitor for overcrowding.",
+          "affectedPlants": [
+            "fittonia-albivenis",
+            "soleirolia-soleirolii",
+            "episcia-cupreata",
+            "pilea-involucrata"
+          ]
+        }
+      ],
+      "envEnvelope": {
+        "humidityMin": 70,
+        "humidityMax": 80,
+        "tempMin": 20,
+        "tempMax": 24,
+        "compatibleLights": [
+          "medium"
+        ],
+        "compatibleMoisture": [
+          "moist"
+        ]
+      }
+    },
+    "verdict": {
+      "band": "healthy",
+      "sentence": "Mostly healthy — 4 plants share 113 cm² of floor. They may compete for space, monitor for overcrowding.",
+      "issueCount": 1
+    },
+    "diagnostic": null,
+    "empty": false
+  },
+  "verdict:single-plant": {
+    "band": "healthy",
+    "sentence": "A thriving ecosystem — every plant suits this setup.",
+    "issueCount": 0
+  },
+  "scoreBuild:single-plant": {
+    "score": 100,
+    "band": "healthy",
+    "report": {
+      "overallScore": 100,
+      "plantScores": [
+        {
+          "slug": "fittonia-albivenis",
+          "score": 100,
+          "conflicts": [],
+          "survivalCritical": false
+        }
+      ],
+      "consensus": {
+        "light": "medium",
+        "soilMoisture": "moist",
+        "phPreference": "acidic",
+        "humidity": [
+          70,
+          90
+        ],
+        "temperature": [
+          18,
+          27
+        ]
+      },
+      "buildWarnings": [],
+      "envEnvelope": {
+        "humidityMin": 70,
+        "humidityMax": 90,
+        "tempMin": 18,
+        "tempMax": 27,
+        "compatibleLights": [
+          "medium"
+        ],
+        "compatibleMoisture": [
+          "moist"
+        ]
+      }
+    },
+    "verdict": {
+      "band": "healthy",
+      "sentence": "A thriving ecosystem — every plant suits this setup.",
+      "issueCount": 0
+    },
+    "diagnostic": null,
+    "empty": false
+  },
+  "verdict:survival-clamp": {
+    "band": "critical",
+    "sentence": "Needs attention — Mexican Snowball needs Direct light, but this build is Medium — direct sun through glass cooks shade plants. One won't make it.",
+    "issueCount": 5
+  },
+  "scoreBuild:survival-clamp": {
+    "score": 0,
+    "band": "critical",
+    "report": {
+      "overallScore": 0,
+      "plantScores": [
+        {
+          "slug": "fittonia-albivenis",
+          "score": 100,
+          "conflicts": [],
+          "survivalCritical": false
+        },
+        {
+          "slug": "calathea-ornata",
+          "score": 100,
+          "conflicts": [],
+          "survivalCritical": false
+        },
+        {
+          "slug": "adiantum-raddianum",
+          "score": 100,
+          "conflicts": [],
+          "survivalCritical": false
+        },
+        {
+          "slug": "echeveria-elegans",
+          "score": 0,
+          "conflicts": [
+            {
+              "factor": "light",
+              "severity": "incompatible",
+              "message": "Mexican Snowball needs Direct light, but this build is Medium — direct sun through glass cooks shade plants. One won't make it.",
+              "affectedPlants": [
+                "echeveria-elegans"
+              ]
+            },
+            {
+              "factor": "humidity",
+              "severity": "incompatible",
+              "message": "Mexican Snowball needs 10–40% humidity, outside the build's 70–90% — one or both will struggle.",
+              "affectedPlants": [
+                "echeveria-elegans"
+              ]
+            },
+            {
+              "factor": "container_type",
+              "severity": "incompatible",
+              "message": "Mexican Snowball needs airflow, so it is not suitable for a closed or lidded terrarium.",
+              "affectedPlants": [
+                "echeveria-elegans"
+              ]
+            },
+            {
+              "factor": "soil_moisture",
+              "severity": "caution",
+              "message": "Mexican Snowball prefers Dry soil but the build is Moist — two steps off, watch it.",
+              "affectedPlants": [
+                "echeveria-elegans"
+              ]
+            },
+            {
+              "factor": "soil_ph",
+              "severity": "caution",
+              "message": "Mexican Snowball prefers Neutral substrate; the build is Acidic — a near-neutral mix keeps both within tolerance.",
+              "affectedPlants": [
+                "echeveria-elegans"
+              ]
+            }
+          ],
+          "survivalCritical": true
+        }
+      ],
+      "consensus": {
+        "light": "medium",
+        "soilMoisture": "moist",
+        "phPreference": "acidic",
+        "humidity": [
+          70,
+          90
+        ],
+        "temperature": [
+          18,
+          24
+        ]
+      },
+      "buildWarnings": [],
+      "envEnvelope": {
+        "humidityMin": 70,
+        "humidityMax": 40,
+        "tempMin": 18,
+        "tempMax": 24,
+        "compatibleLights": [
+          "bright-indirect",
+          "direct",
+          "medium"
+        ],
+        "compatibleMoisture": [
+          "dry",
+          "moist"
+        ]
+      }
+    },
+    "verdict": {
+      "band": "critical",
+      "sentence": "Needs attention — Mexican Snowball needs Direct light, but this build is Medium — direct sun through glass cooks shade plants. One won't make it.",
+      "issueCount": 5
+    },
+    "diagnostic": null,
+    "empty": false
+  },
+  "verdict:split-tie": {
+    "band": "healthy",
+    "sentence": "Mostly healthy — Light is split between Medium / Low with no clear majority — pick a dominant level.",
+    "issueCount": 1
+  },
+  "scoreBuild:split-tie": {
+    "score": 95,
+    "band": "healthy",
+    "report": {
+      "overallScore": 95,
+      "plantScores": [
+        {
+          "slug": "fittonia-albivenis",
+          "score": 100,
+          "conflicts": [],
+          "survivalCritical": false
+        },
+        {
+          "slug": "soleirolia-soleirolii",
+          "score": 100,
+          "conflicts": [],
+          "survivalCritical": false
+        },
+        {
+          "slug": "selaginella-uncinata",
+          "score": 100,
+          "conflicts": [],
+          "survivalCritical": false
+        },
+        {
+          "slug": "pellionia-repens",
+          "score": 100,
+          "conflicts": [],
+          "survivalCritical": false
+        }
+      ],
+      "consensus": {
+        "light": "split",
+        "soilMoisture": "moist",
+        "phPreference": "acidic",
+        "humidity": [
+          80,
+          90
+        ],
+        "temperature": [
+          18,
+          24
+        ]
+      },
+      "buildWarnings": [
+        {
+          "factor": "light",
+          "severity": "caution",
+          "message": "Light is split between Medium / Low with no clear majority — pick a dominant level.",
+          "affectedPlants": [
+            "fittonia-albivenis",
+            "soleirolia-soleirolii",
+            "selaginella-uncinata",
+            "pellionia-repens"
+          ]
+        }
+      ],
+      "envEnvelope": {
+        "humidityMin": 80,
+        "humidityMax": 90,
+        "tempMin": 18,
+        "tempMax": 24,
+        "compatibleLights": [
+          "low",
+          "medium"
+        ],
+        "compatibleMoisture": [
+          "moist"
+        ]
+      }
+    },
+    "verdict": {
+      "band": "healthy",
+      "sentence": "Mostly healthy — Light is split between Medium / Low with no clear majority — pick a dominant level.",
+      "issueCount": 1
+    },
+    "diagnostic": null,
+    "empty": false
+  },
+  "verdict:crowded": {
+    "band": "critical",
+    "sentence": "Needs attention — 6 plants share only 100 cm² of floor.  They'll compete for root space in this overcrowded environment. ",
+    "issueCount": 1
+  },
+  "scoreBuild:crowded": {
+    "score": 20,
+    "band": "critical",
+    "report": {
+      "overallScore": 20,
+      "plantScores": [
+        {
+          "slug": "fittonia-albivenis",
+          "score": 100,
+          "conflicts": [],
+          "survivalCritical": false
+        },
+        {
+          "slug": "soleirolia-soleirolii",
+          "score": 100,
+          "conflicts": [],
+          "survivalCritical": false
+        },
+        {
+          "slug": "episcia-cupreata",
+          "score": 100,
+          "conflicts": [],
+          "survivalCritical": false
+        },
+        {
+          "slug": "pilea-involucrata",
+          "score": 100,
+          "conflicts": [],
+          "survivalCritical": false
+        },
+        {
+          "slug": "hypoestes-phyllostachya",
+          "score": 100,
+          "conflicts": [],
+          "survivalCritical": false
+        },
+        {
+          "slug": "calathea-ornata",
+          "score": 100,
+          "conflicts": [],
+          "survivalCritical": false
+        }
+      ],
+      "consensus": {
+        "light": "medium",
+        "soilMoisture": "moist",
+        "phPreference": "acidic",
+        "humidity": [
+          70,
+          80
+        ],
+        "temperature": [
+          20,
+          24
+        ]
+      },
+      "buildWarnings": [
+        {
+          "factor": "crowding",
+          "severity": "incompatible",
+          "message": "6 plants share only 100 cm² of floor.  They'll compete for root space in this overcrowded environment. ",
+          "affectedPlants": [
+            "fittonia-albivenis",
+            "soleirolia-soleirolii",
+            "episcia-cupreata",
+            "pilea-involucrata",
+            "hypoestes-phyllostachya",
+            "calathea-ornata"
+          ]
+        }
+      ],
+      "envEnvelope": {
+        "humidityMin": 70,
+        "humidityMax": 80,
+        "tempMin": 20,
+        "tempMax": 24,
+        "compatibleLights": [
+          "medium"
+        ],
+        "compatibleMoisture": [
+          "moist"
+        ]
+      }
+    },
+    "verdict": {
+      "band": "critical",
+      "sentence": "Needs attention — 6 plants share only 100 cm² of floor.  They'll compete for root space in this overcrowded environment. ",
+      "issueCount": 1
+    },
+    "diagnostic": null,
+    "empty": false
+  },
+  "verdict:sparse-fields": {
+    "band": "healthy",
+    "sentence": "A thriving ecosystem — every plant suits this setup.",
+    "issueCount": 0
+  },
+  "scoreBuild:sparse-fields": {
+    "score": 100,
+    "band": "healthy",
+    "report": {
+      "overallScore": 100,
+      "plantScores": [
+        {
+          "slug": "tillandsia-ionantha",
+          "score": 100,
+          "conflicts": [],
+          "survivalCritical": false
+        },
+        {
+          "slug": "haworthia-attenuata",
+          "score": 100,
+          "conflicts": [],
+          "survivalCritical": false
+        }
+      ],
+      "consensus": {
+        "light": "bright-indirect",
+        "soilMoisture": "dry",
+        "phPreference": "neutral",
+        "humidity": [
+          40,
+          50
+        ],
+        "temperature": [
+          10,
+          32
+        ]
+      },
+      "buildWarnings": [],
+      "envEnvelope": {
+        "humidityMin": 40,
+        "humidityMax": 50,
+        "tempMin": 10,
+        "tempMax": 32,
+        "compatibleLights": [
+          "bright-indirect",
+          "direct",
+          "medium"
+        ],
+        "compatibleMoisture": [
+          "dry"
+        ]
+      }
+    },
+    "verdict": {
+      "band": "healthy",
+      "sentence": "A thriving ecosystem — every plant suits this setup.",
+      "issueCount": 0
+    },
+    "diagnostic": null,
+    "empty": false
+  },
+  "verdict:micro-sealed-gas": {
+    "band": "healthy",
+    "sentence": "Mostly healthy — Baby Tears grows fast and may deplete CO₂ quickly in this micro sealed container.",
+    "issueCount": 1
+  },
+  "scoreBuild:micro-sealed-gas": {
+    "score": 95,
+    "band": "healthy",
+    "report": {
+      "overallScore": 95,
+      "plantScores": [
+        {
+          "slug": "soleirolia-soleirolii",
+          "score": 95,
+          "conflicts": [
+            {
+              "factor": "gas_exchange",
+              "severity": "caution",
+              "message": "Baby Tears grows fast and may deplete CO₂ quickly in this micro sealed container.",
+              "affectedPlants": [
+                "soleirolia-soleirolii"
+              ]
+            }
+          ],
+          "survivalCritical": false
+        },
+        {
+          "slug": "fittonia-albivenis",
+          "score": 100,
+          "conflicts": [],
+          "survivalCritical": false
+        }
+      ],
+      "consensus": {
+        "light": "medium",
+        "soilMoisture": "moist",
+        "phPreference": "acidic",
+        "humidity": [
+          70,
+          90
+        ],
+        "temperature": [
+          18,
+          24
+        ]
+      },
+      "buildWarnings": [],
+      "envEnvelope": {
+        "humidityMin": 70,
+        "humidityMax": 90,
+        "tempMin": 18,
+        "tempMax": 24,
+        "compatibleLights": [
+          "medium"
+        ],
+        "compatibleMoisture": [
+          "moist"
+        ]
+      }
+    },
+    "verdict": {
+      "band": "healthy",
+      "sentence": "Mostly healthy — Baby Tears grows fast and may deplete CO₂ quickly in this micro sealed container.",
+      "issueCount": 1
+    },
+    "diagnostic": null,
+    "empty": false
+  },
+  "verdict:plantCount-0": {
+    "band": "healthy",
+    "sentence": "No plants yet — add a few and see how your ecosystem balances.",
+    "issueCount": 0
+  },
+  "scoreBuild:empty-build": {
+    "score": 100,
+    "band": "healthy",
+    "report": null,
+    "verdict": {
+      "band": "healthy",
+      "sentence": "No plants yet — add a few to see how they balance.",
+      "issueCount": 0
+    },
+    "diagnostic": null,
+    "empty": true
+  },
+  "scoreBuild:unknown-slug": {
+    "score": null,
+    "band": null,
+    "report": null,
+    "verdict": null,
+    "empty": false,
+    "diagnostic": "Missing plant data for: not-a-real-plant. The plant catalog may be out of date."
+  },
+  "scoreBuild:no-container": {
+    "score": null,
+    "band": null,
+    "report": null,
+    "verdict": null,
+    "empty": false,
+    "diagnostic": "This build has no container, so it can’t be scored yet."
+  },
+  "scoreBuild:bad-dimensions-throws": {
+    "threw": true,
+    "message": "Rectangular container needs positive length/width/height."
+  },
+  "ecoBand": {
+    "0": "critical",
+    "19": "critical",
+    "20": "critical",
+    "49": "critical",
+    "50": "caution",
+    "79": "caution",
+    "80": "healthy",
+    "100": "healthy"
+  },
+  "ecoBandLabel": {
+    "healthy": "Healthy",
+    "caution": "Caution",
+    "critical": "Needs attention"
+  }
+}

@@ -1,0 +1,207 @@
+{
+  "fine-shallow-pwt": {
+    "stats": {
+      "aeration": 0.3333333333333333,
+      "waterRetention": 0.9166666666666666,
+      "nutrient": 0.5833333333333333,
+      "buffering": 0.5833333333333333
+    },
+    "character": "moisture-retentive",
+    "recipe": "2 parts peat, 1 part potting soil",
+    "perchedWaterTable": {
+      "6": {
+        "perchedHeightCm": 5.5,
+        "saturatedFraction": 0.9166666666666666
+      },
+      "12": {
+        "perchedHeightCm": 5.5,
+        "saturatedFraction": 0.4583333333333333
+      }
+    }
+  },
+  "packed-tropical": {
+    "stats": {
+      "aeration": 0.65625,
+      "waterRetention": 0.7265625,
+      "nutrient": 0.3125,
+      "buffering": 0.5
+    },
+    "character": "moisture-retentive, airy",
+    "recipe": "2 parts coco coir, 1 part perlite, 1 part sphagnum moss",
+    "perchedWaterTable": {
+      "6": {
+        "perchedHeightCm": 3.3,
+        "saturatedFraction": 0.5499999999999999
+      }
+    }
+  },
+  "akadama-mineral": {
+    "stats": {
+      "aeration": 0.46875,
+      "waterRetention": 0.71875,
+      "nutrient": 0.0625,
+      "buffering": 0.4375
+    },
+    "character": "moisture-retentive",
+    "recipe": "2 parts akadama, 1 part orchid bark, 1 part pumice",
+    "perchedWaterTable": {
+      "6": {
+        "perchedHeightCm": 2.9,
+        "saturatedFraction": 0.48333333333333334
+      }
+    }
+  },
+  "single-component": {
+    "stats": {
+      "aeration": 0.25,
+      "waterRetention": 1,
+      "nutrient": 0.5,
+      "buffering": 0.5
+    },
+    "character": "moisture-retentive",
+    "recipe": "3 parts peat",
+    "perchedWaterTable": {
+      "6": {
+        "perchedHeightCm": 5.5,
+        "saturatedFraction": 0.9166666666666666
+      }
+    }
+  },
+  "empty-mix": {
+    "stats": null,
+    "character": "well-balanced",
+    "recipe": "",
+    "perchedWaterTable": {
+      "0": null,
+      "6": null
+    }
+  },
+  "unknown-id-ignored": {
+    "stats": {
+      "aeration": 0.25,
+      "waterRetention": 1,
+      "nutrient": 0.5,
+      "buffering": 0.5
+    },
+    "character": "moisture-retentive",
+    "recipe": "1 part peat",
+    "perchedWaterTable": {
+      "6": {
+        "perchedHeightCm": 5.5,
+        "saturatedFraction": 0.9166666666666666
+      }
+    }
+  },
+  "matrix-constants": {
+    "SUBSTRATE_PROPERTIES": [
+      "aeration",
+      "waterRetention",
+      "nutrient",
+      "buffering"
+    ],
+    "PROPERTY_MAX": 4,
+    "SUBSTRATE_MATRIX": {
+      "perlite": {
+        "aeration": 4,
+        "waterRetention": 1,
+        "nutrient": 0,
+        "buffering": 0
+      },
+      "peat": {
+        "aeration": 1,
+        "waterRetention": 4,
+        "nutrient": 2,
+        "buffering": 2
+      },
+      "sphagnum": {
+        "aeration": 2,
+        "waterRetention": 4,
+        "nutrient": 1,
+        "buffering": 2
+      },
+      "sand": {
+        "aeration": 2,
+        "waterRetention": 1,
+        "nutrient": 0,
+        "buffering": 0
+      },
+      "coco-coir": {
+        "aeration": 3,
+        "waterRetention": 3,
+        "nutrient": 2,
+        "buffering": 3
+      },
+      "grit": {
+        "aeration": 4,
+        "waterRetention": 0,
+        "nutrient": 0,
+        "buffering": 1
+      },
+      "orchid-bark": {
+        "aeration": 3,
+        "waterRetention": 2,
+        "nutrient": 1,
+        "buffering": 1
+      },
+      "pumice": {
+        "aeration": 3,
+        "waterRetention": 2,
+        "nutrient": 0,
+        "buffering": 2
+      },
+      "mud": {
+        "aeration": 0,
+        "waterRetention": 4,
+        "nutrient": 3,
+        "buffering": 4
+      },
+      "potting-soil": {
+        "aeration": 2,
+        "waterRetention": 3,
+        "nutrient": 3,
+        "buffering": 3
+      },
+      "worm-castings": {
+        "aeration": 1,
+        "waterRetention": 3,
+        "nutrient": 4,
+        "buffering": 3
+      },
+      "vermiculite": {
+        "aeration": 2,
+        "waterRetention": 4,
+        "nutrient": 1,
+        "buffering": 2
+      },
+      "leca": {
+        "aeration": 4,
+        "waterRetention": 1,
+        "nutrient": 0,
+        "buffering": 1
+      },
+      "akadama": {
+        "aeration": 2,
+        "waterRetention": 3,
+        "nutrient": 0,
+        "buffering": 2
+      }
+    },
+    "SIZE_CLASS": {
+      "mud": 0,
+      "peat": 1,
+      "worm-castings": 1,
+      "potting-soil": 1,
+      "sand": 2,
+      "coco-coir": 2,
+      "vermiculite": 2,
+      "akadama": 2,
+      "perlite": 3,
+      "grit": 3,
+      "pumice": 3,
+      "sphagnum": 3,
+      "orchid-bark": 4,
+      "leca": 4
+    },
+    "SIZE_CLASS_MAX": 4
+  }
+}

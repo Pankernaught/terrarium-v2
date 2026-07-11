@@ -1,0 +1,1619 @@
+{
+  "guide:closed-tropical-rect": [
+    {
+      "category": "Watering",
+      "tip": "This sealed container recycles its own water — it transpires, condenses on the glass, and runs back to the substrate, so a balanced one needs water only rarely, often just every few months. Read the glass rather than watering on a timer: light fog that clears by midday is healthy; if the walls go bone-dry, add a light mist; if they stay fogged solid for 48 hours or more, vent it for a few hours first before adding anything."
+    },
+    {
+      "category": "Humidity",
+      "tip": "This sealed container naturally traps ambient moisture to maintain high humidity levels (70%-85%). Monitor for excessive glass condensation; if the walls remain completely fogged for over 48 hours, open the enclosure for a few hours to vent stale air, then reseal."
+    },
+    {
+      "category": "Light",
+      "tip": "Place in a medium indirect light environment or a few feet back from a primary light window. Avoid deep, dark corners as well as intense, burning direct sun rays."
+    },
+    {
+      "category": "Trimming",
+      "tip": "Mixed growth rates detected within the enclosure (moderate, slow). Regular pruning intervals are highly recommended: monitor fast-growing elements closely and trim them back regularly to prevent them from choking out slower companions or creating canopy shadows that block valuable light."
+    }
+  ],
+  "schedule-early:closed-tropical-rect": [
+    {
+      "type": "settle-in",
+      "bucket": "sealed",
+      "intervalDays": 2,
+      "muted": false,
+      "body": "",
+      "firstDueAt": 1768651200000,
+      "oneTime": true
+    },
+    {
+      "type": "watering-inspection",
+      "bucket": "sealed-moist",
+      "intervalDays": 60,
+      "muted": false,
+      "body": "This sealed container recycles its own water — it transpires, condenses on the glass, and runs back to the substrate, so a balanced one needs water only rarely, often just every few months. Read the glass rather than watering on a timer: light fog that clears by midday is healthy; if the walls go bone-dry, add a light mist; if they stay fogged solid for 48 hours or more, vent it for a few hours first before adding anything.",
+      "firstDueAt": 1773662400000
+    },
+    {
+      "type": "trimming",
+      "bucket": "moderate",
+      "intervalDays": 18,
+      "muted": false,
+      "body": "Mixed growth rates detected within the enclosure (moderate, slow). Regular pruning intervals are highly recommended: monitor fast-growing elements closely and trim them back regularly to prevent them from choking out slower companions or creating canopy shadows that block valuable light.",
+      "firstDueAt": 1770033600000
+    }
+  ],
+  "guide:open-arid-cyl": [
+    {
+      "category": "Watering",
+      "tip": "Water very sparingly. Allow the substrate to dry out completely between waterings to prevent root rot."
+    },
+    {
+      "category": "Humidity",
+      "tip": "This open container allows humidity to dissipate rapidly into the surrounding room. Since your selected plants thrive with higher humidity (20%-40%), mist the foliage frequently, utilize an automated mister, or position a pebble tray underneath the container to boost local humidity levels."
+    },
+    {
+      "category": "Light",
+      "tip": "Place in a location that receives several hours of direct sunlight daily. Monitor temperature closely, as enclosed glass containers can create a greenhouse effect and overheat rapidly under direct sun rays."
+    }
+  ],
+  "schedule-early:open-arid-cyl": [
+    {
+      "type": "settle-in",
+      "bucket": "open",
+      "intervalDays": 2,
+      "muted": false,
+      "body": "",
+      "firstDueAt": 1768651200000,
+      "oneTime": true
+    },
+    {
+      "type": "watering-inspection",
+      "bucket": "open-dry",
+      "intervalDays": 12,
+      "muted": false,
+      "body": "Water very sparingly. Allow the substrate to dry out completely between waterings to prevent root rot.",
+      "firstDueAt": 1769515200000
+    }
+  ],
+  "guide:tall-cylinder": [
+    {
+      "category": "Watering",
+      "tip": "This lidded container holds most of its moisture, so it needs water far less often than a potted plant — occasional top-ups over weeks, not days. Add a little only when the substrate surface looks dry and condensation is low."
+    },
+    {
+      "category": "Humidity",
+      "tip": "This lidded container helps retain elevated humidity levels (70%-80%). Keep the lid closed and mist periodically only when internal air circulation or the substrate surface feels notably dry."
+    },
+    {
+      "category": "Light",
+      "tip": "Place in a medium indirect light environment or a few feet back from a primary light window. Avoid deep, dark corners as well as intense, burning direct sun rays."
+    },
+    {
+      "category": "Trimming",
+      "tip": "Mixed growth rates detected within the enclosure (fast, moderate, slow). Regular pruning intervals are highly recommended: monitor fast-growing elements closely and trim them back regularly to prevent them from choking out slower companions or creating canopy shadows that block valuable light."
+    }
+  ],
+  "schedule-early:tall-cylinder": [
+    {
+      "type": "settle-in",
+      "bucket": "lidded",
+      "intervalDays": 2,
+      "muted": false,
+      "body": "",
+      "firstDueAt": 1768651200000,
+      "oneTime": true
+    },
+    {
+      "type": "watering-inspection",
+      "bucket": "lidded-moist",
+      "intervalDays": 20,
+      "muted": false,
+      "body": "This lidded container holds most of its moisture, so it needs water far less often than a potted plant — occasional top-ups over weeks, not days. Add a little only when the substrate surface looks dry and condensation is low.",
+      "firstDueAt": 1770206400000
+    },
+    {
+      "type": "lid-opening",
+      "bucket": "lidded-small",
+      "intervalDays": 7,
+      "muted": false,
+      "body": "This lidded container helps retain elevated humidity levels (70%-80%). Keep the lid closed and mist periodically only when internal air circulation or the substrate surface feels notably dry.",
+      "firstDueAt": 1769083200000
+    },
+    {
+      "type": "trimming",
+      "bucket": "fast",
+      "intervalDays": 10,
+      "muted": false,
+      "body": "Mixed growth rates detected within the enclosure (fast, moderate, slow). Regular pruning intervals are highly recommended: monitor fast-growing elements closely and trim them back regularly to prevent them from choking out slower companions or creating canopy shadows that block valuable light.",
+      "firstDueAt": 1769342400000
+    }
+  ],
+  "guide:single-plant": [
+    {
+      "category": "Watering",
+      "tip": "This sealed container recycles its own water — it transpires, condenses on the glass, and runs back to the substrate, so a balanced one needs water only rarely, often just every few months. Read the glass rather than watering on a timer: light fog that clears by midday is healthy; if the walls go bone-dry, add a light mist; if they stay fogged solid for 48 hours or more, vent it for a few hours first before adding anything."
+    },
+    {
+      "category": "Humidity",
+      "tip": "This sealed container naturally traps ambient moisture to maintain high humidity levels (70%-90%). Monitor for excessive glass condensation; if the walls remain completely fogged for over 48 hours, open the enclosure for a few hours to vent stale air, then reseal."
+    },
+    {
+      "category": "Light",
+      "tip": "Place in a medium indirect light environment or a few feet back from a primary light window. Avoid deep, dark corners as well as intense, burning direct sun rays."
+    }
+  ],
+  "schedule-early:single-plant": [
+    {
+      "type": "settle-in",
+      "bucket": "sealed",
+      "intervalDays": 2,
+      "muted": false,
+      "body": "",
+      "firstDueAt": 1768651200000,
+      "oneTime": true
+    },
+    {
+      "type": "watering-inspection",
+      "bucket": "sealed-moist",
+      "intervalDays": 60,
+      "muted": false,
+      "body": "This sealed container recycles its own water — it transpires, condenses on the glass, and runs back to the substrate, so a balanced one needs water only rarely, often just every few months. Read the glass rather than watering on a timer: light fog that clears by midday is healthy; if the walls go bone-dry, add a light mist; if they stay fogged solid for 48 hours or more, vent it for a few hours first before adding anything.",
+      "firstDueAt": 1773662400000
+    }
+  ],
+  "guide:survival-clamp": [
+    {
+      "category": "Watering",
+      "tip": "This sealed container recycles its own water — it transpires, condenses on the glass, and runs back to the substrate, so a balanced one needs water only rarely, often just every few months. Read the glass rather than watering on a timer: light fog that clears by midday is healthy; if the walls go bone-dry, add a light mist; if they stay fogged solid for 48 hours or more, vent it for a few hours first before adding anything."
+    },
+    {
+      "category": "Humidity",
+      "tip": "This sealed container naturally traps ambient moisture to maintain high humidity levels (above 70%). Monitor for excessive glass condensation; if the walls remain completely fogged for over 48 hours, open the enclosure for a few hours to vent stale air, then reseal."
+    },
+    {
+      "category": "Light",
+      "tip": "Highly conflicting light requirements detected within this ecosystem. Place the terrarium in bright, indirect sunlight as a fragile compromise. Monitor direct-sun plants for stretching (etiolation) and low-light varieties for leaf bleaching."
+    }
+  ],
+  "schedule-early:survival-clamp": [
+    {
+      "type": "settle-in",
+      "bucket": "sealed",
+      "intervalDays": 2,
+      "muted": false,
+      "body": "",
+      "firstDueAt": 1768651200000,
+      "oneTime": true
+    },
+    {
+      "type": "watering-inspection",
+      "bucket": "sealed-moist",
+      "intervalDays": 60,
+      "muted": false,
+      "body": "This sealed container recycles its own water — it transpires, condenses on the glass, and runs back to the substrate, so a balanced one needs water only rarely, often just every few months. Read the glass rather than watering on a timer: light fog that clears by midday is healthy; if the walls go bone-dry, add a light mist; if they stay fogged solid for 48 hours or more, vent it for a few hours first before adding anything.",
+      "firstDueAt": 1773662400000
+    }
+  ],
+  "guide:split-tie": [
+    {
+      "category": "Watering",
+      "tip": "This lidded container holds most of its moisture, so it needs water far less often than a potted plant — occasional top-ups over weeks, not days. Add a little only when the substrate surface looks dry and condensation is low."
+    },
+    {
+      "category": "Humidity",
+      "tip": "This lidded container helps retain elevated humidity levels (80%-90%). Keep the lid closed and mist periodically only when internal air circulation or the substrate surface feels notably dry."
+    },
+    {
+      "category": "Light",
+      "tip": "Place in a medium indirect light environment or a few feet back from a primary light window. Avoid deep, dark corners as well as intense, burning direct sun rays."
+    },
+    {
+      "category": "Trimming",
+      "tip": "Mixed growth rates detected within the enclosure (fast, moderate, slow). Regular pruning intervals are highly recommended: monitor fast-growing elements closely and trim them back regularly to prevent them from choking out slower companions or creating canopy shadows that block valuable light."
+    }
+  ],
+  "schedule-early:split-tie": [
+    {
+      "type": "settle-in",
+      "bucket": "lidded",
+      "intervalDays": 2,
+      "muted": false,
+      "body": "",
+      "firstDueAt": 1768651200000,
+      "oneTime": true
+    },
+    {
+      "type": "watering-inspection",
+      "bucket": "lidded-moist",
+      "intervalDays": 20,
+      "muted": false,
+      "body": "This lidded container holds most of its moisture, so it needs water far less often than a potted plant — occasional top-ups over weeks, not days. Add a little only when the substrate surface looks dry and condensation is low.",
+      "firstDueAt": 1770206400000
+    },
+    {
+      "type": "lid-opening",
+      "bucket": "lidded-medium",
+      "intervalDays": 12,
+      "muted": false,
+      "body": "This lidded container helps retain elevated humidity levels (80%-90%). Keep the lid closed and mist periodically only when internal air circulation or the substrate surface feels notably dry.",
+      "firstDueAt": 1769515200000
+    },
+    {
+      "type": "trimming",
+      "bucket": "fast",
+      "intervalDays": 10,
+      "muted": false,
+      "body": "Mixed growth rates detected within the enclosure (fast, moderate, slow). Regular pruning intervals are highly recommended: monitor fast-growing elements closely and trim them back regularly to prevent them from choking out slower companions or creating canopy shadows that block valuable light.",
+      "firstDueAt": 1769342400000
+    }
+  ],
+  "guide:crowded": [
+    {
+      "category": "Watering",
+      "tip": "This sealed container recycles its own water — it transpires, condenses on the glass, and runs back to the substrate, so a balanced one needs water only rarely, often just every few months. Read the glass rather than watering on a timer: light fog that clears by midday is healthy; if the walls go bone-dry, add a light mist; if they stay fogged solid for 48 hours or more, vent it for a few hours first before adding anything."
+    },
+    {
+      "category": "Humidity",
+      "tip": "This sealed container naturally traps ambient moisture to maintain high humidity levels (70%-80%). Monitor for excessive glass condensation; if the walls remain completely fogged for over 48 hours, open the enclosure for a few hours to vent stale air, then reseal."
+    },
+    {
+      "category": "Light",
+      "tip": "Place in a medium indirect light environment or a few feet back from a primary light window. Avoid deep, dark corners as well as intense, burning direct sun rays."
+    },
+    {
+      "category": "Trimming",
+      "tip": "Mixed growth rates detected within the enclosure (fast, moderate, slow). Regular pruning intervals are highly recommended: monitor fast-growing elements closely and trim them back regularly to prevent them from choking out slower companions or creating canopy shadows that block valuable light."
+    }
+  ],
+  "schedule-early:crowded": [
+    {
+      "type": "settle-in",
+      "bucket": "sealed",
+      "intervalDays": 2,
+      "muted": false,
+      "body": "",
+      "firstDueAt": 1768651200000,
+      "oneTime": true
+    },
+    {
+      "type": "watering-inspection",
+      "bucket": "sealed-moist",
+      "intervalDays": 60,
+      "muted": false,
+      "body": "This sealed container recycles its own water — it transpires, condenses on the glass, and runs back to the substrate, so a balanced one needs water only rarely, often just every few months. Read the glass rather than watering on a timer: light fog that clears by midday is healthy; if the walls go bone-dry, add a light mist; if they stay fogged solid for 48 hours or more, vent it for a few hours first before adding anything.",
+      "firstDueAt": 1773662400000
+    },
+    {
+      "type": "trimming",
+      "bucket": "fast",
+      "intervalDays": 10,
+      "muted": false,
+      "body": "Mixed growth rates detected within the enclosure (fast, moderate, slow). Regular pruning intervals are highly recommended: monitor fast-growing elements closely and trim them back regularly to prevent them from choking out slower companions or creating canopy shadows that block valuable light.",
+      "firstDueAt": 1769342400000
+    }
+  ],
+  "guide:sparse-fields": [
+    {
+      "category": "Watering",
+      "tip": "Water very sparingly. Allow the substrate to dry out completely between waterings to prevent root rot."
+    },
+    {
+      "category": "Humidity",
+      "tip": "This open container allows humidity to dissipate rapidly into the surrounding room. Since your selected plants thrive with higher humidity (40%-50%), mist the foliage frequently, utilize an automated mister, or position a pebble tray underneath the container to boost local humidity levels."
+    },
+    {
+      "category": "Light",
+      "tip": "Position the setup in bright, indirect sunlight (such as close to an east-facing window or behind a sheer curtain on a south/west window). This provides optimal energy while safeguarding delicate leaves from scorching."
+    }
+  ],
+  "schedule-early:sparse-fields": [
+    {
+      "type": "settle-in",
+      "bucket": "open",
+      "intervalDays": 2,
+      "muted": false,
+      "body": "",
+      "firstDueAt": 1768651200000,
+      "oneTime": true
+    },
+    {
+      "type": "watering-inspection",
+      "bucket": "open-dry",
+      "intervalDays": 12,
+      "muted": false,
+      "body": "Water very sparingly. Allow the substrate to dry out completely between waterings to prevent root rot.",
+      "firstDueAt": 1769515200000
+    }
+  ],
+  "guide:micro-sealed-gas": [
+    {
+      "category": "Watering",
+      "tip": "This sealed container recycles its own water — it transpires, condenses on the glass, and runs back to the substrate, so a balanced one needs water only rarely, often just every few months. Read the glass rather than watering on a timer: light fog that clears by midday is healthy; if the walls go bone-dry, add a light mist; if they stay fogged solid for 48 hours or more, vent it for a few hours first before adding anything."
+    },
+    {
+      "category": "Humidity",
+      "tip": "This sealed container naturally traps ambient moisture to maintain high humidity levels (70%-90%). Monitor for excessive glass condensation; if the walls remain completely fogged for over 48 hours, open the enclosure for a few hours to vent stale air, then reseal."
+    },
+    {
+      "category": "Light",
+      "tip": "Place in a medium indirect light environment or a few feet back from a primary light window. Avoid deep, dark corners as well as intense, burning direct sun rays."
+    },
+    {
+      "category": "Trimming",
+      "tip": "Mixed growth rates detected within the enclosure (fast, slow). Regular pruning intervals are highly recommended: monitor fast-growing elements closely and trim them back regularly to prevent them from choking out slower companions or creating canopy shadows that block valuable light."
+    }
+  ],
+  "schedule-early:micro-sealed-gas": [
+    {
+      "type": "settle-in",
+      "bucket": "sealed",
+      "intervalDays": 2,
+      "muted": false,
+      "body": "",
+      "firstDueAt": 1768651200000,
+      "oneTime": true
+    },
+    {
+      "type": "watering-inspection",
+      "bucket": "sealed-moist",
+      "intervalDays": 60,
+      "muted": false,
+      "body": "This sealed container recycles its own water — it transpires, condenses on the glass, and runs back to the substrate, so a balanced one needs water only rarely, often just every few months. Read the glass rather than watering on a timer: light fog that clears by midday is healthy; if the walls go bone-dry, add a light mist; if they stay fogged solid for 48 hours or more, vent it for a few hours first before adding anything.",
+      "firstDueAt": 1773662400000
+    },
+    {
+      "type": "trimming",
+      "bucket": "fast",
+      "intervalDays": 10,
+      "muted": false,
+      "body": "Mixed growth rates detected within the enclosure (fast, slow). Regular pruning intervals are highly recommended: monitor fast-growing elements closely and trim them back regularly to prevent them from choking out slower companions or creating canopy shadows that block valuable light.",
+      "firstDueAt": 1769342400000
+    }
+  ],
+  "guide:empty-throws": {
+    "threw": true,
+    "message": "At least one plant must be provided to generate a care guide."
+  },
+  "schedule:s12-defaults-now": [
+    {
+      "type": "watering-inspection",
+      "bucket": "lidded-moist",
+      "intervalDays": 20,
+      "muted": false,
+      "body": "This lidded container holds most of its moisture, so it needs water far less often than a potted plant — occasional top-ups over weeks, not days. Add a little only when the substrate surface looks dry and condensation is low.",
+      "firstDueAt": 1770206400000
+    },
+    {
+      "type": "lid-opening",
+      "bucket": "lidded-medium",
+      "intervalDays": 12,
+      "muted": false,
+      "body": "This lidded container helps retain elevated humidity levels (70%-90%). Keep the lid closed and mist periodically only when internal air circulation or the substrate surface feels notably dry.",
+      "firstDueAt": 1769515200000
+    },
+    {
+      "type": "trimming",
+      "bucket": "fast",
+      "intervalDays": 10,
+      "muted": false,
+      "body": "Mixed growth rates detected within the enclosure (fast, slow). Regular pruning intervals are highly recommended: monitor fast-growing elements closely and trim them back regularly to prevent them from choking out slower companions or creating canopy shadows that block valuable light.",
+      "firstDueAt": 1769342400000
+    }
+  ],
+  "schedule:s12-overrides-now": [
+    {
+      "type": "watering-inspection",
+      "bucket": "lidded-moist",
+      "intervalDays": 3,
+      "muted": false,
+      "body": "This lidded container holds most of its moisture, so it needs water far less often than a potted plant — occasional top-ups over weeks, not days. Add a little only when the substrate surface looks dry and condensation is low.",
+      "firstDueAt": 1768737600000
+    },
+    {
+      "type": "lid-opening",
+      "bucket": "lidded-medium",
+      "intervalDays": 12,
+      "muted": true,
+      "body": "This lidded container helps retain elevated humidity levels (70%-90%). Keep the lid closed and mist periodically only when internal air circulation or the substrate surface feels notably dry.",
+      "firstDueAt": 1769515200000
+    },
+    {
+      "type": "trimming",
+      "bucket": "fast",
+      "intervalDays": 90,
+      "muted": false,
+      "body": "Mixed growth rates detected within the enclosure (fast, slow). Regular pruning intervals are highly recommended: monitor fast-growing elements closely and trim them back regularly to prevent them from choking out slower companions or creating canopy shadows that block valuable light.",
+      "firstDueAt": 1776254400000
+    }
+  ],
+  "schedule:s12-overrides-early": [
+    {
+      "type": "settle-in",
+      "bucket": "lidded",
+      "intervalDays": 2,
+      "muted": false,
+      "body": "",
+      "firstDueAt": 1768651200000,
+      "oneTime": true
+    },
+    {
+      "type": "watering-inspection",
+      "bucket": "lidded-moist",
+      "intervalDays": 3,
+      "muted": false,
+      "body": "This lidded container holds most of its moisture, so it needs water far less often than a potted plant — occasional top-ups over weeks, not days. Add a little only when the substrate surface looks dry and condensation is low.",
+      "firstDueAt": 1768737600000
+    },
+    {
+      "type": "lid-opening",
+      "bucket": "lidded-medium",
+      "intervalDays": 12,
+      "muted": true,
+      "body": "This lidded container helps retain elevated humidity levels (70%-90%). Keep the lid closed and mist periodically only when internal air circulation or the substrate surface feels notably dry.",
+      "firstDueAt": 1769515200000
+    },
+    {
+      "type": "trimming",
+      "bucket": "fast",
+      "intervalDays": 90,
+      "muted": false,
+      "body": "Mixed growth rates detected within the enclosure (fast, slow). Regular pruning intervals are highly recommended: monitor fast-growing elements closely and trim them back regularly to prevent them from choking out slower companions or creating canopy shadows that block valuable light.",
+      "firstDueAt": 1776254400000
+    }
+  ],
+  "schedule:s12-overrides-at-boundary": [
+    {
+      "type": "watering-inspection",
+      "bucket": "lidded-moist",
+      "intervalDays": 3,
+      "muted": false,
+      "body": "This lidded container holds most of its moisture, so it needs water far less often than a potted plant — occasional top-ups over weeks, not days. Add a little only when the substrate surface looks dry and condensation is low.",
+      "firstDueAt": 1768737600000
+    },
+    {
+      "type": "lid-opening",
+      "bucket": "lidded-medium",
+      "intervalDays": 12,
+      "muted": true,
+      "body": "This lidded container helps retain elevated humidity levels (70%-90%). Keep the lid closed and mist periodically only when internal air circulation or the substrate surface feels notably dry.",
+      "firstDueAt": 1769515200000
+    },
+    {
+      "type": "trimming",
+      "bucket": "fast",
+      "intervalDays": 90,
+      "muted": false,
+      "body": "Mixed growth rates detected within the enclosure (fast, slow). Regular pruning intervals are highly recommended: monitor fast-growing elements closely and trim them back regularly to prevent them from choking out slower companions or creating canopy shadows that block valuable light.",
+      "firstDueAt": 1776254400000
+    }
+  ],
+  "schedule:s12-overrides-boundary-minus-1ms": [
+    {
+      "type": "settle-in",
+      "bucket": "lidded",
+      "intervalDays": 2,
+      "muted": false,
+      "body": "",
+      "firstDueAt": 1768651200000,
+      "oneTime": true
+    },
+    {
+      "type": "watering-inspection",
+      "bucket": "lidded-moist",
+      "intervalDays": 3,
+      "muted": false,
+      "body": "This lidded container holds most of its moisture, so it needs water far less often than a potted plant — occasional top-ups over weeks, not days. Add a little only when the substrate surface looks dry and condensation is low.",
+      "firstDueAt": 1768737600000
+    },
+    {
+      "type": "lid-opening",
+      "bucket": "lidded-medium",
+      "intervalDays": 12,
+      "muted": true,
+      "body": "This lidded container helps retain elevated humidity levels (70%-90%). Keep the lid closed and mist periodically only when internal air circulation or the substrate surface feels notably dry.",
+      "firstDueAt": 1769515200000
+    },
+    {
+      "type": "trimming",
+      "bucket": "fast",
+      "intervalDays": 90,
+      "muted": false,
+      "body": "Mixed growth rates detected within the enclosure (fast, slow). Regular pruning intervals are highly recommended: monitor fast-growing elements closely and trim them back regularly to prevent them from choking out slower companions or creating canopy shadows that block valuable light.",
+      "firstDueAt": 1776254400000
+    }
+  ],
+  "volumeBucket": {
+    "5": "medium",
+    "20": "medium",
+    "50": "large",
+    "0.5": "small",
+    "4.99": "small",
+    "7.5": "medium",
+    "20.01": "large"
+  },
+  "nextDueAfter": {
+    "now-plus-3d": 1770206400000,
+    "now-plus-90d": 1777723200000
+  },
+  "budget:default": {
+    "scheduled": [
+      {
+        "buildId": "bld-01",
+        "type": "watering-inspection",
+        "dueAt": 1769947200000
+      },
+      {
+        "buildId": "bld-06",
+        "type": "lid-opening",
+        "dueAt": 1769947200000
+      },
+      {
+        "buildId": "bld-11",
+        "type": "trimming",
+        "dueAt": 1769947200000
+      },
+      {
+        "buildId": "bld-04",
+        "type": "settle-in",
+        "dueAt": 1769947200000
+      },
+      {
+        "buildId": "bld-09",
+        "type": "watering-inspection",
+        "dueAt": 1769947200000
+      },
+      {
+        "buildId": "bld-02",
+        "type": "lid-opening",
+        "dueAt": 1769947200000
+      },
+      {
+        "buildId": "bld-07",
+        "type": "trimming",
+        "dueAt": 1769947200000
+      },
+      {
+        "buildId": "bld-12",
+        "type": "settle-in",
+        "dueAt": 1769947200000
+      },
+      {
+        "buildId": "bld-05",
+        "type": "watering-inspection",
+        "dueAt": 1769947200000
+      },
+      {
+        "buildId": "bld-10",
+        "type": "lid-opening",
+        "dueAt": 1769947200000
+      },
+      {
+        "buildId": "bld-03",
+        "type": "trimming",
+        "dueAt": 1769947200000
+      },
+      {
+        "buildId": "bld-08",
+        "type": "settle-in",
+        "dueAt": 1769947200000
+      },
+      {
+        "buildId": "bld-01",
+        "type": "watering-inspection",
+        "dueAt": 1769947200000
+      },
+      {
+        "buildId": "bld-06",
+        "type": "lid-opening",
+        "dueAt": 1769947200000
+      },
+      {
+        "buildId": "bld-02",
+        "type": "lid-opening",
+        "dueAt": 1770033600000
+      },
+      {
+        "buildId": "bld-07",
+        "type": "trimming",
+        "dueAt": 1770033600000
+      },
+      {
+        "buildId": "bld-12",
+        "type": "settle-in",
+        "dueAt": 1770033600000
+      },
+      {
+        "buildId": "bld-05",
+        "type": "watering-inspection",
+        "dueAt": 1770033600000
+      },
+      {
+        "buildId": "bld-10",
+        "type": "lid-opening",
+        "dueAt": 1770033600000
+      },
+      {
+        "buildId": "bld-03",
+        "type": "trimming",
+        "dueAt": 1770033600000
+      },
+      {
+        "buildId": "bld-08",
+        "type": "settle-in",
+        "dueAt": 1770033600000
+      },
+      {
+        "buildId": "bld-01",
+        "type": "watering-inspection",
+        "dueAt": 1770033600000
+      },
+      {
+        "buildId": "bld-06",
+        "type": "lid-opening",
+        "dueAt": 1770033600000
+      },
+      {
+        "buildId": "bld-11",
+        "type": "trimming",
+        "dueAt": 1770033600000
+      },
+      {
+        "buildId": "bld-04",
+        "type": "settle-in",
+        "dueAt": 1770033600000
+      },
+      {
+        "buildId": "bld-09",
+        "type": "watering-inspection",
+        "dueAt": 1770033600000
+      },
+      {
+        "buildId": "bld-02",
+        "type": "lid-opening",
+        "dueAt": 1770033600000
+      },
+      {
+        "buildId": "bld-07",
+        "type": "trimming",
+        "dueAt": 1770033600000
+      },
+      {
+        "buildId": "bld-03",
+        "type": "trimming",
+        "dueAt": 1770120000000
+      },
+      {
+        "buildId": "bld-08",
+        "type": "settle-in",
+        "dueAt": 1770120000000
+      },
+      {
+        "buildId": "bld-01",
+        "type": "watering-inspection",
+        "dueAt": 1770120000000
+      },
+      {
+        "buildId": "bld-06",
+        "type": "lid-opening",
+        "dueAt": 1770120000000
+      },
+      {
+        "buildId": "bld-11",
+        "type": "trimming",
+        "dueAt": 1770120000000
+      },
+      {
+        "buildId": "bld-04",
+        "type": "settle-in",
+        "dueAt": 1770120000000
+      },
+      {
+        "buildId": "bld-09",
+        "type": "watering-inspection",
+        "dueAt": 1770120000000
+      },
+      {
+        "buildId": "bld-02",
+        "type": "lid-opening",
+        "dueAt": 1770120000000
+      },
+      {
+        "buildId": "bld-07",
+        "type": "trimming",
+        "dueAt": 1770120000000
+      },
+      {
+        "buildId": "bld-12",
+        "type": "settle-in",
+        "dueAt": 1770120000000
+      },
+      {
+        "buildId": "bld-05",
+        "type": "watering-inspection",
+        "dueAt": 1770120000000
+      },
+      {
+        "buildId": "bld-10",
+        "type": "lid-opening",
+        "dueAt": 1770120000000
+      },
+      {
+        "buildId": "bld-03",
+        "type": "trimming",
+        "dueAt": 1770120000000
+      },
+      {
+        "buildId": "bld-08",
+        "type": "settle-in",
+        "dueAt": 1770120000000
+      },
+      {
+        "buildId": "bld-04",
+        "type": "settle-in",
+        "dueAt": 1770206400000
+      },
+      {
+        "buildId": "bld-09",
+        "type": "watering-inspection",
+        "dueAt": 1770206400000
+      },
+      {
+        "buildId": "bld-02",
+        "type": "lid-opening",
+        "dueAt": 1770206400000
+      },
+      {
+        "buildId": "bld-07",
+        "type": "trimming",
+        "dueAt": 1770206400000
+      },
+      {
+        "buildId": "bld-12",
+        "type": "settle-in",
+        "dueAt": 1770206400000
+      },
+      {
+        "buildId": "bld-05",
+        "type": "watering-inspection",
+        "dueAt": 1770206400000
+      },
+      {
+        "buildId": "bld-10",
+        "type": "lid-opening",
+        "dueAt": 1770206400000
+      },
+      {
+        "buildId": "bld-03",
+        "type": "trimming",
+        "dueAt": 1770206400000
+      }
+    ],
+    "deferred": [
+      {
+        "buildId": "bld-08",
+        "type": "settle-in",
+        "dueAt": 1770206400000
+      },
+      {
+        "buildId": "bld-01",
+        "type": "watering-inspection",
+        "dueAt": 1770206400000
+      },
+      {
+        "buildId": "bld-06",
+        "type": "lid-opening",
+        "dueAt": 1770206400000
+      },
+      {
+        "buildId": "bld-11",
+        "type": "trimming",
+        "dueAt": 1770206400000
+      },
+      {
+        "buildId": "bld-04",
+        "type": "settle-in",
+        "dueAt": 1770206400000
+      },
+      {
+        "buildId": "bld-09",
+        "type": "watering-inspection",
+        "dueAt": 1770206400000
+      },
+      {
+        "buildId": "bld-05",
+        "type": "watering-inspection",
+        "dueAt": 1770292800000
+      },
+      {
+        "buildId": "bld-10",
+        "type": "lid-opening",
+        "dueAt": 1770292800000
+      },
+      {
+        "buildId": "bld-03",
+        "type": "trimming",
+        "dueAt": 1770292800000
+      },
+      {
+        "buildId": "bld-08",
+        "type": "settle-in",
+        "dueAt": 1770292800000
+      },
+      {
+        "buildId": "bld-01",
+        "type": "watering-inspection",
+        "dueAt": 1770292800000
+      },
+      {
+        "buildId": "bld-06",
+        "type": "lid-opening",
+        "dueAt": 1770292800000
+      },
+      {
+        "buildId": "bld-11",
+        "type": "trimming",
+        "dueAt": 1770292800000
+      },
+      {
+        "buildId": "bld-04",
+        "type": "settle-in",
+        "dueAt": 1770292800000
+      },
+      {
+        "buildId": "bld-09",
+        "type": "watering-inspection",
+        "dueAt": 1770292800000
+      },
+      {
+        "buildId": "bld-02",
+        "type": "lid-opening",
+        "dueAt": 1770292800000
+      },
+      {
+        "buildId": "bld-07",
+        "type": "trimming",
+        "dueAt": 1770292800000
+      },
+      {
+        "buildId": "bld-12",
+        "type": "settle-in",
+        "dueAt": 1770292800000
+      },
+      {
+        "buildId": "bld-05",
+        "type": "watering-inspection",
+        "dueAt": 1770292800000
+      },
+      {
+        "buildId": "bld-10",
+        "type": "lid-opening",
+        "dueAt": 1770292800000
+      }
+    ],
+    "scheduledBuildCount": 12,
+    "deferredBuildCount": 12
+  },
+  "budget:ios-cap": {
+    "scheduled": [
+      {
+        "buildId": "bld-01",
+        "type": "watering-inspection",
+        "dueAt": 1769947200000
+      },
+      {
+        "buildId": "bld-06",
+        "type": "lid-opening",
+        "dueAt": 1769947200000
+      },
+      {
+        "buildId": "bld-11",
+        "type": "trimming",
+        "dueAt": 1769947200000
+      },
+      {
+        "buildId": "bld-04",
+        "type": "settle-in",
+        "dueAt": 1769947200000
+      },
+      {
+        "buildId": "bld-09",
+        "type": "watering-inspection",
+        "dueAt": 1769947200000
+      },
+      {
+        "buildId": "bld-02",
+        "type": "lid-opening",
+        "dueAt": 1769947200000
+      },
+      {
+        "buildId": "bld-07",
+        "type": "trimming",
+        "dueAt": 1769947200000
+      },
+      {
+        "buildId": "bld-12",
+        "type": "settle-in",
+        "dueAt": 1769947200000
+      },
+      {
+        "buildId": "bld-05",
+        "type": "watering-inspection",
+        "dueAt": 1769947200000
+      },
+      {
+        "buildId": "bld-10",
+        "type": "lid-opening",
+        "dueAt": 1769947200000
+      },
+      {
+        "buildId": "bld-03",
+        "type": "trimming",
+        "dueAt": 1769947200000
+      },
+      {
+        "buildId": "bld-08",
+        "type": "settle-in",
+        "dueAt": 1769947200000
+      },
+      {
+        "buildId": "bld-01",
+        "type": "watering-inspection",
+        "dueAt": 1769947200000
+      },
+      {
+        "buildId": "bld-06",
+        "type": "lid-opening",
+        "dueAt": 1769947200000
+      },
+      {
+        "buildId": "bld-02",
+        "type": "lid-opening",
+        "dueAt": 1770033600000
+      },
+      {
+        "buildId": "bld-07",
+        "type": "trimming",
+        "dueAt": 1770033600000
+      },
+      {
+        "buildId": "bld-12",
+        "type": "settle-in",
+        "dueAt": 1770033600000
+      },
+      {
+        "buildId": "bld-05",
+        "type": "watering-inspection",
+        "dueAt": 1770033600000
+      },
+      {
+        "buildId": "bld-10",
+        "type": "lid-opening",
+        "dueAt": 1770033600000
+      },
+      {
+        "buildId": "bld-03",
+        "type": "trimming",
+        "dueAt": 1770033600000
+      },
+      {
+        "buildId": "bld-08",
+        "type": "settle-in",
+        "dueAt": 1770033600000
+      },
+      {
+        "buildId": "bld-01",
+        "type": "watering-inspection",
+        "dueAt": 1770033600000
+      },
+      {
+        "buildId": "bld-06",
+        "type": "lid-opening",
+        "dueAt": 1770033600000
+      },
+      {
+        "buildId": "bld-11",
+        "type": "trimming",
+        "dueAt": 1770033600000
+      },
+      {
+        "buildId": "bld-04",
+        "type": "settle-in",
+        "dueAt": 1770033600000
+      },
+      {
+        "buildId": "bld-09",
+        "type": "watering-inspection",
+        "dueAt": 1770033600000
+      },
+      {
+        "buildId": "bld-02",
+        "type": "lid-opening",
+        "dueAt": 1770033600000
+      },
+      {
+        "buildId": "bld-07",
+        "type": "trimming",
+        "dueAt": 1770033600000
+      },
+      {
+        "buildId": "bld-03",
+        "type": "trimming",
+        "dueAt": 1770120000000
+      },
+      {
+        "buildId": "bld-08",
+        "type": "settle-in",
+        "dueAt": 1770120000000
+      },
+      {
+        "buildId": "bld-01",
+        "type": "watering-inspection",
+        "dueAt": 1770120000000
+      },
+      {
+        "buildId": "bld-06",
+        "type": "lid-opening",
+        "dueAt": 1770120000000
+      },
+      {
+        "buildId": "bld-11",
+        "type": "trimming",
+        "dueAt": 1770120000000
+      },
+      {
+        "buildId": "bld-04",
+        "type": "settle-in",
+        "dueAt": 1770120000000
+      },
+      {
+        "buildId": "bld-09",
+        "type": "watering-inspection",
+        "dueAt": 1770120000000
+      },
+      {
+        "buildId": "bld-02",
+        "type": "lid-opening",
+        "dueAt": 1770120000000
+      },
+      {
+        "buildId": "bld-07",
+        "type": "trimming",
+        "dueAt": 1770120000000
+      },
+      {
+        "buildId": "bld-12",
+        "type": "settle-in",
+        "dueAt": 1770120000000
+      },
+      {
+        "buildId": "bld-05",
+        "type": "watering-inspection",
+        "dueAt": 1770120000000
+      },
+      {
+        "buildId": "bld-10",
+        "type": "lid-opening",
+        "dueAt": 1770120000000
+      },
+      {
+        "buildId": "bld-03",
+        "type": "trimming",
+        "dueAt": 1770120000000
+      },
+      {
+        "buildId": "bld-08",
+        "type": "settle-in",
+        "dueAt": 1770120000000
+      },
+      {
+        "buildId": "bld-04",
+        "type": "settle-in",
+        "dueAt": 1770206400000
+      },
+      {
+        "buildId": "bld-09",
+        "type": "watering-inspection",
+        "dueAt": 1770206400000
+      },
+      {
+        "buildId": "bld-02",
+        "type": "lid-opening",
+        "dueAt": 1770206400000
+      },
+      {
+        "buildId": "bld-07",
+        "type": "trimming",
+        "dueAt": 1770206400000
+      },
+      {
+        "buildId": "bld-12",
+        "type": "settle-in",
+        "dueAt": 1770206400000
+      },
+      {
+        "buildId": "bld-05",
+        "type": "watering-inspection",
+        "dueAt": 1770206400000
+      },
+      {
+        "buildId": "bld-10",
+        "type": "lid-opening",
+        "dueAt": 1770206400000
+      },
+      {
+        "buildId": "bld-03",
+        "type": "trimming",
+        "dueAt": 1770206400000
+      },
+      {
+        "buildId": "bld-08",
+        "type": "settle-in",
+        "dueAt": 1770206400000
+      },
+      {
+        "buildId": "bld-01",
+        "type": "watering-inspection",
+        "dueAt": 1770206400000
+      },
+      {
+        "buildId": "bld-06",
+        "type": "lid-opening",
+        "dueAt": 1770206400000
+      },
+      {
+        "buildId": "bld-11",
+        "type": "trimming",
+        "dueAt": 1770206400000
+      },
+      {
+        "buildId": "bld-04",
+        "type": "settle-in",
+        "dueAt": 1770206400000
+      },
+      {
+        "buildId": "bld-09",
+        "type": "watering-inspection",
+        "dueAt": 1770206400000
+      },
+      {
+        "buildId": "bld-05",
+        "type": "watering-inspection",
+        "dueAt": 1770292800000
+      },
+      {
+        "buildId": "bld-10",
+        "type": "lid-opening",
+        "dueAt": 1770292800000
+      },
+      {
+        "buildId": "bld-03",
+        "type": "trimming",
+        "dueAt": 1770292800000
+      },
+      {
+        "buildId": "bld-08",
+        "type": "settle-in",
+        "dueAt": 1770292800000
+      },
+      {
+        "buildId": "bld-01",
+        "type": "watering-inspection",
+        "dueAt": 1770292800000
+      },
+      {
+        "buildId": "bld-06",
+        "type": "lid-opening",
+        "dueAt": 1770292800000
+      },
+      {
+        "buildId": "bld-11",
+        "type": "trimming",
+        "dueAt": 1770292800000
+      },
+      {
+        "buildId": "bld-04",
+        "type": "settle-in",
+        "dueAt": 1770292800000
+      }
+    ],
+    "deferred": [
+      {
+        "buildId": "bld-09",
+        "type": "watering-inspection",
+        "dueAt": 1770292800000
+      },
+      {
+        "buildId": "bld-02",
+        "type": "lid-opening",
+        "dueAt": 1770292800000
+      },
+      {
+        "buildId": "bld-07",
+        "type": "trimming",
+        "dueAt": 1770292800000
+      },
+      {
+        "buildId": "bld-12",
+        "type": "settle-in",
+        "dueAt": 1770292800000
+      },
+      {
+        "buildId": "bld-05",
+        "type": "watering-inspection",
+        "dueAt": 1770292800000
+      },
+      {
+        "buildId": "bld-10",
+        "type": "lid-opening",
+        "dueAt": 1770292800000
+      }
+    ],
+    "scheduledBuildCount": 12,
+    "deferredBuildCount": 6
+  },
+  "budget:zero": {
+    "scheduled": [],
+    "deferred": [
+      {
+        "buildId": "bld-01",
+        "type": "watering-inspection",
+        "dueAt": 1769947200000
+      },
+      {
+        "buildId": "bld-06",
+        "type": "lid-opening",
+        "dueAt": 1769947200000
+      },
+      {
+        "buildId": "bld-11",
+        "type": "trimming",
+        "dueAt": 1769947200000
+      },
+      {
+        "buildId": "bld-04",
+        "type": "settle-in",
+        "dueAt": 1769947200000
+      },
+      {
+        "buildId": "bld-09",
+        "type": "watering-inspection",
+        "dueAt": 1769947200000
+      },
+      {
+        "buildId": "bld-02",
+        "type": "lid-opening",
+        "dueAt": 1769947200000
+      },
+      {
+        "buildId": "bld-07",
+        "type": "trimming",
+        "dueAt": 1769947200000
+      },
+      {
+        "buildId": "bld-12",
+        "type": "settle-in",
+        "dueAt": 1769947200000
+      },
+      {
+        "buildId": "bld-05",
+        "type": "watering-inspection",
+        "dueAt": 1769947200000
+      },
+      {
+        "buildId": "bld-10",
+        "type": "lid-opening",
+        "dueAt": 1769947200000
+      },
+      {
+        "buildId": "bld-03",
+        "type": "trimming",
+        "dueAt": 1769947200000
+      },
+      {
+        "buildId": "bld-08",
+        "type": "settle-in",
+        "dueAt": 1769947200000
+      },
+      {
+        "buildId": "bld-01",
+        "type": "watering-inspection",
+        "dueAt": 1769947200000
+      },
+      {
+        "buildId": "bld-06",
+        "type": "lid-opening",
+        "dueAt": 1769947200000
+      },
+      {
+        "buildId": "bld-02",
+        "type": "lid-opening",
+        "dueAt": 1770033600000
+      },
+      {
+        "buildId": "bld-07",
+        "type": "trimming",
+        "dueAt": 1770033600000
+      },
+      {
+        "buildId": "bld-12",
+        "type": "settle-in",
+        "dueAt": 1770033600000
+      },
+      {
+        "buildId": "bld-05",
+        "type": "watering-inspection",
+        "dueAt": 1770033600000
+      },
+      {
+        "buildId": "bld-10",
+        "type": "lid-opening",
+        "dueAt": 1770033600000
+      },
+      {
+        "buildId": "bld-03",
+        "type": "trimming",
+        "dueAt": 1770033600000
+      },
+      {
+        "buildId": "bld-08",
+        "type": "settle-in",
+        "dueAt": 1770033600000
+      },
+      {
+        "buildId": "bld-01",
+        "type": "watering-inspection",
+        "dueAt": 1770033600000
+      },
+      {
+        "buildId": "bld-06",
+        "type": "lid-opening",
+        "dueAt": 1770033600000
+      },
+      {
+        "buildId": "bld-11",
+        "type": "trimming",
+        "dueAt": 1770033600000
+      },
+      {
+        "buildId": "bld-04",
+        "type": "settle-in",
+        "dueAt": 1770033600000
+      },
+      {
+        "buildId": "bld-09",
+        "type": "watering-inspection",
+        "dueAt": 1770033600000
+      },
+      {
+        "buildId": "bld-02",
+        "type": "lid-opening",
+        "dueAt": 1770033600000
+      },
+      {
+        "buildId": "bld-07",
+        "type": "trimming",
+        "dueAt": 1770033600000
+      },
+      {
+        "buildId": "bld-03",
+        "type": "trimming",
+        "dueAt": 1770120000000
+      },
+      {
+        "buildId": "bld-08",
+        "type": "settle-in",
+        "dueAt": 1770120000000
+      },
+      {
+        "buildId": "bld-01",
+        "type": "watering-inspection",
+        "dueAt": 1770120000000
+      },
+      {
+        "buildId": "bld-06",
+        "type": "lid-opening",
+        "dueAt": 1770120000000
+      },
+      {
+        "buildId": "bld-11",
+        "type": "trimming",
+        "dueAt": 1770120000000
+      },
+      {
+        "buildId": "bld-04",
+        "type": "settle-in",
+        "dueAt": 1770120000000
+      },
+      {
+        "buildId": "bld-09",
+        "type": "watering-inspection",
+        "dueAt": 1770120000000
+      },
+      {
+        "buildId": "bld-02",
+        "type": "lid-opening",
+        "dueAt": 1770120000000
+      },
+      {
+        "buildId": "bld-07",
+        "type": "trimming",
+        "dueAt": 1770120000000
+      },
+      {
+        "buildId": "bld-12",
+        "type": "settle-in",
+        "dueAt": 1770120000000
+      },
+      {
+        "buildId": "bld-05",
+        "type": "watering-inspection",
+        "dueAt": 1770120000000
+      },
+      {
+        "buildId": "bld-10",
+        "type": "lid-opening",
+        "dueAt": 1770120000000
+      },
+      {
+        "buildId": "bld-03",
+        "type": "trimming",
+        "dueAt": 1770120000000
+      },
+      {
+        "buildId": "bld-08",
+        "type": "settle-in",
+        "dueAt": 1770120000000
+      },
+      {
+        "buildId": "bld-04",
+        "type": "settle-in",
+        "dueAt": 1770206400000
+      },
+      {
+        "buildId": "bld-09",
+        "type": "watering-inspection",
+        "dueAt": 1770206400000
+      },
+      {
+        "buildId": "bld-02",
+        "type": "lid-opening",
+        "dueAt": 1770206400000
+      },
+      {
+        "buildId": "bld-07",
+        "type": "trimming",
+        "dueAt": 1770206400000
+      },
+      {
+        "buildId": "bld-12",
+        "type": "settle-in",
+        "dueAt": 1770206400000
+      },
+      {
+        "buildId": "bld-05",
+        "type": "watering-inspection",
+        "dueAt": 1770206400000
+      },
+      {
+        "buildId": "bld-10",
+        "type": "lid-opening",
+        "dueAt": 1770206400000
+      },
+      {
+        "buildId": "bld-03",
+        "type": "trimming",
+        "dueAt": 1770206400000
+      },
+      {
+        "buildId": "bld-08",
+        "type": "settle-in",
+        "dueAt": 1770206400000
+      },
+      {
+        "buildId": "bld-01",
+        "type": "watering-inspection",
+        "dueAt": 1770206400000
+      },
+      {
+        "buildId": "bld-06",
+        "type": "lid-opening",
+        "dueAt": 1770206400000
+      },
+      {
+        "buildId": "bld-11",
+        "type": "trimming",
+        "dueAt": 1770206400000
+      },
+      {
+        "buildId": "bld-04",
+        "type": "settle-in",
+        "dueAt": 1770206400000
+      },
+      {
+        "buildId": "bld-09",
+        "type": "watering-inspection",
+        "dueAt": 1770206400000
+      },
+      {
+        "buildId": "bld-05",
+        "type": "watering-inspection",
+        "dueAt": 1770292800000
+      },
+      {
+        "buildId": "bld-10",
+        "type": "lid-opening",
+        "dueAt": 1770292800000
+      },
+      {
+        "buildId": "bld-03",
+        "type": "trimming",
+        "dueAt": 1770292800000
+      },
+      {
+        "buildId": "bld-08",
+        "type": "settle-in",
+        "dueAt": 1770292800000
+      },
+      {
+        "buildId": "bld-01",
+        "type": "watering-inspection",
+        "dueAt": 1770292800000
+      },
+      {
+        "buildId": "bld-06",
+        "type": "lid-opening",
+        "dueAt": 1770292800000
+      },
+      {
+        "buildId": "bld-11",
+        "type": "trimming",
+        "dueAt": 1770292800000
+      },
+      {
+        "buildId": "bld-04",
+        "type": "settle-in",
+        "dueAt": 1770292800000
+      },
+      {
+        "buildId": "bld-09",
+        "type": "watering-inspection",
+        "dueAt": 1770292800000
+      },
+      {
+        "buildId": "bld-02",
+        "type": "lid-opening",
+        "dueAt": 1770292800000
+      },
+      {
+        "buildId": "bld-07",
+        "type": "trimming",
+        "dueAt": 1770292800000
+      },
+      {
+        "buildId": "bld-12",
+        "type": "settle-in",
+        "dueAt": 1770292800000
+      },
+      {
+        "buildId": "bld-05",
+        "type": "watering-inspection",
+        "dueAt": 1770292800000
+      },
+      {
+        "buildId": "bld-10",
+        "type": "lid-opening",
+        "dueAt": 1770292800000
+      }
+    ],
+    "scheduledBuildCount": 0,
+    "deferredBuildCount": 12
+  },
+  "constants": {
+    "PENDING_BUDGET": 50,
+    "IOS_PENDING_CAP": 64,
+    "MIN_CARE_INTERVAL_DAYS": 1,
+    "MAX_CARE_INTERVAL_DAYS": 90
+  }
+}
