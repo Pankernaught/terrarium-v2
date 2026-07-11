@@ -2,16 +2,16 @@
 
 *Living evidence doc for M0 execution (runbook: `deliverables/migration/M0-preserve-characterize.md`). Started 2026-07-11; M0 execution is **in progress** — checklist states below are current, not final.*
 
-## App. C Phase-0 exit checklist (state as of 2026-07-11, session 1)
+## App. C Phase-0 exit checklist (state as of 2026-07-11, session 2)
 
 | App. C item | State | Evidence |
 |---|---|---|
 | Protected recovery point | **☑ git side done · ☐ owner move pending** | R0 push verified (0 unpushed on `main`, `verdict-overhaul`); R1 snapshot branch `m0/worktree-snapshot` + tag `baseline/worktree-2026-07-11` pushed; R3 tag `baseline/pre-migration` → `49f834f` pushed; R2 tar + sha256 created (below) — **owner must move both files off-machine and record the destination here** |
 | Runnable archived build | **☑ DONE** | Fresh clone at tag: `npm ci` OK; typecheck green; **408 tests / 36 files, 0 failures**; Release build 0 errors, installed + launched on iPhone 17 Pro; boot screenshot `simulator-boot-2026-07-11.png`; JS bundle archived beside the R2 tar |
-| Representative DB, backup, media set | ☐ **owner-gated** | R6 needs the owner's device/simulator content (runbook §5) |
-| Golden fixtures | ◐ in progress (~30%) | `catalog.snapshot.json` frozen + `scenarios.ts` written; fixtures/, `golden.test.ts`, capture + green-twice still to do |
-| Approved disposition & decision records | ☐ not started | R8 authors ADR 0018–0029 as *proposed*; owner flips to *accepted* |
-| *(M0 extra)* corpus + spike | ☐ not started | R7, R9 |
+| Representative DB, backup, media set | ◐ **synthetic done · owner-gated for real data** | R5's `backup` golden fixture seeds a §5-mirroring node DB (6 builds both shapes, mix+charcoal, overrides incl. mute, placements, 4 care-mark kinds incl. plant-scoped, 2 photos proving exclusion) → export + restore round-trip verified in CI. Real on-device capture (backup JSON, `terrarium.db`, media manifest) still needs the owner (runbook §5/R6) |
+| Golden fixtures | **☑ DONE** | `golden.test.ts` + 9 fixture files + `README.md`; captured via `UPDATE_GOLDEN=1`; suite **green twice** (38 files / 422 tests). Regeneration policy → ADR 0029 |
+| Approved disposition & decision records | ☐ **authored (R8) · owner accept pending** | ADR 0018–0029 authored as *proposed*; owner flips to *accepted* (that flip is App. C's "approved" evidence) |
+| *(M0 extra)* corpus + spike | **☑ R7 DONE · ◐ R9 spike** | R7: `corpus-201.csv` + `corpus-extract.mjs` + tally (below). R9: iNat spike scripts + `inat-spike-findings.md` |
 | *(M0 extra)* no user work lost | **☑ so far** | R1 verified: `git status` byte-identical before/after snapshot; owner confirmation still owed at close-out |
 
 ## R0 · Offsite push (2026-07-11) — DONE
@@ -52,13 +52,32 @@ From a fresh clone of `baseline/pre-migration` (detached at `49f834f`; the clone
 - JS bundle: `npx expo export --platform ios` → 26 MB (`entry-3d0a0b305e0bafbb579ea6a20e35e58f.hbc`, 6.1 MB), archived as `terrarium-v2-m0-jsbundle-2026-07-11.tar.gz` (20 MB) + `.sha256` (`d474ab30…1699`) **beside the R2 tar** — rides the same owner offsite move.
 - Interpretation note (per runbook): "runnable archived build" = fresh clone + `npm ci` + green checks + simulator boot + archived JS bundle; no signed .ipa required.
 
-## R5 · Golden fixtures — IN PROGRESS (~30%)
+## R5 · Golden fixtures — DONE (session 2, 2026-07-11)
 
-Done: `src/logic/__tests__/golden/catalog.snapshot.json` (10,652-line frozen copy of working-tree `plants.json`, including the ~19 lines of in-flight edits — deliberately matches the R1 snapshot state); `scenarios.ts` (input matrix). Remaining: `golden.test.ts`, `fixtures/*.json` capture via `UPDATE_GOLDEN=1`, `README.md` (regeneration policy), suite green **twice**. Design decisions settled this session are recorded in the migration handoff to avoid re-derivation.
+Suite: `src/logic/__tests__/golden/` — `catalog.snapshot.json` (frozen 2026-07-11 `plants.json`), `scenarios.ts` (input matrix), `golden.test.ts`, `README.md` (regeneration policy), and **9 fixture files** (one per engine family: compatibility, verdict, containers, substrate, care, guide, export, recommend, backup). Captured with `UPDATE_GOLDEN=1`; **suite green twice consecutively** (38 files / 422 tests / 0 failures — the +14 over R4's 408 = the 9 golden `it`s live in one file plus the 5 in-flight canopy tests present in the dirty tree). Typecheck + eslint green on the new files.
 
-## Corpus coverage (re-verified 2026-07-11 in-session, matches runbook §2)
+What's pinned (beyond happy-path outputs): every engine `throw` message (empty group, malformed geometry through `scoreBuild`, container dimension errors, `migratePayload` refuse-newer + missing-step); the ADR 0017 survival clamp (echeveria → 0, matching plants keep 100) and split-tie path; the crowding incompatible rung; the settle-in **strict-`<`** age gate at exactly +14 d and −1 ms; the notification budget at the 50/64 caps; the TXT export byte-exact block incl. the `N/A` render; the substrate matrix constants as data-as-code; and the backup envelope with `exportedAt` normalized + photos excluded, restore counts, and the v1→v2 identity migration. Committed `8370b7d`.
 
-`plants.json` = `{schemaVersion: 1, plants[201]}`; slug/scientificName/sources/image 201/201; plantType 200; substrateTags 200; toxicity **78**; imageCredit/imageLicense **5**.
+**Determinism note:** no hidden `Date.now()`/locale drift surfaced — the two consecutive green runs are byte-identical. `buildCareSchedule` always receives `now` explicitly; `exportBackup.exportedAt` is the only non-deterministic field and is normalized before compare.
+
+## R7 · 201-name migration corpus — DONE (session 2, 2026-07-11)
+
+- **`corpus-201.csv`** (this folder, 201 rows) generated by the committed, re-runnable **`corpus-extract.mjs`** — reads the **frozen** `catalog.snapshot.json` (not live `plants.json`) so the corpus is pinned to the M0 baseline. Columns per runbook §6: slug, commonName, scientificName, sources (|-joined urls), image, imageCredit, imageLicense, toxicity, plantType.
+- **Coverage:** slug/commonName/scientificName/sources/image fields 201/201 · plantType 200/201 · toxicity 78/201 · imageCredit+imageLicense **5/201**.
+- **Images on disk: 129/201** resolvable by the app (slug-keyed `assets/plants/<slug>.jpg|png` via the generated `PLANT_IMAGES` map — the `image` *field* is authored intent, not the resolution key). 129 = the runbook's 124 committed files + the 5 untracked owner-dropped PNGs in the worktree (preserved on the snapshot branch). 72 records render the placeholder.
+- **Sources-domain tally (465 links, 43 hosts)** — M3's licensing design starts here:
+  | Host | Links | Note |
+  |---|---|---|
+  | powo.science.kew.org | 200 | taxonomy authority; near-universal (200/201 records) |
+  | en.wikipedia.org | 117 | article links |
+  | plants.ces.ncsu.edu | 79 | NCSU extension care pages |
+  | gardenia.net | 11 | |
+  | terrariumtribe.com | 8 | |
+  | ohiomosslichen.org / rhs.org.uk | 4 each | |
+  | *36 further hosts* | ≤3 each (42 total) | hobby shops, orchid societies, aquarium sites |
+
+  Three institutional hosts (POWO / Wikipedia / NCSU) carry **396/465** links; the long tail is 40 hobbyist/commercial/society hosts at ≤11 links each. **M3 takeaway:** a licensing pass that clears those three authorities covers ~85% of citations, and the tail needs per-host handling (many are shops/blogs with no clear reuse license). Note these are *care-source* citations, **not** image licenses — image reuse is a separate question the R9 iNat spike probes (only 5/201 records carry `imageCredit`/`imageLicense` today).
+- **Re-runnable:** `node deliverables/m0-baseline/corpus-extract.mjs` (optionally pass an alternate catalog path); prints the coverage line + full domain tally to stdout.
 
 ## Owner-action queue (M0)
 
