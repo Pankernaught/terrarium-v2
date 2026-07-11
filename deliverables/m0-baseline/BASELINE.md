@@ -1,6 +1,10 @@
 # M0 baseline — evidence & exit checklist
 
-*Living evidence doc for M0 execution (runbook: `deliverables/migration/M0-preserve-characterize.md`). Started 2026-07-11; M0 execution is **in progress** — checklist states below are current, not final.*
+*Living evidence doc for M0 execution (runbook: `deliverables/migration/M0-preserve-characterize.md`). Started 2026-07-11. **All solo-executable M0 work (R0–R5, R7–R9) is complete and committed.** Three owner-gated items remain before M0 formally closes — see the Owner-action queue at the bottom.*
+
+## Session-2 wrap (2026-07-11) — solo execution complete
+
+R5, R7, R8, R9 landed this session (R0–R4 were session 1). Commits on `verdict-overhaul`: `8370b7d` (R5 golden suite), `4a68f14` (R7 corpus), `9347189` (R8 ADRs 0018–0029), `e76559e` (R9 iNat spike). Full suite **422 tests / 38 files, green twice**; typecheck + eslint clean. Working tree verified **byte-identical** to session start — the owner's in-flight vibes/canopy work (5 modified + untracked items) is untouched, so the R1 snapshot still holds and no re-snapshot is needed. **The only things between here and M0 close are the three owner gates below.**
 
 ## App. C Phase-0 exit checklist (state as of 2026-07-11, session 2)
 
@@ -12,7 +16,7 @@
 | Golden fixtures | **☑ DONE** | `golden.test.ts` + 9 fixture files + `README.md`; captured via `UPDATE_GOLDEN=1`; suite **green twice** (38 files / 422 tests). Regeneration policy → ADR 0029 |
 | Approved disposition & decision records | ☐ **authored (R8) · owner accept pending** | ADR 0018–0029 authored as *proposed*; owner flips to *accepted* (that flip is App. C's "approved" evidence) |
 | *(M0 extra)* corpus + spike | **☑ R7 DONE · ◐ R9 spike** | R7: `corpus-201.csv` + `corpus-extract.mjs` + tally (below). R9: iNat spike scripts + `inat-spike-findings.md` |
-| *(M0 extra)* no user work lost | **☑ so far** | R1 verified: `git status` byte-identical before/after snapshot; owner confirmation still owed at close-out |
+| *(M0 extra)* no user work lost | **☑ verified at session-2 wrap** | R1 snapshot lossless; working tree **byte-identical** to session start after all R5–R9 commits (`git status --porcelain` unchanged — commits touched only golden/`deliverables`/`docs/adr/0018+`/`tools/spike-inat`). Owner's final confirmation still owed at close-out |
 
 ## R0 · Offsite push (2026-07-11) — DONE
 
@@ -79,9 +83,13 @@ What's pinned (beyond happy-path outputs): every engine `throw` message (empty g
   Three institutional hosts (POWO / Wikipedia / NCSU) carry **396/465** links; the long tail is 40 hobbyist/commercial/society hosts at ≤11 links each. **M3 takeaway:** a licensing pass that clears those three authorities covers ~85% of citations, and the tail needs per-host handling (many are shops/blogs with no clear reuse license). Note these are *care-source* citations, **not** image licenses — image reuse is a separate question the R9 iNat spike probes (only 5/201 records carry `imageCredit`/`imageLicense` today).
 - **Re-runnable:** `node deliverables/m0-baseline/corpus-extract.mjs` (optionally pass an alternate catalog path); prints the coverage line + full domain tally to stdout.
 
-## Owner-action queue (M0)
+## Owner-action queue (M0) — the only work remaining to close M0
 
-1. **R2:** move the tar + sha256 offsite; record destination above.
-2. **R6:** on-device capture session (runbook §5) — backup JSON, `terrarium.db`, media + manifest.
-3. **R8:** review ADRs 0018–0029 once authored; flip *proposed* → *accepted*.
-4. **Ground rule:** please pause in-flight vibe/canopy edits until M0 wraps — or R1 gets re-run (cheap) before R10.
+These three are the entire gap between "solo M0 done" and "M0 closed." None is
+solo-executable; all three need the owner.
+
+1. **R2 offsite move.** Move `terrarium-v2-m0-archive-2026-07-11.tar.gz` + its `.sha256` (and the R4 JS-bundle tar beside them) to a second failure domain, and record the destination in the R2 section above (`<destination — fill in>`).
+2. **R6 device capture** (runbook §5). Real on-device backup JSON + `terrarium.db` + media manifest. *Note:* R5's `backup` golden fixture already exercises the export/restore/migrate paths against a §5-mirroring **synthetic** node DB, so M2's restore work is unblocked; R6 supplies **real** data for confidence, not a blocker.
+3. **R8 acceptance flip.** Review ADRs 0018–0029 (`docs/adr/`) and flip `status: proposed` → `accepted`. That flip is App. C's "approved decision records" evidence. ADR 0018/0027 also touch §14/C3 (free/premium) and §14/C1/C2 gates the owner may want to resolve alongside.
+
+**Ground rule (still in force):** pause in-flight vibe/canopy edits until M0 closes, or R1 is re-run (cheap) before close-out. Verified untouched as of the session-2 wrap.
